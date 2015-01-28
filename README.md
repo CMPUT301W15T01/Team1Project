@@ -1,7 +1,7 @@
 #Team 1 App
 #Description
 
-This application allows users to view, create and edit comments with pictures. Each comments may have sub comments, also users may change their location to view comments in different region and change own posted comments location.
+This application allows users to
 
 #License
 Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivare 
