@@ -1,1 +1,14 @@
 Git Instructions
+
+1. Fork the organization repo (github.com/CMPUT301W15T01/Team1Project.git)
+
+2. Clone YOUR forked repo to wherever you want on your computer
+
+3. 'git pull' and 'git push' will push and pull to YOUR fork
+
+4. You will need to sync your fork to the organization master so that you get everyone else's work, so use the command
+  'git remote add upstream https://github.com/CMPUT301W15T01/Team1Project.git'
+  
+5. To pull/sync your fork you now can use the command 'git pull upstream master'
+
+6.
