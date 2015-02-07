@@ -1,5 +1,7 @@
 Git Instructions
 
+TO AVOID MERGE CONFLICTS ALWAYS PULL UPSTREAM MASTER BEFORE WORKING ON YOUR LOCAL COPY
+
 1. Fork the organization repo (github.com/CMPUT301W15T01/Team1Project.git)
 
 2. Clone YOUR forked repo to wherever you want on your computer
@@ -13,4 +15,6 @@ Git Instructions
 
 6. Now when you push to your fork you’ll want to send the changes to the organization master so everyone can access it. 
    This is easiest to do on github. Go to YOUR repo, and make sure your changes are pushed. Click on 'pull requests'
-  which is found on the right hand menu bar under code.
+   which is found on the right hand menu bar under code. Click new pull request, and it will show you the changes. Click create
+   new pull request (2x). Then click merge pull request, and it should allow you to automatically merge it into our central repo
+   
