@@ -11,4 +11,4 @@ Git Instructions
   
 5. To pull/sync your fork you now can use the command 'git pull upstream master'
 
-6.
+6. Now when you push to your fork you’ll want to send the changes to the organization master so everyone can access it. This is easiest to do on github. Go to your
