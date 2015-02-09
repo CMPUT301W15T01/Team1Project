@@ -16,7 +16,7 @@
     <string name="edit">Edit Claim</string>
 
     <string-array name="status_spinner_entries">
-        <item>in progress</item>
+        <item>tag1</item>
         <item>submitted</item>
         <item>returned</item>
         <item>approved</item>
