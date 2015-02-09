@@ -38,13 +38,6 @@
                 android:layout_toLeftOf="@+id/button1"
                 android:inputType="textAutoCorrect" />
 
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="(+)" />
-
             <TextView
                 android:id="@+id/claimDestinationList"
                 android:layout_width="wrap_content"
@@ -61,9 +54,28 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_below="@+id/claimNameBody"
                 android:text="Add Destination:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <TextView
+                android:id="@+id/claimNameHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Name:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <EditText
+                android:id="@+id/claimNameBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/claimDestinationBody"
+                android:layout_below="@+id/claimNameHeader"
+                android:inputType="textAutoCorrect" />
 
             <TextView
                 android:id="@+id/claimReasonHeader"
@@ -148,14 +160,18 @@
                 android:layout_below="@+id/spinner1"
                 android:text="Tag 1\nTag 2"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-             
-             
+
+             <Button
+                 android:id="@+id/button1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_above="@+id/claimDestinationList"
+                 android:layout_alignParentRight="true"
+                 android:layout_below="@+id/claimDestinationHeader"
+                 android:text="(+)" />
 
         </RelativeLayout>
         
-        
-   
-    
     </ScrollView>
 
 
