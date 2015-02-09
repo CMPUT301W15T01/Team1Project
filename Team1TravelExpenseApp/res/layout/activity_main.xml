@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ca.ualberta.cs.kjyoung_expenses.MainActivity" >
+
+    <TextView
+        android:id="@+id/travelClaims"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/deleteClaimsButton"
+        android:layout_alignBottom="@+id/deleteClaimsButton"
+        android:layout_centerHorizontal="true"
+        android:text="@string/travel_claims"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/deleteClaimsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
+        android:onClick="toggleDelete"
+        android:text="@string/delete_claims"/>
+
+    <ListView
+        android:id="@+id/claimsList"
+        android:layout_width="fill_parent"
+        android:layout_height="263dp"
+        android:layout_alignLeft="@+id/deleteClaimsButton"
+        android:layout_alignStart="@+id/deleteClaimsButton"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/deleteClaimsButton"
+        android:scrollbars="vertical" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/addClaimButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/deleteClaimsButton"
+        android:layout_alignBottom="@+id/deleteClaimsButton"
+        android:layout_above="@+id/claimsList"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/add_claim" 
+        android:onClick="addClaim" />
+
+</RelativeLayout>

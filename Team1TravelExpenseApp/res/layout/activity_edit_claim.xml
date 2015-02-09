@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ca.ualberta.cs.kjyoung_expenses.EditClaimActivity" >
+
+    <Button
+        android:id="@+id/saveClaimButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:onClick="saveClick"
+        android:text="@string/save" />
+	    <ScrollView
+	        android:layout_below="@+id/saveClaimButton"
+	        android:layout_width="fill_parent"
+	    	android:layout_height="fill_parent">
+	    <RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+		
+		    <TextView
+		        android:id="@+id/claimDescriptionHeader"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentStart="true"
+		        android:text="@string/description_of_claim"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		
+		    <EditText
+		        android:id="@+id/claimDescriptionBody"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@+id/claimDescriptionHeader"
+		        android:layout_alignStart="@+id/claimDescriptionHeader"
+		        android:layout_below="@+id/claimDescriptionHeader"
+		        android:ems="10" android:inputType="textAutoCorrect"/>
+		
+		    <TextView
+		        android:id="@+id/startDateHeader"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@+id/claimDescriptionBody"
+		        android:layout_alignStart="@+id/claimDescriptionBody"
+		        android:layout_below="@+id/claimDescriptionBody"
+		        android:text="@string/start_date"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		    
+		    <DatePicker
+		        android:id="@+id/startDate"
+		        android:calendarViewShown="false"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/startDateHeader"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentStart="true" />
+		
+		    <TextView
+		        android:id="@+id/endDateHeader"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@+id/startDateHeader"
+		        android:layout_alignStart="@+id/startDateHeader"
+		        android:layout_below="@+id/startDate"
+		        android:text="@string/end_date"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		    <DatePicker
+		        android:id="@+id/endDate"
+		        android:calendarViewShown="false"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@+id/endDateHeader"
+		        android:layout_alignParentLeft="true" 
+		        android:layout_alignParentStart="true" />
+	
+	    </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
