@@ -20,7 +20,7 @@
         android:id="@+id/claimsList"
         android:layout_width="fill_parent"
         android:layout_height="263dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/spinner1"
         android:layout_below="@+id/addClaimButton"
         android:scrollbars="vertical" >
 
@@ -34,5 +34,13 @@
         android:layout_alignRight="@+id/claimsList"
         android:layout_alignTop="@+id/travelClaims"
         android:text="@string/add_claim" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/claimsList"
+        android:layout_alignParentBottom="true" 
+        android:entries="@array/status_spinner_entries"/>
 
 </RelativeLayout>

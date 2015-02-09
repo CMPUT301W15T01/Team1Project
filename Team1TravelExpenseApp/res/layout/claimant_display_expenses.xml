@@ -9,7 +9,8 @@
         android:id="@+id/expensesList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/addExpenseButton"
+        android:layout_above="@+id/button1"
+        android:layout_below="@+id/destination"
         android:scrollbars="vertical" >
 
     </ListView>
@@ -18,6 +19,7 @@
         android:id="@+id/addExpenseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/destination"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -28,13 +30,20 @@
         android:id="@+id/destination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addExpenseButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/addExpenseButton"
         android:background="#000"
-        android:text="Claim: Claim Name\nStart Date - End Date\nTotal: totals"
+        android:text="Claim: Claim Name\nStart Date - End Date\nTotal: totals\nStatus: status"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#FFF" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Submit" />
 
 </RelativeLayout>
