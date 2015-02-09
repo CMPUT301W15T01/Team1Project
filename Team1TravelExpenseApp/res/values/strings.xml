@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">kjyoung_expenses</string>
+    <string name="app_name">Team1TravelExpenses</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="travel_claims">Travel Claims</string>
