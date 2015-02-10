@@ -121,7 +121,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/datePicker1"
-                android:text="From Date:"
+                android:text="To Date:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <DatePicker
