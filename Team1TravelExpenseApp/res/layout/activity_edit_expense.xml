@@ -43,9 +43,9 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignTop="@+id/categoryHeader"
+		        android:layout_toEndOf="@+id/categoryHeader"
 		        android:layout_toRightOf="@+id/categoryHeader"
-		        android:layout_toEndOf="@+id/categoryHeader"  
-		        />
+		        android:entries="@array/expense_categories" />
 		
 		    <TextView
 		        android:id="@+id/descriptionHeader"
@@ -115,7 +115,8 @@
 		        android:layout_alignBottom="@+id/currencyBody"
 		        android:layout_alignTop="@+id/currencyBody"
 		        android:layout_toRightOf="@+id/currencyBody"
-		        android:layout_toEndOf="@+id/currencyBody" />
+		        android:layout_toEndOf="@+id/currencyBody" 
+		        android:entries="@array/currencies"/>
 		    
 		    <CheckBox
 		        android:id="@+id/checkBox1"
@@ -125,11 +126,21 @@
 		        android:layout_below="@+id/currencySelector"
 		        android:text="Incomplete" />
 		    
-		   <ImageButton
-		        android:id="@+id/imageButton1"
+		   <TextView
+		        android:id="@+id/recieptHeader"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-				android:layout_below="@+id/checkBox1"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentStart="true"
+		        android:layout_below="@+id/checkBox1"
+		        android:text="Reciept Image"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
+		    
+		   <ImageButton
+		        android:id="@+id/imageButton1"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+				android:layout_below="@+id/recieptHeader"
 		        android:src="@android:drawable/btn_star" />
 
 		   <Button
@@ -137,8 +148,7 @@
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
-		       android:layout_alignBottom="@+id/imageButton1"
-		       android:layout_toRightOf="@+id/imageButton1"
+		       android:layout_below="@+id/imageButton1"
 		       android:text="(-)" />
 
 		   <Button
@@ -146,7 +156,7 @@
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
-		       android:layout_alignBottom="@+id/imageButton1"
+		       android:layout_alignBottom="@+id/button1"
 		       android:layout_toRightOf="@+id/button1"
 		       android:text="(+)" />
 
