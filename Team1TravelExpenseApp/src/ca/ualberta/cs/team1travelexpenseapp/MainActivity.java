@@ -10,7 +10,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.claimant_display_expenses);
+		setContentView(R.layout.activity_edit_expense);
 	}
 
 	@Override

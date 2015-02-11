@@ -45,7 +45,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/claimReasonBody"
-                android:text="Destination 1, reason1\nDestination2, reason 2"
+                android:text="Rome, Conference\nAthens, Sightseeing"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -138,7 +138,7 @@
                  android:layout_height="wrap_content"
                
                  android:layout_below="@+id/datePicker2" 
-                 android:entries="@array/status_spinner_entries"/>
+                 android:entries="@array/tags"/>
 
              <Button
                  android:id="@+id/button2"
@@ -152,14 +152,14 @@
                  android:text="(-/+)"/>
              
              <TextView
-                android:id="@+id/claimTagList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/spinner1"
-                android:text="Tag 1\nTag 2"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                 android:id="@+id/claimTagList"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentStart="true"
+                 android:layout_below="@+id/spinner1"
+                 android:text="Important"
+                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
              <Button
                  android:id="@+id/button1"
