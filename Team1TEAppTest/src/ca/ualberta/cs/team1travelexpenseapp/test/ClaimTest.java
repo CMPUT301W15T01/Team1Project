@@ -1,8 +1,10 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.R;
+import android.nfc.Tag;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.ViewAsserts;
@@ -47,7 +49,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	}
 	
 	//US01.03.01
-	public void ViewClaimTest() {
+	public void testViewClaim() {
 		ClaimActivity activity = getActivity();
 		TextView view = (TextView) activity.findViewByID(R.id.claimtext);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
@@ -56,7 +58,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	}
 	
 	//US01.04.01
-	public void EditClaimTest() {
+	public void testEditClaim() {
 		Claim claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
@@ -72,7 +74,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		
 	}
 	//US01.05.01
-	public void DeleteClaimTest() {
+	public void testDeleteClaim() {
         final Button deleteButton =
                 (Button) getActivity()
                 .findViewById(R.id.deleteclaimbutton);
@@ -88,7 +90,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		
 	}
 	//US01.06.01
-	public void saveClaims() {
+	public void testSaveClaims() {
 		ClaimActivity activity = getActivity();
 		Claim claim = new Claim();
 		claim.setName("name");
@@ -101,6 +103,24 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		assertEquals("name?",expected,actual);
 		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
 		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
+		
+	}
+	
+	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
+	//tags, so that claims can be organized by me into groups.
+	public void addTags(){
+		Tag tag1=new Tag("buisness");
+		Tag tag2=new Tag("pleasure");
+		
+		Claim claim= new Claim();
+		claim.addTag(tag1);
+		ArrayList<Tag> tags=claim.getTags();
+		ArrayList<String> tagStrings=new ArrayList<String>();
+		assertEquals("Tags were not added properly, length of list incorrect",tags.size(),2);
+		for(int i=0; i<tags.size(); i++){
+			tagStrings.add(tags.get(i).toString());
+		}
+		assertTrue("Tags were not added properly, strings do not match those added",tags.contains("buisness") && tags.contains("pleasure"));
 		
 	}
 	
