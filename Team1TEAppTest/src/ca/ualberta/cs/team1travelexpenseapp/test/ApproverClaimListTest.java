@@ -94,20 +94,34 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Clai
 		ImageButton view = (Button) activity.findViewById(R.id.photograph);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),view);
 		assertNotNull("not empty",view.getDrawable());
+		assertTrue(View.VISIBLE == view.getVisibility());
 	}
 	
 	//US08.06.01
 	public void testAddApproverClaimComment() {
+		Claim claim = new Claim();
+		claim.addComment("test comment");
+		assertEquals("comment not equal","test comment",claim.getComment());
 		
 	}
 	
 	//US08.07.01
 	public void testReturnUnapprovedClaim() {
+		Claim claim = new Claim();
+		claim.setStatus("returned");
+		claim.addApprover("test approver");
+		AssertTrue("approvers don't match",claim.getApprover(),"test approver");
+		AssertTrue("claim is not returned",claim.getStatus(),"returned");
 		
 	}
 	
 	//US08.08.01
 	public void testApproveClaim() {
-		
+		Claim claim = new Claim();
+		claim.setStatus("approved");
+		claim.addApprover("test approver");
+		AssertTrue("approvers don't match",claim.getApprover(),"test approver");
+		AssertTrue("claim is not returned",claim.getStatus(),"approved");
+			
 	}
 }
