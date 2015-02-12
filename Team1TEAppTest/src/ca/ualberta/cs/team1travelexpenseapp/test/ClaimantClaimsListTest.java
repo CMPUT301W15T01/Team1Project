@@ -2,7 +2,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.util.Date;
 
-import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 
 import android.app.Activity;
 import android.widget.ListView;
@@ -13,16 +13,16 @@ import android.test.ActivityInstrumentationTestCase2;
 
 public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
 	Activity activity;
-	ListView expenseList;
+	ListView claimList;
 	
 	public ClaimantClaimsListTest() {
-		super(ClaimantExpenseListActivity.class);
+		super(ClaimantClaimsListActivity.class);
 	}
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		activity = getActivity();
-		expenseList= (activity.findViewById(ca.ualberta.cs.team1expenseapp.R.id.body));
+		claimList= (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		Claim claim2 = new Claim("name",new Date(1990,1,8), new Date(2000,12,12));
 		Claim claim3 = new Claim("name",new Date(1999,9,8), new Date(2012,12,12));
@@ -40,9 +40,9 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	//the starting date of travel, the destination(s) of travel, the claim status, tags, and 
 	//total currency amounts.
 	public void testListClaims(){
-		int itemCount=expenseList.getCount();
+		int itemCount=claimList.getCount();
 		for(int i=0; i<claimCount; i++){
-			TextView item=expenseList.getItemAtPosition(i);
+			TextView item=claimList.getItemAtPosition(i);
 			String text=item.getText().toString();
 			Claim claim= ClaimsListController.getClaim(i);
 			
