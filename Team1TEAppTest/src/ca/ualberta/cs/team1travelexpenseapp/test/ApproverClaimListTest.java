@@ -94,10 +94,14 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Clai
 		ImageButton view = (Button) activity.findViewById(R.id.photograph);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),view);
 		assertNotNull("not empty",view.getDrawable());
+		assertTrue(View.VISIBLE == view.getVisibility());
 	}
 	
 	//US08.06.01
 	public void testAddApproverClaimComment() {
+		Claim claim = new Claim();
+		claim.addComment("test comment");
+		assertEquals("comment not equal","test comment",claim.getComment());
 		
 	}
 	
