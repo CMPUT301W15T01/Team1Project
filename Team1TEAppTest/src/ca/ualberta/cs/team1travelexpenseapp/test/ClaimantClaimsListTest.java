@@ -2,27 +2,33 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.util.Date;
 
-import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
+
+import ca.ualberta.cs.team1travelexpenseapp.MainActivity;
+import ca.ualberta.cs.team1travelexpenseapp.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
 import android.test.ActivityInstrumentationTestCase2;
 
 
-public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
+public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	Activity activity;
-	ListView expenseList;
+	ListView claimListView;
 	
 	public ClaimantClaimsListTest() {
-		super(ClaimantExpenseListActivity.class);
+		super(MainActivity.class);
 	}
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		Intent intent = new Intent();
+		setActivityIntent(intent);
 		activity = getActivity();
-		expenseList= (activity.findViewById(ca.ualberta.cs.team1expenseapp.R.id.body));
+		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
+		/*
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		Claim claim2 = new Claim("name",new Date(1990,1,8), new Date(2000,12,12));
 		Claim claim3 = new Claim("name",new Date(1999,9,8), new Date(2012,12,12));
@@ -33,6 +39,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		ClaimsListController.addClaim(claim3);
 		ClaimsListController.addClaim(claim4);
 		ClaimsListController.addClaim(claim5);	
+		*/
 	}
 
 	
@@ -40,21 +47,26 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	//the starting date of travel, the destination(s) of travel, the claim status, tags, and 
 	//total currency amounts.
 	public void testListClaims(){
-		int itemCount=expenseList.getCount();
-		for(int i=0; i<claimCount; i++){
-			TextView item=expenseList.getItemAtPosition(i);
-			String text=item.getText().toString();
-			Claim claim= ClaimsListController.getClaim(i);
+		int claimCount = claimListView.getCount();
+		for(int i=0; i < claimCount; i++){
+			//get text info from a claim at position of i of claimListView 
+			TextView claimInfo = (TextView) claimListView.getItemAtPosition(i);
+			String viewtext = claimInfo.getText().toString();
+			
+			//get claim at position i of Claim list 
+			Claim claim = ClaimsListController.getClaim(i);
 			
 			//this is what the text in the listview at position i should look like to match
 			//the corresponding claim in the ClaimsListController
-			String expectedText="Start Date: "+claim.getStartDate().toString()+"\n";
-			expectedText+="Destination(s): ";
-			int destCount=claim.getDestinationCount();
-			if(destCount==0){
-				expectedText+="None";
+			String expectedText ="Start Date: "+claim.getStartDate().toString()+"\n";
+			expectedText += "Destination(s): ";
+			//write out comma separated destinations 
+			int destCount = claim.getDestinationCount();
+			if ( destCount == 0 ) {
+				expectedText += "None";
 			}
 			else{
+				//destCount-1 else extra , 
 				for(int j=0;j<destCount-1; j++){
 					expectedText+=claim.getDestination(j)+", ";
 				}
@@ -75,7 +87,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			expectedText+="Totals: ";
 			int totalCount=claim.getTagCount();
 			if(totalCount==0){
-				expectedText+="None";
+				expectedText += "None";
 			}
 			else{
 				for(int j=0;j<totalCount-1; j++){
@@ -83,7 +95,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 				}
 				expectedText+=claim.getTotal(totalCount-1)+"\n";
 			}
-			assertEquals("Claim summary at list item"+i+"does not match expected value",expectedText, text);	
+			assertEquals("Claim summary at list item"+i+"does not match expected value",expectedText, viewtext);	
 		}
 		
 		
