@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
 import android.test.ActivityInstrumentationTestCase2;
+import android.text.format.DateFormat;
 
 
 public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<MainActivity> {
@@ -60,6 +62,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 			
 			//this is what the text in the listview at position i should look like to match
 			//the corresponding claim in the ClaimsListController
+			
 			String expectedText ="Start Date: "+claim.getStartDate().toString()+"\n";
 			expectedText += "Destination(s): ";
 			//write out comma separated destinations 
@@ -70,7 +73,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 			else{
 				//destCount-1 else extra , 
 				for(int j=0;j<destCount-1; j++){
-					expectedText+=claim.getDestination(j)+", ";
+					expectedText += claim.getDestination(j)+", ";
 				}
 				expectedText+=claim.getDestination(destCount-1)+"\n";
 			}
@@ -82,9 +85,9 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 			}
 			else{
 				for(int j=0;j<tagCount-1; j++){
-					expectedText+=claim.getTag(j)+", ";
+					expectedText+=claim.getTag(j).toString()+", ";
 				}
-				expectedText+=claim.getTag(tagCount-1)+"\n";
+				expectedText+=claim.getTag(tagCount-1).toString()+"\n";
 			}
 			expectedText+="Totals: ";
 			int totalCount=claim.getTagCount();
@@ -93,7 +96,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 			}
 			else{
 				for(int j=0;j<totalCount-1; j++){
-					expectedText+=claim.getTotal(j)+", ";
+					expectedText+=Integer.toString(claim.getTotal(j))+", ";
 				}
 				expectedText+=claim.getTotal(totalCount-1)+"\n";
 			}
@@ -113,7 +116,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 		for(int i=1; i<claimCount; i++){
 			prevDate = currDate;
 			currDate=ClaimsListController.getClaim(i).getStartDate();
-			assertTrue("Claims are not sorted by start date",currDate.after(prevDate) || true);
+			assertTrue("Claims are not sorted by start date",currDate.after(prevDate));
 			
 		}
 	}
