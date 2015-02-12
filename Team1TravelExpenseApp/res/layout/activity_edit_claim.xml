@@ -1,0 +1,178 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ca.ualberta.cs.kjyoung_expenses.EditClaimActivity" >
+
+    <Button
+        android:id="@+id/saveClaimButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="saveClick"
+        android:text="@string/save" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/saveClaimButton" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/claimDestinationBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/claimDestinationHeader"
+                android:layout_toLeftOf="@+id/button1"
+                android:inputType="textAutoCorrect" />
+
+            <TextView
+                android:id="@+id/claimDestinationList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/claimReasonBody"
+                android:text="Rome, Conference\nAthens, Sightseeing"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/claimDestinationHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/claimNameBody"
+                android:text="Add Destination:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <TextView
+                android:id="@+id/claimNameHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Name:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            
+            <EditText
+                android:id="@+id/claimNameBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/claimDestinationBody"
+                android:layout_below="@+id/claimNameHeader"
+                android:inputType="textAutoCorrect" />
+
+            <TextView
+                android:id="@+id/claimReasonHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/claimDestinationBody"
+                android:text="Add Reason:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/claimReasonBody"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignRight="@+id/claimDestinationBody"
+                android:layout_below="@+id/claimReasonHeader"
+                android:inputType="textAutoCorrect" />
+
+            <DatePicker
+                android:id="@+id/datePicker1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/fromDateTextView"
+                android:calendarViewShown="false" />
+
+            <TextView
+                android:id="@+id/fromDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/claimDestinationList"
+                android:text="From Date:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/toDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/datePicker1"
+                android:text="To Date:"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <DatePicker
+                android:id="@+id/datePicker2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/toDateTextView"
+                android:calendarViewShown="false" />
+            
+             <Spinner
+                 android:id="@+id/spinner1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+               
+                 android:layout_below="@+id/datePicker2" 
+                 android:entries="@array/tags"/>
+
+             <Button
+                 android:id="@+id/button2"
+                 style="?android:attr/buttonStyleSmall"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toRightOf="@+id/spinner1"
+                 android:layout_alignBottom="@+id/spinner1"
+                 android:layout_marginTop="25dp"
+               
+                 android:text="(-/+)"/>
+             
+             <TextView
+                 android:id="@+id/claimTagList"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentStart="true"
+                 android:layout_below="@+id/spinner1"
+                 android:text="Important"
+                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
+             <Button
+                 android:id="@+id/button1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_above="@+id/claimDestinationList"
+                 android:layout_alignParentRight="true"
+                 android:layout_below="@+id/claimDestinationHeader"
+                 android:text="(+)" />
+
+        </RelativeLayout>
+        
+    </ScrollView>
+
+
+</RelativeLayout>
