@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import junit.framework.TestCase;
 
-public class ClaimantClaimListTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
+public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 
 	protected void setUp() throws Exception {
 		super.setUp();

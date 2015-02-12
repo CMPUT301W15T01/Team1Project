@@ -77,7 +77,15 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Clai
 	
 	//US08.04.01
 	public void testListSubmittedClaimExpenses() {
-		
+	  Expense expense = new Expense("name",Date(1),"taxi","description",100,"EUR");
+	  ClaimList list = new ClaimList();
+	  Claim claim = new Claim(expense);
+	  list.add(claim);
+	  ClaimActivity activity = getActivity();
+	  ListView view = (ListView) activity.findViewById(R.id.claimlistview);
+	  ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),view);
+	  assertTrue("expense is not in claim",claim.contains(expense));
+  	
 	}
 	
 	//US08.05.01
