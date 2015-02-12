@@ -107,6 +107,11 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Clai
 	
 	//US08.07.01
 	public void testReturnUnapprovedClaim() {
+		Claim claim = new Claim();
+		claim.setStatus("returned");
+		claim.addApprover("test approver");
+		AssertTrue("approvers don't match",claim.getApprover(),"test approver");
+		AssertTrue("claim is not returned",claim.getStatus(),"returned");
 		
 	}
 	
