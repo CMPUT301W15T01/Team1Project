@@ -117,6 +117,11 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Clai
 	
 	//US08.08.01
 	public void testApproveClaim() {
-		
+		Claim claim = new Claim();
+		claim.setStatus("approved");
+		claim.addApprover("test approver");
+		AssertTrue("approvers don't match",claim.getApprover(),"test approver");
+		AssertTrue("claim is not returned",claim.getStatus(),"approved");
+			
 	}
 }
