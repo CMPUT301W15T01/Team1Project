@@ -1,5 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ public class ClaimantExpenseListTest extends TestCase {
 		super.setUp();
 		activity = getActivity();
 		expenseList= (activity.findViewById(ca.ualberta.cs.team1expenseapp.R.id.body));
+		//TODO:kenny:initialize some claims in the ClaimsListController to be tested below
 	}
 
 	
@@ -72,5 +75,21 @@ public class ClaimantExpenseListTest extends TestCase {
 		
 		
 	}
+	
+	//US02.02.01: As a claimant, I want the list of expense claims to be sorted by 
+	//starting date of travel, in order from most recent to oldest, so that ongoing 
+	//or recent travel expenses are quickly accessible.
+	public void testSorted(){
+		int claimCount=ClaimsListController.getClaimCount();
+		Date currDate=ClaimsListController.getClaim(0).getStartDate();
+		Date prevDate;
+		for(int i=1; i<claimCount; i++){
+			Date prevDate=currDate;
+			currDate=ClaimsListController.getClaim(i).getStartDate();
+			assertTrue("Dates are not sorted",currDate.after(prevDate));
+			
+		}
+	}
+	
 
 }
