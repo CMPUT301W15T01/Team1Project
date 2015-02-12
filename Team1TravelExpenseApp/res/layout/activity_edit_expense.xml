@@ -119,11 +119,11 @@
 		        android:entries="@array/currencies"/>
 		    
 		    <CheckBox
-		        android:id="@+id/checkBox1"
+		        android:id="@+id/incompleteCheck"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="25dp"
 		        android:layout_below="@+id/currencySelector"
+		        android:layout_marginRight="25dp"
 		        android:text="Incomplete" />
 		    
 		   <TextView
@@ -132,7 +132,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
 		        android:layout_alignParentStart="true"
-		        android:layout_below="@+id/checkBox1"
+		        android:layout_below="@+id/incompleteCheck"
 		        android:text="Reciept Image"
 		        android:textAppearance="?android:attr/textAppearanceMedium" />
 		    
