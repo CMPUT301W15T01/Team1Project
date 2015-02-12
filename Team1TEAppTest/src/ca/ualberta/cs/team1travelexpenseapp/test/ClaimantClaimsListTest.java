@@ -11,11 +11,11 @@ import junit.framework.TestCase;
 import android.test.ActivityInstrumentationTestCase2;
 
 
-public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
+public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
 	Activity activity;
 	ListView expenseList;
 	
-	public ClaimantExpenseListTest() {
+	public ClaimantClaimsListTest() {
 		super(ClaimantExpenseListActivity.class);
 	}
 	
@@ -23,7 +23,16 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		super.setUp();
 		activity = getActivity();
 		expenseList= (activity.findViewById(ca.ualberta.cs.team1expenseapp.R.id.body));
-		//TODO:kenny:initialize some claims in the ClaimsListController to be tested below
+		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
+		Claim claim2 = new Claim("name",new Date(1990,1,8), new Date(2000,12,12));
+		Claim claim3 = new Claim("name",new Date(1999,9,8), new Date(2012,12,12));
+		Claim claim4 = new Claim("name",new Date(2013,10,8), new Date(2012,12,12));
+		Claim claim5 = new Claim("name",new Date(2001,10,6), new Date(2012,12,12));
+		ClaimsListController.addClaim(claim1);
+		ClaimsListController.addClaim(claim2);
+		ClaimsListController.addClaim(claim3);
+		ClaimsListController.addClaim(claim4);
+		ClaimsListController.addClaim(claim5);	
 	}
 
 	
@@ -90,7 +99,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		for(int i=1; i<claimCount; i++){
 			Date prevDate=currDate;
 			currDate=ClaimsListController.getClaim(i).getStartDate();
-			assertTrue("Dates are not sorted",currDate.after(prevDate));
+			assertTrue("Claims are not sorted by start date",currDate.after(prevDate));
 			
 		}
 	}
