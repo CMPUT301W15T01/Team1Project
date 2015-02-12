@@ -9,7 +9,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_claimant_expense_list);
+		setContentView(R.layout.activity_main);
 	}
 
 	@Override
