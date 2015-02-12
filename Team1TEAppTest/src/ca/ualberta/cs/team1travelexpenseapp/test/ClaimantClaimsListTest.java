@@ -2,10 +2,6 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.MainActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 
