@@ -90,7 +90,10 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Clai
 	
 	//US08.05.01
 	public void testViewPhotographicReceipt() {
-		
+		ClaimActivity activity = getActivity();
+		ImageButton view = (Button) activity.findViewById(R.id.photograph);
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),view);
+		assertNotNull("not empty",view.getDrawable());
 	}
 	
 	//US08.06.01
