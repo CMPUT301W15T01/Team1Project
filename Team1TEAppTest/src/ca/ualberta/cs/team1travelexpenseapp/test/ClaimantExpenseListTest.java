@@ -2,12 +2,16 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.util.Date;
 
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
+
 import android.app.Activity;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
+import android.test.ActivityInstrumentationTestCase2;
 
-public class ClaimantExpenseListTest extends TestCase {
+
+public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
 	Activity activity;
 	ListView expenseList;
 	
