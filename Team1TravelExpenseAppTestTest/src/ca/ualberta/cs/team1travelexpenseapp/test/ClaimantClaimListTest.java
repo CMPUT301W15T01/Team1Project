@@ -1,5 +1,4 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
-
 import junit.framework.TestCase;
 
 public class ClaimantClaimListTest extends TestCase {
@@ -8,7 +7,7 @@ public class ClaimantClaimListTest extends TestCase {
 		super.setUp();
 	}
 	
-	public void addClaimTest() {
+	public void testAddClaim() {
 		Claim claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
@@ -18,7 +17,7 @@ public class ClaimantClaimListTest extends TestCase {
 		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
 	}
 	
-	public void enterDestinationTest() {
+	public void testEnterDestination() {
 		Claim claim = new Claim();
 		claim.addDestination("dest 1");
 		assertEquals("Destination","dest 1",claim.getDestination(1));
