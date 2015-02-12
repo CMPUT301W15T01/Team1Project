@@ -27,7 +27,6 @@ import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.R;
-import junit.framework.TestCase;
 
 //public class ExpenseTest extends TestCase {
 public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseActivity> {
@@ -36,7 +35,7 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 	EditExpenseActivity activity;
 	
 	EditText descText;
-	DatePicker dateText;
+	DatePicker datePicker;
 	EditText costText;
 	Spinner categorySpinner;
 	Spinner currencySpinner;
@@ -60,7 +59,7 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 		activity.setClaim(claim);
 		
 		descText = (EditText) activity.findViewById(R.id.descriptionBody);
-    	dateText = (DatePicker) activity.findViewById( R.id.expenseDate);  
+    	datePicker = (DatePicker) activity.findViewById( R.id.expenseDate);  
     	costText = (EditText) activity.findViewById( R.id.currencyBody);  
     	categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector); 
     	currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
@@ -167,7 +166,7 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 			@Override
 			public void run(){
 				descText.setText("Test View");
-				dateText.updateDate(2005, 5, 5);
+				datePicker.updateDate(2005, 5, 5);
 				costText.setText((Double.toString(5.55)));
 				categorySpinner.setSelection(5);
 				currencySpinner.setSelection(5);	
@@ -177,8 +176,8 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 		assertEquals("Edit test not set right", descText.getText().toString(), "Test View");
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), descText);
 		
-		assertEquals("Date not set right", dateText.getYear(), 2005);
-		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), dateText);
+		assertEquals("Date not set right", datePicker.getYear(), 2005);
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), datePicker);
 		
 		assertEquals("Amount not set right", costText.getText().toString(), "10.55");
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), costText);
@@ -199,7 +198,7 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 			@Override
 			public void run(){
 				descText.setText("Test Edit");
-				dateText.updateDate(2000, 1, 4);
+				datePicker.updateDate(2000, 1, 4);
 				costText.setText((Double.toString(4.44)));
 				categorySpinner.setSelection(4);
 				currencySpinner.setSelection(4);	
