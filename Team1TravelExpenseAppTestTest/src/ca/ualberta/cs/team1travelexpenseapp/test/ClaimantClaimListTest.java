@@ -19,7 +19,7 @@ public class ClaimantClaimListTest extends ActivityInstrumentationTestCase2<Clai
 	}
 	
 	//US01.01.01
-	public void addClaimTest() {
+	public void testAddClaim() {
 		Claim claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
@@ -32,8 +32,9 @@ public class ClaimantClaimListTest extends ActivityInstrumentationTestCase2<Clai
 	}
 
 	
+
 	//US01.02.01
-	public void enterDestinationTest() {
+	public void testEnterDestination() {
 		Claim claim = new Claim();
 		claim.addDestination("dest 1");
 		claim.addDestination("dest 2");
@@ -76,7 +77,7 @@ public class ClaimantClaimListTest extends ActivityInstrumentationTestCase2<Clai
                 (Button) getActivity()
                 .findViewById(R.id.deleteclaimbutton);
 		Claim claim = new Claim();
-		ClaimList list = new ClaimList();
+		ClaimsListController list = new ClaimsListController();
 		list.add(claim);
 		assertTrue("not empty list",list.length()==1);
 		list.remove(claim);
