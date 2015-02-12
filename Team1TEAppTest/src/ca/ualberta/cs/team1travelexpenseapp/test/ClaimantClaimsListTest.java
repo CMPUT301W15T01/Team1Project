@@ -11,11 +11,11 @@ import junit.framework.TestCase;
 import android.test.ActivityInstrumentationTestCase2;
 
 
-public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
+public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
 	Activity activity;
 	ListView expenseList;
 	
-	public ClaimantExpenseListTest() {
+	public ClaimantClaimsListTest() {
 		super(ClaimantExpenseListActivity.class);
 	}
 	
@@ -32,8 +32,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		ClaimsListController.addClaim(claim2);
 		ClaimsListController.addClaim(claim3);
 		ClaimsListController.addClaim(claim4);
-		ClaimsListController.addClaim(claim5);
-		
+		ClaimsListController.addClaim(claim5);	
 	}
 
 	
