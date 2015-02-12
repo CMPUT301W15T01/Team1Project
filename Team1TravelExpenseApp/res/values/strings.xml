@@ -55,5 +55,6 @@
     <string name="description">Description:</string>
     <string name="date">Date:</string>
     <string name="amount">Amount:</string>
+    <string name="title_activity_claimant_expense_list">ClaimantExpenseListActivity</string>
 
 </resources>
