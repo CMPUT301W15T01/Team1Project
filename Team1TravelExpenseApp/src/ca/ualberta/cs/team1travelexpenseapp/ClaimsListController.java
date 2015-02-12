@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * skeletal code
  */
 
+//TODO create code 
+
 public class ClaimsListController {
 	
 	protected static ArrayList<Claim> claimsList = null;
@@ -20,7 +22,13 @@ public class ClaimsListController {
 	}
 	
 	public static Claim getClaim(int i) {
+		// TODO Auto-generated method stub
 		return ClaimsListController.getClaims().get(i);
+	}
+
+	public static int getClaimCount() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
