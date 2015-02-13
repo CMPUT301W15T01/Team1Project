@@ -74,7 +74,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		}
 	}
 	
-	//US08.03.02
+	//US08.03.01
 	public void testSubmittedExpenseClaimDetails() {
 		ClaimActivity activity = getActivity();
 		ListView view = (ListView) activity.findViewById(R.id.claimlistview);
