@@ -56,7 +56,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
 		ClaimListController list = new ClaimListController();
@@ -93,7 +93,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		ClaimActivity Activity = getActivity();
 		AssertTrue("not logged in",User.loggedin());
 		 // get list view 
- 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -126,7 +126,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
 		ClaimListController list = new ClaimListController();
@@ -157,7 +157,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		ClaimActivity Activity = getActivity();
 		AssertTrue("not logged in",User.loggedin());
 		 // get list view 
- 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -195,7 +195,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		AssertTrue("not logged in",User.loggedin());
 		
 		 // get list view 
- 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -228,7 +228,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
 		ClaimListController list = new ClaimListController();
@@ -269,7 +269,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		AssertTrue("not logged in",User.loggedin());
 		
 		 // get list view 
- 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -316,9 +316,12 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
 	//tags, so that claims can be organized by me into groups.
 	public void addTags(){
+		//User has logged on
+		User.login("bob");
+		AssertTrue("not logged on",User.loggedin());
 		Tag tag1=new Tag("buisness");
 		Tag tag2=new Tag("pleasure");
-		
+		//create a claim and a tag
 		Claim claim= new Claim();
 		claim.addTag(tag1);
 		ArrayList<Tag> tags=claim.getTags();
@@ -328,7 +331,32 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 			tagStrings.add(tags.get(i).toString());
 		}
 		assertTrue("Tags were not added properly, strings do not match those added",tags.contains("buisness") && tags.contains("pleasure"));
+		 // get list view 
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+  		Button saveClaim = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaimbutton);
+ 		Button tagbutton = (Button) Activity.findviewById(ca.ualberta.cs.R.id.tagaddbutton);
+   		ListView tagview = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.taglistview);
+		// longclick the claim
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // long click and remove claim.
+	              view.getAdapter().getView(0, null, null).performLongClick();
+	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
+		    AlertDialog dialog = Activity.getLastDialog(); 
+        		 performClick(dialog.getButton(DialogInterface.EDIT_BUTTON));
+        		 tagbutton.performClick(); //user selects add new tag
+        		 tagview.setcheckbox(0); //selects desired tag
+        		 saveClaim.performClick(); //saves claim 
+        		 
+		    }
+		  });
+		  //get the claim and check if the claim contains the tag
+  		ClaimsListController list = new ClaimsListController();
+		AssertTrue(list.get(0).tagcontains("buisness"));
+
 		
+		 
 	}
 	
 	
