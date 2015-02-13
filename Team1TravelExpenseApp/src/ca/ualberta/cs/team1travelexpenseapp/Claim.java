@@ -73,7 +73,7 @@ public class Claim {
 		return false;
 	}
 
-	public boolean addDestination() {
+	public boolean addDestination(String destination) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -91,6 +91,11 @@ public class Claim {
 	public boolean setToDate() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void addApprover(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public String toString(){
