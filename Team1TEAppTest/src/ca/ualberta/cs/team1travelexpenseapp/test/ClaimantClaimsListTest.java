@@ -10,10 +10,15 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.text.format.DateFormat;
@@ -228,4 +233,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		assertTrue(counter == 3);
 		
 	}
+	
+	
+	
 }
