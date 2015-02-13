@@ -8,7 +8,11 @@ import java.util.Date;
  */
 // TODO create code 
 
-public class Claim {
+public class Claim { 
+	
+	public Claim() { 
+		// TODO Auto-generated constructor stub
+	}
 
 	public Claim(String string, Date date, Date date2) {
 		// TODO Auto-generated constructor stub 
@@ -52,6 +56,41 @@ public class Claim {
 	public int getTotal(int i) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void submit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setStatus(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean setName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addDestination() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addReason() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean setFromDate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean setToDate() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
