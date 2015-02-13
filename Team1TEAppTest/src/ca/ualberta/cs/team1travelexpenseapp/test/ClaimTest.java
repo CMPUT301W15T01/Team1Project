@@ -85,7 +85,11 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		assertEquals("name does not match",expected,actual);
 		assertEquals("start date does not match",new Date(2100,11,11),claim.getStartDate());
 		assertEquals("end date does not match",new Date(2115,12,12),claim.getEndDate());
-		
+		// Attempt to edit non editable claim
+		claim.setStatus("submitted");
+		claim.setName("NURBS");
+		// Assert that the edit failed
+		AssertEquals("edit made to non editable claim",claim.getName(),expected);
 	}
 	//US01.05.01
 	public void testDeleteClaim() {
