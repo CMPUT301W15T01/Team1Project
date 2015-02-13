@@ -200,7 +200,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	
 	//US08.08.01
-	//US08.08.2
+	//US08.08.02
 	/*
 	*Tests if the Appover's name
 	*is attached to 
@@ -209,13 +209,25 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	public void testApproverNameAttached(){
 		
 		Claimlist list = new ClaimList();
-		list.addClaim(DummyClaim());
+		Claim claim = new DummyClaim("claimant","Jonh")
+		list.addClaim(claim);
+		
+		
 		ApproverClaimActivity activity = startWithClaims(list);
 		
+		User checkuser = New User("appover","John");
+		
 		activity.setApproverName("Timmy G");
-		activity.approveClaim();//In this the name of the approver should be set
+		//claim cannot be approved when claimant is the appover 
+		assertFalse(activity.approveClaim());//In this the name of the approver should be set
+		list.removeClaim(claim);
+		claim = new DummyClaim("claimant","Don Al");
+		list.addClaim(claim);
+		assertFalse(activity.approveClaim());//In this the name of the approver should be set
 		
 		ClaimantClaimsListActivity ClaimantActivity = new ClaimantClaimsListActivity();
+		
+		
 		
 		ClaimList claimlist = ClaimantActivity.LoadClaims();
 		
