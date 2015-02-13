@@ -86,7 +86,33 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		// Creating a claim and adding test destination values
 		Claim claim = new Claim();
 		claim.addDestination("dest 1");
-		claim.addDestination("dest 2");
+		claim.addDestination("dest 2");	
+		ClaimListController list = new ClaimListController();
+		list.add(claim);
+		//get activity and assert user has logged in
+		ClaimActivity Activity = getActivity();
+		AssertTrue("not logged in",User.loggedin());
+		 // get list view 
+ 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		// longclick the claim
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open the add claim activity.
+	              view.getAdapter().getView(0, null, null).performLongClick();
+	              
+		    AlertDialog dialog = Activity.getLastDialog(); // I create getLastDialog method in MyActivity class. Its return last created AlertDialog
+        		 performClick(dialog.getButton(DialogInterface.EDIT_BUTTON));
+		    }
+		  });
+				
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		
+		
+		
+	
 		// Assert values match
 		assertEquals("Destination","dest 1",claim.getDestination(0));
 		// Edit first value and assert they match
