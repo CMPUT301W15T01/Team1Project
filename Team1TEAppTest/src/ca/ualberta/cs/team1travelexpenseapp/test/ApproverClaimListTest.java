@@ -21,7 +21,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
                 .findViewById(R.id.approve_button);
 	}
 	
-	//US08.01.01 
+	//US08.01.01
 	public void testgetSubmittedClaims() {
 		ClaimList list = new ClaimList();
 		Claim claim = new Claim();
@@ -70,7 +70,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		}
 	}
 	
-	//US08.03.01
+	//US08.03.02
 	public void testSubmittedExpenseClaimDetails() {
 		ClaimActivity activity = getActivity();
 		ListView view = (ListView) activity.findViewById(R.id.claimlistview);
@@ -78,7 +78,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
     
 	}
 	
-	//US08.04.01
+	//US08.04.02
 	public void testListSubmittedClaimExpenses() {
 	  Expense expense = new Expense("name",Date(1),"taxi","description",100,"EUR");
 	  ClaimList list = new ClaimList();
@@ -91,7 +91,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
   	
 	}
 	
-	//US08.05.01
+	//US08.05.02
 	public void testViewPhotographicReceipt() {
 		ClaimActivity activity = getActivity();
 		ImageButton view = (Button) activity.findViewById(R.id.photograph);
@@ -100,7 +100,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		assertTrue(View.VISIBLE == view.getVisibility());
 	}
 	
-	//US08.06.01
+	//US08.06.02
 	public void testAddApproverClaimComment() {
 		Claim claim = new Claim();
 		claim.addComment("test comment");
@@ -108,7 +108,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		
 	}
 	
-	//US08.07.01
+	//US08.07.02
 	public void testReturnUnapprovedClaim() {
 		Claim claim = new Claim();
 		claim.setStatus("returned");
@@ -118,7 +118,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		
 	}
 	
-	//US08.08.01
+	//US08.08.02
 	public void testApproveClaim() {
 		Claim claim = new Claim();
 		claim.setStatus("approved");
