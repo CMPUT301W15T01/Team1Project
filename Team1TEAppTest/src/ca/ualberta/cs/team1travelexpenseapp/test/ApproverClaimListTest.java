@@ -200,6 +200,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	
 	//US08.08.01
+	//US08.08.2
 	/*
 	*Tests if the Appover's name
 	*is attached to 
