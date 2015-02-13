@@ -54,4 +54,39 @@ public class Claim {
 		return 0;
 	}
 
+	public void submit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setStatus(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean setName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addDestination() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean addReason() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean setFromDate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean setToDate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

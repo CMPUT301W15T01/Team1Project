@@ -4,6 +4,9 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import junit.framework.TestCase;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
@@ -40,8 +43,26 @@ public class ClaimantExpenseListTest extends TestCase {
 	 *  the claim status as submitted, with no further changes allowed by me to the 
 	 *  claim information (except the tags).
 	 */
-	public void testSubmitExpense(){
-		
+	public void testSubmitClaim(){
+		final Claim claim = ClaimsListController.getClaim(1);
+		Button button = (Button) activity.findViewById(R.id.submitClaimButton);
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				claim.submit();
+				claim.setStatus("Submitted");
+				
+			}
+		});
+		Claim claimSubmitted = ClaimsListController.getSubmittedClaim(1);
+		assertEquals("Claim Submitted", claim, claimSubmitted);
+		assertEquals("Claim status submitted", "Submitted", claim.getStatus());
+		assertFalse("Claim name not editable", claim.setName());
+		assertFalse("Claim destination not editable", claim.addDestination());
+		assertFalse("Claim reason not editable", claim.addReason());
+		assertFalse("Claim from date not editable", claim.setFromDate());
+		assertFalse("Claim to date not editable", claim.setToDate());
 	}
 	
 }
