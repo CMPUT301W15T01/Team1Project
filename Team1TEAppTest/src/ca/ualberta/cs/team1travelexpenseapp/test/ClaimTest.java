@@ -23,12 +23,14 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	
 	//US01.01.01
 	public void testAddClaim() {
+		// Creating a claim and adding test values
 		Claim claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
 		claim.setEndDate(new Date(2015,12,12));
 		final String expected = "name";
 		final String actual = claim.getName();
+		// Asserting that the values match
 		assertEquals("name?",expected,actual);
 		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
 		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
@@ -38,69 +40,90 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 
 	//US01.02.01
 	public void testEnterDestination() {
+		// Creating a claim and adding test destination values
 		Claim claim = new Claim();
 		claim.addDestination("dest 1");
 		claim.addDestination("dest 2");
-		assertEquals("Destination","dest 1",claim.getDestination(1));
-		claim.editDestination(1,"dest 3");
-		assertEquals("Destination","dest 3",claim.getDestination(1));
+		// Assert values match
+		assertEquals("Destination","dest 1",claim.getDestination(0));
+		// Edit first value and assert they match
+		claim.editDestination(0,"dest 3");
+		assertEquals("Destination","dest 3",claim.getDestination(0));
 		assertTrue("contains claim", claim.contains("dest 3"));
-		assertEquals("has destination",3,claim.destinationCount());
+		assertEquals("length of destination doesn't match",3,claim.destinationCount());
 		
 	}
 	
 	//US01.03.01
 	public void testViewClaim() {
+		// Get the activity and assert that it's on the screen
 		ClaimActivity activity = getActivity();
 		TextView view = (TextView) activity.findViewByID(R.id.claimtext);
-		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
 		assertNotNull("activity",activity);
 		assertNotNull("textview",view);
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
+
 	}
 	
 	//US01.04.01
 	public void testEditClaim() {
+		// Create a claim with test values
 		Claim claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
 		claim.setEndDate(new Date(2015,12,12));
 		final String expected = "test";
 		final String actual = claim.getName();
+		// Edit values
 		claim.setName("name");
 		claim.setStartDate(new Date(2100,11,11));
 		claim.setEndDate(new Date(2115,12,12));
-		assertEquals("name?",expected,actual);
-		assertEquals("start date?",new Date(2100,11,11),claim.getStartDate());
-		assertEquals("end date?",new Date(2115,12,12),claim.getEndDate());
+		// Assert the new values match
+		assertEquals("name does not match",expected,actual);
+		assertEquals("start date does not match",new Date(2100,11,11),claim.getStartDate());
+		assertEquals("end date does not match",new Date(2115,12,12),claim.getEndDate());
 		
 	}
 	//US01.05.01
 	public void testDeleteClaim() {
-        final Button deleteButton =
-                (Button) getActivity()
-                .findViewById(R.id.deleteclaimbutton);
+		// Create a claim and add it to the controller
+		final Button deleteButton =
+        		  (Button) getActivity()
+        		 .findViewById(R.id.deleteclaimbutton);
 		Claim claim = new Claim();
 		ClaimsListController list = new ClaimsListController();
+		// Add the claim and assert it's not empty
 		list.add(claim);
-		assertTrue("not empty list",list.length()==1);
+		assertTrue("list is empty",list.length()==1);
+		// Remove the claim and assert it's empty
 		list.remove(claim);
 		assertTrue("empty list",list.length()==0);
+		// Add claim and assert button deletes claim
 		list.add(claim);
-        TouchUtils.clickView(this, deleteButton);
-		assertTrue("empty list",list.length()==0);
+		TouchUtils.clickView(this, deleteButton);
+		assertTrue("button didn't delete, list not empty",list.length()==0);
 		
 	}
 	//US01.06.01
 	public void testSaveClaims() {
+		// Start the main activity of the application under test
 		ClaimActivity activity = getActivity();
+		// Create and fill the claim with values
+		ClaimListController list = new ClaimListController();
 		Claim claim = new Claim();
-		claim.setName("name");
+		final String expected = "name";
+		claim.setName(expected);
 		claim.setStartDate(new Date(2000,11,11));
 		claim.setEndDate(new Date(2015,12,12));
-		final String expected = "name";
+		list.add(claim);
+	    // Stop the activity - The onDestroy() method should save the state of the claim
+		activity.finish();
+	    // Re-start the Activity - the onResume() method should restore the state of the Spinner
+		ClaimActivity activity = getActivity();
+		// Get current claim from the controller
+		claim = list.get(0);
 		final String actual = claim.getName();
-		activity.onDestroy();
-		activity.onCreate();		
+	    // Assert that the current claim is the same as the starting claim
 		assertEquals("name?",expected,actual);
 		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
 		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
