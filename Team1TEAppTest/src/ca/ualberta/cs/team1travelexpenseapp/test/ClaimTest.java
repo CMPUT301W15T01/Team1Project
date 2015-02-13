@@ -26,7 +26,47 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	
 	//US01.01.01
 	public void testAddClaim() {
-		// Creating a claim and adding test values
+		//get activity and assert user has logged in
+		ClaimActivity Activity = getActivity();
+		AssertTrue("not logged in",User.loggedin());
+		//get the button and press it
+		 final Button button = (Button) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open the add claim activity.
+		      button.performClick();
+		    }
+		  });
+		
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		
+		name.setText("name");
+		start.setText("2012");
+		end.setText("2013");
+		
+		 final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and save and finish the activity.
+		      saveButton.performClick();
+		    }
+		  });
+		// get the listview and assert that the user can see it on the screen
+		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
+		//Assert values match after retreiving the claim
+		ClaimListController list = new ClaimListController();
+		Claim claim = list.get(0);
+		assertEquals("name?",claim.getName(),"name");
+		assertEquals("start date?",new Date(2012),claim.getStartDate());
+		assertEquals("end date?",new Date(2013),claim.getEndDate());
+		
+		
+		// model creating a claim and adding test values
 		Claim claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
