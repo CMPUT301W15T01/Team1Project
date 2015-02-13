@@ -147,6 +147,11 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	
 	//US08.06.01
+	/*
+	*Tests if an approver comment
+	*was successfully added to 
+	*a claim
+	*/
 	public void testCommentAddable(){
 			String testComment = "Test comment.";
 			CommentFragment commentBox = new CommentFragment();
@@ -161,6 +166,11 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	
 	//US08.07.01
+	/*
+	* tests if returned claims
+	* show up for claimants
+	*
+	*/
 	public void testReturnedVisible(){
 		Claimlist list = new ClaimList();
 		list.addClaim(DummyClaim());
@@ -190,6 +200,11 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	
 	//US08.08.01
+	/*
+	*Tests if the Appover's name
+	*is attached to 
+	* an approved claim
+	*/
 	public void testApproverNameAttached(){
 		
 		Claimlist list = new ClaimList();
