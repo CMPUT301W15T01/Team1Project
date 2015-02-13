@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import android.app.Activity;
@@ -123,6 +124,30 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		
 		
 	}
+	
+	//US04.08.01
+	public void testNav() {
+		
+		ClaimsListController.clearClaims();
+		Calendar CalDate = Calendar.getInstance();
+		CalDate.set(2014,10,10,0,0,0);
+		Date startDate = CalDate.getTime();
+		CalDate.set(2015,12,11,0,0,0);
+		Date endDate = CalDate.getTime();
+		Claim testclaim = new Claim("test 1", startDate, endDate);
+		ClaimsListController.addClaim(testclaim);
+		
+		//calls on listeners 
+		int counter = 0;
+		activity.findViewById(R.id.claimsList).performLongClick();
+		counter += 1;
+		activity.findViewById(R.id.addExpenseButton).performClick();
+		counter += 1;
+		activity.findViewById(R.id.saveExpenseButton).performClick();
+		counter += 1;
+		
+	}
+
 	
 
 }

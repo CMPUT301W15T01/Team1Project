@@ -89,7 +89,6 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			prevDate = currDate;
 			currDate=ClaimsListController.getClaim(i).getStartDate();
 			assertTrue("Claims are not sorted by start date",currDate.after(prevDate));
-			
 		}
 	}
 	
@@ -150,5 +149,4 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		assertEquals("Not approver", "John", claimantClaim.getApprover());
 		assertEquals("Not comment", "nice!!!", claimantClaim.getComments());
 	}
-	
 }
