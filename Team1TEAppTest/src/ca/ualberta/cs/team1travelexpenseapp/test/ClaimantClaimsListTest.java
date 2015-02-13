@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
-import ca.ualberta.cs.team1travelexpenseapp.MainActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,12 +16,12 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.text.format.DateFormat;
 
 
-public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 	Activity activity;
 	ListView claimListView;
 	
 	public ClaimantClaimsListTest() {
-		super(MainActivity.class);
+		super(ClaimantClaimsListActivity.class);
 	}
 	
 	protected void setUp() throws Exception {
