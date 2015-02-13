@@ -32,7 +32,6 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 		setActivityIntent(intent);
 		activity = getActivity();
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
-		/*
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		Claim claim2 = new Claim("name",new Date(1990,1,8), new Date(2000,12,12));
 		Claim claim3 = new Claim("name",new Date(1999,9,8), new Date(2012,12,12));
@@ -43,7 +42,6 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Mai
 		ClaimsListController.addClaim(claim3);
 		ClaimsListController.addClaim(claim4);
 		ClaimsListController.addClaim(claim5);	
-		*/
 	}
 
 	

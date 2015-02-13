@@ -10,6 +10,10 @@ import java.util.Date;
 
 public class Claim {
 
+	public Claim(String string, Date date, Date date2) {
+		// TODO Auto-generated constructor stub 
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
