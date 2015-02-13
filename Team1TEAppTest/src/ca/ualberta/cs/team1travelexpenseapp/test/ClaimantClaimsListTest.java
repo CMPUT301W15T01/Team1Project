@@ -1,6 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,13 +11,22 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
+import android.nfc.Tag;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.text.format.DateFormat;
+
+
 
 
 public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
@@ -26,6 +36,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	public ClaimantClaimsListTest() {
 		super(ClaimantClaimsListActivity.class);
 	}
+	
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -201,6 +212,45 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		assertEquals("Not approver", "John", claimantClaim.getApprover());
 		assertEquals("Not comment", "nice!!!", claimantClaim.getComments());
 	}
+	
+	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
+	//tags, so that claims can be organized by me into groups.
+	public void testAddTags(){
+		final View item=claimListView.getAdapter().getView(0, null, null);
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// click button, should produce dialog to choose edit or delete claim
+				item.performLongClick();
+				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimDialog);
+				
+				//this should take us to the edit claims menu for the chosen claim
+				Button editButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.editClaimButton);
+				editButton.preformClick();
+			}
+		});
+		
+		activity=getActivity();
+		
+		//select the first item in the tagSelector as the sole tag for the claim
+		CheckboxSpinner tagSelector=(CheckboxSpinner)activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagSelector);
+		tagSelector.setSelection({0});
+		
+		Button saveButton=(Button)findViewById(ca.ualberta.cs.team1travelexpenseapp.test);
+		activity.runOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+				//click the save button
+				saveButton.preformClick();
+			}
+		});
+		
+		ArrayList<Tag> tags=ClaimsListController.getClaim(0).getTags();
+		
+		assertTrue("Tag was not set correctly",tags.size()==1);
+		assertTrue("Tag was not set correctly",tags.get(0)==TagListManager.getTag(0));
+	}
+	
 	
 	//US04.08.01
 	public void testNav() {
