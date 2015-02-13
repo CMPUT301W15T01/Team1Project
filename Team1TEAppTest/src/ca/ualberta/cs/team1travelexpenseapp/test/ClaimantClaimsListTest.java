@@ -120,5 +120,48 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		assertTrue("Incorrect items displayed by tag filter,claim2Info",claim4Info==viewText2);	
 	}
 	
+	
+	//US 09.01.01
+	
+	public void testWriteToOnline(){
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	//check if Claims are being read properly from the db.
+	
+	public void testReadOnlineInfo(){
+		ClaimList claimlist = new ClaimsListController.getClaims();
+	
+		ClaimList claimListFromOnline;
+		
+		
+		assertTrue(isNetworkAvailable());
+		
+		
+		ClaimListController.SaveToOnline();
+		claimListFromOnline = ClaimsListController.LoadFromOnline();
+		
+		
+		assertEquals("was ClaimList succefully written to db?",claimlist.toString(), claimListFromOnline.toString());
+		//checks if it was written successfully
+		//toString because it is very unlikely we need to overridde equals() for ClaimList
+	}
+	
+	
+	//http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+	public boolean isNetworkAvailable() {
+	    ConnectivityManager connectionManager
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectionManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
 
 }

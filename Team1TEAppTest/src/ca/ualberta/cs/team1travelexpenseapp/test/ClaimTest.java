@@ -125,6 +125,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		
 	}
 	
+	
 
+	
 }
 
