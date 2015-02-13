@@ -36,4 +36,9 @@ public class ClaimsListController {
 		
 	}
 
+	public static Claim getSubmittedClaim(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

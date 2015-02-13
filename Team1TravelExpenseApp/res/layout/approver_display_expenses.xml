@@ -9,7 +9,7 @@
         android:id="@+id/expensesList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/submitClaimButton"
         android:layout_below="@+id/destination"
         android:scrollbars="vertical" >
 
@@ -39,7 +39,7 @@
         android:textColor="#FFF" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/submitClaimButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
