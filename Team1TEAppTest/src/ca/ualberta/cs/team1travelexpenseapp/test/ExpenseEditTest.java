@@ -15,14 +15,16 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Instrumentation;
+import android.graphics.Bitmap;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
-
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
@@ -39,6 +41,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	EditText costText;
 	Spinner categorySpinner;
 	Spinner currencySpinner;
+	ImageButton imageButton;
 	
 	Expense expense;
 	Claim claim;
@@ -63,6 +66,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
     	costText = (EditText) activity.findViewById( R.id.currencyBody);  
     	categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector); 
     	currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
+    	imageButton = (ImageButton) activity.findViewById(R.id.imageButton1);
 	}
 	
 	// US04.01.01
@@ -224,7 +228,73 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		assertEquals("New expense not deleted", claim.getExpenses().size(), 1);
 	}
 	
+	// US06.01.01
+	// As a claimant, I want to optionally take a single photograph of a receipt and attach the
+	// photograph to an editable expense item, so that there is supporting documentation for the 
+	// expense item in case the physical receipt is lost.
+	public void testAddPhoto(){	
+		imageButton.setImageDrawable(null);	
+		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);	
+		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+		imageButton.setImageBitmap(bm);
+		assertTrue("Image should be set in button", imageButton.getDrawable() != null);	
+		
+		imageButton.setImageDrawable(null);	
+		expense.setPhotoUri = null;
+		
+		claim.setStatus("Submitted");
+		expense.setPhoto(bm);
+		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);	
+		assertTrue("Image File should not be set", expense.getPhotoFile() != null);
+		
+		claim.setStatus("In progress");
+		expense.setPhoto(bm);
+		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
+		assertTrue("Image File should be set", expense.getPhotoFile() != null);
+	}
 	
+	// US06.02.01
+	// As a claimant, I want to view any attached photographic receipt for an expense 
+	public void testViewPhoto(){
+		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
+	}
+	
+	// US06.03.01
+	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
+	public void testDeletePhoto(){
+		imageButton.setImageDrawable(null);	
+		expense.setPhotoUri = null;
+		
+		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+		expense.setPhoto(bm);
+		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
+		
+		Button deletePhotoButton = (Button) activity.findViewById(R.id.button2);
+		claim.setStatus("Submitted");
+		deletePhotoButton.performClick();
+		
+		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
+		assertTrue("Image File should be set", expense.getPhotoFile() != null);
+		
+		
+		claim.setStatus("In progress");
+		deletePhotoButton.performClick();
+		
+		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);
+		assertTrue("Image File should be null", expense.getPhotoFile() == null);
+	}
+	
+	// US06.04.01
+	// As a sysadmin, I want each receipt image file to be under 65536 bytes in size.
+	public void testMaxPhotoSize(){
+		Bitmap bm = Bitmap.createBitmap(130, 130, Bitmap.Config.ARGB_8888); //should be 67600 bytes in size
+		Bitmap cbm = activity.compressPhoto(bm);
+		Bitmap cbm = bm;
+		assertTrue("Compressed photo too large (" + cbm.getByteCount() + ")", cbm.getByteCount() < 65536);
+	}
+	
+		
 	
 	
 }
