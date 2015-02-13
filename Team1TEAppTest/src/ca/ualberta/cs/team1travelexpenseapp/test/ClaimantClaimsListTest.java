@@ -1,6 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
@@ -123,4 +124,30 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	}
 	
 
+	/* US07.05.01
+	* As a claimant, I want to see the name of the approver and any comment(s) 
+	* from the approver on a returned or approved claim.
+	*/
+	public void testApproverNameComments(){
+		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
+		
+		ClaimsListController.clearClaims();
+		Calendar CalDate = Calendar.getInstance();
+		CalDate.set(2014,10,10,0,0,0);
+		Date startDate = CalDate.getTime();
+		CalDate.set(2015,12,11,0,0,0);
+		Date endDate = CalDate.getTime();
+		
+		Claim testclaim = new Claim("test 1", startDate, endDate);
+		testclaim.addApprover("John");
+		testclaim.addComment("nice!!!");
+		
+		User testuser = new User("Claimant");
+		String approverU = "Claimant";
+		assertClaimant("Is not a claimant", approverU.equals(testuser.type()) );
+		Claim claimantClaim = User.getClaim(0);
+		assertEquals("Not approver", "John", claimantClaim.getApprover());
+		assertEquals("Not comment", "nice!!!", claimantClaim.getComments());
+	}
+	
 }
