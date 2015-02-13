@@ -140,6 +140,15 @@ public class Claim {
 		return str;
 	}
 
+	public Expense getExpense(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addExpense(Expense expense1) {
+		// TODO Auto-generated method stub
+	}
+		
 	public void addComment(String string) {
 		// TODO Auto-generated method stub
 	}
