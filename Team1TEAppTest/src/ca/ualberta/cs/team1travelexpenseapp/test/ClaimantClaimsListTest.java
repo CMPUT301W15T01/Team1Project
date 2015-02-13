@@ -1,20 +1,16 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import junit.framework.TestCase;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
-import ca.ualberta.cs.team1travelexpenseapp.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.ListView;
 import android.widget.TextView;
-import junit.framework.TestCase;
 import android.test.ActivityInstrumentationTestCase2;
-import android.text.format.DateFormat;
 
 
 public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {

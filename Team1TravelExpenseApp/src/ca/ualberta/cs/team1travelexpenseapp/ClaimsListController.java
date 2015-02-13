@@ -23,7 +23,7 @@ public class ClaimsListController {
 	
 	public static Claim getClaim(int i) {
 		// TODO Auto-generated method stub
-		return ClaimsListController.getClaims().get(i);
+		return getClaims().get(i);
 	}
 
 	public static int getClaimCount() {
@@ -34,6 +34,11 @@ public class ClaimsListController {
 	public static void addClaim(Claim claim5) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static void clearClaims() {
+		claimsList = null;
+		getClaims();
 	}
 
 }

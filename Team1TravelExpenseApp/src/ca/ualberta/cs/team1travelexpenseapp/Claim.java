@@ -28,11 +28,15 @@ public class Claim {
 		return new Date();
 	}
 
+	public void addDestination(String string) {
+		// TODO Auto-generated method stub	
+	}
+	
 	public int getDestinationCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	public String getDestination(int j) {
 		// TODO Auto-generated method stub
 		return new String();
@@ -57,5 +61,21 @@ public class Claim {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return new String();
+	}
+
+	public void setStatus(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addApprover(String string) {
+		// TODO Auto-generated method stub
+		
+	} 
 
 }

@@ -57,5 +57,6 @@
     <string name="amount">Amount:</string>
     <string name="title_activity_claimant_expense_list">ClaimantExpenseListActivity</string>
     <string name="title_activity_edit_expense">EditExpenseActivity</string>
+    <string name="title_activity_approver_expense_list">ApproverExpenseListActivity</string>
 
 </resources>

@@ -30,6 +30,10 @@
             android:name="ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity"
             android:label="@string/title_activity_edit_expense" >
         </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity"
+            android:label="@string/title_activity_approver_expense_list" >
+        </activity>
     </application>
 
 </manifest>
