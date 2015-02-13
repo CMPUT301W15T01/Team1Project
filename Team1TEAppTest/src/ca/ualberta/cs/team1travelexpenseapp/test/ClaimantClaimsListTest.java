@@ -7,7 +7,6 @@ import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.ListView;
@@ -36,6 +35,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		Claim claim3 = new Claim("name",new Date(1999,9,8), new Date(2012,12,12));
 		Claim claim4 = new Claim("name",new Date(2013,10,8), new Date(2012,12,12));
 		Claim claim5 = new Claim("name",new Date(2001,10,6), new Date(2012,12,12));
+		claim5.addTag();
 		ClaimsListController.addClaim(claim1);
 		ClaimsListController.addClaim(claim2);
 		ClaimsListController.addClaim(claim3);
@@ -116,6 +116,13 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			assertTrue("Claims are not sorted by start date",currDate.after(prevDate));
 			
 		}
+	}
+	
+	//US03.03.01: As a claimant, I want to filter the list of expense claims by tags, 
+	//to show only those claims that have at least one tag matching any of a given set 
+	//of one or more filter tags.
+	public void testTagFilter{
+		
 	}
 	
 
