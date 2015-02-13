@@ -1,6 +1,7 @@
 
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -22,6 +23,10 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	}
 	
 	//US08.01.01
+	/*As an approver, I want to view a list of all the expense claims that were submitted for approval, 
+	* which have their claim status as submitted, showing for each claim: the claimant name, the starting date of travel,
+	* the destination(s) of travel, the claim status, total currency amounts, and any approver name.
+	*/
 	public void testgetSubmittedClaims() {
 		// Populate the claim controller
 		ClaimListController list = new ClaimListController();
