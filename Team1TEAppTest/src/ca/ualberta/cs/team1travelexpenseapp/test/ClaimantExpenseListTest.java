@@ -85,6 +85,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	}
 	
 	
+
 	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 
 	//in order of entry, showing for each expense item: the date the expense was 
 	//incurred, the category, the textual description, amount spent, unit of currency, 
