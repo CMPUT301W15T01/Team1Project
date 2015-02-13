@@ -140,4 +140,18 @@ public class Claim {
 		return str;
 	}
 
+	public void addComment(String string) {
+		// TODO Auto-generated method stub
+	}
+
+	public String getApprover() {
+		// TODO Auto-generated method stub
+		return new String();
+	}
+
+	public String getComments() {
+		// TODO Auto-generated method stub
+		return new String();
+	}
+
 }

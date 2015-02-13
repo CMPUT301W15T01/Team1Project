@@ -112,7 +112,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		// Start the main activity of the application under test
 		ClaimActivity activity = getActivity();
 		// Create and fill the claim with values
-		ClaimListController list = new ClaimListController();
+		ClaimsListController list = new ClaimsListController();
 		Claim claim = new Claim();
 		final String expected = "name";
 		claim.setName(expected);
@@ -151,7 +151,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		
 	}
 	
-	//US07.05.01
 	
 
 }
