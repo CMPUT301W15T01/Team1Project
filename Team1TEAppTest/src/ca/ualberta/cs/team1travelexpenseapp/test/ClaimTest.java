@@ -255,23 +255,37 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	}
 	//US01.05.01
 	public void testDeleteClaim() {
-		// Create a claim and add it to the controller
-		final Button deleteButton =
-        		  (Button) getActivity()
-        		 .findViewById(R.id.deleteclaimbutton);
+		// Creating a claim and adding test destination values
 		Claim claim = new Claim();
-		ClaimsListController list = new ClaimsListController();
+		claim.addDestination("dest 1");
+		claim.addDestination("dest 2");	
+		ClaimListController list = new ClaimListController();
+		list.add(claim);
 		// Add the claim and assert it's not empty
-		list.add(claim);
 		assertTrue("list is empty",list.length()==1);
-		// Remove the claim and assert it's empty
-		list.remove(claim);
-		assertTrue("empty list",list.length()==0);
-		// Add claim and assert button deletes claim
-		list.add(claim);
-		TouchUtils.clickView(this, deleteButton);
-		assertTrue("button didn't delete, list not empty",list.length()==0);
+		//get activity and assert user has logged in
+		ClaimActivity Activity = getActivity();
+		User.login("bob");
+		AssertTrue("not logged in",User.loggedin());
 		
+		 // get list view 
+ 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		// longclick the claim
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // long click and remove claim.
+	              view.getAdapter().getView(0, null, null).performLongClick();
+	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
+		    AlertDialog dialog = Activity.getLastDialog(); 
+        		 performClick(dialog.getButton(DialogInterface.DELETE_BUTTON));
+		    }
+		  });
+		// Create a claim and add it to the controller
+		ClaimsListController list = new ClaimsListController();
+		// Remove the claim and assert it's empty
+		assertTrue("empty list",list.length()==0);
+
 	}
 	//US01.06.01
 	public void testSaveClaims() {
