@@ -28,6 +28,64 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		activity = getActivity();
 	}
 	
+	//US08.01.01
+	/*As an approver, I want to view a list of all the expense claims that were submitted for approval, 
+	* which have their claim status as submitted, showing for each claim: the claimant name, the starting date of travel,
+	* the destination(s) of travel, the claim status, total currency amounts, and any approver name.
+	*/
+	public void testgetSubmittedClaims() {
+		// Populate the claim controller
+		ClaimListController list = new ClaimListController();
+		// Populate claim values
+		Claim claim = new Claim();
+		claim.setStartDate(new Date(100));
+		claim.setEndDate(new Date(101));
+		claim.setStatus("submitted");
+		claim.setName("approver test");
+		claim.addDestination("test dest");
+		claim.setTotal(100,"EUR");
+		// Add to the controller
+		list.add(claim);
+		// Retrieve the current claim that should match the starting claim
+		Claim result = list.get(0);
+		// Assert that the values match
+		assertEquals("start date not equal",claim.getStartDate(),result.getStartDate());
+		assertEquals("end date not equal",claim.getEndDate(),result.getEndDate());
+		assertEquals("status not equal",claim.getStatus,result.getStatus());
+		assertEquals("name not equal",claim.getName,result.getName);
+		assertEquals("destination not equal",claim.getDestination,result.getDestination());
+		assertEquals("total not equal",claim.getTotal(),result.getTotal());
+		
+	}
+	
+	//US08.02.01
+	//As an approver, I want the list of submitted expense claims to be sorted by starting date of travel,
+	//in order from oldest to most recent, so that older claims are considered first.
+	public void testSortClaimDates() {
+		// Populate the claim controller
+		Claim c1 = new Claim();
+		Claim c2 = new Claim();
+		Claim c3 = new Claim();
+		Claim c4 = new Claim();
+		// Set the dates
+		c1.setStartDate(new Date(1));
+		c2.setStartDate(new Date(2));
+		c3.setStartDate(new Date(3));
+		c4.setStartDate(new Date(4));
+		// Create the controller
+		ClaimListController list = new ClaimListController();
+		// Add the claims to the controller
+		list.add(c3);
+		list.add(c1);
+		list.add(c4);
+		list.add(c2);
+		// Check for equal length
+		assertEquals("length not equal",list.length(),4);
+		// Assert that the values are sorted
+		for (int i = 1;i<list.length();i++) {
+			assertTrue("not sorted",list.get(i).getStartDate()<=list.get(i+1).getStartDate());
+		}
+	}
 	
 	//US08.03.01
 	//As an approver, I want to view all the details of a submitted expense claim.
