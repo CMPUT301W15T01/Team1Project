@@ -41,4 +41,10 @@ public class ClaimsListController {
 		return null;
 	}
 
+	public static void clearClaims() {
+		claimsList = null;
+		getClaims();
+		
+	}
+
 }

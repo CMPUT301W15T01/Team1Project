@@ -6,6 +6,8 @@ import android.view.Menu;
 
 public class ClaimantExpenseListActivity extends Activity {
 
+	public Claim claim;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
