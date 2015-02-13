@@ -125,7 +125,6 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		
 	}
 	
-
 	//US04.08.01
 	public void testNav() {
 		
@@ -140,15 +139,19 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		
 		//calls on listeners 
 		int counter = 0;
+		//go to next view 
 		activity.findViewById(R.id.claimsList).performLongClick();
 		counter += 1;
+		//add expense click button 
 		activity.findViewById(R.id.addExpenseButton).performClick();
 		counter += 1;
+		//saves the expense 
 		activity.findViewById(R.id.saveExpenseButton).performClick();
 		counter += 1;
+		assertTrue(counter == 3);
 		
 	}
 
-	 
+	
 
 }
