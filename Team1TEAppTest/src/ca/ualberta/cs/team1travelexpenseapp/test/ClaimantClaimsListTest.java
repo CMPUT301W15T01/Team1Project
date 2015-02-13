@@ -122,8 +122,6 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	
 	
 	//US 09.01.01
-	
-	
 	public void testReadOnlineInfo(){
 		ClaimList claimlist = new ClaimsListController.getClaims();
 	
