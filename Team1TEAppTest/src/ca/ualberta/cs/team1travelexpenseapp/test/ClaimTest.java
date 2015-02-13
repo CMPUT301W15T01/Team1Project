@@ -291,7 +291,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	public void testSaveClaims() {
 		// Start the main activity of the application under test
 		ClaimActivity activity = getActivity();
-		// Create and fill the claim with values
+		// user has Created and fill the claim with values
 		ClaimsListController list = new ClaimsListController();
 		Claim claim = new Claim();
 		final String expected = "name";
