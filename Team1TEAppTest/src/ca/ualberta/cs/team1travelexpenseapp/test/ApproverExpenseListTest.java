@@ -62,6 +62,8 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		assertTrue("View details not same as claim details", viewtext.equals(claim.toString()));
 		
 		
+		
+		
 	}
 	
 

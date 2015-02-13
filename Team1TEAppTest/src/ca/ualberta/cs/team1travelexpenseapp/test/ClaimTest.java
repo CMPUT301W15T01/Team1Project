@@ -4,6 +4,9 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+
 import android.R;
 import android.nfc.Tag;
 import android.test.ActivityInstrumentationTestCase2;
@@ -124,6 +127,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		assertTrue("Tags were not added properly, strings do not match those added",tags.contains("buisness") && tags.contains("pleasure"));
 		
 	}
+	
+	//US07.05.01
 	
 
 }
