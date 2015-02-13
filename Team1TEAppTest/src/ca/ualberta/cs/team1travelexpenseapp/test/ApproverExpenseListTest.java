@@ -83,7 +83,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		assertEquals("length not equal",list.length(),4);
 		// Assert that the values are sorted
 		for (int i = 1;i<list.length();i++) {
-			assertTrue("not sorted",list.get(i).getStartDate()<=list.get(i+1).getStartDate());
+			assertTrue("not sorted",list.get(i).getStartDate()>=list.get(i+1).getStartDate());
 		}
 	}
 	
