@@ -47,4 +47,14 @@ public class ClaimsListController {
 		
 	}
 
+	public static Claim getReturnedClaim(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static Claim getApprovedClaim(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

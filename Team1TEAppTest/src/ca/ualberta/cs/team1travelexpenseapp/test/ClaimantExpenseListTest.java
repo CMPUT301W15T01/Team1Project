@@ -6,11 +6,13 @@ import java.util.Date;
 import android.app.Activity;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.text.InputFilter.LengthFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import junit.framework.TestCase;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
@@ -70,22 +72,84 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			@Override
 			public void onClick(View v) {
 				claim.submit();
-				claim.setStatus("Submitted");
 				
 			}
 		});
-		Claim claimSubmitted = ClaimsListController.getSubmittedClaim(1);
+		Claim claimSubmitted = ClaimsListController.getSubmittedClaim(0);
 		assertEquals("Claim Submitted", claim, claimSubmitted);
 		assertEquals("Claim status submitted", "Submitted", claim.getStatus());
 		assertFalse("Claim name not editable", claim.setName());
-		assertFalse("Claim destination not editable", claim.addDestination());
+		assertFalse("Claim destination not editable", claim.addDestination(null));
 		assertFalse("Claim reason not editable", claim.addReason());
 		assertFalse("Claim from date not editable", claim.setFromDate());
 		assertFalse("Claim to date not editable", claim.setToDate());
+		assertTrue("Claim tags editable", claim.addTag());
+
 	}
 	
+	/*
+	 * US 7.02.01
+	 * As a claimant, I want a visual warning when trying to 
+	 * submit an expense claim when there are fields with missing values or 
+	 * there are any incompleteness indicators on the expense items.
+	 */
 	
+	public void testSubmitWarning() {
+		final Claim claim = ClaimsListController.getClaim(0);
+		
+		Button button = (Button) activity.findViewById(R.id.submitClaimButton);
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (!claim.submit()) {
+					Toast.makeText(activity.getApplicationContext(), "Incomplete Date", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		
+		View v = activity.getWindow().getDecorView().findViewById(android.R.id.content);
+		assertTrue("Toast is shown", v.isShown());
+	}
 
+	/*
+	 *  US 7.03.01
+	 *  As a claimant, I want a submitted expense claim that was 
+	 *  not approved to be denoted by a claim status of returned, with further 
+	 *  changes allowed by me to the claim information.
+	 */
+	
+	public void testReturned() {
+		Claim claim = ClaimsListController.getReturnedClaim(1);
+		assertEquals("Claim status returned", "Returned", claim.getStatus());
+		assertTrue("Claim name editable", claim.setName());
+		assertTrue("Claim destination editable", claim.addDestination(null));
+		assertTrue("Claim reason editable", claim.addReason());
+		assertTrue("Claim from date editable", claim.setFromDate());
+		assertTrue("Claim to date editable", claim.setToDate());
+	}
+	
+	/*
+	 *  US 7.04.01
+	 *  As a claimant, I want a submitted expense claim that was 
+	 *  approved to be denoted by a claim status of approved, with no
+	 *   further changes allowed by me to the claim information (except the tags).
+	 */
+	
+	public void testApproved(){
+		final Claim claim = ClaimsListController.getClaim(0);
+		
+		Claim claimApproved = ClaimsListController.getApprovedClaim(0);
+		assertEquals("Claim Submitted", claim, claimApproved);
+		assertEquals("Claim status Approved", "Approved", claim.getStatus());
+		assertFalse("Claim name not editable", claim.setName());
+		assertFalse("Claim destination not editable", claim.addDestination(null));
+		assertFalse("Claim reason not editable", claim.addReason());
+		assertFalse("Claim from date not editable", claim.setFromDate());
+		assertFalse("Claim to date not editable", claim.setToDate());
+		assertTrue("Claim tags editable", claim.addTag());
+	}
+	
 	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 
 	//in order of entry, showing for each expense item: the date the expense was 
 	//incurred, the category, the textual description, amount spent, unit of currency, 
