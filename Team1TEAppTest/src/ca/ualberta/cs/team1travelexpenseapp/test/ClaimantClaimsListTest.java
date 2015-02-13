@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.ViewAsserts;
 import android.text.format.DateFormat;
 
 
@@ -32,6 +33,9 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		setActivityIntent(intent);
 		activity = getActivity();
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
+		
+		//set user as claimant
+		User user=new User("claimant");
 		
 		//create some claims to populate and test our list
 		Claim claim1 = new Claim("name1",new Date(2000,11,11), new Date(2015,12,12));
@@ -71,6 +75,8 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			String expectedText =claim.toString();
 			assertEquals("Claim summary at list item "+i+" does not match expected value",expectedText, viewtext);	
 		}
+		//make sure the user can see this list
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),claimListView);
 		
 		
 	}
@@ -87,6 +93,9 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			currDate=ClaimsListController.getClaim(i).getStartDate();
 			assertTrue("Claims are not sorted by start date",currDate.after(prevDate));
 		}
+		//Note:testListClaim() checks that claims in ClaimsListController show up in same order 
+		//as claims in claimsListView, so it suffices to check here that the claims in
+		//are sorted in the ClaimsListController
 	}
 	
 	//US03.03.01: As a claimant, I want to filter the list of expense claims by tags, 
@@ -111,6 +120,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		String claim2Info=claim2.toString();
 		String claim4Info=claim4.toString();
 		
+		assertTrue("Incorrect items displayed by tag filter,claim2Info",claimListView.getCount()==2);
 		String viewText1=claimListView.getItemAtPosition(0).toString();
 		String viewText2=claimListView.getItemAtPosition(1).toString();
 		
@@ -118,6 +128,23 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		//claim2 and claim4, still in sorted oder so the following should hold
 		assertTrue("Incorrect items displayed by tag filter,claim2Info",claim2Info==viewText1);
 		assertTrue("Incorrect items displayed by tag filter,claim2Info",claim4Info==viewText2);	
+		
+		selections={0,1};//should choose both tags from tag selection spinner
+		tagSelector.setSelection(selections);
+		
+		assertTrue("Incorrect items displayed by tag filter,claim2Info",claimListView.getCount()==2);
+		
+		//we want claims to show up if they have AT LEAST on of the selected filter tags
+		//so despite the addition of the extra tag the sam two claims should be displayed
+		//claim2 and claim4, still in sorted oder so the following should hold
+		assertTrue("Incorrect items displayed by tag filter,claim2Info",claim2Info==viewText1);
+		assertTrue("Incorrect items displayed by tag filter,claim2Info",claim4Info==viewText2);
+		
+		selections={1};//should choose exactly one tag from tag selection spinner
+		tagSelector.setSelection(selections);
+		
+		//now there should be no claims in the list since none have the single selected tag
+		assertTrue("Incorrect items displayed by tag filter,claim2Info",claimListView.getCount()==0);
 	}
 	
 	
