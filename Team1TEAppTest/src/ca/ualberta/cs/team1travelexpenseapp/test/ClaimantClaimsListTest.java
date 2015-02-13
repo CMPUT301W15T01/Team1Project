@@ -59,6 +59,8 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		for(int i=0; i < claimCount; i++){
 			//get text info from a claim at position of i of claimListView 
 			TextView claimInfo = (TextView) claimListView.getItemAtPosition(i);
+			
+			//toString() method should be checked manually to verify it contains the correct info
 			String viewtext = claimInfo.getText().toString();
 
 			//get claim at position i of Claim list 
