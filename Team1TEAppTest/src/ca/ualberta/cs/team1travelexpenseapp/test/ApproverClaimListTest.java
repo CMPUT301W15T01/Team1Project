@@ -217,13 +217,10 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		
 		User checkuser = New User("appover","John");
 		
-		activity.setApproverName("Timmy G");
 		//claim cannot be approved when claimant is the appover 
-		assertFalse(activity.approveClaim());//In this the name of the approver should be set
-		list.removeClaim(claim);
-		claim = new DummyClaim("claimant","Don Al");
-		list.addClaim(claim);
-		assertFalse(activity.approveClaim());//In this the name of the approver should be set
+		assertFalse(activity.setApproverName(checkuser));//In this the name of the approver should be set only if not same name
+		User checkuser = New User("appover","Kim");
+		assertTrue(activity.setApproverName(checkuser));//In this the name of the approver should be set only if not same name
 		
 		ClaimantClaimsListActivity ClaimantActivity = new ClaimantClaimsListActivity();
 		
