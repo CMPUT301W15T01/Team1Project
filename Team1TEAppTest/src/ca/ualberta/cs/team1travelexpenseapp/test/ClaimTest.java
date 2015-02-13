@@ -39,9 +39,9 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		
-		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
-		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
-		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.name);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.start);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.end);
 		
 		name.setText("name");
 		start.setText("2012");
@@ -106,14 +106,16 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 				
-		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
-		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
-		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
-		
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.name);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.start);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.end);
+		EditText dest = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.destination);
+
 				
 		name.setText("test name");
 		start.setText("2012-11-11");
 		end.setText("2013-11-11");
+		dest.setText("orlando");
 		//get button and save the edits
 		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
 		  Activity.runOnUiThread(new Runnable() {
@@ -181,21 +183,70 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	
 	//US01.04.01
 	public void testEditClaim() {
-		// Create a claim with test values
+		// Creating a claim and adding test destination values
 		Claim claim = new Claim();
-		claim.setName("name");
-		claim.setStartDate(new Date(2000,11,11));
-		claim.setEndDate(new Date(2015,12,12));
-		final String expected = "test";
-		final String actual = claim.getName();
-		// Edit values
-		claim.setName("name");
-		claim.setStartDate(new Date(2100,11,11));
-		claim.setEndDate(new Date(2115,12,12));
+		claim.addDestination("dest 1");
+		claim.addDestination("dest 2");	
+		ClaimListController list = new ClaimListController();
+		list.add(claim);
+		//get activity and assert user has logged in
+		ClaimActivity Activity = getActivity();
+		User.login("bob");
+		AssertTrue("not logged in",User.loggedin());
+		
+		 // get list view 
+ 		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		// longclick the claim
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open the add claim activity.
+	              view.getAdapter().getView(0, null, null).performLongClick();
+	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
+		    AlertDialog dialog = Activity.getLastDialog(); 
+        		 performClick(dialog.getButton(DialogInterface.EDIT_BUTTON));
+		    }
+		  });
+				
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.name);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.start);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.end);
+		EditText dest = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.destination);
+
+		// Status is in progress by default		
+		name.setText("test name");
+		start.setText("2012-11-11");
+		end.setText("2013-11-11");
+		dest.setText("orlando");
+		//get button and save the edits
+		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and save and finish the activity.
+		      saveButton.performClick();
+		    }
+		  });
+		// get the listview and assert that the user can see it on the screen
+		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
+		//Assert values match after retreiving the claim
+		ClaimListController list = new ClaimListController();
+		Claim result = list.get(0);
+		
+		
+		// Create a claim with same test values
+		Claim claim = new Claim();
+		claim.setName("test name");
+		claim.setStartDate(new Date(2012,11,11));
+		claim.setEndDate(new Date(2013,11,11));
+		claim.setDest("orlando");
+		final String expected = "test name";
+		final String actual = result.getName();
 		// Assert the new values match
 		assertEquals("name does not match",expected,actual);
-		assertEquals("start date does not match",new Date(2100,11,11),claim.getStartDate());
-		assertEquals("end date does not match",new Date(2115,12,12),claim.getEndDate());
+		assertEquals("start date does not match",new Date(2012,11,11),result.getStartDate());
+		assertEquals("end date does not match",new Date(2013,11,11),result.getEndDate());
 		// Attempt to edit non editable claim
 		claim.setStatus("submitted");
 		claim.setName("NURBS");
