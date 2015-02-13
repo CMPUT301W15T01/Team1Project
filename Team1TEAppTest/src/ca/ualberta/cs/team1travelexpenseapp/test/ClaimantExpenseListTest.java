@@ -65,4 +65,13 @@ public class ClaimantExpenseListTest extends TestCase {
 		assertFalse("Claim to date not editable", claim.setToDate());
 	}
 	
+	/*
+	 *  US 7.02.01
+	 *  As a claimant, I want a visual warning when trying to submit
+	 *  an expense claim when there are fields with missing values or there
+	 *  are any incompleteness indicators on the expense items.
+	 */
+	
+	
+	
 }
