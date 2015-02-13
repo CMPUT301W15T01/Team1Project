@@ -123,19 +123,6 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	
 	//US 09.01.01
 	
-	public void testWriteToOnline(){
-		
-		
-		
-		
-		
-		
-	}
-	
-	
-	
-	
-	//check if Claims are being read properly from the db.
 	
 	public void testReadOnlineInfo(){
 		ClaimList claimlist = new ClaimsListController.getClaims();
