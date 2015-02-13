@@ -58,8 +58,10 @@ public class Claim {
 		return 0;
 	}
 
-	public void submit() {
+	public boolean submit() {
+		return false;
 		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -161,6 +163,11 @@ public class Claim {
 	public String getComments() {
 		// TODO Auto-generated method stub
 		return new String();
+	}
+
+	public boolean addTag() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

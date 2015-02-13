@@ -15,4 +15,9 @@ public class Expense {
 		
 	}
 
+	public boolean checkIncomplete() {
+		// Checks indicator checkbox AND input fields
+		return false;
+	}
+
 }
