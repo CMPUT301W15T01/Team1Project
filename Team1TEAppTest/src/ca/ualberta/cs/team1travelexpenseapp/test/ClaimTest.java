@@ -100,8 +100,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    public void run() {
 		      // click button and open the add claim activity.
 	              view.getAdapter().getView(0, null, null).performLongClick();
-	              
-		    AlertDialog dialog = Activity.getLastDialog(); // I create getLastDialog method in MyActivity class. Its return last created AlertDialog
+	              // I create getLastDialog method in MyActivity class. Its return last created AlertDialog
+		    AlertDialog dialog = Activity.getLastDialog(); 
         		 performClick(dialog.getButton(DialogInterface.EDIT_BUTTON));
 		    }
 		  });
@@ -110,8 +110,28 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
 		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
 		
-		
-		
+				
+		name.setText("test name");
+		start.setText("2012-11-11");
+		end.setText("2013-11-11");
+		//get button and save the edits
+		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and save and finish the activity.
+		      saveButton.performClick();
+		    }
+		  });
+		// get the listview and assert that the user can see it on the screen
+		ListView view = (ListView) Activity.findVieById(ca.ualberta.cs.R.id.claimlistview);
+		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
+		//Assert values match after retreiving the claim
+		ClaimListController list = new ClaimListController();
+		Claim claim = list.get(0);
+		assertEquals("name?",claim.getName(),"test name");
+		assertEquals("start date?",new Date(2012,11,11),claim.getStartDate());
+		assertEquals("end date?",new Date(2013,11,11),claim.getEndDate());
 	
 		// Assert values match
 		assertEquals("Destination","dest 1",claim.getDestination(0));
