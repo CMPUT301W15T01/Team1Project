@@ -1,9 +1,12 @@
+
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
 import junit.framework.TestCase;
 
-public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
+public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<ApproverClaimListActivity> {
 
 	private Intent launch;
 	final Button approverButton;

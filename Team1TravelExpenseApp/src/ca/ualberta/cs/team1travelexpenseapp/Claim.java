@@ -8,7 +8,11 @@ import java.util.Date;
  */
 // TODO create code 
 
-public class Claim {
+public class Claim { 
+	
+	public Claim() { 
+		// TODO Auto-generated constructor stub
+	}
 
 	public Claim(String string, Date date, Date date2) {
 		// TODO Auto-generated constructor stub 

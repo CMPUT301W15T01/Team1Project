@@ -1,3 +1,4 @@
+
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import junit.framework.TestCase;
@@ -21,15 +22,14 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
-import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 
-//public class ExpenseTest extends TestCase {
-public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseActivity> {
+public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpenseActivity> {
 	
 	Instrumentation instrumentation;
 	EditExpenseActivity activity;
@@ -42,7 +42,7 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 	
 	Expense expense;
 	Claim claim;
-	public ExpenseTest() {
+	public ExpenseEditTest() {
 		super(EditExpenseActivity.class);
 	}
 	protected void setUp() throws Exception {
@@ -52,7 +52,7 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 		
 		expense = new Expense();
 		claim = new Claim();
-		ClaimsListController.getClaimsList().getClaims().add(0, claim);
+		ClaimsListController.getClaims().add(0, claim);
 		claim.addExpense(expense);
 		activity.setExpensePos(0);
 		activity.setClaimPos(0);
@@ -228,4 +228,5 @@ public class ExpenseTest extends ActivityInstrumentationTestCase2<EditExpenseAct
 	
 	
 }
+
 
