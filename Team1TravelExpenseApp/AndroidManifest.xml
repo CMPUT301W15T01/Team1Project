@@ -26,6 +26,10 @@
             android:name="ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity"
             android:label="@string/title_activity_claimant_expense_list" >
         </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity"
+            android:label="@string/title_activity_edit_expense" >
+        </activity>
     </application>
 
 </manifest>

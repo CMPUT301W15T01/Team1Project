@@ -1,3 +1,5 @@
+// this is the starting claim menu 
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import android.app.Activity;

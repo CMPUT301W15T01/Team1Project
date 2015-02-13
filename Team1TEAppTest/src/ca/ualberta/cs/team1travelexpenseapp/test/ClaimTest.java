@@ -1,3 +1,4 @@
+
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.util.ArrayList;
@@ -126,3 +127,4 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	
 
 }
+
