@@ -13,7 +13,7 @@ public class ClaimsListController {
 	
 	protected static ArrayList<Claim> claimsList = null;
 	
-	public static ArrayList<Claim> getClaims() {
+	public static ArrayList<Claim> getClaims() { 
 		if (claimsList == null) {
 			claimsList = new ArrayList<Claim>();
 		}
@@ -29,6 +29,11 @@ public class ClaimsListController {
 	public static int getClaimCount() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public static void addClaim(Claim claim5) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
