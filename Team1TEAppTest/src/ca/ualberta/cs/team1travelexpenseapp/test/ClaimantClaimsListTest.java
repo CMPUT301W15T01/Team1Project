@@ -30,12 +30,24 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		setActivityIntent(intent);
 		activity = getActivity();
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
+		
+		//create some claims to populate and test our list
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		Claim claim2 = new Claim("name",new Date(1990,1,8), new Date(2000,12,12));
 		Claim claim3 = new Claim("name",new Date(1999,9,8), new Date(2012,12,12));
 		Claim claim4 = new Claim("name",new Date(2013,10,8), new Date(2012,12,12));
 		Claim claim5 = new Claim("name",new Date(2001,10,6), new Date(2012,12,12));
-		claim5.addTag();
+		
+		//create tags to populate the tags list in order to test the filtering
+		TagsListController.addTag(new Tag("business"));
+		TagsListController.addTag(new Tag("pleasure"));
+		ArrayList<Tag> tags=TagsListController.getTags();
+		
+		//add a tag to two of out claims so we can test the tag filtering functionality
+		claim4.addTag(tags.get(0));
+		claim5.addTag(tags.get(0));
+		
+		//add claims to ClaimsListController so we can test it
 		ClaimsListController.addClaim(claim1);
 		ClaimsListController.addClaim(claim2);
 		ClaimsListController.addClaim(claim3);
@@ -122,6 +134,11 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	//to show only those claims that have at least one tag matching any of a given set 
 	//of one or more filter tags.
 	public void testTagFilter{
+		//We will implement this in order to select multiple tags at once from a spinner
+		CheckboxSpinner tagSelector= (CheckBoxSpinner)findViewById(
+				ca.ualberta.cs.team1travelexpenseapp.R.id.tagSelector));
+		int[] selections={0};
+		tagSelector.setSelection(selections);//selections can be chosen with an int array
 		
 	}
 	
