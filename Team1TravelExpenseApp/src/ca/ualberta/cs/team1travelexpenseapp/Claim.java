@@ -92,5 +92,47 @@ public class Claim {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public String toString(){
+		String str ="Start Date: "+this.getStartDate().toString()+"\n";
+		str += "Destination(s): ";
+		//write out comma separated destinations 
+		int destCount = this.getDestinationCount();
+		if ( destCount == 0 ) {
+			str += "None";
+		}
+		else{
+			//destCount-1 else extra , 
+			for(int j=0;j<destCount-1; j++){
+				str += this.getDestination(j)+", ";
+			}
+			str+=this.getDestination(destCount-1)+"\n";
+		}
+		str+="Status: "+this.getStatus()+"\n";
+		str+="Tag(s): ";
+		int tagCount=this.getTagCount();
+		if(tagCount==0){
+			str+="None";
+		}
+		else{
+			for(int j=0;j<tagCount-1; j++){
+				str+=this.getTag(j).toString()+", ";
+			}
+			str+=this.getTag(tagCount-1).toString()+"\n";
+		}
+		str+="Totals: ";
+		int totalCount=this.getTagCount();
+		if(totalCount==0){
+			str += "None";
+		}
+		else{
+			for(int j=0;j<totalCount-1; j++){
+				str+=Integer.toString(this.getTotal(j))+", ";
+			}
+			str+=this.getTotal(totalCount-1)+"\n";
+		}
+		
+		return str;
+	}
 
 }
