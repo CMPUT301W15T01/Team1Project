@@ -8,6 +8,7 @@ import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.ListView;
@@ -144,7 +145,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		
 		User testuser = new User("Claimant");
 		String approverU = "Claimant";
-		assertClaimant("Is not a claimant", approverU.equals(testuser.type()) );
+		assertEquals("Is not a claimant", approverU.equals(testuser.type()) );
 		Claim claimantClaim = User.getClaim(0);
 		assertEquals("Not approver", "John", claimantClaim.getApprover());
 		assertEquals("Not comment", "nice!!!", claimantClaim.getComments());
