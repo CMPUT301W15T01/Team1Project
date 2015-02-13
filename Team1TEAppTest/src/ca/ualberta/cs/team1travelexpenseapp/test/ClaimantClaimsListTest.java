@@ -176,4 +176,31 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		assertEquals("Not approver", "John", claimantClaim.getApprover());
 		assertEquals("Not comment", "nice!!!", claimantClaim.getComments());
 	}
+	
+	//US04.08.01
+	public void testNav() {
+		
+		ClaimsListController.clearClaims();
+		Calendar CalDate = Calendar.getInstance();
+		CalDate.set(2014,10,10,0,0,0);
+		Date startDate = CalDate.getTime();
+		CalDate.set(2015,12,11,0,0,0);
+		Date endDate = CalDate.getTime();
+		Claim testclaim = new Claim("test 1", startDate, endDate);
+		ClaimsListController.addClaim(testclaim);
+		
+		//calls on listeners 
+		int counter = 0;
+		//go to next view 
+		activity.findViewById(R.id.claimsList).performLongClick();
+		counter += 1;
+		//add expense click button 
+		activity.findViewById(R.id.addExpenseButton).performClick();
+		counter += 1;
+		//saves the expense 
+		activity.findViewById(R.id.saveExpenseButton).performClick();
+		counter += 1;
+		assertTrue(counter == 3);
+		
+	}
 }
