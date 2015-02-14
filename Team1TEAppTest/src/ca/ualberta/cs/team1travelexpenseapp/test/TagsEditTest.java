@@ -3,8 +3,12 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
@@ -40,13 +44,72 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<EditTagActivi
 		TagsListController.addTag(tag3);
 		
 		assertTrue("tags list on screen does not reflect added tags",checkTags(strings));
+		//get tag list item at position 1
+		final View item=claimListView.getAdapter().getView(1, null, null);
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// click button, should produce dialog to choose edit or delete claim
+				item.performClick();
+				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagDialog);
+				
+				//enter new name for the tag into tag name box in dialog
+				EditText tagName=(EditText)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagText);
+				tagName.setText("fantastic");
+				
+				//press the setName button in the dialog
+				Button setTagButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.setTagButton);
+				setTagButton.performClick();
+				
+			}
+		});
 		
+		//the tags in the TagsListController should now match this update to the string array:
 		strings[1]="fantastic";
-		tag2.setText(strings[1]);
 		assertTrue("tags list on screen does not reflect renamed tag",checkTags(strings));
-		TagsListController.removeTag(1);
-		String[] newStrings={"good","excellent"};
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// click button, should produce dialog to choose edit or delete claim
+				item.performClick();
+				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagDialog);
+				
+				//enter new name for the tag into tag name box in dialog
+				EditText tagName=(EditText)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagText);
+				tagName.setText("fantastic");
+				
+				//press the deleteTag button in the dialog
+				Button setTagButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.setTagButton);
+				setTagButton.performClick();
+			}
+		});
+		
+		//the tags in the TagsListController should now match this update to the string array:
+		String[] strings2={"good","excellent"};
 		assertTrue("tags list on screen does not reflect deleted tag",checkTags(newStrings));
+		
+		Button addTagButton=activity.findViewById(ca.ualberta.ca.team1travelexpenseapp.R.id.addTagButton);
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// click button, should produce dialog to enter name of new tag
+				addTagButton.performClick();
+				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addTagDialog);
+				
+				//enter new name for the tag into tag name box in dialog
+				EditText tagName=(EditText)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagText);
+				tagName.setText("fantastic");
+				
+				//press the setTag button in the dialog
+				Button addTagButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.setTagButton);
+				setTagButton.performClick();
+			}
+		});
+		
+		//the tags in the TagsListController should now match this update to the string array:
+		String[] strings3={"good","excellent","fantastic"};
+		assertTrue("tags list on screen does not reflect deleted tag",checkTags(strings2));
 	}
 	
 	//this function checks if the info in the tagListView match the given string array
@@ -66,5 +129,6 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<EditTagActivi
 		}
 		return true;
 	}
+	
 
 }

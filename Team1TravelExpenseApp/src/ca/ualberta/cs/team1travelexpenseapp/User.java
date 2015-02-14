@@ -19,4 +19,9 @@ public class User {
 		return new Claim();
 	}
 
+	public static User getUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

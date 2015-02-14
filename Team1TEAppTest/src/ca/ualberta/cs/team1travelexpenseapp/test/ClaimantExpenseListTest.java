@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.ViewAsserts;
 import android.text.InputFilter.LengthFilter;
 import android.view.View;
 import android.widget.Button;
@@ -229,7 +230,6 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		assertNotSame("Claim destination not editable", claim.getDestination(0), "Hawaii");
 		assertNotSame("Claim reason not editable", claim.getReason(), "Business");
 
-		
 	}
 	
 	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 
@@ -255,6 +255,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			String expectedText =((ClaimantExpenseListActivity) activity).claim.toString();
 			assertEquals("Expense summary at list item "+i+" does not match expected value",expectedText, viewtext);	
 		}
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),expenseListView);
 	}
 	
 	

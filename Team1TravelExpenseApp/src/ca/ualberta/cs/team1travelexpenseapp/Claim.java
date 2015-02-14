@@ -1,6 +1,9 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+import android.nfc.Tag;
 
 /**
  * warning 
@@ -170,12 +173,22 @@ public class Claim {
 		return false;
 	}
 
+	
+	public ArrayList<Tag> getTags() {
+		
+	}
+	
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getReason() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<Claim> getExpenses() {
 		// TODO Auto-generated method stub
 		return null;
 	}
