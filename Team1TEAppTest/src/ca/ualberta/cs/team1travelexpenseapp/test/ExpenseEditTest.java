@@ -50,6 +50,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	Spinner currencySpinner;
 	Spinner categorySpinner;
 	ImageButton imageButton;
+	Button saveButton; 
+	File photoFile;
 	
 	Expense expense;
 	Claim claim;
@@ -75,6 +77,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
     	categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector); 
     	currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
     	imageButton = (ImageButton) activity.findViewById(R.id.imageButton1);
+		saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);
+    	photoFile = createTestPhotoFile();
 	}
 	
 	// US04.01.01
@@ -294,8 +298,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 			}
 		});
 		claim.setStatus("Submitted");
-		
-		Button saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);
+
 		saveButton.performClick();
 		assertNotSame("Desc edited while submitted", descText.getText().toString(), "Test Edit");
 	
@@ -335,22 +338,32 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// photograph to an editable expense item, so that there is supporting documentation for the 
 	// expense item in case the physical receipt is lost.
 	public void testAddPhoto(){	
+		
+		// An editable expense is currently being edited or added
 		imageButton.setImageDrawable(null);	
 		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);	
 		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 		imageButton.setImageBitmap(bm);
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);	
-		
 		imageButton.setImageDrawable(null);	
-		expense.setPhotoFile = null;
+		expense.setPhotoFile(null);
+		
+		// A test photo is added to simulate an actual photo being taken
+		expense.setPhotoFile(photoFile);
 		
 		claim.setStatus("Submitted");
-		expense.setPhoto(bm);
-		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);	
-		assertTrue("Image File should not be set", expense.getPhotoFile() != null);
-		
+		saveButton.performClick();
+		// restart the activity
+		activity.finish();
+		activity = getActivity();
+		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
 		claim.setStatus("In progress");
-		expense.setPhoto(bm);
+		saveButton.performClick();
+		// restart the activity
+		activity.finish();
+		activity = getActivity();
+		
+		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		assertTrue("Image File should be set", expense.getPhotoFile() != null);
 	}
@@ -360,17 +373,34 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	public void testViewPhoto(){
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
+		
+		expense.setPhotoFile(photoFile);
+		saveButton.performClick();
+		// restart the activity
+		activity.finish();
+		activity = getActivity();
+		
+		// An expense is currently being edited or added and a photo is already attached to it
+		
+		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
+		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
+		assertTrue("Image File should be set", expense.getPhotoFile() != null);
+		
+		// A user can see the thumbnail of the photo 
 	}
 	
 	// US06.03.01
 	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
 	public void testDeletePhoto(){
-		imageButton.setImageDrawable(null);	
-		expense.setPhotoFile = null;
-		
+		expense.setPhotoFile(photoFile);
+		saveButton.performClick();
+		// restart the activity
+		activity.finish();
+		activity = getActivity();
 		//An editable expense is currently being edited or added and a photo is already attached to it 
-		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-		expense.setPhoto(bm);
+
+		
 		assertTrue("Image set so should be set in button", imageButton.getDrawable() != null);
 		assertTrue("Image set so file should be set", expense.getPhotoFile() != null);
 		
@@ -387,12 +417,23 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	
 	// US06.04.01
 	// As a sysadmin, I want each receipt image file to be under 65536 bytes in size. (less than 65.536 KB)
-	public void testMaxPhotoSize(){
-		Bitmap bm = BitmapFactory.decodeResource(activity.getResources(), R.drawable.compress_test_photo);
+	public void testMaxPhotoSize(){	
+		// An editable expense is currently being edited or added and the claimant has taken a photo that is greater than 65536 bytes 
 		
-		// Create a Photo file for testing to avoid creating a unique file each time this test is run
-		try {			
-			FileOutputStream fos = activity.openFileOutput("compressTestPhoto.jpg", Context.MODE_PRIVATE);
+		// The program attempts to reduce the image to make it less than 65536 bytes in size.
+		photoFile = activity.compressPhoto(photoFile);
+		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getPhotoFile().length() < 65536);	
+		
+		// A photo that is less than 65536 bytes in size is attached to the expense
+		expense.setPhotoFile(photoFile);
+		assertTrue("Compressed photo file too large (" + expense.getPhotoFile().length() + ")", expense.getPhotoFile().length() < 65536);	
+	}
+
+	//Create a Photo file for testing to avoid creating a unique file each time these tests are run
+	private File createTestPhotoFile(){	
+		try {		
+			Bitmap bm = BitmapFactory.decodeResource(activity.getResources(), R.drawable.test_photo);
+			FileOutputStream fos = activity.openFileOutput("testPhoto.jpg", Context.MODE_PRIVATE);
 			bm.compress(CompressFormat.JPEG, 100, fos);
 			fos.flush();
 			fos.close();
@@ -401,9 +442,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		File photoFile = new File(activity.getFilesDir().getAbsolutePath() + "/compressTestPhoto.jpg");
-		photoFile = activity.compressPhoto(photoFile);
-		assertTrue("Compressed photo file too large (" + photoFile.length() + ")" + " Stored at: " + activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg", photoFile.length() < 65536);	
+		return new File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
 	}
 }
 
