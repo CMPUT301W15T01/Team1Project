@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -176,6 +177,11 @@ public class Claim {
 	}
 
 	public String getReason() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ArrayList<Claim> getExpenses() {
 		// TODO Auto-generated method stub
 		return null;
 	}
