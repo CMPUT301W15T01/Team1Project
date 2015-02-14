@@ -65,20 +65,34 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	//US08.01.01
 	
 	/*
-	 * Tests that the Approver properly
-	 * receives a submitted claim from online
+	 * Tests that the Approver can properly
+	 * navigate to the screen
+	 * with all the claims
+	 * 
 	 * */
-	public void testApproverProperReceive(){
+	public void testgetSubmittedClaims(){
 		
-		ApproverActivity activity = new ApproverActivity();
-		ClaimListController list = new ClaimListController();
-
-		// Add to the controller
-		list.add(DummyClaim());
-		list.saveOnline();
-		ClaimList ApprovedClaims = activity.getSubmittedClaims();
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
+		UserSelectActivity  userSelect = new UserSelectActivity();
 		
-		AssertEquals("Did approver get Claim?" ApprovedClaims.get(0).toString(), list.get(0).toString());
+		final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
+		userSelect.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				approverBT.performClick();// approver user type is selected
+				//User type selected : precondition
+			}
+			
+		});
+		
+		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		assertNotNull(nextActivity);
+		
+		ListView claimlistView = (ListView) nextActivity.findViewById(R.id.ApproverClaimLV);
+		ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(),view);
+		
+		nextActivity .finish();
 		
 	}
 	
@@ -90,9 +104,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	 */
 	public void testApproverSortedClaims(){
 		
-		ApproverActivity activity = new ApproverActivity();
 		ClaimListController list = new ClaimListController();
-		
 		Claim claim1 = (DummyClaim());
 		claim1.setDate(200);
 		list.add(claim1);
@@ -105,15 +117,38 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		Claim claim4 = (DummyClaim());
 		claim4.setDate(500);
 		list.add(claim4);
-		Claim claim5 = (DummyClaim());
-		claim5.setDate(600);
-		list.add(claim5);
 		
 		list.saveOnline();
-		ClaimList ApprovedClaims = activity.getSubmittedClaims();
 		
 		Claim claimToCheck;
 		Claim claimCompared;
+		
+		
+		
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
+		UserSelectActivity  userSelect = new UserSelectActivity();
+		
+		final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
+		userSelect.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				approverBT.performClick();// approver user type is selected
+				//User type selected : precondition
+			}
+			
+		});
+		
+		ApproverClaimListActicity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		assertNotNull(nextActivity);
+		//claims loaded onStart of nextActivity
+		
+		ListView claimlistView = (ListView) nextActivity.findViewById(R.id.ApproverClaimLV);
+		ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(),view);
+		
+		
+		
+		//checks if claims are in order
 		for(int i= 0; i < (ApprovedClaims.length - 1); i++){
 			
 			claimToCheck = ApprovedClaims.get(i);
@@ -129,20 +164,48 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	//US08.03.01
 	/*
-	 * in previous tests
-	 * we test if a claim is 
-	 * received properly by
-	 * the approver
-	 * so we only test if the list 
-	 * of claims
-	 * is visible
-	 * 
+	 *Testing if we can see all of
+	 *the expenses of a claim
 	 * */
-	public void testApproverClaimsVisible(){
+	public void testApproverClaimsVisible(){	
 		
-		ApproverClaimActivity activity = new ApproverClaimActivity(); 
-		ListView claimlist = (ListView) activity.findViewById(R.id.ApproverClaimList);
-		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),view);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
+		UserSelectActivity  userSelect = new UserSelectActivity();
+		
+		final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
+		userSelect.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				approverBT.performClick();// approver user type is selected
+				//User type selected : precondition
+			}
+			
+		});
+		
+		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		assertNotNull(nextActivity);
+		
+		ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
+		final ListView claimListLV = (ListView) approverCSA.findViewById(R.id.LVclaimList);
+		approverCSA.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				claimListLV.performClick();//onClick would be overrided
+			}
+			
+		});
+	
+		
+		Approver lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		assertNotNull(lastActivity);
+		
+		final ListView expenseListLV = (ListView) lastActivity.findViewById(R.id.LVExpenseList);
+		ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view);
+		
+		
+		
 	}
 	
 	

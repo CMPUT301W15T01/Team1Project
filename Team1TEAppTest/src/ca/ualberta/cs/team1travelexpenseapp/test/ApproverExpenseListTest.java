@@ -70,7 +70,9 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			  Claim claim = DummyClaim();
 			  claim.addExpense(expense);
 			  controller.add(claim);
-			  controller.saveOnline();
+			  controller.save();
+			  AssertFalse("claim list not empty?" , controller.LoadClaims().isempty()); //precondition
+			  
 			 
 			  ApproverActivity.getSubmittedClaims();
 			  ListView view = (ListView) activity.findViewById(R.id.claimlistview);
