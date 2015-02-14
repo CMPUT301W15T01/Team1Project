@@ -230,7 +230,6 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		assertNotSame("Claim destination not editable", claim.getDestination(0), "Hawaii");
 		assertNotSame("Claim reason not editable", claim.getReason(), "Business");
 
-		
 	}
 	
 	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 

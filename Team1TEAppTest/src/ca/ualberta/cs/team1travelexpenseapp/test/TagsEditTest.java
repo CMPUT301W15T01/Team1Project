@@ -80,15 +80,36 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<EditTagActivi
 				tagName.setText("fantastic");
 				
 				//press the deleteTag button in the dialog
-				Button deleteTagButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.deleteTagButton);
-				deleteTagButton.performClick();
-				
+				Button setTagButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.setTagButton);
+				setTagButton.performClick();
 			}
 		});
 		
 		//the tags in the TagsListController should now match this update to the string array:
-		String[] newStrings={"good","excellent"};
+		String[] strings2={"good","excellent"};
 		assertTrue("tags list on screen does not reflect deleted tag",checkTags(newStrings));
+		
+		Button addTagButton=activity.findViewById(ca.ualberta.ca.team1travelexpenseapp.R.id.addTagButton);
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// click button, should produce dialog to enter name of new tag
+				addTagButton.performClick();
+				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addTagDialog);
+				
+				//enter new name for the tag into tag name box in dialog
+				EditText tagName=(EditText)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagText);
+				tagName.setText("fantastic");
+				
+				//press the setTag button in the dialog
+				Button addTagButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.setTagButton);
+				setTagButton.performClick();
+			}
+		});
+		
+		//the tags in the TagsListController should now match this update to the string array:
+		String[] strings3={"good","excellent","fantastic"};
+		assertTrue("tags list on screen does not reflect deleted tag",checkTags(strings2));
 	}
 	
 	//this function checks if the info in the tagListView match the given string array
