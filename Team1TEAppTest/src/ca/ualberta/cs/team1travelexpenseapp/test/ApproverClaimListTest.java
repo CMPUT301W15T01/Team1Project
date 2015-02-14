@@ -216,7 +216,25 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		ApproverClaimActivity activity = startWithClaims(list);
 		
 		User checkuser = New User("appover","John");
-		
+	
+		//get activity and assert user has logged in
+		ClaimActivity Activity = getActivity();
+		AssertTrue("not logged in",User.loggedin());
+		// get list view
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+		// longclick the claim
+		Activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+			// click button and open the add claim activity.
+			view.getAdapter().getView(0, null, null).performLongClick();
+			// I create getLastDialog method in claimactivity class. Its return last created AlertDialog
+			AlertDialog dialog = Activity.getLastDialog();
+			performClick(dialog.getButton(DialogInterface.APPROVE));
+			}
+		});
+		// assert that on the screen
+		assertTrue("claim is visible",)
 		//claim cannot be approved when claimant is the appover 
 		assertFalse(claim.setApproverName(checkuser));//In this the name of the approver should be set only if not same name
 		checkuser = New User("appover","Kim");
