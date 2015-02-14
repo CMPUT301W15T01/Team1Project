@@ -361,23 +361,20 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		imageButton.setImageDrawable(null);	
 		expense.setPhotoUri = null;
 		
+		//An editable expense is currently being edited or added and a photo is already attached to it 
 		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 		expense.setPhoto(bm);
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		
-		Button deletePhotoButton = (Button) activity.findViewById(R.id.button2);
-		claim.setStatus("Submitted");
-		deletePhotoButton.performClick();
+		//click delete photo 
+		activity.findViewById(R.id.deletePhotoButton).performClick();	
+		//click yes
+		activity.findViewById(R.id.yesdeletePhotoButton).performClick();
+		assertTrue(claim.getStatus().equals("submitted"));
 		
+		//The editable expense no longer has a photo attached to it
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		assertTrue("Image File should be set", expense.getPhotoFile() != null);
-		
-		
-		claim.setStatus("In progress");
-		deletePhotoButton.performClick();
-		
-		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);
-		assertTrue("Image File should be null", expense.getPhotoFile() == null);
 	}
 	
 	// US06.04.01
