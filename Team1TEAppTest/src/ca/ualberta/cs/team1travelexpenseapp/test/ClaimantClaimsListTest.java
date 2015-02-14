@@ -195,6 +195,13 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	* from the approver on a returned or approved claim.
 	*/
 	public void testApproverNameComments(){
+		
+		//get user status logged on 
+		User claimant = new User("claimant");
+		claimant.logOn();
+		assertTrue(claimant.onlineCheck());
+		
+		
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
 		
 		ClaimsListController.clearClaims();
@@ -205,15 +212,29 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		Date endDate = CalDate.getTime();
 		
 		Claim testclaim = new Claim("test 1", startDate, endDate);
-		testclaim.addApprover("John");
-		testclaim.addComment("nice!!!");
+		testclaim.setApproved();
 		
+		//check approved/returned claim has been downloaded from server
+		ClaimsListController.loadClaim(testclaim);
+		ClaimsListController.downloadClaims();
+		assertTrue(ClaimsListController.checkdownloadstatus());
+		assertTrue(ClaimsListController.has(testclaim));
+		
+		Approver testa = new Approver("John");
+		testclaim.addApprover(testa);
+		testclaim.addComment("nice!!!");
+		//test user 
 		User testuser = new User("Claimant");
 		String approverU = "Claimant";
 		assertEquals("Is not a claimant", approverU.equals(testuser.type()) );
+		
+		//test get claim
 		Claim claimantClaim = User.getClaim(0);
 		assertEquals("Not approver", "John", claimantClaim.getApprover());
 		assertEquals("Not comment", "nice!!!", claimantClaim.getComments());
+		ArrayList<Approver> alist = {testa};
+		//test User sees complete list of approvers for a given returned/approved claim claim
+		assertEquals(alist == claimantClaim.getApproversList());
 	}
 	
 	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
