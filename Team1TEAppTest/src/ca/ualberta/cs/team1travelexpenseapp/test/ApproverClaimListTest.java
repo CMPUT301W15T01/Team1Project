@@ -86,7 +86,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 			
 		});
 		
-		ApproverClaimSummaryActicity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
 		assertNotNull(nextActivity);
 		
 		ListView claimlistView = (ListView) nextActivity.findViewById(R.id.ApproverClaimLV);
@@ -139,7 +139,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 			
 		});
 		
-		ApproverClaimSummaryActicity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		ApproverClaimListActicity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
 		assertNotNull(nextActivity);
 		//claims loaded onStart of nextActivity
 		
@@ -164,20 +164,48 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	
 	//US08.03.01
 	/*
-	 * in previous tests
-	 * we test if a claim is 
-	 * received properly by
-	 * the approver
-	 * so we only test if the list 
-	 * of claims
-	 * is visible
-	 * 
+	 *Testing if we can see all of
+	 *the expenses of a claim
 	 * */
-	public void testApproverClaimsVisible(){
+	public void testApproverClaimsVisible(){	
 		
-		ApproverClaimActivity activity = new ApproverClaimActivity(); 
-		ListView claimlist = (ListView) activity.findViewById(R.id.ApproverClaimList);
-		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),view);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
+		UserSelectActivity  userSelect = new UserSelectActivity();
+		
+		final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
+		userSelect.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				approverBT.performClick();// approver user type is selected
+				//User type selected : precondition
+			}
+			
+		});
+		
+		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		assertNotNull(nextActivity);
+		
+		ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
+		final ListView claimListLV = (ListView) approverCSA.findViewById(R.id.LVclaimList);
+		approverCSA.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				claimListLV.performClick();//onClick would be overrided
+			}
+			
+		});
+	
+		
+		Approver lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		assertNotNull(lastActivity);
+		
+		final ListView expenseListLV = (ListView) lastActivity.findViewById(R.id.LVExpenseList);
+		ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view);
+		
+		
+		
 	}
 	
 	
