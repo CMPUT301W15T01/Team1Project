@@ -354,8 +354,10 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		  //get the claim and check if the claim contains the tag
   		ClaimsListController list = new ClaimsListController();
 		AssertTrue(list.get(0).tagcontains("buisness"));
-
 		
+		// get the listview and assert that the user can see it on the screen
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		 
 	}
 	
