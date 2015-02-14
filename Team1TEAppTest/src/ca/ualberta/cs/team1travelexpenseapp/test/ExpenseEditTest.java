@@ -1,8 +1,11 @@
-
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import junit.framework.TestCase;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +19,10 @@ import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.view.View;
@@ -42,6 +48,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	DatePicker datePicker;
 	EditText costText;
 	Spinner currencySpinner;
+	Spinner categorySpinner;
 	ImageButton imageButton;
 	
 	Expense expense;
@@ -335,7 +342,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);	
 		
 		imageButton.setImageDrawable(null);	
-		expense.setPhotoUri = null;
+		expense.setPhotoFile = null;
 		
 		claim.setStatus("Submitted");
 		expense.setPhoto(bm);
@@ -359,12 +366,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
 	public void testDeletePhoto(){
 		imageButton.setImageDrawable(null);	
-		expense.setPhotoUri = null;
+		expense.setPhotoFile = null;
 		
 		//An editable expense is currently being edited or added and a photo is already attached to it 
 		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 		expense.setPhoto(bm);
-		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
+		assertTrue("Image set so should be set in button", imageButton.getDrawable() != null);
+		assertTrue("Image set so file should be set", expense.getPhotoFile() != null);
 		
 		//click delete photo 
 		activity.findViewById(R.id.deletePhotoButton).performClick();	
@@ -373,22 +381,30 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		assertTrue(claim.getStatus().equals("submitted"));
 		
 		//The editable expense no longer has a photo attached to it
-		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image File should be set", expense.getPhotoFile() != null);
+		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
+		assertTrue("Image deleted so file should not be set", expense.getPhotoFile() == null);
 	}
 	
 	// US06.04.01
-	// As a sysadmin, I want each receipt image file to be under 65536 bytes in size.
+	// As a sysadmin, I want each receipt image file to be under 65536 bytes in size. (less than 65.536 KB)
 	public void testMaxPhotoSize(){
-		Bitmap bm = Bitmap.createBitmap(130, 130, Bitmap.Config.ARGB_8888); //should be 67600 bytes in size
-		Bitmap cbm = activity.compressPhoto(bm);
-		Bitmap cbm = bm;
-		assertTrue("Compressed photo too large (" + cbm.getByteCount() + ")", cbm.getByteCount() < 65536);
-	}
-	
+		Bitmap bm = BitmapFactory.decodeResource(activity.getResources(), R.drawable.compress_test_photo);
 		
-	
-	
+		// Create a Photo file for testing to avoid creating a unique file each time this test is run
+		try {			
+			FileOutputStream fos = activity.openFileOutput("compressTestPhoto.jpg", Context.MODE_PRIVATE);
+			bm.compress(CompressFormat.JPEG, 100, fos);
+			fos.flush();
+			fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		File photoFile = new File(activity.getFilesDir().getAbsolutePath() + "/compressTestPhoto.jpg");
+		photoFile = activity.compressPhoto(photoFile);
+		assertTrue("Compressed photo file too large (" + photoFile.length() + ")" + " Stored at: " + activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg", photoFile.length() < 65536);	
+	}
 }
 
 
