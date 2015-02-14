@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.graphics.Bitmap;
 import android.test.ActivityInstrumentationTestCase2;
@@ -30,6 +31,7 @@ import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.User;
 
 public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpenseActivity> {
 	
@@ -39,7 +41,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	EditText descText;
 	DatePicker datePicker;
 	EditText costText;
-	Spinner categorySpinner;
 	Spinner currencySpinner;
 	ImageButton imageButton;
 	
@@ -73,35 +74,85 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want to make one or more expense items for an expense claim,
 	// each of which has a date the expense was incurred, a category, a textual description,
 	// amount spent, and unit of currency.
+	@SuppressWarnings("deprecation")
 	public void testAddExpenseItem() {
-		//Expense expense = new Expense();
-		expense.setDate(new Date(2005,1,8));
-		expense.setCategory("fuel");
-		expense.setDesc("Description");
+		// precondition
+		User user = User.getUser();
+		assertEquals("User is claimant", "Claimant", user.type());
+		//trigger
+		final Button button1 = (Button) activity.findViewById(R.id.addExpenseButton);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		      button1.performClick();
+		    }
+		});
+		
+		Spinner category = (Spinner) activity.findViewById(R.id.spinner1);
+		category.setSelection(0);
+		
+		DatePicker date = (DatePicker) activity.findViewById(R.id.expenseDate);
+		date.setDate(new Date(2005/1/8));
+		
+		EditText editDescription = (EditText) activity.findViewById(R.id.descriptionBody);
+		editDescription.setText("Description");
+		
+		EditText editCost = (EditText) activity.findViewById(R.id.currencyBody);
 		expense.setCost(10.55);
-		expense.setCurrency("USD");
+		
+		Spinner currency = (Spinner) activity.findViewById(R.id.currencySelector);
+		currency.setSelection(0);
+		
+		//save claim
+		final Button button2 = (Button) activity.findViewById(R.id.saveExpenseButton);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		      button2.performClick();
+		    }
+		});
 		
 		// Ensure that the expense contains all of the set data
-		assertEquals("Date?", new Date(2005,1,8), expense.getDate());
+		assertEquals("Date?", new Date(2005/1/8), expense.getDate());
 		assertEquals("Category?", "fuel", expense.getCategory());
 		assertEquals("Description?", "Description", expense.getDesc());
 		assertEquals("Amount?", 10.55, expense.getCost());
 		assertEquals("Currency?", "USD", expense.getCurrency());
 		
 		// Ensure that the expense can be added to a claim
-		assertTrue("Expense in claim?", claim.getExpenses().get(0) ==  expense);
+		assertTrue("Expense in claim?", claim.getExpense(0) ==  expense);
 	}
+	
 	
 	//US04.02.01
 	// As a claimant, I want the category for an expense item to be one of air fare, ground transport,
 	// vehicle rental, private automobile, fuel, parking, registration, accommodation, meal, or supplies.
 	public void testExpenseCategory() {
 
-		// Code for initializing a list adapted on Feb 2015 from Tom's post on 
-		// https://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line 
-		List<String> categories = Arrays.asList("air fare", "ground transport", "vehicle rental", 
-				"private automobile", "fuel", "parking", "registration", "accommodation", "meal", "supplies");
+		
+		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		      button.performClick();
+		    }
+		});
 
+		ArrayList<String> categories = new ArrayList<String>();
+		categories.add("air fare");
+		categories.add("ground transport");
+		categories.add("vehicle rental");
+		categories.add("private automobile");
+		categories.add("fuel");
+		categories.add("parking");
+		categories.add("registration");
+		categories.add("accommodation");
+		categories.add("meal");
+		categories.add("supplies");
+		Spinner categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector);
     	// Ensure that there are the right number of categories in the spinner
     	assertEquals("Amount of categories?", categories.size(), categorySpinner.getAdapter().getCount());
     	
@@ -121,12 +172,21 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want the currency for an expense amount to be one of 
 	// CAD, USD, EUR, GBP, CHF, JPY, or CNY.
 	public void testAmountType() {
-
+		// go into add/edit expense
+		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		      button.performClick();
+		    }
+		});
+		
 		// Code for initializing a list adapted on Feb 2015 from Tom's post on 
 		// https://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line 
 		List<String> currencies = Arrays.asList("CAD", "USD", "EUR", "GBP", "CHF", "JPY", "CNY");
 				
-    	//Spinner currencySpinner = (Spinner) activity.findViewById(R.id.testCurrencyspinner);  
+    	Spinner currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
     	
     	// Ensure that there are the right number of currencies in the spinner
     	assertEquals("Amount of categories?", currencies.size(), currencySpinner.getAdapter().getCount());
@@ -148,19 +208,37 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want to manually flag an expense item with an incompleteness indicator, 
 	// even if all item fields have values, so that I am reminded that the item needs further editing.
 	public void testFlagExpense() {
-		// Ensure that a new expense is not flagged by default
-		assertFalse("Expense flagged by default?", expense.getFlagged());
+		Claim claim = ClaimsListController.getClaim(0);
+		Expense expense = claim.getExpense(0);
 		
-		expense.setFlagged(true);
-		assertTrue("Expense not flagged?", expense.getFlagged());
-		expense.setFlagged(false);
+		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		      button.performClick();
+		    }
+		});
 		
 		// Ensure clicking the box toggles whether or not the expense is flagged
-		CheckBox checkBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
-		checkBox.performClick();
-		assertTrue("Clicking check box does not flag expense", expense.getFlagged());		
-		checkBox.performClick();
-		assertFalse("Clicking check box does not unflag expense", expense.getFlagged());	
+		final CheckBox checkBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		    	checkBox.performClick();
+		    }
+		});
+		
+		assertTrue("Clicking check box does not flag expense", expense.checkIncomplete());		
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		    	checkBox.performClick();
+		    }
+		});
+		assertFalse("Clicking check box does not unflag expense", expense.checkIncomplete());	
 	}
 	
 	// US04.05.01
@@ -222,9 +300,26 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// US04.07.01
 	// As a claimant, I want to delete an expense item while changes are allowed.	
 	public void testDeleteExpense(){
-		Expense expense2 = new Expense();
-		claim.getExpenses().add(1, expense2);;
-		claim.removeExpense(1);
+		//preconditions - there's an expense item to delete
+		Claim claim = new Claim();
+		Expense expense = new Expense();
+		claim.addExpense(expense);
+		
+		// click on an expense and hit delete button
+		final View item = expenseListView.getAdapter().getView(0, null, null);
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// click button, should produce dialog to choose edit or delete claim
+				item.performLongClick();
+				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseDialog);
+				
+				//this should click the delete button in the dialog
+				Button deleteButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.deleteExpenseButton);
+			    deleteButton.performClick();
+			}
+		});
+		
 		assertEquals("New expense not deleted", claim.getExpenses().size(), 1);
 	}
 	
@@ -266,23 +361,20 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		imageButton.setImageDrawable(null);	
 		expense.setPhotoUri = null;
 		
+		//An editable expense is currently being edited or added and a photo is already attached to it 
 		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 		expense.setPhoto(bm);
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		
-		Button deletePhotoButton = (Button) activity.findViewById(R.id.button2);
-		claim.setStatus("Submitted");
-		deletePhotoButton.performClick();
+		//click delete photo 
+		activity.findViewById(R.id.deletePhotoButton).performClick();	
+		//click yes
+		activity.findViewById(R.id.yesdeletePhotoButton).performClick();
+		assertTrue(claim.getStatus().equals("submitted"));
 		
+		//The editable expense no longer has a photo attached to it
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		assertTrue("Image File should be set", expense.getPhotoFile() != null);
-		
-		
-		claim.setStatus("In progress");
-		deletePhotoButton.performClick();
-		
-		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);
-		assertTrue("Image File should be null", expense.getPhotoFile() == null);
 	}
 	
 	// US06.04.01
