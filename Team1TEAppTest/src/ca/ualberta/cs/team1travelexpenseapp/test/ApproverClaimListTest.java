@@ -234,7 +234,8 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 			}
 		});
 		// assert that on the screen
-		assertTrue("claim is visible",)
+		ClaimListController list = new ClaimListController();
+		assertTrue("claim is visible",list.get(0).getVisibility() == View.GONE);
 		//claim cannot be approved when claimant is the appover 
 		assertFalse(claim.setApproverName(checkuser));//In this the name of the approver should be set only if not same name
 		checkuser = New User("appover","Kim");
