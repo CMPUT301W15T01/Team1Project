@@ -188,4 +188,9 @@ public class Claim {
 		return null;
 	}
 
+	public ArrayList<Claim> getExpenses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
