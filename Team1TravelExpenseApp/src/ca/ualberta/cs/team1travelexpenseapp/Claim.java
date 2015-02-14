@@ -36,7 +36,7 @@ public class Claim {
 		return 0;
 	}
 
-	public String getDestination(int j) {
+	public String getDestination(int i) {
 		// TODO Auto-generated method stub
 		return new String();
 	}
@@ -168,12 +168,22 @@ public class Claim {
 		return new String();
 	}
 
-	public boolean addTag() {
+	public boolean addTag(String string) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	
 	public ArrayList<Tag> getTags() {
+		
+	}
+	
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getReason() {
 		// TODO Auto-generated method stub
 		return null;
 	}

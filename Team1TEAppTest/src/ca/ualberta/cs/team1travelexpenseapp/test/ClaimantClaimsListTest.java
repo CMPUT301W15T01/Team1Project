@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
 import android.nfc.Tag;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.text.format.DateFormat;
@@ -278,4 +281,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		assertTrue(counter == 3);
 		
 	}
+	
+	
+	
 }
