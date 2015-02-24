@@ -1,17 +1,18 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
-/**
- * warning 
- * skeletal code
- */
-
-//TODO create code 
-
 public class Tag {
-
+	private String tagName;
+	
+	public Tag(String name){
+		tagName=name;
+	}
+	
 	@Override
 	public String toString() {
-		// TODO create code 
-		return new String();
+		return tagName;
+	}
+	
+	public void rename(String newName){
+		this.tagName=newName;
 	}
 }
