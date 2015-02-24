@@ -1,9 +1,18 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Expense {
+	protected Date date;
+	protected String category;
+	protected String description;
+	protected BigDecimal amount;
+	protected String currency;
+	protected boolean isFlagged;
+	protected File receipt;
+	protected boolean isComplete;
 
 	public Expense(String string, Date date, String string2,
 			BigDecimal bigDecimal, String string3) {

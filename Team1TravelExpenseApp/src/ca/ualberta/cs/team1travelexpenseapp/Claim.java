@@ -2,6 +2,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Dictionary;
 
 import android.nfc.Tag;
 
@@ -13,17 +14,34 @@ import android.nfc.Tag;
 
 public class Claim { 
 	
+	protected String claimantName;
+	protected Date startDate;
+	protected Date endDate;
+	protected Dictionary<String, String> destinationReasonList;
+	protected ArrayList<Tag> claimTagList;
+	protected int status;
+	protected boolean isComplete;
+	protected ArrayList<User> approverList;
+	protected Dictionary<User, String> commentList;
+	protected ArrayList<Listener> listeners;
+	
 	public Claim() { 
-		// TODO Auto-generated constructor stub
+		claimantName = null;
+		startDate    = null;
+		endDate      = null;
+		destinationReasonList = null;
+		claimTagList          = null;
+		status                = 0;
+		isComplete            = false;
+		approverList          = null;
+		commentList           = null;
+		listeners             = null;
 	}
 
-	public Claim(String string, Date date, Date date2) {
-		// TODO Auto-generated constructor stub 
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public Claim(String cName, Date sDate, Date eDate) {
+		claimantName = cName;
+		startDate = sDate;
+		endDate = eDate;
 	}
 
 	public Date getStartDate() {
@@ -49,11 +67,6 @@ public class Claim {
 	public int getTagCount() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	public Tag getTag(int j) {
-		// TODO Auto-generated method stub
-		return new Tag();
 	}
 
 	public int getTotal(int i) {
@@ -145,6 +158,11 @@ public class Claim {
 		return str;
 	}
 
+	private Object getTag(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Expense getExpense(int i) {
 		// TODO Auto-generated method stub
 		return null;
@@ -175,7 +193,7 @@ public class Claim {
 
 	
 	public ArrayList<Tag> getTags() {
-		
+		return null;
 	}
 	
 	public String getName() {
