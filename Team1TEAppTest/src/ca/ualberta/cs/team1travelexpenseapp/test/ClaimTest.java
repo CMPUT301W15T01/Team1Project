@@ -6,6 +6,7 @@ import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+import ca.ualberta.cs.team1travelexpenseapp.User;
 
 import android.R;
 import android.nfc.Tag;
@@ -15,6 +16,8 @@ import android.test.ViewAsserts;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import junit.framework.TestCase;
 
@@ -30,7 +33,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		ClaimActivity Activity = getActivity();
 		AssertTrue("not logged in",User.loggedin());
 		//get the button and press it
-		 final Button button = (Button) Activity.findViewById(ca.ualberta.cs.R.id.addclaim);
+		 final Button button = (Button) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addclaim);
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
@@ -39,15 +42,15 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		
-		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.name);
-		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.start);
-		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.end);
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.name);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.start);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.end);
 		
 		name.setText("name");
 		start.setText("2012");
 		end.setText("2013");
 		
-		 final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
+		 final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveclaim);
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
@@ -56,7 +59,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
 		ClaimListController list = new ClaimListController();
@@ -85,15 +88,15 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	public void testEnterDestination() {
 		// Creating a claim and adding test destination values
 		Claim claim = new Claim();
-		claim.addDestination("dest 1");
-		claim.addDestination("dest 2");	
+		claim.addDestination("dest 1", null);
+		claim.addDestination("dest 2", null);	
 		ClaimListController list = new ClaimListController();
 		list.add(claim);
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
 		AssertTrue("not logged in",User.loggedin());
 		 // get list view 
- 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -106,10 +109,10 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 				
-		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.name);
-		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.start);
-		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.end);
-		EditText dest = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.destination);
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.id.name);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.start);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.end);
+		EditText dest = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.destination);
 
 				
 		name.setText("test name");
@@ -117,7 +120,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		end.setText("2013-11-11");
 		dest.setText("orlando");
 		//get button and save the edits
-		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
+		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveclaim);
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
@@ -126,7 +129,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
 		ClaimListController list = new ClaimListController();
@@ -140,7 +143,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		// Edit first value and assert they match
 		claim.editDestination(0,"dest 3");
 		assertEquals("Destination","dest 3",claim.getDestination(0));
-		assertTrue("contains claim", claim.contains("dest 3"));
+		assertTrue("contains claim", claim.getDestination("dest 3") != null );
 		assertEquals("length of destination doesn't match",3,claim.destinationCount());
 		
 	}
@@ -157,7 +160,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		ClaimActivity Activity = getActivity();
 		AssertTrue("not logged in",User.loggedin());
 		 // get list view 
- 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -195,7 +198,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		AssertTrue("not logged in",User.loggedin());
 		
 		 // get list view 
- 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -208,10 +211,10 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 				
-		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.name);
-		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.start);
-		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.end);
-		EditText dest = (EditText) Activity.findViewById(ca.ualberta.cs.R.id.destination);
+		EditText name = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.name);
+		EditText start = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.start);
+		EditText end = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.end);
+		EditText dest = (EditText) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.destination);
 
 		// Status is in progress by default		
 		name.setText("test name");
@@ -219,7 +222,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		end.setText("2013-11-11");
 		dest.setText("orlando");
 		//get button and save the edits
-		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaim);
+		final Button saveButton = (Button) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveclaim);
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
@@ -228,7 +231,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
 		ClaimListController list = new ClaimListController();
@@ -269,7 +272,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		AssertTrue("not logged in",User.loggedin());
 		
 		 // get list view 
- 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -332,10 +335,10 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		}
 		assertTrue("Tags were not added properly, strings do not match those added",tags.contains("buisness") && tags.contains("pleasure"));
 		 // get list view 
- 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
-  		Button saveClaim = (Button) Activity.findViewById(ca.ualberta.cs.R.id.saveclaimbutton);
- 		Button tagbutton = (Button) Activity.findviewById(ca.ualberta.cs.R.id.tagaddbutton);
-   		ListView tagview = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.taglistview);
+ 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
+  		Button saveClaim = (Button) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveclaimbutton);
+ 		Button tagbutton = (Button) Activity.findviewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagaddbutton);
+   		ListView tagview = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.taglistview);
 		// longclick the claim
 		  Activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -356,7 +359,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		AssertTrue(list.get(0).tagcontains("buisness"));
 		
 		// get the listview and assert that the user can see it on the screen
-		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.R.id.claimlistview);
+		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		 
 	}
