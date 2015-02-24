@@ -48,8 +48,8 @@ public class Claim {
 		return 0;
 	}
 
-	public String getDestination(String destination) {
-		return destinationReasonList.get(destination);
+	public String getDestination(int j) {
+		return destinationReasonList.get(j);
 	}
 
 	public String getStatus() {
