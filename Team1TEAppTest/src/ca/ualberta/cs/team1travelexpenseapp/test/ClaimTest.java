@@ -31,7 +31,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 	public void testAddClaim() {
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
-		AssertTrue("not logged in",User.loggedin());
+		assertTrue("not logged in",User.loggedin());
 		//get the button and press it
 		 final Button button = (Button) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addclaim);
 		  Activity.runOnUiThread(new Runnable() {
@@ -94,7 +94,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		list.add(claim);
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
-		AssertTrue("not logged in",User.loggedin());
+		assertTrue("not logged in",User.loggedin());
 		 // get list view 
  		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		// longclick the claim
@@ -158,7 +158,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		list.add(claim);
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
-		AssertTrue("not logged in",User.loggedin());
+		assertTrue("not logged in",User.loggedin());
 		 // get list view 
  		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		// longclick the claim
@@ -195,7 +195,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
 		User.login("bob");
-		AssertTrue("not logged in",User.loggedin());
+		assertTrue("not logged in",User.loggedin());
 		
 		 // get list view 
  		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
@@ -269,7 +269,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
 		User.login("bob");
-		AssertTrue("not logged in",User.loggedin());
+		assertTrue("not logged in",User.loggedin());
 		
 		 // get list view 
  		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);

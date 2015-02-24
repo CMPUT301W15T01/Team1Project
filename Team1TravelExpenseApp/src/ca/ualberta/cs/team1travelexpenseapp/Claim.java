@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
+import java.util.Enumeration;
 
 import android.nfc.Tag;
 
@@ -43,41 +44,61 @@ public class Claim {
 		endDate = eDate;
 	}
 
-	public int getDestinationCount() {
-		// TODO Auto-generated method stub
-		return 0;
+	//if destination already exist, new reason will write over old reason 
+	//else new destination will reason will be added to the dictionary 
+	public void addDestination(String destination, String reason) {
+			destinationReasonList.put(destination, reason);
 	}
-
-	public String getDestination(int j) {
-		return destinationReasonList.get(j);
+	
+	public String getReason(String destination) {
+		return destinationReasonList.get(destination);
 	}
-
-	public String getStatus() {
-		// TODO Auto-generated method stub
-		return new String();
+	
+	public Enumeration<String>  getDestinations() {
+		return destinationReasonList.keys();
 	}
-
-	public int getTagCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getTotal(int i) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public boolean submit() {
-		return false;
-		// TODO Auto-generated method stub
-	}
-
+	
 	public void setName(String name) {
 		claimantName = name;
 	}
 
+	public ArrayList<Tag> getClaimTagList() {
+		return claimTagList;
+	}
+
+	public void setClaimTagList(ArrayList<Tag> claimTagList) {
+		this.claimTagList = claimTagList;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
+
+	public ArrayList<User> getApproverList() {
+		return approverList;
+	}
+
+	public void setApproverList(ArrayList<User> approverList) {
+		this.approverList = approverList;
+	}
+
+	public Dictionary<User, String> getCommentList() {
+		return commentList;
+	}
+
 	public Date getStartDate() {
-		// TODO Auto-generated method stub
 		return startDate;
 	}
 	
@@ -86,25 +107,13 @@ public class Claim {
 	}
 	
 	public Date getEndDate() {
-		// TODO Auto-generated method stub
 		return endDate;
 	}
 	
 	public void setEndDate(Date date) {
 		endDate = date;
 	}
-	
-	//if destination already exist, new reason will write over old reason 
-	//else new destination will reason will be added to the dictionary 
-	public void addDestination(String destination, String reason) {
-			destinationReasonList.put(destination, reason);
-	}
 
-	public void addApprover(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public String toString(){
 		String str ="Start Date: "+this.getStartDate().toString()+"\n";
 		str += "Destination(s): ";
@@ -146,59 +155,5 @@ public class Claim {
 		
 		return str;
 	}
-
-	private Object getTag(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Expense getExpense(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void addExpense(Expense expense1) {
-		// TODO Auto-generated method stub
-	}
-		
-	public void addComment(String string) {
-		// TODO Auto-generated method stub
-	}
-
-	public String getApprover() {
-		// TODO Auto-generated method stub
-		return new String();
-	}
-
-	public String getComments() {
-		// TODO Auto-generated method stub
-		return new String();
-	}
-
-	public boolean addTag(String string) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	
-	public ArrayList<Tag> getTags() {
-		return null;
-	}
-	
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getReason() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArrayList<Claim> getExpenses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 }
