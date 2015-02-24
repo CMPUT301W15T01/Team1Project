@@ -27,6 +27,10 @@ public class Expense {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
 	public boolean checkIncomplete() {
 		// Checks indicator checkbox AND input fields

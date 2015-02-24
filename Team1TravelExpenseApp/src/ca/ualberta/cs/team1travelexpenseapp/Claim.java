@@ -1,9 +1,14 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Dictionary;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import android.nfc.Tag;
 
@@ -14,15 +19,16 @@ import android.nfc.Tag;
 
 public class Claim { 
 	
+	protected ArrayList<Expense> Expenses;
 	protected String claimantName;
 	protected Date startDate;
 	protected Date endDate;
-	protected Dictionary<String, String> destinationReasonList;
+	protected Map<String, String> destinationReasonList;
 	protected ArrayList<Tag> claimTagList;
 	protected int status;
 	protected boolean isComplete;
 	protected ArrayList<User> approverList;
-	protected Dictionary<User, String> commentList;
+	protected Map<User, String> commentList;
 	protected ArrayList<Listener> listeners;
 	
 	public Claim() { 
@@ -44,8 +50,17 @@ public class Claim {
 		endDate = eDate;
 	}
 
+
+	public ArrayList<Expense> getExpenses() {
+		return Expenses;
+	}
+
+	public void setExpenses(ArrayList<Expense> expenses) {
+		Expenses = expenses;
+	}
+
 	//if destination already exist, new reason will write over old reason 
-	//else new destination will reason will be added to the dictionary 
+	//else new destination will reason will be added to the Map 
 	public void addDestination(String destination, String reason) {
 			destinationReasonList.put(destination, reason);
 	}
@@ -54,8 +69,12 @@ public class Claim {
 		return destinationReasonList.get(destination);
 	}
 	
-	public Enumeration<String>  getDestinations() {
-		return destinationReasonList.keys();
+	private int getDestinationCount() {
+		return destinationReasonList.size();
+	}
+	
+	public Set<String>  getDestinations() {
+		return destinationReasonList.keySet();
 	}
 	
 	public void setName(String name) {
@@ -64,6 +83,10 @@ public class Claim {
 
 	public ArrayList<Tag> getClaimTagList() {
 		return claimTagList;
+	}
+	
+	private int getTagCount() {
+		return claimTagList.size();
 	}
 
 	public void setClaimTagList(ArrayList<Tag> claimTagList) {
@@ -94,7 +117,7 @@ public class Claim {
 		this.approverList = approverList;
 	}
 
-	public Dictionary<User, String> getCommentList() {
+	public Map<User, String> getCommentList() {
 		return commentList;
 	}
 
@@ -113,6 +136,24 @@ public class Claim {
 	public void setEndDate(Date date) {
 		endDate = date;
 	}
+	
+	public Map<String, BigDecimal> getCurrencyTotals() {
+		ArrayList<Expense> cexpenses = this.getExpenses();
+		Map<String, BigDecimal> totals = new HashMap<String, BigDecimal>();
+		while ( !cexpenses.isEmpty()) {
+			String currency = cexpenses.get(0).getCurrency();
+			if (totals.get(currency) != null) {
+				BigDecimal tempAmount = totals.get(currency);
+				tempAmount.add(cexpenses.get(0).getAmount());
+				totals.put(currency, tempAmount );
+			} else {
+				totals.put(currency, cexpenses.get(0).getAmount());
+			}
+			cexpenses.remove(0);
+		}
+		return totals;
+	}
+	
 
 	public String toString(){
 		String str ="Start Date: "+this.getStartDate().toString()+"\n";
@@ -124,10 +165,11 @@ public class Claim {
 		}
 		else{
 			//destCount-1 else extra , 
-			for(int j=0;j<destCount-1; j++){
-				str += this.getDestination(j)+", ";
+			Iterator<String> destinations = this.getDestinations().iterator();
+			for(int j=0;j<destCount-1; j++) {
+				str += destinations.next().toString() + ", ";
 			}
-			str+=this.getDestination(destCount-1)+"\n";
+			str += destinations.next().toString() + "\n";
 		}
 		str+="Status: "+this.getStatus()+"\n";
 		str+="Tag(s): ";
@@ -136,10 +178,11 @@ public class Claim {
 			str+="None";
 		}
 		else{
+			ArrayList<Tag> tags = this.getClaimTagList();
 			for(int j=0;j<tagCount-1; j++){
-				str+=this.getTag(j).toString()+", ";
+				str+= tags.get(j).toString() + ", ";
 			}
-			str+=this.getTag(tagCount-1).toString()+"\n";
+			str+= tags.get(tagCount-1).toString() + "\n";
 		}
 		str+="Totals: ";
 		int totalCount=this.getTagCount();
@@ -147,10 +190,13 @@ public class Claim {
 			str += "None";
 		}
 		else{
-			for(int j=0;j<totalCount-1; j++){
-				str+=Integer.toString(this.getTotal(j))+", ";
-			}
-			str+=this.getTotal(totalCount-1)+"\n";
+			str += getCurrencyTotals().get("CAD") + "CAD";
+			str += getCurrencyTotals().get("USD") + "USD";
+			str += getCurrencyTotals().get("EUR") + "EUR";
+			str += getCurrencyTotals().get("GBP") + "GBP";
+			str += getCurrencyTotals().get("CHF") + "CHF";
+			str += getCurrencyTotals().get("JPY") + "JPY";
+			str += getCurrencyTotals().get("CNY") + "CNY";
 		}
 		
 		return str;
