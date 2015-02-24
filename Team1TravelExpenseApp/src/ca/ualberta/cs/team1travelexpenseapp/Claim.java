@@ -44,11 +44,6 @@ public class Claim {
 		endDate = eDate;
 	}
 
-	public Date getStartDate() {
-		// TODO Auto-generated method stub
-		return new Date();
-	}
-
 	public int getDestinationCount() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -77,36 +72,36 @@ public class Claim {
 	public boolean submit() {
 		return false;
 		// TODO Auto-generated method stub
-		
-		
 	}
 
-	public void setStatus(String string) {
+	public void setName(String name) {
+		claimantName = name;
+	}
+
+	public Date getStartDate() {
 		// TODO Auto-generated method stub
-		
+		return startDate;
 	}
-
-	public boolean setName() {
+	
+	public void setStartDate(Date date) {
+		startDate = date;
+	}
+	
+	public Date getEndDate() {
 		// TODO Auto-generated method stub
-		return false;
+		return endDate;
 	}
-
+	
+	public void setEndDate(Date date) {
+		endDate = date;
+	}
+	
 	public boolean addDestination(String destination) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean addReason() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean setFromDate() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean setToDate() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -210,5 +205,6 @@ public class Claim {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

@@ -67,7 +67,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		
 		
 		// model creating a claim and adding test values
-		Claim claim = new Claim();
+		claim = new Claim();
 		claim.setName("name");
 		claim.setStartDate(new Date(2000,11,11));
 		claim.setEndDate(new Date(2015,12,12));
