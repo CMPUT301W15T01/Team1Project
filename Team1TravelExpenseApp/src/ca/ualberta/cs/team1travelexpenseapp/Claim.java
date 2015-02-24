@@ -10,7 +10,6 @@ import android.nfc.Tag;
  * warning 
  * skeletal code
  */
-// TODO create code 
 
 public class Claim { 
 	
@@ -49,9 +48,8 @@ public class Claim {
 		return 0;
 	}
 
-	public String getDestination(int i) {
-		// TODO Auto-generated method stub
-		return new String();
+	public String getDestination(String destination) {
+		return destinationReasonList.get(destination);
 	}
 
 	public String getStatus() {
@@ -96,16 +94,12 @@ public class Claim {
 		endDate = date;
 	}
 	
-	public boolean addDestination(String destination) {
-		// TODO Auto-generated method stub
-		return false;
+	//if destination already exist, new reason will write over old reason 
+	//else new destination will reason will be added to the dictionary 
+	public void addDestination(String destination, String reason) {
+			destinationReasonList.put(destination, reason);
 	}
 
-	public boolean addReason() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
 	public void addApprover(String string) {
 		// TODO Auto-generated method stub
 		
