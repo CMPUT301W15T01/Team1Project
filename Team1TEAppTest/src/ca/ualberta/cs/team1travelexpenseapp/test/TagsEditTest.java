@@ -2,6 +2,8 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.TagsListController;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -39,9 +41,9 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<EditTagActivi
 		Tag tag2=new Tag(strings[1]);
 		Tag tag3=new Tag(strings[2]);
 		
-		TagsListController.addTag(tag1);
-		TagsListController.addTag(tag2);
-		TagsListController.addTag(tag3);
+		TagListController.addTag(tag1);
+		TagListController.addTag(tag2);
+		TagListController.addTag(tag3);
 		
 		assertTrue("tags list on screen does not reflect added tags",checkTags(strings));
 		//get tag list item at position 1
@@ -114,7 +116,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<EditTagActivi
 	
 	//this function checks if the info in the tagListView match the given string array
 	private boolean checkTags(String[] strings){
-		int tagCount=TagsListController.tagCount();
+		int tagCount=TagListController.tagCount();
 		if(tagCount!=strings.length) return false;
 		
 		for(int i=0; i < tagCount; i++){

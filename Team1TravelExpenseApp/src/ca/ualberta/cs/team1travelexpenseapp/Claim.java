@@ -93,6 +93,7 @@ public class Claim {
 		claimantName = name;
 	}
 
+
 	public ArrayList<Tag> getClaimTagList() {
 		return claimTagList;
 	}
