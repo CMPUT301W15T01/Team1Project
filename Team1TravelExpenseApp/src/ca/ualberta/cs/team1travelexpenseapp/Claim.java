@@ -19,7 +19,7 @@ import android.nfc.Tag;
 
 public class Claim { 
 	
-	protected ArrayList<Expense> Expenses;
+	protected ArrayList<Expense> expenses;
 	protected String claimantName;
 	protected Date startDate;
 	protected Date endDate;
@@ -32,9 +32,9 @@ public class Claim {
 	protected ArrayList<Listener> listeners;
 	
 	public Claim() { 
-		claimantName = null;
-		startDate    = null;
-		endDate      = null;
+		claimantName          = null;
+		startDate             = null;
+		endDate               = null;
 		destinationReasonList = null;
 		claimTagList          = null;
 		status                = 0;
@@ -52,13 +52,25 @@ public class Claim {
 
 
 	public ArrayList<Expense> getExpenses() {
-		return Expenses;
+		return expenses;
 	}
 
 	public void setExpenses(ArrayList<Expense> expenses) {
-		Expenses = expenses;
+		this.expenses = expenses;
+	}
+	
+	public void addExpense(Expense expense) {
+		this.expenses.add(expense);
 	}
 
+	public void removeExpense(int index) {
+		this.expenses.remove(index);
+	}
+	
+	public void updateExpense(int index, Expense expense ) {
+		this.expenses.set(index, expense);
+	}
+	
 	//if destination already exist, new reason will write over old reason 
 	//else new destination will reason will be added to the Map 
 	public void addDestination(String destination, String reason) {
@@ -77,10 +89,13 @@ public class Claim {
 		return destinationReasonList.keySet();
 	}
 	
-	public void setName(String name) {
+	public void setClaimantName(String name) {
 		claimantName = name;
 	}
 
+	public String getClaimantName() {
+		return claimantName;
+	}
 
 	public ArrayList<Tag> getClaimTagList() {
 		return claimTagList;

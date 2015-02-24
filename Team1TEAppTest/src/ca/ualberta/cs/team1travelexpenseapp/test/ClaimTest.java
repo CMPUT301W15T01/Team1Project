@@ -62,20 +62,20 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
-		ClaimListController list = new ClaimListController();
-		Claim claim = list.get(0);
-		assertEquals("name?",claim.getName(),"name");
+		ClaimsListController list = new ClaimsListController();
+		Claim claim = list.getClaim(0);
+		assertEquals("name?",claim.getClaimantName(),"name");
 		assertEquals("start date?",new Date(2012),claim.getStartDate());
 		assertEquals("end date?",new Date(2013),claim.getEndDate());
 		
 		
 		// model creating a claim and adding test values
 		claim = new Claim();
-		claim.setName("name");
+		claim.setClaimantName("name");
 		claim.setStartDate(new Date(2000,11,11));
 		claim.setEndDate(new Date(2015,12,12));
 		final String expected = "name";
-		final String actual = claim.getName();
+		final String actual = claim.getClaimantName();
 		// Asserting that the values match
 		assertEquals("name?",expected,actual);
 		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
