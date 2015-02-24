@@ -89,10 +89,13 @@ public class Claim {
 		return destinationReasonList.keySet();
 	}
 	
-	public void setName(String name) {
+	public void setClaimantName(String name) {
 		claimantName = name;
 	}
 
+	public String getClaimantName() {
+		return claimantName;
+	}
 
 	public ArrayList<Tag> getClaimTagList() {
 		return claimTagList;
