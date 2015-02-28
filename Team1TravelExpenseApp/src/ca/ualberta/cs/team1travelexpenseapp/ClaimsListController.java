@@ -2,28 +2,50 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
-/**
- * warning 
- * skeletal code
- */
 
-//TODO create code 
 
 public class ClaimsListController {
 	
-	protected static ArrayList<Claim> claimsList = null;
+	protected static ClaimList claimsList = null;
+	protected static ClaimList displayedClaimList = null;
+	protected static Claim currentClaim = null;
+	protected static User user = null;
 	
-	public static ArrayList<Claim> getClaims() { 
+	public static ClaimList getClaims() { 
 		if (claimsList == null) {
-			claimsList = new ArrayList<Claim>();
+			claimsList = new ClaimList();
 		}
 		
 		return claimsList;
 	}
 	
-	public static Claim getClaim(int i) {
-		// TODO Auto-generated method stub
-		return ClaimsListController.getClaims().get(i);
+	public static ClaimList getDisplayedClaims() {
+		if (displayedClaimList == null) {
+			displayedClaimList = getClaims();
+		}
+		
+		return displayedClaimList;
+	}
+	
+	public static void setDisplayedClaims(ClaimList claims) {
+		displayedClaimList = claims;
+	}
+	
+	public static void setCurrentClaim(Claim claim) {
+		currentClaim = claim;
+	}
+	
+	
+	public static Claim getCurrentClaim() {
+		return currentClaim;
+	}
+	
+	public static void setUser(User theUser) {
+		user = theUser; 
+	}
+	
+	public static User getUser() {
+		return user; 
 	}
 
 	public static int getClaimCount() {

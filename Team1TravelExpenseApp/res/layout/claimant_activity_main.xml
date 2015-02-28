@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/claimsList"
         android:layout_alignTop="@+id/travelClaims"
+        android:onClick="onAddClaimClick"
         android:text="@string/add_claim" />
 
     <Button

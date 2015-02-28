@@ -2,6 +2,9 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.view.View;
+
 public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Claim> displayedClaimList;
@@ -18,6 +21,9 @@ public class ClaimList {
 	
 	public void updateClaim(Claim claim, int index){
 		claimList.set(index, claim);
+		for (Listener l : listeners) {
+			l.update();
+		}
 	}
 	
 	public Claim getClaim(int index) {
