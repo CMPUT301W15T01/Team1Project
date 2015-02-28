@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="ClaimantClaimsListActivity"
+            android:name=".ClaimantClaimsListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +33,10 @@
         <activity
             android:name=".TagManagerActivity"
             android:label="@string/title_activity_tag_manager" >
+        </activity>
+        <activity
+            android:name=".EditClaimActivity"
+            android:label="@string/title_activity_edit_claim" >
         </activity>
     </application>
 
