@@ -22,7 +22,8 @@ public class ClaimantExpenseListActivity extends Activity {
 		//the category, the textual description, amount spent, unit of currency, 
 		//and whether there is a photographic receipt.
 
-        expenseListView = (ListView) findViewById(R.id.claimsList);
+
+        expenseListView = (ListView) findViewById(R.id.expensesList);
         expenselistAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,claim.getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
 	}

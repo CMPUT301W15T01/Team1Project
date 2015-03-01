@@ -30,9 +30,6 @@ public class ClaimantClaimsListActivity extends Activity {
         listAdapter = new ArrayAdapter<Claim>(this, 
         		android.R.layout.simple_list_item_1,
         		ClaimsListController.getClaims());
-        mainListView.setAdapter(listAdapter);
-        
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
