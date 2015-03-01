@@ -11,6 +11,10 @@ public class ClaimList {
 	private ArrayList<Tag> selectedTags;
 	private ArrayList<Listener> listeners;
 	
+	public ArrayList<Claim> toArrayList() {
+		return claimList;
+	}
+	
 	public void deleteClaim(int index) {
 		claimList.remove(index);
 	}

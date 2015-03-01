@@ -28,7 +28,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		//claim status, total currency amounts, and any approver name.
 		
         mainListView = (ListView) findViewById(R.id.claimsList);
-        //listAdapter = new ArrayAdapter(this, R.layout.simple_list_item_1,ClaimsListController.getClaims());
+        listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
+        		ClaimsListController.getClaims().toArrayList());
         mainListView.setAdapter(listAdapter);
         
 	}
