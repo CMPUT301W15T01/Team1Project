@@ -2,7 +2,7 @@
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
-import android.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,8 +27,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 		
-        mainListView = (ListView) findViewById(R.id.listView);
-        listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,ClaimsListController.getClaims());
+        mainListView = (ListView) findViewById(R.id.claimsList);
+        //listAdapter = new ArrayAdapter(this, R.layout.simple_list_item_1,ClaimsListController.getClaims());
         mainListView.setAdapter(listAdapter);
         
 	}
