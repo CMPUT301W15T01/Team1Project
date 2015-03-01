@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import android.nfc.Tag;
+import android.widget.Toast;
 
 /**
  * warning 
@@ -68,6 +69,10 @@ public class Claim {
 	}
 	
 	public void updateExpense(int index, Expense expense ) {
+		// As a claimant, I want to edit an expense claim while changes are allowed.
+		if (status == 1) {
+			return;
+		}
 		this.expenses.set(index, expense);
 	}
 	
