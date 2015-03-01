@@ -27,6 +27,14 @@ public class ClaimsListController {
 		return displayedClaimList;
 	}
 	
+	public void returnClaim() {
+		//As an approver, I want to return a submitted expense claim that was not approved, 
+		//denoting the claim status as returned and setting my name as the approver for the expense claim.
+		currentClaim.setStatus(2);
+		currentClaim.getApproverList().add(user);
+		currentClaim.setApproverList(currentClaim.getApproverList());
+	}
+	
 	public static void setDisplayedClaims(ClaimList claims) {
 		displayedClaimList = claims;
 	}
