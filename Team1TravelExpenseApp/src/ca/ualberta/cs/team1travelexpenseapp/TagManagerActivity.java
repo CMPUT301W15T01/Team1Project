@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class TagManagerActivity extends Activity {
+	private TagList tagList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +22,17 @@ public class TagManagerActivity extends Activity {
 		TagListManager.initManager(this.getApplicationContext());
 		
 		final ListView tagsListView = (ListView) findViewById(R.id.tagsList);
-		Collection<Tag> tags = TagListController.getTags();
+		Collection<Tag> tags = TagListController.getTags().getTagList();
 		final ArrayList<Tag> tagsList = new ArrayList<Tag>(tags);
 		final ArrayAdapter<Tag> tagsAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tagsList);
 		tagsListView.setAdapter(tagsAdapter);
 		
 		//taken from https://github.com/abramhindle/student-picker and modified
-		TagListController.addListener(new Listener() {			
+		tagList.addListener(new Listener() {			
 			@Override
 			public void update() {
 				tagsList.clear();
-				Collection<Tag> tags = TagListController.getTags();
+				Collection<Tag> tags = TagListController.getTags().getTagList();
 				tagsList.addAll(tags);
 				tagsAdapter.notifyDataSetChanged();
 			}

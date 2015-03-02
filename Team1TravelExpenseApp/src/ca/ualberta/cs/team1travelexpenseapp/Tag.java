@@ -1,18 +1,22 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 public class Tag {
-	private String tagName;
+	private String name;
 	
 	public Tag(String name){
-		tagName=name;
+		name=name;
+	}
+	
+	public String getName(){
+		return name;
 	}
 	
 	@Override
 	public String toString() {
-		return tagName;
+		return this.getName();
 	}
 	
-	public void rename(String newName){
-		this.tagName=newName;
+	public void setName(String newName){
+		this.name=newName;
 	}
 }
