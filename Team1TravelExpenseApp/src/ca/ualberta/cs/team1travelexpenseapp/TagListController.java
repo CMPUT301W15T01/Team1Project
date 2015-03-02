@@ -3,12 +3,11 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 
 public class TagListController {
-	private static ArrayList<Tag> tagList=null;
-	private static ArrayList <Listener> listeners;
+	private static TagList tagList=null;
 
-	public static ArrayList<Tag> getTags() { 
+	public static TagList getTags() { 
 		if (tagList == null) {
-			tagList = new ArrayList<Tag>();
+			tagList = new TagList();
 		}
 		
 		return tagList;
@@ -23,18 +22,6 @@ public class TagListController {
 	}
 	
 	public static void updateTag(String newName, String oldName){
-		
-	}
-	
-	public static void saveTagList(){
-		
-	}
-	
-	public static void addListener(Listener listener){
-		
-	}
-	
-	private static void notifyListeners(){
 		
 	}
 	

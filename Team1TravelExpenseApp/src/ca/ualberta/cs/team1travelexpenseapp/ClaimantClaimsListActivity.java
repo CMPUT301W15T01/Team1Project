@@ -2,9 +2,7 @@
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
-
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,14 +30,12 @@ public class ClaimantClaimsListActivity extends Activity {
 		//claim status, total currency amounts, and any approver name.
 
         mainListView = (ListView) findViewById(R.id.claimsList);
+
         ArrayList<Claim> claims = ClaimListController.getClaimList().getClaims();
         listAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1,
         	claims);
         mainListView.setAdapter(listAdapter);
 
-        
-		
-		
 	}
 
 	@Override

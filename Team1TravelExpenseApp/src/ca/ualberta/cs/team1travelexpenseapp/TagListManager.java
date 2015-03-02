@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import android.content.Context;
 
 public class TagListManager {
-	public void saveTags(ArrayList<Tag> tagList){
+	private TagList tagList;
+	
+	public void saveTags(){
 		
 	}
 	
@@ -15,7 +17,6 @@ public class TagListManager {
 	}
 
 	public static void initManager(Context applicationContext) {
-		// TODO Auto-generated method stub
 		
 	}
 }

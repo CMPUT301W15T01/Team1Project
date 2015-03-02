@@ -1,6 +1,5 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -22,6 +21,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		//in order of entry, showing for each expense item: the date the expense was incurred,
 		//the category, the textual description, amount spent, unit of currency, 
 		//and whether there is a photographic receipt.
+
 
         expenseListView = (ListView) findViewById(R.id.expensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
