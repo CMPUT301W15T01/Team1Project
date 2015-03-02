@@ -32,7 +32,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
@@ -65,7 +65,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		
 		expense = new Expense();
 		claim = new Claim();
-		ClaimsListController.getClaims().add(0, claim);
+		ClaimListController.getClaimList().add(0, claim);
 		claim.addExpense(expense);
 		activity.setExpensePos(0);
 		activity.setClaimPos(0);
@@ -219,7 +219,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want to manually flag an expense item with an incompleteness indicator, 
 	// even if all item fields have values, so that I am reminded that the item needs further editing.
 	public void testFlagExpense() {
-		Claim claim = ClaimsListController.getClaim(0);
+		Claim claim = ClaimListController.getClaim(0);
 		Expense expense = claim.getExpense(0);
 		
 		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);

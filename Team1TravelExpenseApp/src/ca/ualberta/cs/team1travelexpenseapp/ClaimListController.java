@@ -1,19 +1,23 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 
-public class ClaimsListController {
+public class ClaimListController {
 	
 	protected static ClaimList claimsList = null;
 	protected static ClaimList displayedClaimList = null;
 	protected static Claim currentClaim = null;
 	protected static User user = null;
 	
-	public static ClaimList getClaims() { 
+	public static ClaimList getClaimList() { 
 		if (claimsList == null) {
 			claimsList = new ClaimList();
+			claimsList.setClaimList();
+			claimsList.setSelectedTags();
+			claimsList.setListeners();
 		}
 		
 		return claimsList;
@@ -21,7 +25,7 @@ public class ClaimsListController {
 	
 	public static ClaimList getDisplayedClaims() {
 		if (displayedClaimList == null) {
-			displayedClaimList = getClaims();
+			displayedClaimList = getClaimList();
 		}
 		
 		return displayedClaimList;
@@ -39,8 +43,12 @@ public class ClaimsListController {
 		displayedClaimList = claims;
 	}
 	
-	public static void setCurrentClaim(Claim claim) {
-		currentClaim = claim;
+	public static void setCurrentClaim(Claim newClaim) {
+		if (currentClaim == null) {
+			throw new RuntimeException("no current claim");
+		}
+		claimsList.updateClaim(currentClaim, newClaim);
+		
 	}
 	
 	
@@ -61,10 +69,12 @@ public class ClaimsListController {
 		return 0;
 	}
 
-	public static void addClaim(Claim claim5) {
-		// TODO Auto-generated method stub
-		
+	public static void addClaim(Claim claim) {
+		getClaimList();
+		currentClaim = claim;
+		claimsList.addClaim(currentClaim);
 	}
+	
 
 	public static Claim getSubmittedClaim(int i) {
 		// TODO Auto-generated method stub
@@ -73,7 +83,7 @@ public class ClaimsListController {
 
 	public static void clearClaims() {
 		claimsList = null;
-		getClaims();
+		getClaimList();
 		
 	}
 

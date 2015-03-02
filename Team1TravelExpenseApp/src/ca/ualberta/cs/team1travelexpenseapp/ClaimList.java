@@ -7,9 +7,12 @@ import android.view.View;
 
 public class ClaimList {
 	private ArrayList<Claim> claimList;
-	private ArrayList<Claim> displayedClaimList;
 	private ArrayList<Tag> selectedTags;
 	private ArrayList<Listener> listeners;
+	
+	public ArrayList<Claim> getClaims() {
+		return claimList;
+	}
 	
 	public void deleteClaim(int index) {
 		claimList.remove(index);
@@ -19,11 +22,16 @@ public class ClaimList {
 		claimList.add(claim);
 	}
 	
-	public void updateClaim(Claim claim, int index){
-		claimList.set(index, claim);
-		for (Listener l : listeners) {
-			l.update();
-		}
+	//pointer to currentClaim in list and newClaim 
+	public void updateClaim(Claim currentClaim, Claim newClaim){
+		currentClaim.setClaimantName(newClaim.getClaimantName());
+		currentClaim.setApproverList(newClaim.getApproverList());
+		currentClaim.setClaimTagList(newClaim.getClaimTagList());
+		currentClaim.setComplete(newClaim.isComplete());
+		currentClaim.setEndDate(newClaim.getEndDate());
+		currentClaim.setExpenses(newClaim.getExpenses());
+		currentClaim.setStartDate(newClaim.getStartDate());
+		currentClaim.setStatus(newClaim.getStatus());
 	}
 	
 	public Claim getClaim(int index) {
@@ -50,11 +58,26 @@ public class ClaimList {
 		//to do
 	}
 
-	public void onAddClaimClick() {
+	public void onAddClaim() {
 		//to do
 	}
 	
 	public void onManageTagsClick() {
 		//to do
 	}
+
+	public void setClaimList() {
+		claimList = new ArrayList<Claim>();
+	}
+	
+	public void setSelectedTags() {
+		selectedTags = new ArrayList<Tag>();
+		
+	}
+
+	public void setListeners() {
+		listeners = new ArrayList<Listener>();
+		
+	}
+	
 }
