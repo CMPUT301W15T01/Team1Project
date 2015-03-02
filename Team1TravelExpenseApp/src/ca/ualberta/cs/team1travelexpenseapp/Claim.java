@@ -34,8 +34,8 @@ public class Claim {
 	
 	public Claim() { 
 		claimantName          = null;
-		startDate             = null;
-		endDate               = null;
+		startDate             = new Date();
+		endDate               = new Date();
 		destinationReasonList = null;
 		claimTagList          = null;
 		status                = 0;
@@ -175,52 +175,19 @@ public class Claim {
 		return totals;
 	}
 	
+	public String getCurrencyTotal(String currency) {
+		return getCurrencyTotals().get(currency).toString();
+	}
+	
 
 	public String toString(){
-		String str ="Start Date: "+this.getStartDate().toString()+"\n";
-		str += "Destination(s): ";
-		//write out comma separated destinations 
-		int destCount = this.getDestinationCount();
-		if ( destCount == 0 ) {
-			str += "None";
-		}
-		else{
-			//destCount-1 else extra , 
-			Iterator<String> destinations = this.getDestinations().iterator();
-			for(int j=0;j<destCount-1; j++) {
-				str += destinations.next().toString() + ", ";
-			}
-			str += destinations.next().toString() + "\n";
-		}
-		str+="Status: "+this.getStatus()+"\n";
-		str+="Tag(s): ";
-		int tagCount=this.getTagCount();
-		if(tagCount==0){
-			str+="None";
-		}
-		else{
-			ArrayList<Tag> tags = this.getClaimTagList();
-			for(int j=0;j<tagCount-1; j++){
-				str+= tags.get(j).toString() + ", ";
-			}
-			str+= tags.get(tagCount-1).toString() + "\n";
-		}
-		str+="Totals: ";
-		int totalCount=this.getTagCount();
-		if(totalCount==0){
-			str += "None";
-		}
-		else{
-			str += getCurrencyTotals().get("CAD") + "CAD";
-			str += getCurrencyTotals().get("USD") + "USD";
-			str += getCurrencyTotals().get("EUR") + "EUR";
-			str += getCurrencyTotals().get("GBP") + "GBP";
-			str += getCurrencyTotals().get("CHF") + "CHF";
-			str += getCurrencyTotals().get("JPY") + "JPY";
-			str += getCurrencyTotals().get("CNY") + "CNY";
-		}
+		
+		String str = getClaimantName() + "\n";
+		str += "Start Date: " + this.getStartDate().toString() + "\n";
+		str += "End Date: " + getEndDate().toString() + "\n";
 		
 		return str;
+		
 	}
 	
 }

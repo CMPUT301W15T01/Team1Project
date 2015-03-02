@@ -65,7 +65,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		
 		expense = new Expense();
 		claim = new Claim();
-		ClaimsListController.getClaims().add(0, claim);
+		ClaimsListController.getClaimList().add(0, claim);
 		claim.addExpense(expense);
 		activity.setExpensePos(0);
 		activity.setClaimPos(0);

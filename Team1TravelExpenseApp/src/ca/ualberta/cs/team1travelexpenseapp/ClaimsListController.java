@@ -11,9 +11,13 @@ public class ClaimsListController {
 	protected static Claim currentClaim = null;
 	protected static User user = null;
 	
-	public static ClaimList getClaims() { 
+	public static ClaimList getClaimList() { 
 		if (claimsList == null) {
 			claimsList = new ClaimList();
+			claimsList.setClaimList();
+			claimsList.setDisplayedClaimList();
+			claimsList.setSelectedTags();
+			claimsList.setListeners();
 		}
 		
 		return claimsList;
@@ -21,7 +25,7 @@ public class ClaimsListController {
 	
 	public static ClaimList getDisplayedClaims() {
 		if (displayedClaimList == null) {
-			displayedClaimList = getClaims();
+			displayedClaimList = getClaimList();
 		}
 		
 		return displayedClaimList;
@@ -73,7 +77,7 @@ public class ClaimsListController {
 
 	public static void clearClaims() {
 		claimsList = null;
-		getClaims();
+		getClaimList();
 		
 	}
 

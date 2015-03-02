@@ -11,7 +11,7 @@ public class ClaimList {
 	private ArrayList<Tag> selectedTags;
 	private ArrayList<Listener> listeners;
 	
-	public ArrayList<Claim> toArrayList() {
+	public ArrayList<Claim> getClaims() {
 		return claimList;
 	}
 	
@@ -61,4 +61,23 @@ public class ClaimList {
 	public void onManageTagsClick() {
 		//to do
 	}
+
+	public void setClaimList() {
+		claimList = new ArrayList<Claim>();
+	}
+
+	public void setDisplayedClaimList() {
+		displayedClaimList = new ArrayList<Claim>();
+	}
+
+	public void setSelectedTags() {
+		selectedTags = new ArrayList<Tag>();
+		
+	}
+
+	public void setListeners() {
+		listeners = new ArrayList<Listener>();
+		
+	}
+	
 }

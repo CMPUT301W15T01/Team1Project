@@ -10,7 +10,7 @@ import android.widget.ListView;
 public class ClaimantExpenseListActivity extends Activity {
 
 	public Claim claim;
-	private ArrayAdapter<String> expenselistAdapter ;
+	private ArrayAdapter<Expense> expenselistAdapter ;
  	private ListView expenseListView ;
  	
 	@Override
@@ -24,7 +24,8 @@ public class ClaimantExpenseListActivity extends Activity {
 		//and whether there is a photographic receipt.
 
         expenseListView = (ListView) findViewById(R.id.expensesList);
-        expenselistAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,claim.getExpenses());
+        expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
+        		claim.getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
 	}
 

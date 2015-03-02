@@ -3,6 +3,8 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 public class ClaimantClaimsListActivity extends Activity {
 	
-	private ArrayAdapter<String> listAdapter ;
+	private ArrayAdapter<Claim> listAdapter ;
  	private ListView mainListView ;
  	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,11 +31,16 @@ public class ClaimantClaimsListActivity extends Activity {
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 		
+
         mainListView = (ListView) findViewById(R.id.claimsList);
-        listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
-        		ClaimsListController.getClaims().toArrayList());
+        ArrayList<Claim> claims = ClaimsListController.getClaimList().getClaims();
+        listAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1,
+        	claims);
         mainListView.setAdapter(listAdapter);
+
         
+		
+		
 	}
 
 	@Override
