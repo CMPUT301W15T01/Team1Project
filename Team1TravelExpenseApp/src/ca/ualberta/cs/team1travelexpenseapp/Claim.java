@@ -1,15 +1,22 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import android.nfc.Tag;
+import android.widget.Toast;
 
 /**
  * warning 
  * skeletal code
  */
-// TODO create code 
 
 public class Claim { 
 	
