@@ -30,10 +30,9 @@ public class ClaimantClaimsListActivity extends Activity {
 		//for approval, which have their claim status as submitted, showing for each claim:
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
-		
 
         mainListView = (ListView) findViewById(R.id.claimsList);
-        ArrayList<Claim> claims = ClaimsListController.getClaimList().getClaims();
+        ArrayList<Claim> claims = ClaimListController.getClaimList().getClaims();
         listAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1,
         	claims);
         mainListView.setAdapter(listAdapter);
@@ -63,7 +62,11 @@ public class ClaimantClaimsListActivity extends Activity {
 	}
 	
 	public void onAddClaimClick(View v) {
+		ClaimListController.addClaim(new Claim());
+		
 		Intent intent = new Intent(this, EditClaimActivity.class);
 		startActivity(intent);
 	}
+	
+	
 }

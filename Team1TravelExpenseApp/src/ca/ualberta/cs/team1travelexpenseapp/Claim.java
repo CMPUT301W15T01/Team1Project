@@ -33,7 +33,7 @@ public class Claim {
 	protected ArrayList<Listener> listeners;
 	
 	public Claim() { 
-		claimantName          = null;
+		claimantName          = "empty claim";
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = null;
@@ -182,7 +182,7 @@ public class Claim {
 
 	public String toString(){
 		
-		String str = getClaimantName() + "\n";
+		String str = claimantName + "\n";
 		str += "Start Date: " + this.getStartDate().toString() + "\n";
 		str += "End Date: " + getEndDate().toString() + "\n";
 		

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 
 import android.R;
@@ -62,7 +62,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
 		ViewAsserts.assertOnScreen(Activity.getWindow().getDecorView(), view);
 		//Assert values match after retreiving the claim
-		ClaimsListController list = new ClaimsListController();
+		ClaimListController list = new ClaimListController();
 		Claim claim = list.getClaim(0);
 		assertEquals("name?",claim.getClaimantName(),"name");
 		assertEquals("start date?",new Date(2012),claim.getStartDate());
@@ -285,7 +285,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		// Create a claim and add it to the controller
-		ClaimsListController list = new ClaimsListController();
+		ClaimListController list = new ClaimListController();
 		// Remove the claim and assert it's empty
 		assertTrue("empty list",list.length()==0);
 
@@ -295,7 +295,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		// Start the main activity of the application under test
 		ClaimActivity activity = getActivity();
 		// user has Created and fill the claim with values
-		ClaimsListController list = new ClaimsListController();
+		ClaimListController list = new ClaimListController();
 		Claim claim = new Claim();
 		final String expected = "name";
 		claim.setName(expected);
@@ -355,7 +355,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimActivity> {
 		    }
 		  });
 		  //get the claim and check if the claim contains the tag
-  		ClaimsListController list = new ClaimsListController();
+  		ClaimListController list = new ClaimListController();
 		AssertTrue(list.get(0).tagcontains("buisness"));
 		
 		// get the listview and assert that the user can see it on the screen

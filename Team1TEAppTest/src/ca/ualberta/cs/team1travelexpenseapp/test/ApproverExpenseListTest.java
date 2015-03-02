@@ -6,7 +6,7 @@ import java.util.Date;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import android.app.Activity;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;

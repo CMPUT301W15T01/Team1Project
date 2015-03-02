@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimsListController;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
@@ -42,7 +42,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		super.setUp();
 		//add a claim to test on
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-		ClaimsListController.addClaim(claim1);	
+		ClaimListController.addClaim(claim1);	
 		
 		Intent intent = new Intent();
 		intent.putExtra("Index", 0);
@@ -76,7 +76,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		//preconditions - User has a claim made that they are viewing 
 		User user = new User("Claimant");
 		Activity activity = getActivity();
-		Claim claim = ClaimsListController.getClaim(0);
+		Claim claim = ClaimListController.getClaim(0);
 		
 		// from http://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineConnection
 		ConnectivityManager cm =
@@ -113,7 +113,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	}
 	// old test
 	public void testSubmitClaim(){
-		final Claim claim = ClaimsListController.getClaim(0);
+		final Claim claim = ClaimListController.getClaim(0);
 		Button button = (Button) activity.findViewById(R.id.submitClaimButton);
 		button.setOnClickListener(new View.OnClickListener() {
 			
@@ -123,7 +123,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 				
 			}
 		});
-		Claim claimSubmitted = ClaimsListController.getSubmittedClaim(0);
+		Claim claimSubmitted = ClaimListController.getSubmittedClaim(0);
 		assertEquals("Claim Submitted", claim, claimSubmitted);
 		assertEquals("Claim status submitted", "Submitted", claim.getStatus());
 		assertFalse("Claim name not editable", claim.setName());
@@ -143,7 +143,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	
 	public void testSubmitWarning() {
 		//preconditions
-		Claim claim = ClaimsListController.getClaim(0);
+		Claim claim = ClaimListController.getClaim(0);
 		Expense expense = claim.getExpense(0);
 		expense.setIncomplete(true);
 		//trigger
@@ -169,7 +169,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	
 	public void testReturned() {
 		// preconditions
-		Claim claim = ClaimsListController.getReturnedClaim(1);
+		Claim claim = ClaimListController.getReturnedClaim(1);
 		
 		assertEquals("Claim status returned", "Returned", claim.getStatus());
 
@@ -205,7 +205,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	
 	public void testApproved(){
 		// precondition - claimant has an approved claim
-		Claim claim = ClaimsListController.getApprovedClaim(0);
+		Claim claim = ClaimListController.getApprovedClaim(0);
 		
 		EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
 		EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
@@ -238,7 +238,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	//whether there is a photographic receipt, and incompleteness indicator.
 	public void testListExpense(){
 		//precondition
-		Claim claim = ClaimsListController.getClaim(0);
+		Claim claim = ClaimListController.getClaim(0);
 		
 		int claimCount = expenseListView.getCount();
 		for(int i=0; i < claimCount; i++){

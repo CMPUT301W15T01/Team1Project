@@ -1,9 +1,16 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.Date;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditClaimActivity extends Activity {
 
@@ -31,4 +38,19 @@ public class EditClaimActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void onSaveClick(View v) {
+		
+		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
+		String   nameText   = nameView.getText().toString();
+		
+		Date     startDate = new Date();
+		Date     endDate   = new Date();
+		
+		ClaimListController.setCurrentClaim(new Claim(nameText, startDate, endDate));
+
+		Intent intent = new Intent(this, ClaimantClaimsListActivity.class);
+		startActivity(intent);
+	}
+	
 }
