@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,13 +43,19 @@ public class EditClaimActivity extends Activity {
 	
 	public void onSaveClick(View v) {
 		
-		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
-		String   nameText   = nameView.getText().toString();
+		TextView   nameView   = (TextView) findViewById(R.id.claimNameBody);
+		String     nameText   = nameView.getText().toString();
 		
-		Date     startDate = new Date();
-		Date     endDate   = new Date();
+		DatePicker fDateView  = (DatePicker) findViewById(R.id.claimFromDate);
+		Calendar   calendar   = Calendar.getInstance();
+		calendar.set(fDateView.getYear(), fDateView.getMonth(), fDateView.getDayOfMonth());
+		Date fromDate = calendar.getTime();
 		
-		ClaimListController.setCurrentClaim(new Claim(nameText, startDate, endDate));
+		DatePicker eDateView  = (DatePicker) findViewById(R.id.claimEndDate);
+		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
+		Date endDate = calendar.getTime();
+		
+		ClaimListController.setCurrentClaim(new Claim(nameText, fromDate, endDate));
 
 		Intent intent = new Intent(this, ClaimantClaimsListActivity.class);
 		startActivity(intent);

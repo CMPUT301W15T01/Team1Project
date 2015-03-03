@@ -1,6 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -183,7 +184,7 @@ public class Claim {
 	public String toString(){
 		
 		String str = claimantName + "\n";
-		str += "Start Date: " + this.getStartDate().toString() + "\n";
+		str += "From Date: " + getStartDate().toString() + "\n";
 		str += "End Date: " + getEndDate().toString() + "\n";
 		
 		return str;
