@@ -1,10 +1,13 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -184,8 +187,9 @@ public class Claim {
 	public String toString(){
 		
 		String str = claimantName + "\n";
-		str += "From Date: " + getStartDate().toString() + "\n";
-		str += "End Date: " + getEndDate().toString() + "\n";
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+		str += "From Date: " + dateformat.format(getStartDate()) + "\n";
+		str += "End Date: " + dateformat.format(getEndDate()) + "\n";
 		
 		return str;
 		
