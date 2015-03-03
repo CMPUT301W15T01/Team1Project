@@ -22,6 +22,20 @@ public class EditClaimActivity extends Activity {
 		setContentView(R.layout.activity_edit_claim);
 	}
 
+	//TODO 
+	//on start method that loads all of the CurrentClaim values into the editTexts
+	
+	protected void onStart(){
+		super.onStart();
+		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
+		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());
+		
+		
+		
+	}
+	
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

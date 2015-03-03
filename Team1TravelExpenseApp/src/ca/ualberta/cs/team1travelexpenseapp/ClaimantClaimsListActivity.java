@@ -3,15 +3,19 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class ClaimantClaimsListActivity extends Activity {
 	
@@ -35,6 +39,33 @@ public class ClaimantClaimsListActivity extends Activity {
         listAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1,
         	claims);
         mainListView.setAdapter(listAdapter);
+        
+        mainListView.setOnItemClickListener(new OnItemClickListener(){
+        	
+    		
+        	
+    		public void onItemClick( AdapterView Parent, View v, int position, long id){
+    			
+    			
+    			ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+    			
+    			if(ClaimListController.getCurrentClaim().getStatus()!= 1 || ClaimListController.getCurrentClaim().getStatus() != 3){
+    				
+    				//toast for debugging
+    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
+    				
+    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
+    				startActivity(edit);
+    				
+    			}// if statement
+    			
+    		}
+    	      	
+    });
+        
+        
+        
+        
 
 	}
 
