@@ -26,7 +26,9 @@ public class TagListController {
 	}
 	
 	public static void updateTag(Tag tag, String newName){
-		tag.setName(newName);
+		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+		tagArray.set(tagArray.indexOf(tag), new Tag(newName));
+		tagList.setTagList(tagArray);
 	}
 	
 	public static int tagCount() {
