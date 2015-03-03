@@ -97,7 +97,7 @@
                 android:inputType="textAutoCorrect" />
 
             <DatePicker
-                android:id="@+id/datePicker1"
+                android:id="@+id/claimFromDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -120,12 +120,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/datePicker1"
-                android:text="To Date:"
+                android:layout_below="@+id/claimFromDate"
+                android:text="End Date:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <DatePicker
-                android:id="@+id/datePicker2"
+                android:id="@+id/claimEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -137,7 +137,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                
-                 android:layout_below="@+id/datePicker2" 
+                 android:layout_below="@+id/claimEndDate" 
                  android:entries="@array/tags"/>
 
              <Button
