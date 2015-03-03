@@ -64,5 +64,10 @@ public class ClaimantClaimsListActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	public void onManageTagsClick(View v){
+		Intent intent= new Intent(this, TagManagerActivity.class);
+		startActivity(intent);
+	}
+	
 	
 }

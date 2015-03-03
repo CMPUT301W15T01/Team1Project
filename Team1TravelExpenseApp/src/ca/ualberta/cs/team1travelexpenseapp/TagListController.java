@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TagListController {
 	private static TagList tagList=null;
 
-	public static TagList getTags() { 
+	public static TagList getTagList() { 
 		if (tagList == null) {
 			tagList = new TagList();
 		}
@@ -13,20 +13,25 @@ public class TagListController {
 		return tagList;
 	}
 	
-	public static void addTag(String name){
-		
+	public static void addTag(Tag tag){
+		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+		tagArray.add(tag);
+		tagList.setTagList(tagArray);
 	}
 	
-	public static void removeTag(String name){
-		
+	public static void removeTag(Tag tag){
+		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+		tagArray.remove(tag);
+		tagList.setTagList(tagArray);
 	}
 	
-	public static void updateTag(String newName, String oldName){
-		
+	public static void updateTag(Tag tag, String newName){
+		tag.setName(newName);
 	}
 	
 	public static int tagCount() {
-		return 0;
+		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+		return tagArray.size();
 	}
 
 }
