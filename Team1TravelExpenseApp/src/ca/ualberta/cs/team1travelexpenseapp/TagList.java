@@ -37,6 +37,7 @@ public class TagList {
 
 	public void setTagList(ArrayList<Tag> tagList) {
 		this.tagList = tagList;
+		notifyListeners();
 		saveTagList();
 	}
 }

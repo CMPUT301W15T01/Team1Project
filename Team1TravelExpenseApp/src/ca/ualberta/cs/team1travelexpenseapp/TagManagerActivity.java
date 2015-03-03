@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class TagManagerActivity extends Activity {
@@ -59,5 +62,24 @@ public class TagManagerActivity extends Activity {
 	
 	public void onAddTagClick(View v){
 		
+		//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+		AlertDialog.Builder newTagDialog = new AlertDialog.Builder(this);
+		
+		final EditText nameField = new EditText(this);
+		newTagDialog.setView(nameField);
+		
+		newTagDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               String name=nameField.getText().toString();
+	               TagListController.addTag(new Tag(name));
+	           }
+	       });
+		newTagDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               //Do nothing
+	           }
+	       });
+		newTagDialog.setTitle("New Tag Name:");
+		newTagDialog.show();
 	}
 }
