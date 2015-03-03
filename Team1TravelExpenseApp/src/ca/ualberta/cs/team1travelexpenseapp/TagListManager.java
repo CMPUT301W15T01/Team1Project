@@ -7,16 +7,16 @@ import android.content.Context;
 public class TagListManager {
 	private TagList tagList;
 	
+	TagListManager(TagList tagList){
+		this.tagList=tagList;
+	}
+	
 	public void saveTags(){
 		
 	}
 	
 	public ArrayList<Tag> loadTags(){
 		return null;
-		
-	}
-
-	public static void initManager(Context applicationContext) {
 		
 	}
 }
