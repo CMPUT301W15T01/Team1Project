@@ -3,16 +3,21 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class TagManagerActivity extends Activity {
 	private TagList tagList;
@@ -38,6 +43,37 @@ public class TagManagerActivity extends Activity {
 				tagsList.addAll(tags);
 				tagsAdapter.notifyDataSetChanged();
 			}
+		});
+		
+		tagsListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,int index,
+					long id){
+						 final Tag tag= (Tag) tagsAdapter.getItem(index);
+						 AlertDialog.Builder editTagDialog = new AlertDialog.Builder(TagManagerActivity.this);
+							
+						 final EditText nameField = new EditText(TagManagerActivity.this);
+						 editTagDialog.setView(nameField);
+						 editTagDialog.setPositiveButton("save", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					               String name=nameField.getText().toString();
+					               TagListController.updateTag(tag, name);;
+					           }
+					       });
+						editTagDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					               TagListController.removeTag(tag);
+					           }
+					       });
+						editTagDialog.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					               //Do nothing
+					           }
+					       });
+						editTagDialog.setTitle("New Tag Name:");
+						editTagDialog.show();
+						return true;//not too sure on return value look into this
+					}
 		});
 	}
 
@@ -68,13 +104,13 @@ public class TagManagerActivity extends Activity {
 		final EditText nameField = new EditText(this);
 		newTagDialog.setView(nameField);
 		
-		newTagDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+		newTagDialog.setPositiveButton("save", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               String name=nameField.getText().toString();
 	               TagListController.addTag(new Tag(name));
 	           }
 	       });
-		newTagDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+		newTagDialog.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
 	               //Do nothing
 	           }
