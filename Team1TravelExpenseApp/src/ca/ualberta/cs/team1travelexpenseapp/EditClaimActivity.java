@@ -69,7 +69,7 @@ public class EditClaimActivity extends Activity {
 		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
 		Date endDate = calendar.getTime();
 		
-		ClaimListController.setCurrentClaim(new Claim(nameText, fromDate, endDate));
+		ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
 
 		Intent intent = new Intent(this, ClaimantClaimsListActivity.class);
 		startActivity(intent);

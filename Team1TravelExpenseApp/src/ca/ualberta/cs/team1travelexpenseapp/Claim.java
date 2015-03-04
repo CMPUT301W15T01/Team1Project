@@ -187,7 +187,9 @@ public class Claim {
 	public String toString(){
 		
 		String str = claimantName + "\n";
-		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+		
+		//date format, has year month day 
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		str += "From Date: " + dateformat.format(getStartDate()) + "\n";
 		str += "End Date: " + dateformat.format(getEndDate()) + "\n";
 		

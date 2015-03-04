@@ -43,7 +43,7 @@ public class ClaimListController {
 		displayedClaimList = claims;
 	}
 	
-	public static void setCurrentClaim(Claim newClaim) {
+	public static void updateCurrentClaim(Claim newClaim) {
 		if (currentClaim == null) {
 			throw new RuntimeException("no current claim");
 		}

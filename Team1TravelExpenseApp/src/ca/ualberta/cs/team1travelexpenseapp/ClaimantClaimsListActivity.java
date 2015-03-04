@@ -47,7 +47,7 @@ public class ClaimantClaimsListActivity extends Activity {
     		public void onItemClick( AdapterView Parent, View v, int position, long id){
     			
     			
-    			ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+    			ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
     			
     			if(ClaimListController.getCurrentClaim().getStatus()!= 1 || ClaimListController.getCurrentClaim().getStatus() != 3){
     				
