@@ -21,6 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class TagManagerActivity extends Activity {
 	private TagList tagList;
+	public AlertDialog newTagDialog;
+	public AlertDialog editTagDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,31 +52,59 @@ public class TagManagerActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,int index,
 					long id){
 						 final Tag tag= (Tag) tagsAdapter.getItem(index);
-						 AlertDialog.Builder editTagDialog = new AlertDialog.Builder(TagManagerActivity.this);
-							
-						 final EditText nameField = new EditText(TagManagerActivity.this);
-						 editTagDialog.setView(nameField);
-						 editTagDialog.setPositiveButton("save", new DialogInterface.OnClickListener() {
+						 
+						//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+						 AlertDialog.Builder editTagDialogBuilder = new AlertDialog.Builder(TagManagerActivity.this);
+						
+						 editTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
+						 editTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
+					        	   EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
 					               String name=nameField.getText().toString();
 					               TagListController.updateTag(tag, name);;
 					           }
 					       });
-						editTagDialog.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+						editTagDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
 					               TagListController.removeTag(tag);
 					           }
 					       });
-						editTagDialog.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+						editTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
 					               //Do nothing
 					           }
 					       });
-						editTagDialog.setTitle("New Tag Name:");
+						editTagDialogBuilder.setTitle("New Tag Name:");
+						editTagDialog=editTagDialogBuilder.create();
 						editTagDialog.show();
+						EditText nameField=((EditText) editTagDialog.findViewById(R.id.simpleEditText));
+						nameField.setText(tag.toString());
 						return true;//not too sure on return value look into this
 					}
 		});
+		
+		//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+		AlertDialog.Builder newTagDialogBuilder = new AlertDialog.Builder(this);
+		
+		newTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
+		
+		newTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
+	               String name=nameField.getText().toString();
+	               TagListController.addTag(new Tag(name));
+	           }
+	       });
+		newTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               //Do nothing
+	           }
+	       });
+		newTagDialogBuilder.setTitle("New Tag Name:");
+		newTagDialog=newTagDialogBuilder.create();
+		
+		
+		
 	}
 
 	@Override
@@ -97,25 +127,8 @@ public class TagManagerActivity extends Activity {
 	}
 	
 	public void onAddTagClick(View v){
-		
-		//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
-		AlertDialog.Builder newTagDialog = new AlertDialog.Builder(this);
-		
-		final EditText nameField = new EditText(this);
-		newTagDialog.setView(nameField);
-		
-		newTagDialog.setPositiveButton("save", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
-	               String name=nameField.getText().toString();
-	               TagListController.addTag(new Tag(name));
-	           }
-	       });
-		newTagDialog.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
-	           public void onClick(DialogInterface dialog, int id) {
-	               //Do nothing
-	           }
-	       });
-		newTagDialog.setTitle("New Tag Name:");
 		newTagDialog.show();
+		EditText nameField=(EditText) newTagDialog.findViewById(R.id.simpleEditText);
+		nameField.setText("");
 	}
 }
