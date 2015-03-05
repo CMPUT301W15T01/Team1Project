@@ -55,24 +55,11 @@ public class EditClaimActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void onSaveClick(View v) {
-		
-		TextView   nameView   = (TextView) findViewById(R.id.claimNameBody);
-		String     nameText   = nameView.getText().toString();
-		
-		DatePicker fDateView  = (DatePicker) findViewById(R.id.claimFromDate);
-		Calendar   calendar   = Calendar.getInstance();
-		calendar.set(fDateView.getYear(), fDateView.getMonth(), fDateView.getDayOfMonth());
-		Date fromDate = calendar.getTime();
-		
-		DatePicker eDateView  = (DatePicker) findViewById(R.id.claimEndDate);
-		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
-		Date endDate = calendar.getTime();
-		
-		ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
-
-		Intent intent = new Intent(this, ClaimantClaimsListActivity.class);
-		startActivity(intent);
-	}
 	
+	public void onSaveClick(View v) {
+
+		//editing model happens in controller 
+		ClaimListController.onSaveClick(this);
+	}
+
 }

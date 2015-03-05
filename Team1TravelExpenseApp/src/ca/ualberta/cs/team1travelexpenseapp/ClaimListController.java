@@ -1,7 +1,14 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 
 
@@ -52,6 +59,37 @@ public class ClaimListController {
 	}
 	
 	
+	public static void onSaveClick(EditClaimActivity activity) {
+		
+		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
+		String     nameText   = nameView.getText().toString();
+		
+		DatePicker fDateView  = (DatePicker) activity.findViewById(R.id.claimFromDate);
+		Calendar   calendar   = Calendar.getInstance();
+		calendar.set(fDateView.getYear(), fDateView.getMonth(), fDateView.getDayOfMonth());
+		Date fromDate = calendar.getTime();
+		
+		DatePicker eDateView  = (DatePicker) activity.findViewById(R.id.claimEndDate);
+		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
+		Date endDate = calendar.getTime();
+		
+		
+		ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
+		
+		
+		Intent intent = new Intent(activity, ClaimantClaimsListActivity.class);
+		activity.startActivity(intent);
+		
+	}
+	
+	public static void onAddClaimClick(ClaimantClaimsListActivity activity) {
+		ClaimListController.addClaim(new Claim());
+		Intent intent = new Intent(activity, EditClaimActivity.class);
+		activity.startActivity(intent);
+		
+	}
+	
+	
 	public static Claim getCurrentClaim() {
 		return currentClaim;
 	}
@@ -65,8 +103,7 @@ public class ClaimListController {
 	}
 
 	public static int getClaimCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return claimsList.getClaims().size();
 	}
 
 	public static void addClaim(Claim claim) {
@@ -96,5 +133,5 @@ public class ClaimListController {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 }

@@ -89,10 +89,8 @@ public class ClaimantClaimsListActivity extends Activity {
 	}
 	
 	public void onAddClaimClick(View v) {
-		ClaimListController.addClaim(new Claim());
-		
-		Intent intent = new Intent(this, EditClaimActivity.class);
-		startActivity(intent);
+
+		ClaimListController.onAddClaimClick(this);
 	}
 	
 	public void onManageTagsClick(View v){
