@@ -38,6 +38,10 @@
             android:name=".EditClaimActivity"
             android:label="@string/title_activity_edit_claim" >
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
     </application>
 
 </manifest>

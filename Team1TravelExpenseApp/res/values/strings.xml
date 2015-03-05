@@ -59,5 +59,6 @@
     <string name="title_activity_edit_expense">EditExpenseActivity</string>
     <string name="title_activity_tag_manager">TagManagerActivity</string>
     <string name="title_activity_edit_claim">EditClaimActivity.java</string>
+    <string name="title_activity_login">LoginActivity</string>
 
 </resources>
