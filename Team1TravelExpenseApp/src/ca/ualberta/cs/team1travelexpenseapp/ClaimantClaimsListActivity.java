@@ -29,6 +29,7 @@ public class ClaimantClaimsListActivity extends Activity {
 	private ClaimList claimList;
  	private ListView mainListView ;
  	public AlertDialog editClaimDialog;
+ 	private Listener listener;
  	
 	
 	@Override
@@ -50,8 +51,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
   		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
   		mainListView.setAdapter(claimsAdapter);
-        
-        claimList.addListener(new Listener() {			
+  		
+  		listener=new Listener() {			
 			@Override
 			public void update() {
 				claimsList.clear();
@@ -59,7 +60,9 @@ public class ClaimantClaimsListActivity extends Activity {
 				claimsList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
 			}
-		});
+		};
+        
+        claimList.addListener(listener);
         
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
@@ -142,6 +145,10 @@ public class ClaimantClaimsListActivity extends Activity {
 	public void onManageTagsClick(View v){
 		Intent intent= new Intent(this, TagManagerActivity.class);
 		startActivity(intent);
+	}
+	
+	public void onDestory(){
+		claimList.removeListener(listener);
 	}
 	
 	

@@ -120,7 +120,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 	
 	//this function checks if the info in the tagListView match the given string array
 	private boolean checkTags(String[] strings){
-		int tagCount=TagListController.tagCount();
+		int tagCount=TagListController.getTagList().getTags().size();
 		if(tagCount!=strings.length) return false;
 		
 		for(int i=0; i < tagCount; i++){
