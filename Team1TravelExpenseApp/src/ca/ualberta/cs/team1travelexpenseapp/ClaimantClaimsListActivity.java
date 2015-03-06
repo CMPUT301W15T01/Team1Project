@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 public class ClaimantClaimsListActivity extends Activity {
 	
-	private ArrayAdapter<Claim> listAdapter ;
 	private ClaimList claimList;
  	private ListView mainListView ;
  	public AlertDialog editClaimDialog;
@@ -67,7 +66,7 @@ public class ClaimantClaimsListActivity extends Activity {
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView Parent, View v, int position, long id){
-        		ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+        		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
         	}
@@ -76,7 +75,7 @@ public class ClaimantClaimsListActivity extends Activity {
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
     		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
-    			 ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+    			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
