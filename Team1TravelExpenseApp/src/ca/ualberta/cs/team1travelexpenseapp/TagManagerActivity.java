@@ -59,14 +59,12 @@ public class TagManagerActivity extends Activity {
 						 editTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
 						 editTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
-					               String name=nameField.getText().toString();
-					               TagListController.updateTag(tag, name);;
+					        	   TagListController.onSetTagClick(dialog, id, tag);
 					           }
 					       });
 						editTagDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					               TagListController.removeTag(tag);
+					        	   TagListController.onRemoveTagClick(dialog, id, tag);
 					           }
 					       });
 						editTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
@@ -90,9 +88,7 @@ public class TagManagerActivity extends Activity {
 		
 		newTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
-	               String name=nameField.getText().toString();
-	               TagListController.addTag(new Tag(name));
+	               TagListController.onAddTagClick(dialog,id);
 	           }
 	       });
 		newTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
@@ -102,8 +98,6 @@ public class TagManagerActivity extends Activity {
 	       });
 		newTagDialogBuilder.setTitle("New Tag Name:");
 		newTagDialog=newTagDialogBuilder.create();
-		
-		
 		
 	}
 
