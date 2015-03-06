@@ -23,6 +23,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		//and whether there is a photographic receipt.
 
 
+		// TODO: need to set the claim, probably in onStart? 
         expenseListView = (ListView) findViewById(R.id.expensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenses());
