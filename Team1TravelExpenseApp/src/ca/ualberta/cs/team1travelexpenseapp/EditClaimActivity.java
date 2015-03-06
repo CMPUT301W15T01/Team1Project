@@ -28,10 +28,7 @@ public class EditClaimActivity extends Activity {
 	protected void onStart(){
 		super.onStart();
 		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
-		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());
-		
-		
-		
+		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());	
 	}
 	
 	

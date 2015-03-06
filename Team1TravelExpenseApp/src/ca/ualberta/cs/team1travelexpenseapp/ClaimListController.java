@@ -22,9 +22,6 @@ public class ClaimListController {
 	public static ClaimList getClaimList() { 
 		if (claimsList == null) {
 			claimsList = new ClaimList();
-			claimsList.setClaimList();
-			claimsList.setSelectedTags();
-			claimsList.setListeners();
 		}
 		
 		return claimsList;
@@ -56,6 +53,12 @@ public class ClaimListController {
 		}
 		claimsList.updateClaim(currentClaim, newClaim);
 		
+	}
+	
+	public static void deleteClaim(Claim claim){
+		ArrayList<Claim> claims=claimsList.getClaims();
+		claims.remove(claim);
+		claimsList.setClaimList(claims);
 	}
 	
 	
@@ -132,6 +135,13 @@ public class ClaimListController {
 	public static Claim getApprovedClaim(int i) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static void onRemoveClaimClick() {
+		ArrayList<Claim> claims = getClaimList().getClaims();
+		claims.remove(currentClaim);
+		claimsList.setClaimList(claims);
+		
 	}
 	
 }

@@ -16,10 +16,6 @@
     <string name="edit">Edit Claim</string>
 
     <string-array name="tags">
-        <item>Important</item>
-        <item>Buisness</item>
-        <item>Pleasure</item>
-        <item>Top secret</item>
     </string-array>
     <string-array name="expense_categories">
         <item>air fare</item>

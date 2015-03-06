@@ -3,8 +3,12 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ExpandableListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -20,7 +26,9 @@ import android.widget.Toast;
 public class ClaimantClaimsListActivity extends Activity {
 	
 	private ArrayAdapter<Claim> listAdapter ;
+	private ClaimList claimList;
  	private ListView mainListView ;
+ 	public AlertDialog editClaimDialog;
  	
 	
 	@Override
@@ -34,31 +42,70 @@ public class ClaimantClaimsListActivity extends Activity {
 		//claim status, total currency amounts, and any approver name.
 
         mainListView = (ListView) findViewById(R.id.claimsList);
-
-        ArrayList<Claim> claims = ClaimListController.getClaimList().getClaims();
-        listAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1,
-        	claims);
-        mainListView.setAdapter(listAdapter);
+        
+      //taken from https://github.com/abramhindle/student-picker and modified
+  		final ListView claimsListView = (ListView) findViewById(R.id.claimsList);
+  		claimList=ClaimListController.getClaimList();
+  		Collection<Claim> claims = claimList.getClaims();
+		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
+  		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
+  		mainListView.setAdapter(claimsAdapter);
+        
+        claimList.addListener(new Listener() {			
+			@Override
+			public void update() {
+				claimsList.clear();
+				Collection<Claim> claims = ClaimListController.getClaimList().getClaims();
+				claimsList.addAll(claims);
+				claimsAdapter.notifyDataSetChanged();
+			}
+		});
+        
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
+        	public void onItemClick( AdapterView Parent, View v, int position, long id){
+        		ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+        		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
+        		startActivity(intent);
+        	}
+        });
         	
-    		
+       mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
-    		public void onItemClick( AdapterView Parent, View v, int position, long id){
+    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
+    			 ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
     			
-    			
-    			ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
-    			
-    			if(ClaimListController.getCurrentClaim().getStatus()!= 1 || ClaimListController.getCurrentClaim().getStatus() != 3){
-    				
-    				//toast for debugging
-    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
-    				
-    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
-    				startActivity(edit);
-    				
-    			}// if statement
-    			
+    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
+				
+				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			    			if(ClaimListController.getCurrentClaim().getStatus()!= 1 || ClaimListController.getCurrentClaim().getStatus() != 3){
+			    				
+			    				//toast for debugging
+			    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
+			    				
+			    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
+			    				startActivity(edit);
+			    				
+			    			}// if statement
+			           }
+			       });
+				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   ClaimListController.onRemoveClaimClick();
+			           }
+			       });
+				editClaimDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			               //Do nothing
+			           }
+			       });
+				editClaimDialogBuilder.setTitle("Edit/Delete Claim?");
+				editClaimDialog=editClaimDialogBuilder.create();
+				editClaimDialog.show();
+				return true;//not too sure on return value look into this
     		}
     	      	
     });
@@ -89,7 +136,6 @@ public class ClaimantClaimsListActivity extends Activity {
 	}
 	
 	public void onAddClaimClick(View v) {
-
 		ClaimListController.onAddClaimClick(this);
 	}
 	
