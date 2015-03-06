@@ -88,5 +88,9 @@ public class ClaimList {
 		this.listeners = listeners;
 		
 	}
+
+	public void removeListener(Listener listener) {
+		listeners.remove(listener);
+	}
 	
 }
