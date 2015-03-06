@@ -29,9 +29,6 @@ public class ClaimantClaimsListActivity extends Activity {
 
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
-
- 	private ListView mainListView ;
- 	public AlertDialog editClaimDialog;
  	private Listener listener;
 
  	
