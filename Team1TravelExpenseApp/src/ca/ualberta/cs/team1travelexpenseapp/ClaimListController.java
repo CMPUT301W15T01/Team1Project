@@ -55,6 +55,10 @@ public class ClaimListController {
 		
 	}
 	
+	public static void setCurrentClaim(Claim claim){
+		currentClaim=claim;
+	}
+	
 	public static void deleteClaim(Claim claim){
 		ArrayList<Claim> claims=claimsList.getClaims();
 		claims.remove(claim);

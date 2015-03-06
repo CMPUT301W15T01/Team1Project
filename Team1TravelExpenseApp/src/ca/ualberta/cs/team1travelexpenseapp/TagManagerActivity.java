@@ -23,6 +23,7 @@ public class TagManagerActivity extends Activity {
 	private TagList tagList;
 	public AlertDialog newTagDialog;
 	public AlertDialog editTagDialog;
+	private Listener listener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class TagManagerActivity extends Activity {
 		final ArrayAdapter<Tag> tagsAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tagsList);
 		tagsListView.setAdapter(tagsAdapter);
 		
-		tagList.addListener(new Listener() {			
+		listener=new Listener() {			
 			@Override
 			public void update() {
 				tagsList.clear();
@@ -45,7 +46,9 @@ public class TagManagerActivity extends Activity {
 				tagsList.addAll(tags);
 				tagsAdapter.notifyDataSetChanged();
 			}
-		});
+		};
+		
+		tagList.addListener(listener);
 		
 		tagsListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 			@Override
@@ -124,5 +127,9 @@ public class TagManagerActivity extends Activity {
 		newTagDialog.show();
 		EditText nameField=(EditText) newTagDialog.findViewById(R.id.simpleEditText);
 		nameField.setText("");
+	}
+	
+	public void onDestroy(){
+		tagList.removeListener(listener);
 	}
 }

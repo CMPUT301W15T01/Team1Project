@@ -25,10 +25,10 @@ import android.widget.Toast;
 
 public class ClaimantClaimsListActivity extends Activity {
 	
-	private ArrayAdapter<Claim> listAdapter ;
 	private ClaimList claimList;
  	private ListView mainListView ;
  	public AlertDialog editClaimDialog;
+ 	private Listener listener;
  	
 	
 	@Override
@@ -50,8 +50,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
   		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
   		mainListView.setAdapter(claimsAdapter);
-        
-        claimList.addListener(new Listener() {			
+  		
+  		listener=new Listener() {			
 			@Override
 			public void update() {
 				claimsList.clear();
@@ -59,12 +59,14 @@ public class ClaimantClaimsListActivity extends Activity {
 				claimsList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
 			}
-		});
+		};
+        
+        claimList.addListener(listener);
         
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView Parent, View v, int position, long id){
-        		ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+        		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
         	}
@@ -73,7 +75,7 @@ public class ClaimantClaimsListActivity extends Activity {
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
     		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
-    			 ClaimListController.updateCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+    			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
@@ -142,6 +144,10 @@ public class ClaimantClaimsListActivity extends Activity {
 	public void onManageTagsClick(View v){
 		Intent intent= new Intent(this, TagManagerActivity.class);
 		startActivity(intent);
+	}
+	
+	public void onDestory(){
+		claimList.removeListener(listener);
 	}
 	
 	
