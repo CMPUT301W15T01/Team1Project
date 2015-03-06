@@ -37,7 +37,7 @@ public class Claim {
 	protected ArrayList<Listener> listeners;
 	
 	public Claim() { 
-		claimantName          = "empty claim";
+		claimantName          = " ";
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
@@ -196,6 +196,19 @@ public class Claim {
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		str += "From Date: " + dateformat.format(getStartDate()) + "\n";
 		str += "End Date: " + dateformat.format(getEndDate()) + "\n";
+		Iterator<String> destinations = getDestinations().iterator();
+		str += "Destinations:";
+		while (destinations.hasNext()) {
+			String tempDest = destinations.next();
+			if (destinations.hasNext() || (getDestinationCount() == 1) ) {
+				str += " " + tempDest;
+				if (getDestinationCount() != 1) {
+					str += ",";
+				}
+			} else {
+				str += " and " + tempDest;
+			}
+		}
 		
 		return str;
 		

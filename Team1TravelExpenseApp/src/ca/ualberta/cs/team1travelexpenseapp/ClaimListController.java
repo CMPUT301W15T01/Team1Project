@@ -104,8 +104,8 @@ public class ClaimListController {
 		Claim claim = ClaimListController.getCurrentClaim();
 		Map<String, String> drlist = claim.getDestinationReasonList();
 		drlist.put(destination.getText().toString(), reason.getText().toString());
-		destination.setText(" ");
-		reason.setText(" ");
+		destination.setText("");
+		reason.setText("");
 	}
 	
 	public static Claim getCurrentClaim() {
