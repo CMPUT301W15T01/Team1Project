@@ -15,7 +15,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.claimant_activity_main);
+		setContentView(R.layout.claimant_display_expenses);
 		
 		//As an approver, I want to list all the expense items for a submitted claim,
 		//in order of entry, showing for each expense item: the date the expense was incurred,

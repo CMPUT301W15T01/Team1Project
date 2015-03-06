@@ -10,6 +10,12 @@ public class ClaimList {
 	private ArrayList<Tag> selectedTags;
 	private ArrayList<Listener> listeners;
 	
+	ClaimList(){
+		claimList = new ArrayList<Claim>();
+		selectedTags = new ArrayList<Tag>();
+		listeners = new ArrayList<Listener>();
+	}
+	
 	public ArrayList<Claim> getClaims() {
 		return claimList;
 	}
@@ -47,11 +53,13 @@ public class ClaimList {
 	}
 	
 	public void addListener(Listener listener) {
-		//to do
+		this.listeners.add(listener);
 	}
 	
 	private void notifyListeners() {
-		//to do
+		for(int i=0; i<listeners.size();i++){
+			listeners.get(i).update();
+		}
 	}
 	
 	public void onAddDRClick() {
@@ -66,17 +74,18 @@ public class ClaimList {
 		//to do
 	}
 
-	public void setClaimList() {
-		claimList = new ArrayList<Claim>();
+	public void setClaimList(ArrayList<Claim> claims) {
+		this.claimList = claims;
+		notifyListeners();
 	}
 	
-	public void setSelectedTags() {
-		selectedTags = new ArrayList<Tag>();
+	public void setSelectedTags(ArrayList<Tag> tags) {
+		this.selectedTags = tags;
 		
 	}
 
-	public void setListeners() {
-		listeners = new ArrayList<Listener>();
+	public void setListeners(ArrayList<Listener> listeners) {
+		this.listeners = listeners;
 		
 	}
 	
