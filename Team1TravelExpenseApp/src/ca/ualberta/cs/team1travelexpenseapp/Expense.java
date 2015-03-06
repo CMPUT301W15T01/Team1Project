@@ -2,7 +2,10 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class Expense {
 	protected Date date;
@@ -64,27 +67,41 @@ public class Expense {
 
 	public Object getDate() {
 		// TODO Auto-generated method stub
-		return null;
+		return date;
 	}
 
 	public String getCategory() {
 		// TODO Auto-generated method stub
-		return null;
+		return category;
 	}
 
 	public String getDesc() {
 		// TODO Auto-generated method stub
-		return null;
+		return description;
 	}
 
 	public Object getCost() {
 		// TODO Auto-generated method stub
-		return null;
+		return amount;
 	}
 
 	public String getCurrency() {
 		// TODO Auto-generated method stub
-		return null;
+		return currency;
+	}
+	
+	public String toString() {
+		String str = "";
+		
+		//date format, has year month day 
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		str += "Date: " + dateformat.format(getDate()) + "\n";
+		str += getCategory() + "\n";
+		str += getDesc() +"\n";
+		str += getAmount() + getCurrency() + "\n";
+		str += "Photographic Receipt: " + receipt.exists();
+		
+		return str;
 	}
 
 }

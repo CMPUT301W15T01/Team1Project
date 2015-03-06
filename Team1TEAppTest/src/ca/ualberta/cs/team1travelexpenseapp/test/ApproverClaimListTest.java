@@ -4,7 +4,11 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.User;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -174,7 +178,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		
 		  Expense expense = DummyExpense();
 		  ApproverExpenseActivity ApproverActivity = new ApproverExpenseActivity();
-		  ClaimlistController controller = new ClaimlistController();
+		  ClaimListController controller = new ClaimListController();
 		  
 		  Claim claim = DummyClaim();
 		  claim.addExpense(expense);
@@ -291,14 +295,14 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 	public void testApproverNameAttached(){
 		
 		Claimlist list = new ClaimList();
-		Claim claim = new DummyClaim("claimant","Jonh")
+		Claim claim = new DummyClaim("claimant","Jonh");
 		list.addClaim(claim);
 		
 		
 		ApproverClaimActivity activity = startWithClaims(list);
 		
-		User checkuser = New User("appover","John");
-	
+		User checkuser = new User("appover","John");
+		
 		//get activity and assert user has logged in
 		ClaimActivity Activity = getActivity();
 		AssertTrue("not logged in",User.loggedin());
@@ -320,7 +324,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 		assertTrue("claim is visible",list.get(0).getVisibility() == View.GONE);
 		//claim cannot be approved when claimant is the appover 
 		assertFalse(claim.setApproverName(checkuser));//In this the name of the approver should be set only if not same name
-		checkuser = New User("appover","Kim");
+		checkuser = new User("appover","Kim");
 		assertTrue(claim.setApproverName(checkuser));//In this the name of the approver should be set only if not same name
 		
 		ClaimantClaimsListActivity ClaimantActivity = new ClaimantClaimsListActivity();

@@ -8,6 +8,7 @@ import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import android.app.Activity;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
@@ -64,7 +65,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		 * */
 		public void testApproverClaimsVisible(){	
 			
-			ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
+			ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverExpenseListActivity.class.getName(), null, false);
 			UserSelectActivity  userSelect = new UserSelectActivity();
 			
 			final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
