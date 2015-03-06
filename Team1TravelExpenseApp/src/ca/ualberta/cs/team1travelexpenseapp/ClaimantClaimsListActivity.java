@@ -27,8 +27,8 @@ public class ClaimantClaimsListActivity extends Activity {
 	
 	private ArrayAdapter<Claim> listAdapter ;
 	private ClaimList claimList;
- 	private ListView mainListView ;
- 	public AlertDialog editClaimDialog;
+ 	private ListView mainListView;
+ 	public  AlertDialog editClaimDialog;
  	
 	
 	@Override

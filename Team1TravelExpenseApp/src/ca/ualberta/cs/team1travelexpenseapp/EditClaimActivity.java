@@ -58,5 +58,10 @@ public class EditClaimActivity extends Activity {
 		//editing model happens in controller 
 		ClaimListController.onSaveClick(this);
 	}
+	
+	public void onAddDestinationClick(View v) {
+		
+		ClaimListController.onAddDestinationClick(this);
+	}
 
 }

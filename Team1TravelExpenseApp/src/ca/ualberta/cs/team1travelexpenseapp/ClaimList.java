@@ -31,13 +31,13 @@ public class ClaimList {
 	//pointer to currentClaim in list and newClaim 
 	public void updateClaim(Claim currentClaim, Claim newClaim){
 		currentClaim.setClaimantName(newClaim.getClaimantName());
-		currentClaim.setApproverList(newClaim.getApproverList());
-		currentClaim.setClaimTagList(newClaim.getClaimTagList());
-		currentClaim.setComplete(newClaim.isComplete());
+		//currentClaim.setApproverList(newClaim.getApproverList());
+		//currentClaim.setClaimTagList(newClaim.getClaimTagList());
+		//currentClaim.setComplete(newClaim.isComplete());
 		currentClaim.setEndDate(newClaim.getEndDate());
-		currentClaim.setExpenses(newClaim.getExpenses());
+		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
-		currentClaim.setStatus(newClaim.getStatus());
+		//currentClaim.setStatus(newClaim.getStatus());
 	}
 	
 	public Claim getClaim(int index) {

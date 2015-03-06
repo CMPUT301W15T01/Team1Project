@@ -3,11 +3,13 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -92,6 +94,15 @@ public class ClaimListController {
 		
 	}
 	
+	public static void onAddDestinationClick(EditClaimActivity activity) {
+		EditText destination = (EditText) activity.findViewById(R.id.claimDestinationBody);
+		EditText reason      = (EditText) activity.findViewById(R.id.claimReasonBody);
+		Claim claim = ClaimListController.getCurrentClaim();
+		Map<String, String> drlist = claim.getDestinationReasonList();
+		drlist.put(destination.getText().toString(), reason.getText().toString());
+		destination.setText(" ");
+		reason.setText(" ");
+	}
 	
 	public static Claim getCurrentClaim() {
 		return currentClaim;

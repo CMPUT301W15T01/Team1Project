@@ -40,7 +40,7 @@ public class Claim {
 		claimantName          = "empty claim";
 		startDate             = new Date();
 		endDate               = new Date();
-		destinationReasonList = null;
+		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = null;
 		status                = 0;
 		isComplete            = false;
@@ -88,6 +88,10 @@ public class Claim {
 	
 	public String getReason(String destination) {
 		return destinationReasonList.get(destination);
+	}
+	
+	public Map<String, String> getDestinationReasonList() {
+		return destinationReasonList;
 	}
 	
 	private int getDestinationCount() {
