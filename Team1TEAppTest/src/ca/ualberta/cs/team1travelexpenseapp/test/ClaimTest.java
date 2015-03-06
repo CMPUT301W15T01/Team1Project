@@ -39,7 +39,12 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	//US01.01.01
 	public void testAddClaimNameAndDate() {
 		//get activity and assert user has logged in
-		Activity activity = getActivity();
+		Intent intent = new Intent();
+		setActivityIntent(intent);
+		final Activity activity = getActivity();
+		ClaimListController.getClaimList();
+		assertEquals("No claims", ClaimListController.getClaimCount(), 0);
+		
 		//get the button and press it
 		 final Button button = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addClaimButton);
 		  activity.runOnUiThread(new Runnable() {
@@ -71,7 +76,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		    }
 		  });
 		  
-
+        /**
 		// get the listview and assert that the user can see it on the screen
 		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
 		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
@@ -98,7 +103,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	}
 
 	
-
+/**
 	//US01.02.01
 	public void testEnterDestination() {
 		// Creating a claim and adding test destination values
@@ -381,6 +386,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	
 	
 
-
+**/
 }
 
