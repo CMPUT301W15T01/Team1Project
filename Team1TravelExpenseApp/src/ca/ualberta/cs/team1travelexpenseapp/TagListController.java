@@ -35,19 +35,19 @@ public class TagListController {
 		tagList.setTagList(tagArray);
 	}
 	
-    public static void onAddTagClick(DialogInterface dialog, int id) {
+    public static void onAddTagClick(DialogInterface dialog) {
         EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
         TagListController.addTag(new Tag(name));
     }
     
-    public static void onSetTagClick(DialogInterface dialog, int id, Tag tag) {
- 	   EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
+    public static void onSetTagClick(DialogInterface dialog, Tag tag) {
+ 	   	EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
         TagListController.updateTag(tag, name);;
     }
 
-    public static void onRemoveTagClick(DialogInterface dialog, int id, Tag tag) {
+    public static void onRemoveTagClick(DialogInterface dialog, Tag tag) {
     	TagListController.removeTag(tag);
     }
 }

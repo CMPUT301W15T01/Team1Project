@@ -59,12 +59,12 @@ public class TagManagerActivity extends Activity {
 						 editTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
 						 editTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   TagListController.onSetTagClick(dialog, id, tag);
+					        	   TagListController.onSetTagClick(dialog, tag);
 					           }
 					       });
 						editTagDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   TagListController.onRemoveTagClick(dialog, id, tag);
+					        	   TagListController.onRemoveTagClick(dialog, tag);
 					           }
 					       });
 						editTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
@@ -88,7 +88,7 @@ public class TagManagerActivity extends Activity {
 		
 		newTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               TagListController.onAddTagClick(dialog,id);
+	               TagListController.onAddTagClick(dialog);
 	           }
 	       });
 		newTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
