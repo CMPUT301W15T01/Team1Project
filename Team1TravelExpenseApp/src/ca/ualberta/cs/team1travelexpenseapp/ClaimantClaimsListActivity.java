@@ -78,7 +78,6 @@ public class ClaimantClaimsListActivity extends Activity {
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
 				
-				 editClaimDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   

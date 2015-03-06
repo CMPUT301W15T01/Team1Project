@@ -24,10 +24,13 @@ public class ClaimantExpenseListActivity extends Activity {
 
 
 		// TODO: need to set the claim, probably in onStart? 
-        expenseListView = (ListView) findViewById(R.id.expensesList);
+		//commented out below because not yet functional
+        /*expenseListView = (ListView) findViewById(R.id.expensesList);
+        claim=ClaimListController.getCurrentClaim();
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
+        */
 	}
 
 	@Override
