@@ -1,9 +1,12 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.Instrumentation;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,7 +14,9 @@ import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.text.InputFilter.LengthFilter;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,12 +25,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import junit.framework.TestCase;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 
 
 public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
@@ -37,34 +45,34 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		super(ClaimantExpenseListActivity.class);
 	}
 	
-//	
-//	protected void setUp() throws Exception {
-//		super.setUp();
-//		//add a claim to test on
-//		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-//		ClaimListController.addClaim(claim1);	
-//		
-//		Intent intent = new Intent();
-//		intent.putExtra("Index", 0);
-//		setActivityIntent(intent);
-//		activity = getActivity();
-//		expenseListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseList));
-//		
-//		//add some expense to the claim to test on
-//		Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
-//				new BigDecimal(10.00), "CURRENCY1");
-//		expense1.setIncomplete(true);//this will default to false
-//		Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
-//				new BigDecimal(20.00), "CURRENCY2");
-//		Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
-//				new BigDecimal(25.00), "CURRENCY3");
-//		
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		//add a claim to test on
+		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
+		ClaimListController.addClaim(claim1);	
+		
+		Intent intent = new Intent();
+		intent.putExtra("Index", 0);
+		setActivityIntent(intent);
+		activity = getActivity();
+		//expenseListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseList));
+		
+		//add some expense to the claim to test on
+		Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
+				new BigDecimal(10.00), "CURRENCY1");
+		expense1.setIncomplete(true);//this will default to false
+		Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
+				new BigDecimal(20.00), "CURRENCY2");
+		Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
+				new BigDecimal(25.00), "CURRENCY3");
+		
 //		claim1.addExpense(expense1);
 //		claim1.addExpense(expense2);
 //		claim1.addExpense(expense3);
-//		
-//	}
-//	
+		
+	}
+	
 //	/*
 //	 *  US 7.01.01
 //	 *  As a claimant, I want to submit an expense claim for approval, denoting 
@@ -257,6 +265,48 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //		}
 //		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),expenseListView);
 //	}
-//	
+	
+	/* US07.05.01
+	* As a claimant, I want to see the name of the approver and any comment(s) 
+	* from the approver on a returned or approved claim.
+	*/
+	public void testApproverNameComments(){
+	
+		ClaimList list = new ClaimList();
+		final Claim claim =  new Claim();
+		list.addClaim(claim);
+		ClaimListController.setCurrentClaim(claim);
+		
+		Expense expense = new Expense();
+		ClaimListController.getCurrentClaim().addExpense(expense);
+					
+		User checkUser = new User("approver","John");
+		ClaimListController.setUser(checkUser);
+		
+		ClaimListController.getCurrentClaim().addComment("HI it looks good");
+		
+		// get approve button
+		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// click approve button
+				button.performClick(); 	
+				
+			}
+			
+		});
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		// next activity is opened and captured.
+		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
+		assertEquals("Can View Comments",ClaimListController.getCurrentClaim().getCommentList().toString(), text.getText().toString());
+		assertNotNull(nextActivity);
+		nextActivity .finish();
+		
+		assertEquals("Can see comments1", ClaimListController.getCurrentClaim().getCommentList().toString(), "{John=HI it looks good}");
+	}
+	
 	
 }

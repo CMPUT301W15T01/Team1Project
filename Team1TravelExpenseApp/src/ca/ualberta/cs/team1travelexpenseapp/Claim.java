@@ -36,7 +36,7 @@ public class Claim {
 	protected ArrayList<Tag> claimTagList;
 	protected boolean isComplete;
 	protected ArrayList<User> approverList;
-	protected Map<User, String> commentList;
+	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
 	protected Status status;
 	
@@ -50,7 +50,7 @@ public class Claim {
 		status                = Status.inProgress;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
-		commentList           = new HashMap<User, String>();
+		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenses              = new ArrayList<Expense>();
 	}
@@ -152,8 +152,12 @@ public class Claim {
 		this.approverList = approverList;
 	}
 
-	public Map<User, String> getCommentList() {
+	public Map<String, String> getCommentList() {
 		return commentList;
+	}
+	
+	public void addComment(String comment) {
+		commentList.put(ClaimListController.getUser().getName(), comment);
 	}
 
 	public Date getStartDate() {

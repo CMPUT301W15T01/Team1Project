@@ -2,7 +2,9 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -38,6 +40,12 @@ public class ClaimantExpenseListActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.claimant_expense_list, menu);
 		return true;
+	}
+	
+	public void onCommentClick(View v) {
+		Intent intent = new Intent(this, ClaimantCommentActivity.class);
+		startActivity(intent);
+
 	}
 
 }
