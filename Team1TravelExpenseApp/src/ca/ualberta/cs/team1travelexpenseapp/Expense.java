@@ -26,7 +26,14 @@ public class Expense {
 	}
 	
 	public Expense() {
-	
+		date = new Date();
+		category = "";
+		description = "";
+		amount = new BigDecimal(0.0); 
+		currency = "";
+		isFlagged = false;
+		receipt = null;
+		isComplete = false;
 	}
 	
 	public Date getDate() {
@@ -59,6 +66,7 @@ public class Expense {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+
 	}
 
 	public String getCurrency() {

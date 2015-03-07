@@ -59,6 +59,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	public ExpenseEditTest() {
 		super(EditExpenseActivity.class);
 	}
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		instrumentation = getInstrumentation();
@@ -288,6 +289,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	
 	// US04.06.01
 	// As a claimant, I want to edit an expense item while changes are allowed.
+	
+	/*
 	public void testEditExpense(){
 		
 		instrumentation.runOnMainSync(new Runnable(){
@@ -371,6 +374,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		assertTrue("Image File should be set", expense.getReceipt() != null);
 	}
 	
+	*/
+	
 	// US06.02.01
 	// As a claimant, I want to view any attached photographic receipt for an expense 
 	public void testViewPhoto(){
@@ -395,6 +400,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	
 	// US06.03.01
 	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
+	/*
 	public void testDeletePhoto(){
 		expense.setReceipt(photoFile);
 		saveButton.performClick();
@@ -431,7 +437,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		expense.setReceipt(photoFile);
 		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);	
 	}
-
+	*/
 	//Create a Photo file for testing to avoid creating a unique file each time these tests are run
 	private File createTestPhotoFile(){	
 		try {		

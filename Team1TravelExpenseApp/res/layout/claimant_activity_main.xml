@@ -25,7 +25,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/addClaimButton"
-        android:layout_toLeftOf="@+id/addDestinationButton"
+        android:layout_toLeftOf="@+id/returnButton"
         android:entries="@array/tags" />
 
     <ListView
@@ -48,7 +48,7 @@
         android:text="@string/add_claim" />
 
     <Button
-        android:id="@+id/addDestinationButton"
+        android:id="@+id/returnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

@@ -2,8 +2,10 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,7 +20,9 @@ public class ApproverExpenseListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.approver_display_expenses);
 		
-		// display current claims expense items (current claim not yet set)
+		// display current claims expense items 
+		claim = ClaimListController.getCurrentClaim();
+		
 		expenseListView = (ListView) findViewById(R.id.expensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenses());
@@ -43,5 +47,10 @@ public class ApproverExpenseListActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void onApproveClick(View v) {
+		ClaimListController.onApproveClick();
+		
 	}
 }
