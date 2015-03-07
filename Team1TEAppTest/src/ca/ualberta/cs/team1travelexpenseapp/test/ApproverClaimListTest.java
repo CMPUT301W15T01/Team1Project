@@ -18,11 +18,11 @@ import android.widget.TextView;
 import junit.framework.TestCase;
 
 public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<ApproverClaimsListActivity> {
-//
-//	public ApproverClaimListTest() {
-//		super(ApproverClaimsListActivity.class);
-//		// TODO Auto-generated constructor stub
-//	}
+
+	public ApproverClaimListTest() {
+		super(ApproverClaimsListActivity.class);
+		// TODO Auto-generated constructor stub
+	}
 //
 //
 //	private Intent launch;
@@ -296,4 +296,4 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 //	
 //	
 //	
-//}
+}
