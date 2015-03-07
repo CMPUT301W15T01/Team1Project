@@ -30,10 +30,13 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		}
 		
 		protected void setUp() throws Exception {
+			ClaimListController.setCurrentClaim(new Claim());
+			ClaimListController.getCurrentClaim().addExpense(new Expense());
 			super.setUp();
 			Intent intent = new Intent();
 			setActivityIntent(intent);
 			activity = getActivity();
+			
 		}
 		
 		private Claim DummyClaim(){
@@ -54,7 +57,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			
 			Expense expense = new Expense();
 			
-			expense.setDate(new Date(100));
+			//expense.setDate(new Date(100));
 			//expense.setTotal(100, USD);
 			
 			return expense;
@@ -151,10 +154,12 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		public void testApproverApprovesClaim(){
 			
 			ClaimList list = new ClaimList();
-			Claim claim =  DummyClaim();
+			final Claim claim =  new Claim();
 			list.addClaim(claim);
 			ClaimListController.setCurrentClaim(claim);
 			
+			Expense expense = new Expense();
+			ClaimListController.getCurrentClaim().addExpense(expense);
 						
 			User checkUser = new User("approver","John");
 			ClaimListController.setUser(checkUser);
@@ -168,15 +173,18 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 				public void run() {
 					// click approve button
 					button.performClick();
+					assertEquals("Claim is the changed claim", claim, ClaimListController.getCurrentClaim());
+					assertEquals("Status is approved", Status.approved, ClaimListController.getCurrentClaim().getStatus());
+					ArrayList<User> approvers = claim.getApproverList();
+					User user = approvers.get(0);
+					assertEquals("Name is John", "John", ClaimListController.getUser().getName());
+					assertEquals("User is approver", user, ClaimListController.getUser());
 				}
 				
 			});
 			
-			assertEquals("Status is approved", ClaimListController.getCurrentClaim().getStatus(), Status.approved);
-			ArrayList<User> approvers = claim.getApproverList();
-			User user = approvers.get(0);
-			assertEquals("Name is John", "John", ClaimListController.getUser().getName());
-			assertEquals("User is approver", ClaimListController.getUser(), user);
+			
+
 			
 		}
 

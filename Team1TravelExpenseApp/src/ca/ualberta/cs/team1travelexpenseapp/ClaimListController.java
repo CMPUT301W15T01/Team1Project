@@ -8,6 +8,7 @@ import java.util.Map;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;

@@ -23,7 +23,14 @@ public class Expense {
 	}
 	
 	public Expense() {
-		
+		date = new Date();
+		category = "";
+		description = "";
+		amount = new BigDecimal(0.0); 
+		currency = "";
+		isFlagged = false;
+		receipt = new File("");
+		isComplete = false;
 	}
 
 	public void setIncomplete(boolean b) {

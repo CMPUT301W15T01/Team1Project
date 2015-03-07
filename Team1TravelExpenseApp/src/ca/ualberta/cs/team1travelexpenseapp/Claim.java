@@ -25,6 +25,9 @@ import android.widget.Toast;
 
 public class Claim { 
 	
+	public enum Status {
+		inProgress, submitted, approved, returned
+	}
 	protected ArrayList<Expense> expenses;
 	protected String claimantName;
 	protected Date startDate;
@@ -36,9 +39,7 @@ public class Claim {
 	protected Map<User, String> commentList;
 	protected ArrayList<Listener> listeners;
 	protected Status status;
-	public enum Status {
-		inProgress, submitted, approved, returned
-	}
+	
 	
 	public Claim() { 
 		claimantName          = "";
