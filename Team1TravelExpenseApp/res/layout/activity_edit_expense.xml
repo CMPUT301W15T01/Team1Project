@@ -144,7 +144,7 @@
 		        android:src="@android:drawable/btn_star" />
 
 		   <Button
-		       android:id="@+id/submitClaimButton"
+		       android:id="@+id/addDestinationButton"
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
@@ -156,8 +156,8 @@
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
-		       android:layout_alignBottom="@+id/submitClaimButton"
-		       android:layout_toRightOf="@+id/submitClaimButton"
+		       android:layout_alignBottom="@+id/addDestinationButton"
+		       android:layout_toRightOf="@+id/addDestinationButton"
 		       android:text="(+)" />
 
         </RelativeLayout>

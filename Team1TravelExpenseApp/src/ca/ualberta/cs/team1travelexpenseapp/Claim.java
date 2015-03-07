@@ -38,7 +38,7 @@ public class Claim {
 	protected ArrayList<Listener> listeners;
 	
 	public Claim() { 
-		claimantName          = " ";
+		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();

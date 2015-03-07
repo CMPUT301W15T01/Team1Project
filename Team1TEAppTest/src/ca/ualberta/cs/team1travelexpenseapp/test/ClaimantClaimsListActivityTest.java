@@ -28,10 +28,14 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		activity = getActivity();
 	}
 	
-	
-	//http://developer.android.com/training/activity-testing/activity-functional-testing.html
-	//03/06/2015
-	//test activity navigation
+
+	/**
+	 * http://developer.android.com/training/activity-testing/activity-functional-testing.html
+	 * 03/06/2015
+	 * -test activity navigation
+	 * -test US01.01.01
+	 * -test US01.02.01
+	 **/
 	public void testAddClaimUI() {
 		
 		//change activity 
@@ -68,6 +72,9 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 				(Button) activity.findViewById(R.id.saveClaimButton);
 		//find name 
 		final EditText   name     = (EditText) activity.findViewById(R.id.claimNameBody);
+		final EditText   dest     = (EditText) activity.findViewById(R.id.claimDestinationBody);
+		final EditText   reason   = (EditText) activity.findViewById(R.id.claimReasonBody);
+		final Button     addDest  = (Button)   activity.findViewById(R.id.addDestinationButton);
 		final DatePicker fromDate = 
 				(DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDate  = 
@@ -80,9 +87,42 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		        name.requestFocus();
 		    }
 		});
+		
 		getInstrumentation().waitForIdleSync();
 		getInstrumentation().sendStringSync("Cool Guy");
 		getInstrumentation().waitForIdleSync();
+		assertTrue("name text not set" , name.getText().toString().equals("Cool Guy"));
+		
+		// Send destination
+		getInstrumentation().runOnMainSync(new Runnable() {
+		    @Override
+		    public void run() {
+		        dest.requestFocus();
+		    }
+		});
+		getInstrumentation().waitForIdleSync();
+		getInstrumentation().sendStringSync("Cool dest");
+		getInstrumentation().waitForIdleSync();
+		assertTrue("destination text not set" , dest.getText().toString().equals("Cool dest"));
+		
+		
+		// Send reason
+		getInstrumentation().runOnMainSync(new Runnable() {
+		    @Override
+		    public void run() {
+		        reason.requestFocus();
+		    }
+		});
+		getInstrumentation().waitForIdleSync();
+		getInstrumentation().sendStringSync("Cool reason");
+		getInstrumentation().waitForIdleSync();
+		assertTrue("reason text not set" , reason.getText().toString().equals("Cool reason"));
+		
+		
+		// @------------!!!NOTE!!!-------------@
+		// @!!! ensure emulator is unlocked !!!@
+		// @------------!!!NOTE!!!-------------@
+		TouchUtils.clickView(this, addDest); 
 		
 		Calendar beforeUIcalF = Calendar.getInstance();
 		beforeUIcalF.set(fromDate.getYear(), fromDate.getMonth(), 
@@ -94,8 +134,8 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		// @------------!!!NOTE!!!-------------@
 		// @!!! ensure emulator is unlocked !!!@
 		// @------------!!!NOTE!!!-------------@
-		TouchUtils.dragViewToBottom(this, receiverActivity, fromDate, 5); //check that EditClaimActivity started
-		TouchUtils.dragViewToBottom(this, receiverActivity, endDate, 5); //check that EditClaimActivity started
+		TouchUtils.dragViewToBottom(this, receiverActivity, fromDate, 5); 
+		TouchUtils.dragViewToBottom(this, receiverActivity, endDate, 5); 
 		
 		//check that user can change date of from and end 
 		Calendar testDate = Calendar.getInstance();
@@ -118,7 +158,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		// @------------!!!NOTE!!!-------------@
 		// @!!! ensure emulator is unlocked !!!@
 		// @------------!!!NOTE!!!-------------@
-		TouchUtils.clickView(this, saveClaimButton); //check that EditClaimActivity started
+		TouchUtils.clickView(this, saveClaimButton); //check that ClaimantClaimsListActivity started
 		
 		
 		ClaimantClaimsListActivity newReceiverActivity = (ClaimantClaimsListActivity) 
