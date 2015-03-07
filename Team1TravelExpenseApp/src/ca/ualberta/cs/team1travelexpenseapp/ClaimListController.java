@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
@@ -40,7 +41,7 @@ public class ClaimListController {
 	public void returnClaim() {
 		//As an approver, I want to return a submitted expense claim that was not approved, 
 		//denoting the claim status as returned and setting my name as the approver for the expense claim.
-		currentClaim.setStatus(2);
+		currentClaim.setStatus(Status.returned);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
@@ -158,5 +159,18 @@ public class ClaimListController {
 		claimsList.setClaimList(claims);
 		
 	}
+
+	public static void onApproveClick() {
+		// denote the claim status as approved and set approver
+		//name as the approver for the expense claim.
+		
+		currentClaim.setStatus(Status.approved);
+		currentClaim.getApproverList().add(user);
+		currentClaim.setApproverList(currentClaim.getApproverList());
+	}
+
+	
+
+	
 	
 }

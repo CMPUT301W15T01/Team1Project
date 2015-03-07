@@ -55,9 +55,9 @@ public class Expense {
 		
 	}
 
-	public void setCost(double d) {
+	public void setCost(BigDecimal d) {
 		// TODO Auto-generated method stub
-		
+		this.amount = d;
 	}
 
 	public void setCurrency(String string) {
