@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,11 +66,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		
 		expense = new Expense();
 		claim = new Claim();
-		ClaimListController.getClaimList().add(0, claim);
+		ClaimListController.setCurrentClaim(claim); 
 		claim.addExpense(expense);
-		activity.setExpensePos(0);
-		activity.setClaimPos(0);
-		activity.setClaim(claim);
+		//activity.setExpensePos(0);
+		//activity.setClaimPos(0);
+		//activity.setClaim(claim);
+		
+		
 		
 		descText = (EditText) activity.findViewById(R.id.descriptionBody);
     	datePicker = (DatePicker) activity.findViewById( R.id.expenseDate);  
@@ -104,14 +107,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		category.setSelection(0);
 		
 		DatePicker date = (DatePicker) activity.findViewById(R.id.expenseDate);
-		date.setDate(new Date(2005/1/8));
+		date.updateDate(2005, 1, 8);
 		
 		EditText editDescription = (EditText) activity.findViewById(R.id.descriptionBody);
 		editDescription.setText("Description");
 		
 		EditText editCost = (EditText) activity.findViewById(R.id.currencyBody);
-		expense.setCost(10.55);
-		
+		expense.setAmount(BigDecimal.valueOf(10.55));
+		editCost.setText(expense.getAmount().toString());
 		Spinner currency = (Spinner) activity.findViewById(R.id.currencySelector);
 		currency.setSelection(0);
 		
@@ -128,12 +131,12 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		// Ensure that the expense contains all of the set data
 		assertEquals("Date?", new Date(2005/1/8), expense.getDate());
 		assertEquals("Category?", "fuel", expense.getCategory());
-		assertEquals("Description?", "Description", expense.getDesc());
-		assertEquals("Amount?", 10.55, expense.getCost());
+		assertEquals("Description?", "Description", expense.getDescription());
+		assertEquals("Amount?", 10.55, expense.getAmount());
 		assertEquals("Currency?", "USD", expense.getCurrency());
 		
 		// Ensure that the expense can be added to a claim
-		assertTrue("Expense in claim?", claim.getExpense(0) ==  expense);
+		// ------------- assertTrue("Expense in claim?", claim.getExpenseList().getExpense(expense) ==  expense);
 	}
 	
 	
@@ -219,8 +222,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want to manually flag an expense item with an incompleteness indicator, 
 	// even if all item fields have values, so that I am reminded that the item needs further editing.
 	public void testFlagExpense() {
-		Claim claim = ClaimListController.getClaim(0);
-		Expense expense = claim.getExpense(0);
+		//Claim claim = ClaimListController.getClaim(0);
+		//Expense expense = claim.getExpense(0);
 		
 		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
 		activity.runOnUiThread(new Runnable() {
@@ -241,7 +244,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		    }
 		});
 		
-		assertTrue("Clicking check box does not flag expense", expense.checkIncomplete());		
+		assertTrue("Clicking check box does not flag expense", expense.isComplete());		
 		activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
@@ -249,7 +252,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		    	checkBox.performClick();
 		    }
 		});
-		assertFalse("Clicking check box does not unflag expense", expense.checkIncomplete());	
+		assertFalse("Clicking check box does not unflag expense", expense.isComplete());	
 	}
 	
 	// US04.05.01
@@ -297,12 +300,12 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 				currencySpinner.setSelection(4);	
 			}
 		});
-		claim.setStatus("Submitted");
+		claim.setStatus(status.SUBMITTED);
 
 		saveButton.performClick();
 		assertNotSame("Desc edited while submitted", descText.getText().toString(), "Test Edit");
 	
-		claim.setStatus("in progress");		
+		claim.setStatus(status.IN_PROGRESS);		
 		saveButton.performClick();		
 		assertEquals("Desc not saved after edit", descText.getText().toString(), "Test Edit");
 	}
@@ -346,18 +349,18 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		imageButton.setImageBitmap(bm);
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);	
 		imageButton.setImageDrawable(null);	
-		expense.setPhotoFile(null);
+		expense.setReceipt(null);
 		
 		// A test photo is added to simulate an actual photo being taken
-		expense.setPhotoFile(photoFile);
+		expense.setReceipt(photoFile);
 		
-		claim.setStatus("Submitted");
+		claim.setStatus(status.SUBMITTED);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
 		activity = getActivity();
 		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
-		claim.setStatus("In progress");
+		claim.setStatus(status.IN_PROGRESS);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
@@ -365,7 +368,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		
 		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image File should be set", expense.getPhotoFile() != null);
+		assertTrue("Image File should be set", expense.getReceipt() != null);
 	}
 	
 	// US06.02.01
@@ -374,7 +377,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		
-		expense.setPhotoFile(photoFile);
+		expense.setReceipt(photoFile);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
@@ -385,7 +388,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image File should be set", expense.getPhotoFile() != null);
+		assertTrue("Image File should be set", expense.getReceipt() != null);
 		
 		// A user can see the thumbnail of the photo 
 	}
@@ -393,7 +396,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// US06.03.01
 	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
 	public void testDeletePhoto(){
-		expense.setPhotoFile(photoFile);
+		expense.setReceipt(photoFile);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
@@ -402,17 +405,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 
 		
 		assertTrue("Image set so should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image set so file should be set", expense.getPhotoFile() != null);
+		assertTrue("Image set so file should be set", expense.getReceipt() != null);
 		
 		//click delete photo 
 		activity.findViewById(R.id.deletePhotoButton).performClick();	
 		//click yes
 		activity.findViewById(R.id.yesdeletePhotoButton).performClick();
-		assertTrue(claim.getStatus().equals("submitted"));
+		assertTrue(claim.getStatus().equals(status,SUBMITTED));
 		
 		//The editable expense no longer has a photo attached to it
 		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
-		assertTrue("Image deleted so file should not be set", expense.getPhotoFile() == null);
+		assertTrue("Image deleted so file should not be set", expense.getReceipt() == null);
 	}
 	
 	// US06.04.01
@@ -422,11 +425,11 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
 		photoFile = activity.compressPhoto(photoFile);
-		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getPhotoFile().length() < 65536);	
+		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getReceipt().length() < 65536);	
 		
 		// A photo that is less than 65536 bytes in size is attached to the expense
-		expense.setPhotoFile(photoFile);
-		assertTrue("Compressed photo file too large (" + expense.getPhotoFile().length() + ")", expense.getPhotoFile().length() < 65536);	
+		expense.setReceipt(photoFile);
+		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);	
 	}
 
 	//Create a Photo file for testing to avoid creating a unique file each time these tests are run

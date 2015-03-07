@@ -14,82 +14,87 @@ public class Expense {
 	protected BigDecimal amount;
 	protected String currency;
 	protected boolean isFlagged;
-	protected File receipt;
 	protected boolean isComplete;
+	protected File receipt;
 
-	public Expense(String string, Date date, String string2,
-			BigDecimal bigDecimal, String string3) {
-		// TODO Auto-generated constructor stub
+	public Expense(String description, Date date, String category,
+			BigDecimal amount, String currency) {
+		this.date = date;
+		this.category = category;
+		this.amount = amount;
+		this.currency = currency;
 	}
 	
 	public Expense() {
-		
-	}
-
-	public void setIncomplete(boolean b) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public boolean checkIncomplete() {
-		// Checks indicator checkbox AND input fields
-		return false;
-	}
-
-	public void setDate(Date date) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setCategory(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setDesc(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setCost(double d) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setCurrency(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Object getDate() {
-		// TODO Auto-generated method stub
-		return date;
-	}
-
-	public String getCategory() {
-		// TODO Auto-generated method stub
-		return category;
-	}
-
-	public String getDesc() {
-		// TODO Auto-generated method stub
-		return description;
-	}
-
-	public Object getCost() {
-		// TODO Auto-generated method stub
-		return amount;
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 
 	public String getCurrency() {
-		// TODO Auto-generated method stub
 		return currency;
 	}
-	
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public boolean isFlagged() {
+		return isFlagged;
+	}
+
+	public void setFlagged(boolean isFlagged) {
+		this.isFlagged = isFlagged;
+	}
+
+	public File getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(File receipt) {
+		this.receipt = receipt;
+	}
+
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
+
+
+
 	public String toString() {
 		String str = "";
 		
@@ -97,7 +102,7 @@ public class Expense {
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		str += "Date: " + dateformat.format(getDate()) + "\n";
 		str += getCategory() + "\n";
-		str += getDesc() +"\n";
+		str += getDescription() +"\n";
 		str += getAmount() + getCurrency() + "\n";
 		str += "Photographic Receipt: " + receipt.exists();
 		

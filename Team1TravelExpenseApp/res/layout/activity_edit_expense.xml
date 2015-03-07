@@ -144,7 +144,7 @@
 		        android:src="@android:drawable/btn_star" />
 
 		   <Button
-		       android:id="@+id/addDestinationButton"
+		       android:id="@+id/deletePhotoButton"
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
@@ -152,12 +152,12 @@
 		       android:text="(-)" />
 
 		   <Button
-		       android:id="@+id/button2"
+		       android:id="@+id/addPhotoButton"
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
-		       android:layout_alignBottom="@+id/addDestinationButton"
-		       android:layout_toRightOf="@+id/addDestinationButton"
+		       android:layout_alignParentBottom="true"
+		       android:layout_toRightOf="@+id/deletePhotoButton"
 		       android:text="(+)" />
 
         </RelativeLayout>
