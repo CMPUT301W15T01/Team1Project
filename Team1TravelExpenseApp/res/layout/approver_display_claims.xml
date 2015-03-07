@@ -9,7 +9,7 @@
         android:id="@+id/approverclaimList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/addDestinationButton"
+        android:layout_above="@+id/returnButton"
         android:layout_below="@+id/Button02"
         android:scrollbars="vertical" >
 
@@ -42,7 +42,7 @@
         android:textSize="12dp" />
 
     <Button
-        android:id="@+id/Button01"
+        android:id="@+id/approveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

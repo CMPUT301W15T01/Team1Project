@@ -25,17 +25,21 @@ import android.widget.Toast;
 
 public class Claim { 
 	
+	public enum Status {
+		inProgress, submitted, approved, returned
+	}
 	protected ArrayList<Expense> expenses;
 	protected String claimantName;
 	protected Date startDate;
 	protected Date endDate;
 	protected Map<String, String> destinationReasonList;
 	protected ArrayList<Tag> claimTagList;
-	protected int status;
 	protected boolean isComplete;
 	protected ArrayList<User> approverList;
 	protected Map<User, String> commentList;
 	protected ArrayList<Listener> listeners;
+	protected Status status;
+	
 	
 	public Claim() { 
 		claimantName          = "";
@@ -43,7 +47,7 @@ public class Claim {
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = 0;
+		status                = Status.inProgress;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<User, String>();
@@ -76,7 +80,7 @@ public class Claim {
 	
 	public void updateExpense(int index, Expense expense ) {
 		// As a claimant, I want to edit an expense claim while changes are allowed.
-		if (status == 1) {
+		if (status == Status.submitted) {
 			return;
 		}
 		this.expenses.set(index, expense);
@@ -124,11 +128,11 @@ public class Claim {
 		this.claimTagList = claimTagList;
 	}
 
-	public int getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
@@ -214,7 +218,7 @@ public class Claim {
 		}
 		
 		//get status
-		str += "\nStatus: " + Integer.toString(getStatus());
+		str += "\nStatus: " + getStatus().toString();
 		
 		//get tag list 
 		str += "\nTags:";
@@ -255,5 +259,6 @@ public class Claim {
 		return str;
 		
 	}
+
 	
 }

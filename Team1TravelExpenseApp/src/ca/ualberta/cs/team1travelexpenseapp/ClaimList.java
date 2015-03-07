@@ -10,7 +10,7 @@ public class ClaimList {
 	private ArrayList<Tag> selectedTags;
 	private ArrayList<Listener> listeners;
 	
-	ClaimList(){
+	public ClaimList(){
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
 		listeners = new ArrayList<Listener>();

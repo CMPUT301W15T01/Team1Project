@@ -9,7 +9,7 @@
         android:id="@+id/expensesList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/addDestinationButton"
+        android:layout_above="@+id/returnButton"
         android:layout_below="@+id/destination"
         android:scrollbars="vertical" >
 
@@ -39,7 +39,7 @@
         android:textColor="#FFF" />
 
     <Button
-        android:id="@+id/addDestinationButton"
+        android:id="@+id/returnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -47,11 +47,12 @@
         android:text="Return" />
 
     <Button
-        android:id="@+id/Button01"
+        android:id="@+id/approveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/expensesList"
+        android:onClick="onApproveClick"
         android:text="Approve" />
 
     <Button

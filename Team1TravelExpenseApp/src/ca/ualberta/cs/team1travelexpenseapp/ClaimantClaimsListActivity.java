@@ -5,6 +5,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
@@ -85,7 +87,7 @@ public class ClaimantClaimsListActivity extends Activity {
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
-			    			if(ClaimListController.getCurrentClaim().getStatus()!= 1 || ClaimListController.getCurrentClaim().getStatus() != 3){
+			    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
 			    				
 			    				//toast for debugging
 			    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();

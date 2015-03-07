@@ -3,10 +3,13 @@ package ca.ualberta.cs.team1travelexpenseapp;
 public class User {
 	
 	protected String type = null;
+	private String name = null;
 
-	public User(String string) {
+	public User(String type, String name) {
 		// TODO Auto-generated constructor stub
-		type = string;
+		
+		this.type = type;
+		this.name = name;
 	}
 
 	public String type() {
@@ -27,6 +30,10 @@ public class User {
 	public static boolean loggedin() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 
 }
