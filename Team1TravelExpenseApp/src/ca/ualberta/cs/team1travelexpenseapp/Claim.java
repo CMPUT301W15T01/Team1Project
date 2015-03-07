@@ -13,6 +13,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CyclicBarrier;
 
 import android.nfc.Tag;
 import android.widget.Toast;
@@ -41,12 +42,13 @@ public class Claim {
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
-		claimTagList          = null;
+		claimTagList          = new ArrayList<Tag>();
 		status                = 0;
 		isComplete            = false;
-		approverList          = null;
-		commentList           = null;
-		listeners             = null;
+		approverList          = new ArrayList<User>();
+		commentList           = new HashMap<User, String>();
+		listeners             = new ArrayList<Listener>();
+		expenses              = new ArrayList<Expense>();
 	}
 
 	public Claim(String cName, Date sDate, Date eDate) {
@@ -194,12 +196,13 @@ public class Claim {
 		
 		//date format, has year month day 
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-		str += "From Date: " + dateformat.format(getStartDate()) + "\n";
-		str += "End Date: " + dateformat.format(getEndDate()) + "\n";
+		str += "Starting Date of travel: " + dateformat.format(getStartDate()) + "\n";
+		//str += "End Date: " + dateformat.format(getEndDate()) + "\n";
 		Iterator<String> destinations = getDestinations().iterator();
 		str += "Destinations:";
 		while (destinations.hasNext()) {
 			String tempDest = destinations.next();
+			//if has next iterator or only has one destination
 			if (destinations.hasNext() || (getDestinationCount() == 1) ) {
 				str += " " + tempDest;
 				if (getDestinationCount() != 1) {
@@ -209,6 +212,45 @@ public class Claim {
 				str += " and " + tempDest;
 			}
 		}
+		
+		//get status
+		str += "\nStatus: " + Integer.toString(getStatus());
+		
+		//get tag list 
+		str += "\nTags:";
+		Iterator<Tag> tags = getClaimTagList().iterator();
+		while (tags.hasNext()) {
+			String tempTag = tags.next().toString();
+			//if has next iterator or only has one tag
+			if (tags.hasNext() || (getTagCount() == 1) ) {
+				str += " " + tempTag;
+				if (getTagCount() != 1) {
+					str += ",";
+				}
+			} else {
+				str += " and " + tempTag;
+			}
+		}
+		
+		//get total currency amounts
+		Map<String, BigDecimal> currencyMap = getCurrencyTotals();
+		Iterator<String> currencies = currencyMap.keySet().iterator();
+		str += "\nCurrency Totals:";
+		while (currencies.hasNext()) {
+			String tempCurrency = currencies.next().toString();
+			//if has next iterator or only has one currency
+			if (tags.hasNext() || (currencyMap.keySet().size() == 1) ) {
+				str += " " + tempCurrency + ": ";
+				str += currencyMap.get(tempCurrency).toString();
+				if (getTagCount() != 1) {
+					str += ",";
+				}
+			} else {
+				str += " and " + tempCurrency + ": ";
+				str += currencyMap.get(tempCurrency).toString();
+			}
+		}
+		
 		
 		return str;
 		
