@@ -130,6 +130,7 @@ public class TagManagerActivity extends Activity {
 	}
 	
 	public void onDestroy(){
+		super.onDestroy();
 		tagList.removeListener(listener);
 	}
 }

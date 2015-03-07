@@ -149,6 +149,7 @@ public class ClaimantClaimsListActivity extends Activity {
 	}
 	
 	public void onDestory(){
+		super.onDestroy();
 		claimList.removeListener(listener);
 	}
 	
