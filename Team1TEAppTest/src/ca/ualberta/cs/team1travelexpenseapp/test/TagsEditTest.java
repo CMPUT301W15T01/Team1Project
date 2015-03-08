@@ -53,7 +53,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		assertTrue("tags list on screen does not reflect tags added via controller",checkTags(strings));
 		
 		//get tag list item at position 1
-		final View item=tagListView.getAdapter().getView(1, null, null);
+		final View item=tagListView.getChildAt(1);
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -76,7 +76,6 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		strings[1]="fantastic";
 		assertTrue("tags list on screen does not reflect renamed tag",checkTags(strings));
 		
-		/**
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -115,7 +114,6 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		//the tags in the TagsListController should now match this update to the string array:
 		String[] strings3={"good","excellent","fantastic"};
 		assertTrue("tags list on screen does not reflect added tag",checkTags(strings3));
-		**/
 	}
 	
 	//this function checks if the info in the tagListView match the given string array
@@ -126,7 +124,8 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		
 		for(int i=0; i < tagCount; i++){
 			//get text from a tag at position of i of tagListView 
-			String viewText = tagListView.getItemAtPosition(i).toString();
+			TextView tagInfo = (TextView) tagListView.getChildAt(i);
+			String viewText =tagInfo.getText().toString();
 			
 			String expectedText =strings[i];
 			if(!viewText.equals(expectedText)){
