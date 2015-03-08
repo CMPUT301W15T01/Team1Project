@@ -37,6 +37,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 
@@ -68,7 +69,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		expense = new Expense();
 		claim = new Claim();
 		ClaimListController.setCurrentClaim(claim); 
-		claim.addExpense(expense);
+		ExpenseListController.addExpense(expense);
 		//activity.setExpensePos(0);
 		//activity.setClaimPos(0);
 		//activity.setClaim(claim);
@@ -89,13 +90,12 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// As a claimant, I want to make one or more expense items for an expense claim,
 	// each of which has a date the expense was incurred, a category, a textual description,
 	// amount spent, and unit of currency.
-	@SuppressWarnings("deprecation")
 	public void testAddExpenseItem() {
 		// precondition
-		User user = User.getUser();
+		User user = new User("Claimant", "EditExpenseTest");
 		assertEquals("User is claimant", "Claimant", user.type());
 		//trigger
-		final Button button1 = (Button) activity.findViewById(R.id.addExpenseButton);
+		/*final Button button1 = (Button) activity.findViewById(R.id.addExpenseButton);
 		activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
@@ -103,7 +103,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		      button1.performClick();
 		    }
 		});
-		
+		*/
 		Spinner category = (Spinner) activity.findViewById(R.id.spinner1);
 		category.setSelection(0);
 		
@@ -146,7 +146,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// vehicle rental, private automobile, fuel, parking, registration, accommodation, meal, or supplies.
 	public void testExpenseCategory() {
 
-		
+		/*
 		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
 		activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -155,7 +155,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		      button.performClick();
 		    }
 		});
-
+*/
 		ArrayList<String> categories = new ArrayList<String>();
 		categories.add("air fare");
 		categories.add("ground transport");
@@ -188,6 +188,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// CAD, USD, EUR, GBP, CHF, JPY, or CNY.
 	public void testAmountType() {
 		// go into add/edit expense
+		/*
 		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
 		activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -196,7 +197,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		      button.performClick();
 		    }
 		});
-		
+		*/
 		// Code for initializing a list adapted on Feb 2015 from Tom's post on 
 		// https://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line 
 		List<String> currencies = Arrays.asList("CAD", "USD", "EUR", "GBP", "CHF", "JPY", "CNY");

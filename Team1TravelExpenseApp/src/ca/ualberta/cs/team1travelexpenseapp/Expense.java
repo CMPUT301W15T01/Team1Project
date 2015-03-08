@@ -65,7 +65,7 @@ public class Expense {
 	}
 
 	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
+		this.amount = amount.setScale(2,BigDecimal.ROUND_HALF_EVEN); 
 
 	}
 
