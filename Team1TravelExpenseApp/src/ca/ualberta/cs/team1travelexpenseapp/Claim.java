@@ -1,11 +1,9 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-=======
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -13,17 +11,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
->>>>>>> 1c8a34522c690f73d0529ee6aa51bf2181a7acc6
 import java.util.Map;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-<<<<<<< HEAD
-=======
 import java.util.concurrent.CyclicBarrier;
->>>>>>> 1c8a34522c690f73d0529ee6aa51bf2181a7acc6
-
 import android.nfc.Tag;
 import android.widget.Toast;
 
