@@ -9,7 +9,7 @@
     tools:context="ca.ualberta.cs.team1travelexpenseapp.MainActivity" >
 
     <TextView
-        android:id="@+id/travelClaims"
+        android:id="@+id/tagListHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ListView
-        android:id="@+id/claimsList"
+        android:id="@+id/tagsList"
         android:layout_width="fill_parent"
         android:layout_height="263dp"
         android:layout_alignParentBottom="true"
@@ -27,7 +27,7 @@
     </ListView>
 
     <Button
-        android:id="@+id/addClaimButton"
+        android:id="@+id/addTagButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/claimsList"

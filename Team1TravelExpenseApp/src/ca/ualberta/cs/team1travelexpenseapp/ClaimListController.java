@@ -88,8 +88,7 @@ public class ClaimListController {
 		ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
 		
 		
-		Intent intent = new Intent(activity, ClaimantClaimsListActivity.class);
-		activity.startActivity(intent);
+		activity.finish();
 		
 	}
 	
@@ -127,9 +126,10 @@ public class ClaimListController {
 	}
 
 	public static void addClaim(Claim claim) {
-		getClaimList();
-		currentClaim = claim;
-		claimsList.addClaim(currentClaim);
+		ArrayList<Claim> claimArray=getClaimList().getClaims();
+		claimArray.add(currentClaim);
+		claimsList.setClaimList(claimArray);
+		
 	}
 	
 
