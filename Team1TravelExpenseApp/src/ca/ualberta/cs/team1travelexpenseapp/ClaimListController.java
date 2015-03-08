@@ -127,7 +127,8 @@ public class ClaimListController {
 
 	public static void addClaim(Claim claim) {
 		ArrayList<Claim> claimArray=getClaimList().getClaims();
-		claimArray.add(currentClaim);
+		setCurrentClaim(claim);
+		claimArray.add(claim);
 		claimsList.setClaimList(claimArray);
 		
 	}
