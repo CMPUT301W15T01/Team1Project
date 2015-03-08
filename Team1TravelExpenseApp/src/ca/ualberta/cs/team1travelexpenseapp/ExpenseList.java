@@ -4,14 +4,34 @@ import java.util.ArrayList;
 
 public class ExpenseList {
 
+	private ArrayList<Expense> expenseList;
+	private ArrayList<Listener> listeners;
+	
+	ExpenseList(){
+		expenseList=new ArrayList<Expense>();
+		listeners=new ArrayList<Listener>();
+	}
+	
+	public void addListener(Listener listener){
+		listeners.add(listener);
+	}
+	
+	public void removeListener(Listener listener){
+		listeners.remove(listener);
+	}
+	
+	private void notifyListeners(){
+		for(int i=0; i<listeners.size();i++){
+			listeners.get(i).update();
+		}
+	}
+
 	public ArrayList<Expense> getExpenses() {
-		// TODO Auto-generated method stub
-		return null;
+		return expenseList;
 	}
 
-	public void setExpenseList(ArrayList<Expense> expenseArray) {
-		// TODO Auto-generated method stub
-		
+	public void setExpenseList(ArrayList<Expense> expenseList) {
+		this.expenseList = expenseList;
+		notifyListeners();
 	}
-
 }

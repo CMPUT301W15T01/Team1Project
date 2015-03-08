@@ -48,4 +48,7 @@ public class ClaimantExpenseListActivity extends Activity {
 
 	}
 
+	public void onAddExpenseClick(View v) {
+		ExpenseListController.onAddExpenseClick(this);
+	}
 }
