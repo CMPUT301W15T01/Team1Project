@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,12 +19,6 @@ import android.widget.TextView;
 
 public class EditExpenseActivity extends Activity {
 	private ExpenseList expenseList;
-	private Spinner categorySpinner;
-	private EditText descriptionText;
-	private DatePicker datePicker;
-	private EditText amountText;
-	private Spinner currencySpinner;
-	private ImageButton imageButton;
 	private Listener listener;
 
 	@Override
@@ -31,7 +26,7 @@ public class EditExpenseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_expense);	
 		
-		expenseList = ExpenseListController.getExpenseList();
+		expenseList = ExpenseListController.getCurrentExpenseList();
 		
 		listener=new Listener() {			
 			@Override
@@ -44,7 +39,9 @@ public class EditExpenseActivity extends Activity {
 	}
 
 	private void updateValues(){
-		//TODO fill in current Values
+		//TODO fill in all current Values
+		EditText amountView = (EditText) this.findViewById(R.id.currencyBody);
+		amountView.setText(ExpenseListController.getCurrentExpense().getAmount().toString());
 	}
 	
 	//TODO 

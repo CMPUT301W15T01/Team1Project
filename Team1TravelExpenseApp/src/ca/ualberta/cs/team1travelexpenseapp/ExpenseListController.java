@@ -8,48 +8,53 @@ import java.util.Date;
 import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
+
 
 public class ExpenseListController {
 	protected static Expense currentExpense = null;
-	private static ExpenseList expenseList=null;
+	private static ExpenseList currentExpenseList= null;
 
-	public static ExpenseList getExpenseList() { 
-		if (expenseList == null) {
-			expenseList = new ExpenseList();
+	public static ExpenseList getCurrentExpenseList() { 
+		if (currentExpenseList == null) {
+			currentExpenseList = ClaimListController.getCurrentClaim().getExpenseList();
 		}
 		
-		return expenseList;
+		return currentExpenseList;
 	}
 	
 	public static void setCurrentExpense(Expense expense){
-		currentExpense= expense;
+		currentExpense = expense; 
 	}
 	
 	public static Expense getCurrentExpense(){
 		return currentExpense;
 	}
-
+	
+	public static void setCurrentExpenseList(ExpenseList expenseList){
+		currentExpenseList = expenseList; 
+	}
 	
 	public static void addExpense(Expense expense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getExpenseList().getExpenses();
+		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.add(expense);
 		setCurrentExpense(expense);
-		expenseList.setExpenseList(expenseArray);
+		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
+		
+		currentExpenseList.setExpenseList(expenseArray);
 	}
 	
 	public static void removeExpense(Expense expense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getExpenseList().getExpenses();
+		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.remove(expense);
-		expenseList.setExpenseList(expenseArray);
+		currentExpenseList.setExpenseList(expenseArray);
 	}
 	
 	public static void updateExpense(Expense expense, Expense newExpense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getExpenseList().getExpenses();
+		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.set(expenseArray.indexOf(expense), newExpense);
-		expenseList.setExpenseList(expenseArray);
+		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
+		currentExpenseList.setExpenseList(expenseArray);
 	}
 	
 	public static void onExpenseSaveClick(EditExpenseActivity activity) {

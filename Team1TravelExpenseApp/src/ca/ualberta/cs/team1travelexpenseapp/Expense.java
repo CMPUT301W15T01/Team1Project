@@ -23,6 +23,10 @@ public class Expense {
 		this.category = category;
 		this.amount = amount;
 		this.currency = currency;
+		
+		isFlagged = false;
+		receipt = null;
+		isComplete = false;
 	}
 	
 	public Expense() {
@@ -112,7 +116,7 @@ public class Expense {
 		str += getCategory() + "\n";
 		str += getDescription() +"\n";
 		str += getAmount() + getCurrency() + "\n";
-		str += "Photographic Receipt: " + receipt.exists();
+		//str += "Photographic Receipt: " + receipt;
 		
 		return str;
 	}
