@@ -36,6 +36,7 @@ public class ExpenseListController {
 	public static void addExpense(Expense expense){
 		ArrayList<Expense> expenseArray=ExpenseListController.getExpenseList().getExpenses();
 		expenseArray.add(expense);
+		setCurrentExpense(expense);
 		expenseList.setExpenseList(expenseArray);
 	}
 	
@@ -73,6 +74,13 @@ public class ExpenseListController {
 		updateExpense(currentExpense, new Expense(descriptionText, date, categoryText, amountValue, currencyText));
 		
 		
-		//activity.finish();	
+		activity.finish();	
+	}
+	
+	public static void onAddExpenseClick(ClaimantExpenseListActivity activity) {
+		ExpenseListController.addExpense(new Expense());
+		Intent intent = new Intent(activity, EditExpenseActivity.class);
+		activity.startActivity(intent);
+		
 	}
 }
