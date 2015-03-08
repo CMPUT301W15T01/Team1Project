@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.Instrumentation;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
@@ -41,10 +44,12 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 
-public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpenseActivity> {
+public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
 	
 	Instrumentation instrumentation;
 	EditExpenseActivity activity;
+	ClaimantExpenseListActivity listActivity;
+	ActivityMonitor activityMonitor;
 	
 	EditText descText;
 	DatePicker datePicker;
@@ -59,31 +64,58 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	Claim claim;
 	
 	public ExpenseEditTest() throws Exception {
-		super(EditExpenseActivity.class);
+		super(ClaimantExpenseListActivity.class);
+		//setUp();
 		
 	}
 	
+	//transitions from the ExpenseList to EditExpense by clicking add expense
+	protected EditExpenseActivity getAddExpenseActivity(){
+		
+		activityMonitor = getInstrumentation().addMonitor(EditExpenseActivity.class.getName(), null, false);
+
+		final Button addButton = (Button) listActivity.findViewById(R.id.addExpenseButton);
+		  listActivity.runOnUiThread(new Runnable() {
+			    @Override
+			    public void run() {
+			      // click button and open next activity.
+			    	addButton.performClick();
+			    }
+			  });
+		activity = (EditExpenseActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000); 	
+
+		assertNotNull(activity);
+		
+		return activity;
+		
+	}
 	protected void setUp() throws Exception {
 		super.setUp();
 		instrumentation = getInstrumentation();
-		activity = getActivity();	
+		
+		listActivity = getActivity();
+		
+		
+		
 		
 		expense = new Expense();
 		claim = new Claim();
 		ClaimListController.addClaim(claim); 
-		ClaimListController.setCurrentClaim(claim);
+		//ClaimListController.setCurrentClaim(claim);
 		ExpenseListController.addExpense(expense);
 
-		
-		
+		//activity = getAddExpenseActivity();	
+		/*
 		descText = (EditText) activity.findViewById(R.id.descriptionBody);
     	datePicker = (DatePicker) activity.findViewById( R.id.expenseDate);  
     	costText = (EditText) activity.findViewById( R.id.currencyBody);  
     	categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector); 
     	currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
     	imageButton = (ImageButton) activity.findViewById(R.id.imageButton1);
-		saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);
-    	photoFile = createTestPhotoFile();
+		saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);	
+    	*/
+		
+		//photoFile = createTestPhotoFile();
 	}
 	
 	// US04.01.01
@@ -92,6 +124,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 	// amount spent, and unit of currency.
 	public void testAddExpenseItem() {
 		// precondition
+		
+		activity = getAddExpenseActivity();	
 		User user = new User("Claimant", "EditExpenseTest");
 		assertEquals("User is claimant", "Claimant", user.type());
 		//trigger
@@ -115,11 +149,11 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
-		    	category.setSelection(0);
+		    	category.setSelection(5);
 			    date.updateDate(2005, 1, 8);
 			    editDescription.setText("Description");
 			    editCost.setText(BigDecimal.valueOf(10.55).toString());
-			    currency.setSelection(0);
+			    currency.setSelection(5);
 			    button2.performClick();
 		    }
 		});
@@ -144,12 +178,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 */
 		
 		// Ensure that the expense contains all of the set data
-		//assertEquals("Date?", new Date(2005/1/8), expense.getDate());
-		//assertEquals("Category?", "fuel", ExpenseListController.getCurrentExpense().getCategory());
-		assertEquals("Description?", "Description", ExpenseListController.getCurrentExpense().toString());
+		Calendar   calendar   = Calendar.getInstance();
+		calendar.set(2005, 1, 8);
+		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		assertEquals("Date?", dateformat.format(calendar.getTime()), dateformat.format(ExpenseListController.getCurrentExpense().getDate()));
+		assertEquals("Category?", category.getItemAtPosition(5), ExpenseListController.getCurrentExpense().getCategory());
 		assertEquals("Description?", "Description", ExpenseListController.getCurrentExpense().getDescription());
-		assertEquals("Amount?", 10.55, expense.getAmount());
-		assertEquals("Currency?", "USD", expense.getCurrency());
+		assertEquals("Amount?", BigDecimal.valueOf(10.55), ExpenseListController.getCurrentExpense().getAmount());
+		assertEquals("Currency?", currency.getItemAtPosition(5), ExpenseListController.getCurrentExpense().getCurrency());
 		
 		// Ensure that the expense can be added to a claim
 		// ------------- assertTrue("Expense in claim?", claim.getExpenseList().getExpense(expense) ==  expense);
@@ -171,6 +207,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		    }
 		});
 */
+		activity = getAddExpenseActivity();	
+		
 		ArrayList<String> categories = new ArrayList<String>();
 		categories.add("air fare");
 		categories.add("ground transport");
@@ -196,6 +234,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
     	// Ensure that when user does not select a category the displayed one is used 
     	expense.setCategory(String.valueOf(categorySpinner.getSelectedItem()));
     	assertEquals("Expense category set to displayed?", expense.getCategory(), categorySpinner.getSelectedItem());
+    	
+    	activity.finish();
 		}
 
 	// US04.03.01
@@ -213,6 +253,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		    }
 		});
 		*/
+		activity = getAddExpenseActivity();	
+		
 		// Code for initializing a list adapted on Feb 2015 from Tom's post on 
 		// https://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line 
 		List<String> currencies = Arrays.asList("CAD", "USD", "EUR", "GBP", "CHF", "JPY", "CNY");
@@ -233,6 +275,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
     	//Expense expense = new Expense();
     	expense.setCurrency(String.valueOf(currencySpinner.getSelectedItem()));
     	assertEquals("Expense category set to displayed?", expense.getCurrency(), currencySpinner.getSelectedItem());
+    	
+    	activity.finish();
 		}
 	
 	// US04.04.01
@@ -242,14 +286,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		//Claim claim = ClaimListController.getClaim(0);
 		//Expense expense = claim.getExpense(0);
 		
-		final Button button = (Button) activity.findViewById(R.id.addExpenseButton);
-		activity.runOnUiThread(new Runnable() {
-		    @Override
-		    public void run() {
-		      // click button and open next activity.
-		      button.performClick();
-		    }
-		});
+		activity = getAddExpenseActivity();	
 		
 		// Ensure clicking the box toggles whether or not the expense is flagged
 		final CheckBox checkBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
@@ -270,10 +307,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		    }
 		});
 		assertFalse("Clicking check box does not unflag expense", expense.isComplete());	
+		
+		activity.finish();
 	}
 	
 	// US04.05.01
 	// As a claimant, I want to view an expense item and its details.
+	/*
 	public void testViewExpenseDetails() {  	
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -302,7 +342,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), currencySpinner);
 	}
 	//Button saveButton = (Button) activity.findViewById(R.id.expSaveButton);
-	
+	*/
 	// US04.06.01
 	// As a claimant, I want to edit an expense item while changes are allowed.
 	
@@ -377,13 +417,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
-		activity = getActivity();
+		activity = getAddExpenseActivity();
 		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
 		claim.setStatus(status.IN_PROGRESS);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
-		activity = getActivity();
+		activity = getAddExpenseActivity();
 		
 		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
@@ -402,7 +442,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
-		activity = getActivity();
+		activity = getAddExpenseActivity();
 		
 		// An expense is currently being edited or added and a photo is already attached to it
 		
@@ -422,7 +462,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<EditExpens
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
-		activity = getActivity();
+		activity = getAddExpenseActivity();
 		//An editable expense is currently being edited or added and a photo is already attached to it 
 
 		

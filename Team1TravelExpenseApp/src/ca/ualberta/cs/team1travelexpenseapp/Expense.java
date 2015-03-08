@@ -19,6 +19,7 @@ public class Expense {
 
 	public Expense(String description, Date date, String category,
 			BigDecimal amount, String currency) {
+		this.description = description;
 		this.date = date;
 		this.category = category;
 		this.amount = amount;
