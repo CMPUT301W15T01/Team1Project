@@ -15,8 +15,7 @@
     <string name="description_of_claim">Claim Description</string>
     <string name="edit">Edit Claim</string>
 
-    <string-array name="tags">
-    </string-array>
+    <string-array name="tags"></string-array>
     <string-array name="expense_categories">
         <item>air fare</item>
         <item>ground transport</item>
@@ -57,5 +56,6 @@
     <string name="title_activity_edit_claim">EditClaimActivity.java</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_approver_expense_list">ApproverExpenseListActivity</string>
+    <string name="title_activity_claimant_comment">ClaimantCommentActivity</string>
 
 </resources>
