@@ -53,8 +53,11 @@ public class ExpenseListController {
 	public static void updateExpense(Expense expense, Expense newExpense){
 		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.set(expenseArray.indexOf(expense), newExpense);
-		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
+		
+		
+		
 		currentExpenseList.setExpenseList(expenseArray);
+		setCurrentExpense(newExpense);
 	}
 	
 	public static void onExpenseSaveClick(EditExpenseActivity activity) {
