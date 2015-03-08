@@ -61,7 +61,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		//add some expense to the claim to test on
 		Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
 				new BigDecimal(10.00), "CURRENCY1");
-		expense1.setIncomplete(true);//this will default to false
+		//expense1.setIncomplete(true);//this will default to false
 		Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
 				new BigDecimal(20.00), "CURRENCY2");
 		Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
