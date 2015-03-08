@@ -31,6 +31,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
@@ -278,7 +279,8 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		ClaimListController.setCurrentClaim(claim);
 		
 		Expense expense = new Expense();
-		ClaimListController.getCurrentClaim().addExpense(expense);
+		//ClaimListController.getCurrentClaim().addExpense(expense);
+		ExpenseListController.addExpense(expense);
 					
 		User checkUser = new User("approver","John");
 		ClaimListController.setUser(checkUser);

@@ -8,6 +8,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
@@ -31,7 +32,8 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		
 		protected void setUp() throws Exception {
 			ClaimListController.setCurrentClaim(new Claim());
-			ClaimListController.getCurrentClaim().addExpense(new Expense());
+			ExpenseListController.addExpense(new Expense());
+			//ClaimListController.getCurrentClaim().addExpense(new Expense());
 			super.setUp();
 			Intent intent = new Intent();
 			setActivityIntent(intent);
@@ -159,8 +161,9 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			ClaimListController.setCurrentClaim(claim);
 			
 			Expense expense = new Expense();
-			ClaimListController.getCurrentClaim().addExpense(expense);
-						
+			//ClaimListController.getCurrentClaim().addExpense(expense);
+			ExpenseListController.addExpense(new Expense());
+			
 			User checkUser = new User("approver","John");
 			ClaimListController.setUser(checkUser);
 			

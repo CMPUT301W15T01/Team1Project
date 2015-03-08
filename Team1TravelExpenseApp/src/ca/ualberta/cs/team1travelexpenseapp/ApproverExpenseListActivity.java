@@ -25,7 +25,7 @@ public class ApproverExpenseListActivity extends Activity {
 		
 		expenseListView = (ListView) findViewById(R.id.expensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
-        		claim.getExpenses());
+        		claim.getExpenseList().getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
 		
 	}

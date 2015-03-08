@@ -20,18 +20,22 @@
         <item>air fare</item>
         <item>ground transport</item>
         <item>vehicle rental</item>
+        <item>private automobile</item>
         <item>fuel</item>
         <item>parking</item>
         <item>registration</item>
         <item>accommodation</item>
         <item>meal</item>
-        <item>other</item>
+        <item>supplies</item>
     </string-array>
     <string-array name="currencies">
         <item>CAD</item>
         <item>USD</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>CHF</item>
+        <item>JPY</item>
+        <item>CNY</item>
     </string-array>
 
     <string name="title_activity_claim_accept_return">ClaimAcceptReturn</string>

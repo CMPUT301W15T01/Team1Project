@@ -28,7 +28,7 @@ public class Claim {
 	public enum Status {
 		inProgress, submitted, approved, returned
 	}
-	protected ArrayList<Expense> expenses;
+	protected ExpenseList expenseList;
 	protected String claimantName;
 	protected Date startDate;
 	protected Date endDate;
@@ -52,38 +52,31 @@ public class Claim {
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
-		expenses              = new ArrayList<Expense>();
+		expenseList           = new ExpenseList();
 	}
 
 	public Claim(String cName, Date sDate, Date eDate) {
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
+		
+		destinationReasonList = new HashMap<String, String>();
+		claimTagList          = new ArrayList<Tag>();
+		status                = Status.inProgress;
+		isComplete            = false;
+		approverList          = new ArrayList<User>();
+		commentList           = new HashMap<String, String>();
+		listeners             = new ArrayList<Listener>();
+		expenseList           = new ExpenseList();
 	}
 
 
-	public ArrayList<Expense> getExpenses() {
-		return expenses;
+	public ExpenseList getExpenseList() {
+		return expenseList;
 	}
 
-	public void setExpenses(ArrayList<Expense> expenses) {
-		this.expenses = expenses;
-	}
-	
-	public void addExpense(Expense expense) {
-		this.expenses.add(expense);
-	}
-
-	public void removeExpense(int index) {
-		this.expenses.remove(index);
-	}
-	
-	public void updateExpense(int index, Expense expense ) {
-		// As a claimant, I want to edit an expense claim while changes are allowed.
-		if (status == Status.submitted) {
-			return;
-		}
-		this.expenses.set(index, expense);
+	public void setExpenseList(ExpenseList expenseList) {
+		this.expenseList = expenseList;
 	}
 	
 	//if destination already exist, new reason will write over old reason 
@@ -177,7 +170,7 @@ public class Claim {
 	}
 	
 	public Map<String, BigDecimal> getCurrencyTotals() {
-		ArrayList<Expense> cexpenses = this.getExpenses();
+		ArrayList<Expense> cexpenses = this.getExpenseList().getExpenses();
 		Map<String, BigDecimal> totals = new HashMap<String, BigDecimal>();
 		while ( !cexpenses.isEmpty()) {
 			String currency = cexpenses.get(0).getCurrency();
