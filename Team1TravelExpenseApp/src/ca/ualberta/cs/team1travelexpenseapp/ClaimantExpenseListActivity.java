@@ -2,16 +2,37 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class ClaimantExpenseListActivity extends Activity {
 
 	public Claim claim;
-	
+	private ArrayAdapter<Expense> expenselistAdapter ;
+ 	private ListView expenseListView ;
+ 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.claimant_display_expenses);
+		
+		//As an approver, I want to list all the expense items for a submitted claim,
+		//in order of entry, showing for each expense item: the date the expense was incurred,
+		//the category, the textual description, amount spent, unit of currency, 
+		//and whether there is a photographic receipt.
+
+
+		// TODO: need to set the claim, probably in onStart? 
+		//commented out below because not yet functional
+        /*expenseListView = (ListView) findViewById(R.id.expensesList);
+        claim=ClaimListController.getCurrentClaim();
+        expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
+        		claim.getExpenses());
+        expenseListView.setAdapter(expenselistAdapter);
+        */
 	}
 
 	@Override
@@ -20,5 +41,14 @@ public class ClaimantExpenseListActivity extends Activity {
 		getMenuInflater().inflate(R.menu.claimant_expense_list, menu);
 		return true;
 	}
+	
+	public void onCommentClick(View v) {
+		Intent intent = new Intent(this, ClaimantCommentActivity.class);
+		startActivity(intent);
 
+	}
+
+	public void onAddExpenseClick(View v) {
+		ExpenseListController.onAddExpenseClick(this);
+	}
 }

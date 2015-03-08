@@ -30,6 +30,26 @@
             android:name="ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity"
             android:label="@string/title_activity_edit_expense" >
         </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.TagManagerActivity"
+            android:label="@string/title_activity_tag_manager" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity"
+            android:label="@string/title_activity_edit_claim" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity"
+            android:label="@string/title_activity_approver_expense_list" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity"
+            android:label="@string/title_activity_claimant_comment" >
+        </activity>
     </application>
 
 </manifest>

@@ -15,28 +15,27 @@
     <string name="description_of_claim">Claim Description</string>
     <string name="edit">Edit Claim</string>
 
-    <string-array name="tags">
-        <item>Important</item>
-        <item>Buisness</item>
-        <item>Pleasure</item>
-        <item>Top secret</item>
-    </string-array>
+    <string-array name="tags"></string-array>
     <string-array name="expense_categories">
         <item>air fare</item>
         <item>ground transport</item>
         <item>vehicle rental</item>
+        <item>private automobile</item>
         <item>fuel</item>
         <item>parking</item>
         <item>registration</item>
         <item>accommodation</item>
         <item>meal</item>
-        <item>other</item>
+        <item>supplies</item>
     </string-array>
     <string-array name="currencies">
         <item>CAD</item>
         <item>USD</item>
         <item>EUR</item>
         <item>GBP</item>
+        <item>CHF</item>
+        <item>JPY</item>
+        <item>CNY</item>
     </string-array>
 
     <string name="title_activity_claim_accept_return">ClaimAcceptReturn</string>
@@ -57,5 +56,10 @@
     <string name="amount">Amount:</string>
     <string name="title_activity_claimant_expense_list">ClaimantExpenseListActivity</string>
     <string name="title_activity_edit_expense">EditExpenseActivity</string>
+    <string name="title_activity_tag_manager">TagManagerActivity</string>
+    <string name="title_activity_edit_claim">EditClaimActivity.java</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_approver_expense_list">ApproverExpenseListActivity</string>
+    <string name="title_activity_claimant_comment">ClaimantCommentActivity</string>
 
 </resources>

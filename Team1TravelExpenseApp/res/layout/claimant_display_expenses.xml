@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.ualberta.cs.kjyoung_expenses.MainActivity" >
+    android:onClick="onCommentClick"
+    tools:context="ca.ualberta.cs.team1travelexpenseapp.MainActivity" >
 
     <ListView
         android:id="@+id/expensesList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/submitClaimButton"
         android:layout_below="@+id/destination"
+        android:layout_above="@+id/viewCommentsButton"
         android:scrollbars="vertical" >
 
     </ListView>
@@ -23,7 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:onClick="addExpense"
+        android:onClick="onAddExpenseClick"
         android:text="@string/add_expense" />
 
     <TextView
@@ -39,7 +40,17 @@
         android:textColor="#FFF" />
 
     <Button
-        android:id="@+id/submitClaimButton"
+        android:id="@+id/viewCommentsButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onCommentClick"
+        android:text="Comments" />
+
+    <Button
+        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

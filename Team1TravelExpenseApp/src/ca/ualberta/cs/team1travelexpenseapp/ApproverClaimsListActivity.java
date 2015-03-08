@@ -1,15 +1,10 @@
-// this is the starting claim menu 
-
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ExpandableListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,15 +12,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
-public class ClaimantClaimsListActivity extends Activity {
+public class ApproverClaimsListActivity extends Activity {
+
 	
 	private ClaimList claimList;
 
@@ -48,6 +42,7 @@ public class ClaimantClaimsListActivity extends Activity {
         mainListView = (ListView) findViewById(R.id.claimsList);
         
       //taken from https://github.com/abramhindle/student-picker and modified
+  		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
@@ -70,54 +65,11 @@ public class ClaimantClaimsListActivity extends Activity {
         mainListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView Parent, View v, int position, long id){
         		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
-        		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
+        		Intent intent= new Intent(getBaseContext(),ApproverExpenseListActivity.class);	
         		startActivity(intent);
         	}
         });
         	
-       mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
-        	
-    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
-    			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
-    			
-    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
-				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
-				
-				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-			    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-			    				
-			    				//toast for debugging
-			    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
-			    				
-			    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
-			    				startActivity(edit);
-			    				
-			    			}// if statement
-			           }
-			       });
-				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   ClaimListController.onRemoveClaimClick();
-			           }
-			       });
-				editClaimDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			               //Do nothing
-			           }
-			       });
-				editClaimDialogBuilder.setTitle("Edit/Delete Claim?");
-				editClaimDialog=editClaimDialogBuilder.create();
-				editClaimDialog.show();
-				return true;//not too sure on return value look into this
-    		}
-    	      	
-    });
-        
-        
-        
-        
 
 	}
 
@@ -140,19 +92,14 @@ public class ClaimantClaimsListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void onAddClaimClick(View v) {
-		ClaimListController.onAddClaimClick(this);
-	}
 	
 	public void onManageTagsClick(View v){
 		Intent intent= new Intent(this, TagManagerActivity.class);
 		startActivity(intent);
 	}
 	
-	public void onDestory(){
-		super.onDestroy();
+	public void onDestroy(){
 		claimList.removeListener(listener);
 	}
-	
 	
 }

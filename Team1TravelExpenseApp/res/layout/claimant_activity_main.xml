@@ -25,7 +25,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/addClaimButton"
-        android:layout_toLeftOf="@+id/submitClaimButton"
+        android:layout_toLeftOf="@+id/returnButton"
         android:entries="@array/tags" />
 
     <ListView
@@ -44,14 +44,16 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/claimsList"
         android:layout_alignTop="@+id/travelClaims"
+        android:onClick="onAddClaimClick"
         android:text="@string/add_claim" />
 
     <Button
-        android:id="@+id/submitClaimButton"
+        android:id="@+id/returnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/spinner1"
+        android:onClick="onManageTagsClick"
         android:text="Manage\nTags"
         android:textSize="12dp" />
 

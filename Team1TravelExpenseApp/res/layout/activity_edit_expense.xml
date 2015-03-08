@@ -6,18 +6,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ca.ualberta.cs.kjyoung_expenses.EditExpenseActivity" >
+    tools:context="ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity" >
 
     <Button
         android:id="@+id/saveExpenseButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:onClick="saveClick"
+        android:onClick="onExpenseSaveClick"
         android:text="@string/save" />
+
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
@@ -144,7 +145,7 @@
 		        android:src="@android:drawable/btn_star" />
 
 		   <Button
-		       android:id="@+id/submitClaimButton"
+		       android:id="@+id/deletePhotoButton"
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
@@ -152,12 +153,12 @@
 		       android:text="(-)" />
 
 		   <Button
-		       android:id="@+id/button2"
+		       android:id="@+id/addPhotoButton"
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
-		       android:layout_alignBottom="@+id/submitClaimButton"
-		       android:layout_toRightOf="@+id/submitClaimButton"
+		       android:layout_alignParentBottom="true"
+		       android:layout_toRightOf="@+id/deletePhotoButton"
 		       android:text="(+)" />
 
         </RelativeLayout>
