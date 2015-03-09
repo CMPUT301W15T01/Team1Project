@@ -61,5 +61,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_approver_expense_list">ApproverExpenseListActivity</string>
     <string name="title_activity_claimant_comment">ClaimantCommentActivity</string>
+        <string name="title_activity_approver_claims">Approver Claims</string>
+    
 
 </resources>

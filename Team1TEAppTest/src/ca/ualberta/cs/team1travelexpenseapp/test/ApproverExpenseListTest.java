@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
+import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
@@ -17,6 +19,7 @@ import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.ViewAsserts;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -74,12 +77,12 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 //		 * from claims can be seen
 //		 * 
 //		 * */
-//		public void testApproverClaimsVisible(){	
-//			
-//			ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverExpenseListActivity.class.getName(), null, false);
-//			UserSelectActivity  userSelect = new UserSelectActivity();
-//			
-//			final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
+		public void testApproverClaimsVisible(){	
+			
+			ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverExpenseListActivity.class.getName(), null, false);
+			ApproverExpenseListActivity  userSelect = getActivity();
+			
+//			final Button approverBT = (Button) userSelect.findViewById(R.id.approverButton);
 //			userSelect.runOnUiThread(new Runnable(){
 //				
 //				public void run(){
@@ -89,12 +92,12 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 //				}
 //				
 //			});
-//			
-//			ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//			assertNotNull(nextActivity);
-//			
-//			//ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
-//			final ListView claimListLV = (ListView) nextActivity.findViewById(R.id.LVclaimList);
+			
+			//ApproverExpenseListActivity nextActivity = (ApproverExpenseListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+			//assertNotNull(nextActivity);
+			
+			//ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
+//			final ListView claimListLV = (ListView) nextActivity.findViewById(R.id.expensesList);
 //			approverCSA.runOnUiThread(new Runnable(){
 //				
 //				public void run(){
@@ -103,17 +106,17 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 //				}
 //				
 //			});
-//		
-//			
-//			ApproverClaimSummary lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+		
+			
+//			ApproverClaimsListActivity lastActivity = (ApproverClaimsListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 //			assertNotNull(lastActivity);
-//			
-//			final ListView expenseListLV = (ListView) lastActivity.findViewById(R.id.LVExpenseList);
-//			ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view);
-//			
-//			
-//			
-//		}
+			
+			ListView expenseListLV = (ListView) userSelect.findViewById(R.id.expensesList);
+			ViewAsserts.assertOnScreen(userSelect.getWindow().getDecorView(),expenseListLV);
+			
+			
+			
+		}
 //		
 //		
 //		//US08.05.01

@@ -1,9 +1,11 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class LoginActivity extends Activity {
 
@@ -30,5 +32,9 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	public void approverLogin(View v) {
+		Intent intent = new Intent(this,ApproverClaimsListActivity.class);
+		startActivity(intent);
 	}
 }
