@@ -34,7 +34,12 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void approverLogin(View v) {
-		Intent intent = new Intent(this,ApproverClaimsListActivity.class);
+		Intent intent = new Intent(LoginActivity.this,ApproverClaimsListActivity.class);
+		startActivity(intent);
+	}
+	
+	public void userLogin(View v){
+		Intent intent = new Intent(LoginActivity.this,ClaimantClaimsListActivity.class);
 		startActivity(intent);
 	}
 }

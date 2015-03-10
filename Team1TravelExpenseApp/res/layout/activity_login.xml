@@ -38,6 +38,7 @@
         android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="84dp"
+        android:onClick="userLogin"
         android:text="User" />
 
     <Button
