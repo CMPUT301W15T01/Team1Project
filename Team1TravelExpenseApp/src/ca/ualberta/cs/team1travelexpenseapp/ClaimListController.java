@@ -56,6 +56,7 @@ public class ClaimListController {
 		}
 		claimsList.updateClaim(currentClaim, newClaim);
 		
+		
 	}
 	
 	public static void setCurrentClaim(Claim claim){

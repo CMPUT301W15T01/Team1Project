@@ -38,6 +38,7 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		//currentClaim.setStatus(newClaim.getStatus());
+		notifyListeners();
 	}
 	
 	public Claim getClaim(int index) {
