@@ -22,7 +22,7 @@ public class Expense {
 		this.description = description;
 		this.date = date;
 		this.category = category;
-		this.amount = amount;
+		this.amount = amount.setScale(2,BigDecimal.ROUND_HALF_EVEN); 
 		this.currency = currency;
 		
 		isFlagged = false;
