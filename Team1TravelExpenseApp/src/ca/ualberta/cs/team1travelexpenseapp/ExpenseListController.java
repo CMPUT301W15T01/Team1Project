@@ -41,23 +41,20 @@ public class ExpenseListController {
 		setCurrentExpense(expense);
 		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
 		
-		currentExpenseList.setExpenseList(expenseArray);
+		getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void removeExpense(Expense expense){
 		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.remove(expense);
-		currentExpenseList.setExpenseList(expenseArray);
+		getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void updateExpense(Expense expense, Expense newExpense){
 		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.set(expenseArray.indexOf(expense), newExpense);
-		
-		
-		
-		currentExpenseList.setExpenseList(expenseArray);
 		setCurrentExpense(newExpense);
+		getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void onExpenseSaveClick(EditExpenseActivity activity) {
@@ -79,7 +76,7 @@ public class ExpenseListController {
 		Spinner currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);
 		String currencyText = String.valueOf(currencySpinner.getSelectedItem());
 		
-		updateExpense(currentExpense, new Expense(descriptionText, date, categoryText, amountValue, currencyText));
+		updateExpense(getCurrentExpense(), new Expense(descriptionText, date, categoryText, amountValue, currencyText));
 		
 		
 		activity.finish();	
