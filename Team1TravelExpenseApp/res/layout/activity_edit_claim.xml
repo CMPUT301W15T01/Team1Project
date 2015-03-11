@@ -140,7 +140,7 @@
                  android:entries="@array/tags"/>
 
              <Button
-                 android:id="@+id/approverButton"
+                 android:id="@+id/addTagButton"
                  style="?android:attr/buttonStyleSmall"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
