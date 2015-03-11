@@ -167,14 +167,14 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 //		assertEquals("Monitor for ReceiverActivity has not been called",
 //		        1, receiverActivityMonitor.getHits());
 //		assertEquals("Activity is of wrong type",
-//				EditClaimActivity.class, receiverActivity.getClass());
-//
-//		// Remove the ActivityMonitor
-//		getInstrumentation().removeMonitor(receiverActivityMonitor);
+				//EditClaimActivity.class, receiverActivity.getClass());
+
+		// Remove the ActivityMonitor
+	//	getInstrumentation().removeMonitor(receiverActivityMonitor);
+		
+		
 //		
-//		
-//		
-//	}
-//	
-//	
-}
+	}
+	
+	
+//}

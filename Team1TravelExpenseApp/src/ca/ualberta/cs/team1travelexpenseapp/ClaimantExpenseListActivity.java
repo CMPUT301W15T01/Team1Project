@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ClaimantExpenseListActivity extends Activity {
 
@@ -33,6 +36,9 @@ public class ClaimantExpenseListActivity extends Activity {
         		claim.getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
         */
+		
+		TextView ClaimInfoDisplay  = (TextView) findViewById(R.id.destination);
+		ClaimInfoDisplay.setText(ClaimListController.getCurrentClaim().toString());
 	}
 
 	@Override
@@ -51,4 +57,26 @@ public class ClaimantExpenseListActivity extends Activity {
 	public void onAddExpenseClick(View v) {
 		ExpenseListController.onAddExpenseClick(this);
 	}
-}
+	
+	public void onSubmitClick(View v){
+		if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted){
+				if (ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+			
+		
+					ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+					Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
+					//push online here
+					Intent intent =new Intent(this, ClaimantClaimsListActivity.class);
+					startActivity(intent);
+				}
+		
+		
+		}
+		else{
+			Toast.makeText(getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
+			
+		}
+	
+	
+	}
+}	

@@ -84,22 +84,33 @@ public class ClaimantClaimsListActivity extends Activity {
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
 				
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
-			           public void onClick(DialogInterface dialog, int id) {
-			        	   
-			    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-			    				
-			    				//toast for debugging
-			    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
-			    				
-			    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
-			    				startActivity(edit);
-			    				
-			    			}// if statement
+			           public void onClick(DialogInterface dialog, int id) {		
+			    		
+			        	   //toast for debugging
+			    		
+			        	   Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
+			        	   Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
+			        	   startActivity(edit);
+			    					
 			           }
 			       });
 				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-			        	   ClaimListController.onRemoveClaimClick();
+			        	   
+			        	   if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted){
+			        			   if (ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+			        				   ClaimListController.onRemoveClaimClick();
+			        			   }
+			        			   else{
+			        				   Toast.makeText(getApplicationContext(),"This claim can not be deleted", Toast.LENGTH_SHORT).show();
+			        			   }
+			        		  
+			        	   }
+			        	   else{
+			        		   
+			        		   Toast.makeText(getApplicationContext(),"This claim can not be deleted", Toast.LENGTH_SHORT).show();
+			        		   
+			        	   }
 			           }
 			       });
 				editClaimDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {

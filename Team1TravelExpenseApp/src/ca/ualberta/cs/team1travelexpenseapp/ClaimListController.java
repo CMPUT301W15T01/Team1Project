@@ -155,9 +155,13 @@ public class ClaimListController {
 	}
 
 	public static void onRemoveClaimClick() {
-		ArrayList<Claim> claims = getClaimList().getClaims();
-		claims.remove(currentClaim);
-		claimsList.setClaimList(claims);
+		
+		if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+		
+			ArrayList<Claim> claims = getClaimList().getClaims();
+			claims.remove(currentClaim);
+			claimsList.setClaimList(claims);
+		}
 		
 	}
 
