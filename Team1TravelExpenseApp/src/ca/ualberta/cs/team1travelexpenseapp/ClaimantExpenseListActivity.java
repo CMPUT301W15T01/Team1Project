@@ -3,13 +3,20 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 public class ClaimantExpenseListActivity extends Activity {
 
@@ -50,6 +57,45 @@ public class ClaimantExpenseListActivity extends Activity {
 		};
 		
 		expenseList.addListener(listener);
+		
+	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
+	        	
+	    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
+	    			 ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
+	    			
+	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+					 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantExpenseListActivity.this);
+					
+					 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				        	   
+				    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+				    				
+				    				//toast for debugging
+				    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
+				    				
+				    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
+				    				startActivity(edit);
+				    				
+				    			}// if statement
+				           }
+				       });
+					editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				        	   ClaimListController.onRemoveClaimClick();
+				           }
+				       });
+					editClaimDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				               //Do nothing
+				           }
+				       });
+					editClaimDialogBuilder.setTitle("Edit/Delete Claim?");
+					editClaimDialog=editClaimDialogBuilder.create();
+					editClaimDialog.show();
+					return true;//not too sure on return value look into this
+	    }	
+		
 	}
 
 	@Override

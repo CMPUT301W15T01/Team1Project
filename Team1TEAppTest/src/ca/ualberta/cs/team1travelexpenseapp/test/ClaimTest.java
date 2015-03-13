@@ -30,6 +30,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		super.setUp();
 	}
 	
+	
 	//US01.01.01
 	public void testAddClaimNameAndDate() {
 		//get activity and assert user has logged in
@@ -181,7 +182,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		ClaimListController.addClaim(claim);
 		
 		//get activity
-		ClaimantClaimsListActivity activity = getActivity();
+		final Activity activity = getActivity();
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
 		 // get list view 
  		final ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
@@ -194,7 +195,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		    }
 		  });
 		  
-		  ClaimantExpenseListActivity nextActivity = (ClaimantExpenseListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		  Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		  assertNotNull("Expense list for claim failed to open",nextActivity);
 		  TextView claimInfo = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
 		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo);
