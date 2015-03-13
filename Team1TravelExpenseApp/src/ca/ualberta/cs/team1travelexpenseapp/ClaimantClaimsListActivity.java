@@ -47,7 +47,7 @@ public class ClaimantClaimsListActivity extends Activity {
 
         mainListView = (ListView) findViewById(R.id.claimsList);
         
-      //taken from https://github.com/abramhindle/student-picker and modified
+        //taken from https://github.com/abramhindle/student-picker and modified
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
