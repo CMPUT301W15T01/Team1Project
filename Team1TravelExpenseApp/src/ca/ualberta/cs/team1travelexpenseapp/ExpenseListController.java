@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,10 +52,13 @@ public class ExpenseListController {
 	}
 	
 	public static void updateExpense(Expense expense, Expense newExpense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
-		expenseArray.set(expenseArray.indexOf(expense), newExpense);
-		setCurrentExpense(newExpense);
-		getCurrentExpenseList().setExpenseList(expenseArray);
+		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
+				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
+			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
+			expenseArray.set(expenseArray.indexOf(expense), newExpense);
+			setCurrentExpense(newExpense);
+			getCurrentExpenseList().setExpenseList(expenseArray);
+		}
 	}
 	
 	public static void onExpenseSaveClick(EditExpenseActivity activity) {
@@ -87,5 +91,11 @@ public class ExpenseListController {
 		Intent intent = new Intent(activity, EditExpenseActivity.class);
 		activity.startActivity(intent);
 		
+	}
+
+	public static File compressPhoto(EditExpenseActivity activity,
+			File photoFile) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
