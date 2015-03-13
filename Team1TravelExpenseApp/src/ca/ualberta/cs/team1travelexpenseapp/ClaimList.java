@@ -94,4 +94,8 @@ public class ClaimList {
 		listeners.remove(listener);
 	}
 	
+	public ArrayList<Listener> getListeners() {
+		return listeners;
+	}
+	
 }

@@ -50,6 +50,9 @@ public class ClaimantExpenseListActivity extends Activity {
 		};
 		
 		expenseList.addListener(listener);
+		for (Listener i : ClaimListController.getClaimList().getListeners()) {
+			expenseList.addListener(i);
+		}
 	}
 
 	@Override
