@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -61,7 +62,18 @@ public class EditExpenseActivity extends Activity {
 				break;
 			}
 		}
-	}
+		
+		if (ClaimListController.getCurrentClaim().status == Claim.Status.submitted || 
+				ClaimListController.getCurrentClaim().status == Claim.Status.approved){
+			//Disable UI if the claim is not editable
+			descriptionView.setEnabled(false);
+			dateView.setEnabled(false);
+			amountView.setEnabled(false);
+			
+			Button saveButton = (Button) this.findViewById(R.id.saveExpenseButton);
+			saveButton.setEnabled(false);
+		}
+	} 
 	
 	protected void onStart(){
 		super.onStart();

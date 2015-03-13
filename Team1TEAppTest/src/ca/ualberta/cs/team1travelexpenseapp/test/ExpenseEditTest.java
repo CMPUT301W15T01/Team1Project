@@ -66,7 +66,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	
 	public ExpenseEditTest() throws Exception {
 		super(ClaimantExpenseListActivity.class);
-		
+		createTestPhotoFile();
 	}
 
 	protected void setUp() throws Exception {
@@ -189,7 +189,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	// US04.04.01
 	// As a claimant, I want to manually flag an expense item with an incompleteness indicator, 
 	// even if all item fields have values, so that I am reminded that the item needs further editing.
-	/*
+	
 	public void testFlagExpense() {
 		//Claim claim = ClaimListController.getClaim(0);
 		//Expense expense = claim.getExpense(0);
@@ -218,7 +218,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		
 		activity.finish();
 	}
-	*/
+	
 	// US04.05.01
 	// As a claimant, I want to view an expense item and its details.
 	
@@ -285,15 +285,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	/*
 	public void testDeleteExpense(){
 		//preconditions - there's an expense item to delete
-		Claim claim = new Claim();
-		Expense expense = new Expense();
-		claim.addExpense(expense);
+		expense = new Expense();
+		ExpenseListController.addExpense(expense);
 		
+		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.expensesList);
+
 		// click on an expense and hit delete button
-		final View item = expenseListView.getAdapter().getView(0, null, null);
-		activity.runOnUiThread(new Runnable() {
+		
+		listActivity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				View item = listOfExpenses.getAdapter().getView(0, null, null);
 				// click button, should produce dialog to choose edit or delete claim
 				item.performLongClick();
 				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseDialog);
@@ -304,7 +306,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 			}
 		});
 		
-		assertEquals("New expense not deleted", claim.getExpenses().size(), 1);
+		assertEquals("New expense not deleted", claim.getExpenseList().getExpenses().size(), 0);
 	}
 	*/
 	
@@ -312,8 +314,9 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	// As a claimant, I want to optionally take a single photograph of a receipt and attach the
 	// photograph to an editable expense item, so that there is supporting documentation for the 
 	// expense item in case the physical receipt is lost.
-	/*
+	
 	public void testAddPhoto(){	
+		
 		
 		// An editable expense is currently being edited or added
 		imageButton.setImageDrawable(null);	
@@ -327,13 +330,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		// A test photo is added to simulate an actual photo being taken
 		expense.setReceipt(photoFile);
 		
-		claim.setStatus(status.SUBMITTED);
+		claim.setStatus(Claim.Status.submitted);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
 		activity = getAddExpenseActivity();
 		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
-		claim.setStatus(status.IN_PROGRESS);
+		claim.setStatus(Claim.Status.inProgress);
 		saveButton.performClick();
 		// restart the activity
 		activity.finish();
@@ -344,11 +347,11 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		assertTrue("Image File should be set", expense.getReceipt() != null);
 	}
 	
-	*/
+	
 	
 	// US06.02.01
 	// As a claimant, I want to view any attached photographic receipt for an expense 
-	/*
+	
 	public void testViewPhoto(){
 		
 		activity = getEditExpenseActivity();
@@ -371,10 +374,10 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		
 		// A user can see the thumbnail of the photo 
 	}
-	*/
+	
 	// US06.03.01
 	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
-	/*
+	
 	public void testDeletePhoto(){
 		expense.setReceipt(photoFile);
 		saveButton.performClick();
@@ -390,8 +393,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		//click delete photo 
 		activity.findViewById(R.id.deletePhotoButton).performClick();	
 		//click yes
-		activity.findViewById(R.id.yesdeletePhotoButton).performClick();
-		assertTrue(claim.getStatus().equals(status,SUBMITTED));
+		//activity.findViewById(R.id.yesdeletePhotoButton).performClick();
+		assertSame(ClaimListController.getCurrentClaim().getStatus(),Claim.Status.submitted);
 		
 		//The editable expense no longer has a photo attached to it
 		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
@@ -404,14 +407,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		// An editable expense is currently being edited or added and the claimant has taken a photo that is greater than 65536 bytes 
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
-		photoFile = activity.compressPhoto(photoFile);
+		photoFile = ExpenseListController.compressPhoto(activity, photoFile);
 		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getReceipt().length() < 65536);	
 		
 		// A photo that is less than 65536 bytes in size is attached to the expense
 		expense.setReceipt(photoFile);
 		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);	
 	}
-	*/
+	
 	//transitions from the ExpenseList to EditExpense by clicking add expense
 	private EditExpenseActivity getAddExpenseActivity(){
 		

@@ -1,5 +1,8 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +13,11 @@ import android.widget.ListView;
 
 public class ClaimantExpenseListActivity extends Activity {
 
-	public Claim claim;
+	public Claim claim = ClaimListController.getCurrentClaim();
 	private ArrayAdapter<Expense> expenselistAdapter ;
  	private ListView expenseListView ;
+ 	private Listener listener;
+ 	private ExpenseList expenseList = claim.getExpenseList();
  	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +30,26 @@ public class ClaimantExpenseListActivity extends Activity {
 		//and whether there is a photographic receipt.
 
 
-		// TODO: need to set the claim, probably in onStart? 
-		//commented out below because not yet functional
-        /*expenseListView = (ListView) findViewById(R.id.expensesList);
-        claim=ClaimListController.getCurrentClaim();
+        expenseListView = (ListView) findViewById(R.id.claimantExpensesList);
+
+        Collection<Expense> expenses = claim.getExpenseList().getExpenses();
+        final ArrayList<Expense> expensesList = new ArrayList<Expense>(expenses);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
-        		claim.getExpenses());
+        		expensesList);
         expenseListView.setAdapter(expenselistAdapter);
-        */
+        
+        //taken from https://github.com/abramhindle/student-picker and modified
+  		listener = new Listener() {			
+			@Override
+			public void update() {
+				expensesList.clear();
+				Collection<Expense> expenses = claim.getExpenseList().getExpenses();
+				expensesList.addAll(expenses);
+				expenselistAdapter.notifyDataSetChanged();
+			}
+		};
+		
+		expenseList.addListener(listener);
 	}
 
 	@Override
