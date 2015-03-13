@@ -282,11 +282,19 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 
 	// US04.07.01
 	// As a claimant, I want to delete an expense item while changes are allowed.	
-	/*
-	public void testDeleteExpense(){
+
+	public void testDeleteExpense() throws InterruptedException{
 		//preconditions - there's an expense item to delete
 		expense = new Expense();
-		ExpenseListController.addExpense(expense);
+		
+		listActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ExpenseListController.addExpense(expense);
+			}
+		});
+		instrumentation.waitForIdleSync();
+		assertEquals("New expense not added", claim.getExpenseList().getExpenses().size(), 1);
 		
 		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.expensesList);
 
@@ -298,17 +306,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 				View item = listOfExpenses.getAdapter().getView(0, null, null);
 				// click button, should produce dialog to choose edit or delete claim
 				item.performLongClick();
-				AlertDialog dialog=activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseDialog);
+				AlertDialog dialog=listActivity.editExpenseDialog;
 				
 				//this should click the delete button in the dialog
-				Button deleteButton=(Button)dialog.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.deleteExpenseButton);
+				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
 			    deleteButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();
 		
 		assertEquals("New expense not deleted", claim.getExpenseList().getExpenses().size(), 0);
 	}
-	*/
 	
 	// US06.01.01
 	// As a claimant, I want to optionally take a single photograph of a receipt and attach the

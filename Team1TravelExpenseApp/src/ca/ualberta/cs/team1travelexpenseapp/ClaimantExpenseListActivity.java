@@ -20,11 +20,11 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class ClaimantExpenseListActivity extends Activity {
 
-	public Claim claim = ClaimListController.getCurrentClaim();
+	public Claim claim;
 	private ArrayAdapter<Expense> expenselistAdapter ;
  	private ListView expenseListView ;
  	private Listener listener;
- 	private ExpenseList expenseList = claim.getExpenseList();
+ 	private ExpenseList expenseList;
  	public AlertDialog editExpenseDialog;
  	
 	@Override
@@ -37,7 +37,8 @@ public class ClaimantExpenseListActivity extends Activity {
 		//the category, the textual description, amount spent, unit of currency, 
 		//and whether there is a photographic receipt.
 
-
+		claim=ClaimListController.getCurrentClaim();
+		expenseList= claim.getExpenseList();
         expenseListView = (ListView) findViewById(R.id.claimantExpensesList);
 
         Collection<Expense> expenses = claim.getExpenseList().getExpenses();
@@ -57,10 +58,10 @@ public class ClaimantExpenseListActivity extends Activity {
 			}
 		};
 		
-		expenseList.addListener(listener);
+		/*expenseList.addListener(listener);
 		for (Listener i : ClaimListController.getClaimList().getListeners()) {
 			expenseList.addListener(i);
-		}
+		}*/
 		
 	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 	        	
@@ -90,7 +91,7 @@ public class ClaimantExpenseListActivity extends Activity {
 				               //Do nothing
 				           }
 				       });
-					editExpenseDialogBuilder.setTitle("Edit/Delete Claim?");
+					editExpenseDialogBuilder.setTitle("Edit/Delete Expense?");
 					editExpenseDialog=editExpenseDialogBuilder.create();
 					editExpenseDialog.show();
 					return true;//not too sure on return value look into this
