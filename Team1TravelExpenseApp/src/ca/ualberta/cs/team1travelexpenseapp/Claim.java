@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CyclicBarrier;
 
-import android.nfc.Tag;
 import android.widget.Toast;
 
 /**

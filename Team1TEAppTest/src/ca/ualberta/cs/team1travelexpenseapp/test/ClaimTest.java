@@ -7,24 +7,16 @@ import java.util.Date;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
-import ca.ualberta.cs.team1travelexpenseapp.User;
-
-import android.R;
+import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.TouchUtils;
 import android.test.ViewAsserts;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -170,41 +162,45 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 //		
 //	}
 //	
-//	//US01.03.01
-//	public void testViewClaim() {
-//		// Creating a claim and adding test destination values
-//		Claim claim = new Claim();
-//		claim.addDestination("dest 1");
-//		claim.addDestination("dest 2");	
-//		ClaimListController list = new ClaimListController();
-//		list.add(claim);
-//		//get activity and assert user has logged in
-//		ClaimActivity Activity = getActivity();
-//		assertTrue("not logged in",User.loggedin());
-//		 // get list view 
-// 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
-//		// longclick the claim
-//		  Activity.runOnUiThread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		      // click button and open the add claim activity.
-//	              view.getAdapter().getView(0, null, null).performLongClick();
-//	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
-//		    AlertDialog dialog = Activity.getLastDialog(); 
-//        		 performClick(dialog.getButton(DialogInterface.DETAILS));
-//		    }
-//		  });
-//		  
-//		// assert that it's on the screen
-//		TextView view = (TextView) activity.findViewByID(R.id.claimtext);
-//		assertNotNull("activity",activity);
-//		assertNotNull("textview",view);
-//		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
-//		//user clicks back
-//		activity.finish();
-//		
-//
-//	}
+	//US01.03.01
+	public void testViewClaim() {
+		// Creating a claim with info filled in
+		Claim claim = new Claim();
+		Date startDate=new Date();
+		claim.setStartDate(startDate);
+		Date endDate=new Date();
+		endDate.setTime(startDate.getTime()+8*10^8);
+		claim.setEndDate(endDate);
+		claim.setClaimantName("Jimmy");
+		ArrayList <Tag> tagsList= new ArrayList <Tag>();
+		tagsList.add(new Tag("rad"));
+		tagsList.add(new Tag("hip"));
+		claim.setClaimTagList(tagsList);
+		claim.addDestination("dest 1", "reason 1");
+		claim.addDestination("dest 2", "reason 2" );	
+		ClaimListController.addClaim(claim);
+		
+		//get activity
+		ClaimantClaimsListActivity activity = getActivity();
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		 // get list view 
+ 		final ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		// click the claim
+		  activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open the add claim activity.
+	              view.getAdapter().getView(0, null, null).performClick();
+		    }
+		  });
+		  
+		  ClaimantExpenseListActivity nextActivity = (ClaimantExpenseListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		  assertNotNull("Expense list for claim failed to open",nextActivity);
+		  TextView claimInfo = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
+		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo);
+		  assertTrue("Claim info on screen does not match expected claim info", claim.toString().equals(claimInfo.getText().toString()));
+
+	}
 //	
 	//US01.04.01
 //	public void testEditClaim() {
