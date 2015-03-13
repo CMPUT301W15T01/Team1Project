@@ -25,6 +25,7 @@ public class ClaimantExpenseListActivity extends Activity {
  	private ListView expenseListView ;
  	private Listener listener;
  	private ExpenseList expenseList = claim.getExpenseList();
+ 	public AlertDialog editExpenseDialog;
  	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class ClaimantExpenseListActivity extends Activity {
 		};
 		
 		expenseList.addListener(listener);
+		for (Listener i : ClaimListController.getClaimList().getListeners()) {
+			expenseList.addListener(i);
+		}
 		
 	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 	        	
@@ -64,37 +68,35 @@ public class ClaimantExpenseListActivity extends Activity {
 	    			 ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
 	    			
 	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
-					 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantExpenseListActivity.this);
+					 AlertDialog.Builder editExpenseDialogBuilder = new AlertDialog.Builder(ClaimantExpenseListActivity.this);
 					
-					 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
+					 editExpenseDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
 				        	   
-				    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-				    				
-				    				//toast for debugging
-				    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
-				    				
-				    				Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
+				    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+				    				Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
 				    				startActivity(edit);
 				    				
 				    			}// if statement
 				           }
 				       });
-					editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+					editExpenseDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
-				        	   ClaimListController.onRemoveClaimClick();
+				        	   ExpenseListController.onRemoveExpenseClick();
 				           }
 				       });
-					editClaimDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+					editExpenseDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
 				               //Do nothing
 				           }
 				       });
-					editClaimDialogBuilder.setTitle("Edit/Delete Claim?");
-					editClaimDialog=editClaimDialogBuilder.create();
-					editClaimDialog.show();
+					editExpenseDialogBuilder.setTitle("Edit/Delete Claim?");
+					editExpenseDialog=editExpenseDialogBuilder.create();
+					editExpenseDialog.show();
 					return true;//not too sure on return value look into this
-	    }	
+	    		}
+	    });	
+	    
 		
 	}
 

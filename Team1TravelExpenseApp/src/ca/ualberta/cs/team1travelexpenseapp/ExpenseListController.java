@@ -98,4 +98,11 @@ public class ExpenseListController {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public static void onRemoveExpenseClick() {
+		ArrayList<Expense> expenses = getCurrentExpenseList().getExpenses();
+		expenses.remove(currentExpense);
+		currentExpenseList.setExpenseList(expenses);
+		
+	}
 }

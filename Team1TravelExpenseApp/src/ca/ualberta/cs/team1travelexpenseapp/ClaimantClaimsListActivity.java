@@ -86,7 +86,7 @@ public class ClaimantClaimsListActivity extends Activity {
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
-			    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted || ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+			    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
 			    				
 			    				//toast for debugging
 			    				Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
