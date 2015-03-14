@@ -68,7 +68,7 @@ public class ClaimantClaimsListActivity extends Activity {
         
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
-        	public void onItemClick( AdapterView Parent, View v, int position, long id){
+        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
         		ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
@@ -77,7 +77,7 @@ public class ClaimantClaimsListActivity extends Activity {
         	
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
-    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
+    		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
     			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html

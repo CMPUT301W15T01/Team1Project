@@ -69,9 +69,9 @@ public class ClaimantExpenseListActivity extends Activity {
 			expenseList.addListener(i);
 		}*/
 		expenseList.addListener(ClaimListController.getClaimList().getListeners().get(0));
-		
+			
 		expenseListView.setOnItemClickListener(new OnItemClickListener(){
-        	public void onItemClick( AdapterView Parent, View v, int position, long id){
+        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
         		ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
     			Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
     			startActivity(edit);
@@ -80,7 +80,7 @@ public class ClaimantExpenseListActivity extends Activity {
         	
 	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 	        	
-	    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
+	    		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
 	    			 ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
 	    			
 	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
@@ -88,7 +88,6 @@ public class ClaimantExpenseListActivity extends Activity {
 					
 					 editExpenseDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
-				        	   
 				    			//if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
 				    			Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
 				    			startActivity(edit);
@@ -111,9 +110,7 @@ public class ClaimantExpenseListActivity extends Activity {
 					editExpenseDialog.show();
 					return true;//not too sure on return value look into this
 	    		}
-	    });	
-	    
-		
+	    });	    
 	}
 
 	@Override

@@ -14,8 +14,6 @@ import android.widget.Spinner;
 
 public class ExpenseListController {
 	protected static Expense currentExpense = null;
-	private static ExpenseList currentExpenseList= null;
-
 	public static ExpenseList getCurrentExpenseList() { 
 		return ClaimListController.getCurrentClaim().getExpenseList();
 	}
@@ -28,8 +26,7 @@ public class ExpenseListController {
 		return currentExpense;
 	}
 	
-	public static void setCurrentExpenseList(ExpenseList expenseList){
-		currentExpenseList = expenseList; 
+	public static void setCurrentExpenseList(ExpenseList expenseList){ 
 	}
 	
 	public static void addExpense(Expense expense){
@@ -91,8 +88,8 @@ public class ExpenseListController {
 
 	public static File compressPhoto(EditExpenseActivity activity,
 			File photoFile) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Compress photofile
+		return photoFile;
 	}
 
 	public static void onRemoveExpenseClick() {

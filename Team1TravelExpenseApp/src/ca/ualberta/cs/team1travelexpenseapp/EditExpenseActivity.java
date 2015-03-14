@@ -2,6 +2,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 
 import java.util.Calendar;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -20,7 +21,6 @@ public class EditExpenseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_expense);	
-		
 		expenseList = ExpenseListController.getCurrentExpenseList();
 		
 		listener=new Listener() {			
@@ -34,7 +34,6 @@ public class EditExpenseActivity extends Activity {
 	}
 
 	private void updateValues(){
-
 		Expense expense = ExpenseListController.getCurrentExpense();
 		Spinner categorySpinner = (Spinner) this.findViewById(R.id.categorySelector);	
 		for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
