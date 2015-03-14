@@ -64,11 +64,20 @@ public class ClaimantExpenseListActivity extends Activity {
 		
 		expenseList.addListener(listener);
 		listener.update();
-		ClaimListController.getClaimList().addListener(listener);
+		//ClaimListController.getClaimList().addListener(listener);
 		/*for (Listener i : ClaimListController.getClaimList().getListeners()) {
 			expenseList.addListener(i);
 		}*/
+		expenseList.addListener(ClaimListController.getClaimList().getListeners().get(0));
 		
+		expenseListView.setOnItemClickListener(new OnItemClickListener(){
+        	public void onItemClick( AdapterView Parent, View v, int position, long id){
+        		ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
+    			Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
+    			startActivity(edit);
+        	}
+        });
+        	
 	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 	        	
 	    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
@@ -80,11 +89,11 @@ public class ClaimantExpenseListActivity extends Activity {
 					 editExpenseDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
 				        	   
-				    			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-				    				Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
-				    				startActivity(edit);
+				    			//if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+				    			Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
+				    			startActivity(edit);
 				    				
-				    			}// if statement
+				    			//}
 				           }
 				       });
 					editExpenseDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
