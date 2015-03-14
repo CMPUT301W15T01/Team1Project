@@ -54,6 +54,10 @@
             android:name="ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity"
             android:label="@string/title_activity_approver_claims" >
         </activity>
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.ApproverClaimInfo"
+            android:label="@string/title_activity_approver_claim_info" >
+        </activity>
     </application>
 
 </manifest>

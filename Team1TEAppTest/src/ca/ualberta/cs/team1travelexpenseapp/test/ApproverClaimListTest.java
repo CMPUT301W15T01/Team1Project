@@ -178,51 +178,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Logi
 //	}
 //	
 //	
-//	//US08.03.01
-//	/*
-//	 *Testing if we can see all of
-//	 *the expenses of a claim
-//	 * */
-//	public void testExpensesVisible(){
-//		
-//		  Expense expense = DummyExpense();
-//		  ApproverExpenseActivity ApproverActivity = new ApproverExpenseActivity();
-//		  ClaimListController controller = new ClaimListController();
-//		  
-//		  Claim claim = DummyClaim();
-//		  claim.addExpense(expense);
-//		  controller.add(claim);
-//		  controller.save();
-//		  AssertFalse("claim list not empty?" , controller.LoadClaims().isEmpty());//precondition
-//			
-//		  ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimSummaryActivity.class.getName(), null, false);
-//			
-//		  ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
-//		  final ListView expenseListLV = (ListView) approverCSA.findViewById(R.id.LVExpenseList);
-//		  approverCSA.runOnUiThread(new Runnable(){
-//				
-//				public void run(){
-//					
-//					expenseListLV.performClick();//onClick would be overrided
-//				}
-//				
-//			});
-//		
-//			
-//			Approver lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//			assertNotNull(lastActivity);
-//			
-//		 
-//		  final TextView expenseSummary = lastActivity.findViewById(R.id.expenseSummaryTV);
-//		  ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view); 
-//			
-//		  String expense_check = expenseSummary.getText();
-//		  
-//		  AssertTrue("details,cost, and description displayed?", expense_check.toLowerCase().contains("details") 
-//				  && expense_check.toLowerCase().contains("desc") && expense_check.toLowerCase().contains("cost"));
-//	
-//		
-//	}
+
 //	
 //	
 //	

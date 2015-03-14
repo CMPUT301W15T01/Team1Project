@@ -10,29 +10,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/returnButton"
-        android:layout_below="@+id/destination"
+        android:layout_below="@+id/approverClaimInfoTextView"
         android:scrollbars="vertical" >
 
     </ListView>
 
-    <Button
-        android:id="@+id/addExpenseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/destination"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:onClick="addExpense"
-        android:text="@string/add_expense" />
-
     <TextView
-        android:id="@+id/destination"
+        android:id="@+id/approverClaimInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/addExpenseButton"
+        android:layout_toLeftOf="@+id/approverInfoButton"
         android:background="#000"
         android:text="Claim: Claim Name\nStart Date - End Date\nTotal: totals\nStatus: status"
         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -62,5 +51,14 @@
         android:layout_below="@+id/expensesList"
         android:layout_centerHorizontal="true"
         android:text="Comment" />
+
+    <Button
+        android:id="@+id/approverInfoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/approverClaimInfoTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Info" />
 
 </RelativeLayout>
