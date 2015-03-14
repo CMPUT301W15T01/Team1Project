@@ -90,15 +90,23 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			// init claim/expenses			
 			Claim claim = new Claim();
 			ClaimListController.setCurrentClaim(claim);
-			ExpenseListController.getCurrentExpenseList();
 			Expense expense1 = new Expense("Airfaire", new Date(), "Skiing", new BigDecimal(20), "USD");
 			Expense expense2 = new Expense("Airfaire", new Date(), "Skiing", new BigDecimal(50), "CAD");
 			ExpenseListController.addExpense(expense1);
 			ExpenseListController.addExpense(expense2);
+			final TextView info = (TextView) activity.findViewById(R.id.approverClaimInfoTextView);
+			activity.runOnUiThread(new Runnable() {
 
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					Log.d("TEST", ClaimListController.getCurrentClaim().toString());
+					info.setText(ClaimListController.getCurrentClaim().toString());
+				}
+				
+			});
 			
-			TextView info = (TextView) activity.findViewById(R.id.approverClaimInfoTextView);
-			assertEquals("Claim info visible", claim.toString(), info.getText());
+			assertEquals("Claim info visible", ClaimListController.getCurrentClaim().toString(), info.getText().toString());
 
 			
 		}
@@ -142,7 +150,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 //			ApproverClaimsListActivity lastActivity = (ApproverClaimsListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 //			assertNotNull(lastActivity);
 			
-			ListView expenseListLV = (ListView) userSelect.findViewById(R.id.expensesList);
+			ListView expenseListLV = (ListView) userSelect.findViewById(R.id.approverExpensesList);
 			ViewAsserts.assertOnScreen(userSelect.getWindow().getDecorView(),expenseListLV);
 			
 			
@@ -194,7 +202,6 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			list.addClaim(claim);
 			ClaimListController.setCurrentClaim(claim);
 			
-			Expense expense = new Expense();
 			//ClaimListController.getCurrentClaim().addExpense(expense);
 			ExpenseListController.addExpense(new Expense());
 			

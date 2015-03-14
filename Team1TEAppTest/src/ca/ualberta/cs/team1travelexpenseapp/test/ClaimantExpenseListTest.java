@@ -52,6 +52,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		//add a claim to test on
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		ClaimListController.addClaim(claim1);	
+		ClaimListController.setCurrentClaim(claim1);
 		
 		Intent intent = new Intent();
 		intent.putExtra("Index", 0);
@@ -276,6 +277,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		ClaimList list = new ClaimList();
 		final Claim claim =  new Claim();
 		list.addClaim(claim);
+		ClaimListController.addClaim(claim);
 		ClaimListController.setCurrentClaim(claim);
 		
 		Expense expense = new Expense();
@@ -301,12 +303,12 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			}
 			
 		});
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","John\nHI it looks good", text.getText().toString());
 		assertNotNull(nextActivity);
-		nextActivity .finish();
+		nextActivity.finish();
 	}
 	
 	
