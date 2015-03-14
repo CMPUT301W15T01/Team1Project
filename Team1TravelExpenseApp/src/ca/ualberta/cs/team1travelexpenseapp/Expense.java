@@ -116,7 +116,7 @@ public class Expense {
 		str += "Date: " + dateformat.format(getDate()) + "\n";
 		str += getCategory() + "\n";
 		str += getDescription() +"\n";
-		str += getAmount() + getCurrency() + "\n";
+		str += getAmount() + getCurrency();
 		if ( receipt == null) {
 			str += "\nPHOTOGRAPHIC RECEIPT ATTACHED";
 		}

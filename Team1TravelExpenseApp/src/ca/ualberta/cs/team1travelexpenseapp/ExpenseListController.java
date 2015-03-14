@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Intent;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -76,7 +77,13 @@ public class ExpenseListController {
 		Spinner currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);
 		String currencyText = String.valueOf(currencySpinner.getSelectedItem());
 		
-		updateExpense(getCurrentExpense(), new Expense(descriptionText, date, categoryText, amountValue, currencyText));
+
+		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);
+		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
+		if ( !completeBox.isChecked() ) {
+			expense.setComplete(true);
+		}
+		updateExpense(getCurrentExpense(), expense);
 		
 		
 		activity.finish();	
