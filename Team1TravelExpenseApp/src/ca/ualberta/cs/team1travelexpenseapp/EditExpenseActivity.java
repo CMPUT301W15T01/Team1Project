@@ -77,10 +77,7 @@ public class EditExpenseActivity extends Activity {
 	
 	protected void onStart(){
 		super.onStart();
-
-		if((ExpenseListController.getCurrentExpense() != null)){
-			updateValues();
-		}
+		updateValues();
 	}
 	
 	public void onExpenseSaveClick(View v) {
