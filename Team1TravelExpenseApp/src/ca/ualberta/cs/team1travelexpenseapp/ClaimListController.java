@@ -136,15 +136,17 @@ public class ClaimListController {
 		setCurrentClaim(claim);
 		claimArray.add(claim);
 		//displays an empty claim in claim list 
-		//claimsList.setClaimList(claimArray);
+		claimsList.setClaimList(claimArray);
 		
 	}
 	
 	public static ClaimList getSubmittedClaim() {
 		// TODO Auto-generated method stub
 		ClaimList submittedclaims = new ClaimList();
+		
 		for (Claim item: claimsList.getClaims()) {
-			if ((item.status.equals(Claim.Status.submitted)) {
+			
+			if ((item.status.equals(Claim.Status.submitted))) {
 				submittedclaims.addClaim(item);
 			}
 		}
