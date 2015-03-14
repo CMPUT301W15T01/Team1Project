@@ -1,5 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.Map;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 public class ClaimantCommentActivity extends Activity {
 	
 	Claim claim;
+	TextView comments;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +21,14 @@ public class ClaimantCommentActivity extends Activity {
 	
 	public void onStart() {
 		super.onStart();
-		TextView comments = (TextView) findViewById(R.id.claimantCommentString);
-		String commentString = claim.getCommentList().toString();
+		comments = (TextView) findViewById(R.id.claimantCommentString);
+		//String commentString = claim.getCommentList().toString();
+		String commentString = "";
+		Map<String, String> commentList = claim.getCommentList();
+		// how to iterate through keys found at http://stackoverflow.com/questions/46898/iterate-over-each-entry-in-a-map
+		for(Map.Entry<String, String> comment : commentList.entrySet()) {
+			commentString += comment.getKey() + "\n" + comment.getValue();
+		}
 		comments.setText(commentString);
 	}
 

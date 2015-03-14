@@ -1,5 +1,8 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ApproverExpenseListActivity extends Activity {
 
@@ -27,7 +31,20 @@ public class ApproverExpenseListActivity extends Activity {
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenseList().getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
+        
+
+      
 		
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+        // display general claim info at top of screen
+      	Claim myClaim = ClaimListController.getCurrentClaim();
+        TextView claimInfo = (TextView) findViewById(R.id.approverClaimInfoTextView);
+        String infoString = myClaim.toString();
+        claimInfo.setText(infoString);
 	}
 
 	@Override
