@@ -36,7 +36,7 @@ public class ExpenseListController {
 		setCurrentExpense(expense);
 		///setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
 		//display empty expense then show activity to edit empty claim otherwise an empty expense will not show after hitting back
-		//getCurrentExpenseList().setExpenseList(expenseArray);
+		getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void removeExpense(Expense expense){

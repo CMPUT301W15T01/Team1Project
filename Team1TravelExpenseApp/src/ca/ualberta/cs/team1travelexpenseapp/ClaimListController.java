@@ -136,7 +136,7 @@ public class ClaimListController {
 		setCurrentClaim(claim);
 		claimArray.add(claim);
 		//displays an empty claim in claim list 
-		//claimsList.setClaimList(claimArray);
+		claimsList.setClaimList(claimArray);
 		
 	}
 	
