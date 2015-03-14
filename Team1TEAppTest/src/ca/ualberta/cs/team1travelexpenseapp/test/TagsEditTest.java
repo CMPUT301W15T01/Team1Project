@@ -47,8 +47,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 				TagListController.addTag(tag3);
 			}
 		});
-		
-		Thread.sleep(500);
+		getInstrumentation().waitForIdleSync();
 		
 		assertTrue("tags list on screen does not reflect tags added via controller",checkTags(strings));
 		
@@ -71,7 +70,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 				
 			}
 		});
-		Thread.sleep(500);
+		getInstrumentation().waitForIdleSync();
 		//the tags in the TagsListController should now match this update to the string array:
 		strings[1]="fantastic";
 		assertTrue("tags list on screen does not reflect renamed tag",checkTags(strings));
@@ -88,7 +87,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 				deleteTagButton.performClick();
 			}
 		});
-		Thread.sleep(500);
+		getInstrumentation().waitForIdleSync();
 		//the tags in the TagsListController should now match this update to the string array:
 		String[] strings2={"good","excellent"};
 		assertTrue("tags list on screen does not reflect deleted tag",checkTags(strings2));
@@ -110,7 +109,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 				setTagButton.performClick();
 			}
 		});
-		Thread.sleep(500);
+		getInstrumentation().waitForIdleSync();
 		//the tags in the TagsListController should now match this update to the string array:
 		String[] strings3={"good","excellent","fantastic"};
 		assertTrue("tags list on screen does not reflect added tag",checkTags(strings3));

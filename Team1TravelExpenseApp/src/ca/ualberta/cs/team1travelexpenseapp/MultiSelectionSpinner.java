@@ -116,6 +116,21 @@ public class MultiSelectionSpinner extends Spinner implements
   simple_adapter.clear();  
   simple_adapter.add(buildSelectedItemString());  
  }  
+ 
+ public void setSelection(ArrayList selection) {  
+	  for (int i = 0; i < mSelection.length; i++) {  
+	   mSelection[i] = false;  
+	  }  
+	  for (Object sel : selection) {  
+	   for (int j = 0; j < _items.length; ++j) {  
+	    if (itemsList.get(j).equals(sel)) {  
+	     mSelection[j] = true;  
+	    }  
+	   }  
+	  }  
+	  simple_adapter.clear();  
+	  simple_adapter.add(buildSelectedItemString());  
+	 } 
   
  public void setSelection(int index) {  
   for (int i = 0; i < mSelection.length; i++) {  
