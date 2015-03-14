@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,9 @@ public class EditClaimActivity extends Activity {
 	protected void onStart(){
 		super.onStart();
 		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
-		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());	
+		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());
+		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
+		tagSpinner.setItems(TagListController.getTagList().getTags());
 	}
 	
 	

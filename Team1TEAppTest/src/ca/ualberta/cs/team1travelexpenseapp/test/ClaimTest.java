@@ -32,70 +32,70 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	
 	
 	//US01.01.01
-	public void testAddClaimNameAndDate() {
-		//get activity and assert user has logged in
-		Intent intent = new Intent();
-		setActivityIntent(intent);
-		final Activity activity = getActivity();
-		ClaimListController.getClaimList();
-		assertEquals("No claims", ClaimListController.getClaimCount(), 0);
-		
-		//get the button and press it
-		 final Button button = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addClaimButton);
-		  activity.runOnUiThread(new Runnable() {
-		    @Override
-		    public void run() {
-		      // click button and open the add claim activity.
-		      button.performClick();
-		    }
-		  });
-		
-		 final Button saveButton = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveClaimButton);
-		  activity.runOnUiThread(new Runnable() {
-		    @Override
-		    public void run() {
-		    	// click button and save and finish the activity.
-		    	Activity activity1 = new EditClaimActivity();
-		    	
-		    	TextView   name  = (TextView) activity1.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimNameBody);
-				DatePicker start = (DatePicker) activity1.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimFromDate);
-				DatePicker end   = (DatePicker) activity1.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimEndDate);
-
-				
-			    name.setText("name");
-
-			    start.updateDate(2012, 12, 12);
-			    end.updateDate(2015, 03, 15);
-			    
-			    saveButton.performClick();
-		    }
-		  });
-		  
-        /**
-		// get the listview and assert that the user can see it on the screen
-		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
-		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
-		//Assert values match after retreiving the claim
-		Claim claim = ClaimListController.getClaimList().getClaim(0);
-		assertTrue("name?",claim.getClaimantName().equals("name"));
-		assertEquals("start date?",new Date(2012),claim.getStartDate());
-		assertEquals("end date?",new Date(2013),claim.getEndDate());
-		 
-		 
-		
-		// model creating a claim and adding test values
-		claim = new Claim();
-		claim.setClaimantName("name");
-		claim.setStartDate(new Date(2000,11,11));
-		claim.setEndDate(new Date(2015,12,12));
-		final String expected = "name";
-		final String actual = claim.getClaimantName();
-		// Asserting that the values match
-		assertEquals("name?",expected,actual);
-		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
-		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
-		**/
-	}
+//	public void testAddClaimNameAndDate() {
+//		//get activity and assert user has logged in
+//		Intent intent = new Intent();
+//		setActivityIntent(intent);
+//		final Activity activity = getActivity();
+//		ClaimListController.getClaimList();
+//		assertEquals("No claims", ClaimListController.getClaimCount(), 0);
+//		
+//		//get the button and press it
+//		 final Button button = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addClaimButton);
+//		  activity.runOnUiThread(new Runnable() {
+//		    @Override
+//		    public void run() {
+//		      // click button and open the add claim activity.
+//		      button.performClick();
+//		    }
+//		  });
+//		
+//		 final Button saveButton = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveClaimButton);
+//		  activity.runOnUiThread(new Runnable() {
+//		    @Override
+//		    public void run() {
+//		    	// click button and save and finish the activity.
+//		    	Activity activity1 = new EditClaimActivity();
+//		    	
+//		    	TextView   name  = (TextView) activity1.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimNameBody);
+//				DatePicker start = (DatePicker) activity1.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimFromDate);
+//				DatePicker end   = (DatePicker) activity1.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimEndDate);
+//
+//				
+//			    name.setText("name");
+//
+//			    start.updateDate(2012, 12, 12);
+//			    end.updateDate(2015, 03, 15);
+//			    
+//			    saveButton.performClick();
+//		    }
+//		  });
+//		  
+//        /**
+//		// get the listview and assert that the user can see it on the screen
+//		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+//		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
+//		//Assert values match after retreiving the claim
+//		Claim claim = ClaimListController.getClaimList().getClaim(0);
+//		assertTrue("name?",claim.getClaimantName().equals("name"));
+//		assertEquals("start date?",new Date(2012),claim.getStartDate());
+//		assertEquals("end date?",new Date(2013),claim.getEndDate());
+//		 
+//		 
+//		
+//		// model creating a claim and adding test values
+//		claim = new Claim();
+//		claim.setClaimantName("name");
+//		claim.setStartDate(new Date(2000,11,11));
+//		claim.setEndDate(new Date(2015,12,12));
+//		final String expected = "name";
+//		final String actual = claim.getClaimantName();
+//		// Asserting that the values match
+//		assertEquals("name?",expected,actual);
+//		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
+//		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
+//		**/
+//	}
 
 	
 
@@ -183,7 +183,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		//get activity
 		final Activity activity = getActivity();
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
 		 // get list view 
  		final ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
 		// click the claim
