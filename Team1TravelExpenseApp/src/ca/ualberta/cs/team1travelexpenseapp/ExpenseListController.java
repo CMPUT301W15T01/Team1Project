@@ -17,11 +17,7 @@ public class ExpenseListController {
 	private static ExpenseList currentExpenseList= null;
 
 	public static ExpenseList getCurrentExpenseList() { 
-		if (currentExpenseList == null) {
-			currentExpenseList = ClaimListController.getCurrentClaim().getExpenseList();
-		}
-		
-		return currentExpenseList;
+		return ClaimListController.getCurrentClaim().getExpenseList();
 	}
 	
 	public static void setCurrentExpense(Expense expense){
