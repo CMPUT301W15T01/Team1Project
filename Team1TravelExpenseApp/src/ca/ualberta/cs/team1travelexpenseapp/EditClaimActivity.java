@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +29,13 @@ public class EditClaimActivity extends Activity {
 	
 	protected void onStart(){
 		super.onStart();
-		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
-		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());	
+		Claim claim = ClaimListController.getCurrentClaim();
+		TextView nameView  = (TextView) findViewById(R.id.claimNameBody);
+		nameView.setText(claim.getClaimantName());
+		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
+		tagSpinner.setItems(TagListController.getTagList().getTags());
+		ArrayList<Tag> claimTags=claim.getClaimTagList();
+		tagSpinner.setSelection(claimTags);	
 	}
 	
 	
@@ -62,6 +69,11 @@ public class EditClaimActivity extends Activity {
 	public void onAddDestinationClick(View v) {
 		
 		ClaimListController.onAddDestinationClick(this);
+	}
+	
+	public void onDestroy(){
+		super.onDestroy();
+		ClaimListController.onSaveClick(this);
 	}
 
 }

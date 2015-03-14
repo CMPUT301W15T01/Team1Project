@@ -32,9 +32,6 @@ public class ApproverExpenseListActivity extends Activity {
         		claim.getExpenseList().getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
         
-
-      
-		
 	}
 	
 	@Override

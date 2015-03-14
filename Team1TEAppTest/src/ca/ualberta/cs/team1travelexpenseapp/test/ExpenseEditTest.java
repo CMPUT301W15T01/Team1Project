@@ -324,20 +324,54 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 
 	public void testDeleteExpense() throws InterruptedException{
 		//preconditions - there's an expense item to delete
-		expense = new Expense();
+		final Expense expense1 = new Expense();
+		final Expense expense2 = new Expense();
+		final Expense expense3 = new Expense();
 		
 		listActivity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				ExpenseListController.addExpense(expense);
+				ExpenseListController.addExpense(expense1);
+				ExpenseListController.addExpense(expense2);
+				ExpenseListController.addExpense(expense3);
 			}
 		});
 		instrumentation.waitForIdleSync();
-		assertEquals("New expense not added", claim.getExpenseList().getExpenses().size(), 1);
+		assertEquals("New expenses not added", claim.getExpenseList().getExpenses().size(), 3);
 		
 		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
 
 		// click on an expense and hit delete button
+		
+		listActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				View item = listOfExpenses.getChildAt(1);
+				// click button, should produce dialog to choose edit or delete claim
+				item.performLongClick();
+				AlertDialog dialog=listActivity.editExpenseDialog;
+				
+				//this should click the delete button in the dialog
+				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
+			    deleteButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();
+		
+		//assertEquals("New expense not deleted", claim.getExpenseList().getExpenses().size(), 0);
+		
+		//listActivity.finish();
+
+		ArrayList <Expense> expectedExpenses=new ArrayList<Expense>();
+		expectedExpenses.add(expense1);
+		expectedExpenses.add(expense3);
+		
+		assertTrue("Wrong expense removed after deletion", 
+				claim.getExpenseList().getExpenses().containsAll(expectedExpenses));
+		assertFalse("Deleted expense remains after deletion",
+				claim.getExpenseList().getExpenses().contains(expense2));
+		assertEquals("Size of expense list after deletion is not as expected",
+				claim.getExpenseList().getExpenses().size(), 2);
 		
 		listActivity.runOnUiThread(new Runnable() {
 			@Override
@@ -350,13 +384,29 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				//this should click the delete button in the dialog
 				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
 			    deleteButton.performClick();
+				//ExpenseListController.removeExpense(expense1);
+				//ExpenseListController.removeExpense(expense3);
 			}
 		});
 		instrumentation.waitForIdleSync();
-		
-		assertEquals("New expense not deleted", claim.getExpenseList().getExpenses().size(), 0);
-		
-		listActivity.finish();
+		listActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				View item = listOfExpenses.getChildAt(0);
+				// click button, should produce dialog to choose edit or delete claim
+				item.performLongClick();
+				AlertDialog dialog=listActivity.editExpenseDialog;
+				
+				//this should click the delete button in the dialog
+				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
+			    deleteButton.performClick();
+				//ExpenseListController.removeExpense(expense1);
+				//ExpenseListController.removeExpense(expense3);
+			}
+		});
+		instrumentation.waitForIdleSync();
+		assertEquals("Size of expense list after deleting all expenses is not as expected",
+				claim.getExpenseList().getExpenses().size(), 0);
 	}
 	
 	// US06.01.01

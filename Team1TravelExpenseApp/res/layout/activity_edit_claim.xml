@@ -131,34 +131,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/toDateTextView"
                 android:calendarViewShown="false" />
+            <TextView
+                android:id="@+id/claimTagHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="Tags:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/claimEndDate"
+                />
             
-             <Spinner
-                 android:id="@+id/spinner1"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-               
-                 android:layout_below="@+id/claimEndDate" 
-                 android:entries="@array/tags"/>
-
-             <Button
-                 android:id="@+id/addTagButton"
-                 style="?android:attr/buttonStyleSmall"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_toRightOf="@+id/spinner1"
-                 android:layout_alignBottom="@+id/spinner1"
-                 android:layout_marginTop="25dp"
-               
-                 android:text="(-/+)"/>
-             
-             <TextView
-                 android:id="@+id/claimTagList"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentLeft="true"
-                 android:layout_alignParentStart="true"
-                 android:layout_below="@+id/spinner1"
-                 android:textAppearance="?android:attr/textAppearanceMedium" />
+             <ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner  
+        		android:id="@+id/claimTagSpinner"  
+       		    android:layout_width="match_parent"  
+        		android:layout_height="wrap_content" 
+        		android:layout_below="@+id/claimTagHeader" />  
 
              <Button
                  android:id="@+id/addDestinationButton"
