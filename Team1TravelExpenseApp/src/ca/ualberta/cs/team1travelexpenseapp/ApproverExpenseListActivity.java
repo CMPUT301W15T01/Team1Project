@@ -32,7 +32,7 @@ public class ApproverExpenseListActivity extends Activity {
 		// display current claims expense items 
 		claim = ClaimListController.getCurrentClaim();
 		
-		expenseListView = (ListView) findViewById(R.id.expensesList);
+		expenseListView = (ListView) findViewById(R.id.approverExpensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenseList().getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
