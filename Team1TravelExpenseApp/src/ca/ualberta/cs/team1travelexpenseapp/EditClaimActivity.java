@@ -66,5 +66,10 @@ public class EditClaimActivity extends Activity {
 		
 		ClaimListController.onAddDestinationClick(this);
 	}
+	
+	public void onDestroy(){
+		super.onDestroy();
+		ClaimListController.onSaveClick(this);
+	}
 
 }

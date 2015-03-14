@@ -32,7 +32,7 @@ public class ClaimList {
 	public void updateClaim(Claim currentClaim, Claim newClaim){
 		currentClaim.setClaimantName(newClaim.getClaimantName());
 		//currentClaim.setApproverList(newClaim.getApproverList());
-		//currentClaim.setClaimTagList(newClaim.getClaimTagList());
+		currentClaim.setClaimTagList(newClaim.getClaimTagList());
 		//currentClaim.setComplete(newClaim.isComplete());
 		currentClaim.setEndDate(newClaim.getEndDate());
 		//currentClaim.setExpenses(newClaim.getExpenses());
