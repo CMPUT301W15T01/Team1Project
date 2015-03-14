@@ -17,8 +17,6 @@ import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;

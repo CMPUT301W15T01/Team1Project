@@ -48,6 +48,14 @@ public class ExpenseListController {
 	public static void updateExpense(Expense expense, Expense newExpense){
 		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
 				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
+			if(expense.getDescription() != null && newExpense.getCurrency() != "" && newExpense.getCategory() != "none"){
+				newExpense.setComplete(true);
+			} else{
+				newExpense.setComplete(false);
+			}
+			if(expense.getAmount().intValue() == 0){
+				newExpense.setCurrency(null);
+			}
 			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 			expenseArray.set(expenseArray.indexOf(expense), newExpense);
 			setCurrentExpense(newExpense);
@@ -76,10 +84,10 @@ public class ExpenseListController {
 		
 
 		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);
-		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
-		if ( !completeBox.isChecked() ) {
-			expense.setComplete(true);
-		}
+		/*CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
+		if ( completeBox.isChecked() ) {
+			expense.setFlagged(true);
+		}*/
 		updateExpense(getCurrentExpense(), expense);
 		
 		

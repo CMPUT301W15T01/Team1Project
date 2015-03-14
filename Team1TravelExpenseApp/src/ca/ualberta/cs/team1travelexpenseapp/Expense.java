@@ -91,7 +91,8 @@ public class Expense {
 	}
 
 	public File getReceipt() {
-		return receipt;
+		//TODO 
+		return null;
 	}
 
 	public void setReceipt(File receipt) {
@@ -113,15 +114,21 @@ public class Expense {
 		
 		//date format, has year month day 
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-		str += "Date: " + dateformat.format(getDate()) + "\n";
-		str += getCategory() + "\n";
-		str += getDescription() +"\n";
-		str += getAmount() + getCurrency();
-		if ( receipt == null) {
-			str += "\nPHOTOGRAPHIC RECEIPT ATTACHED";
+		str += "Date: " + dateformat.format(getDate()) + "\nCategory: " + getCategory();
+		if(getDescription().length() > 0){
+			str += "\nDescription:" + getDescription();
+		}
+		if (getAmount().intValue() != 0){
+			str += getAmount() + getCurrency();
+		}
+		if ( receipt != null) {
+			str += "\nHas Photo";
 		}
 		if ( !isComplete()) {
 			str += "\nincomplete";
+		}
+		if (isFlagged()){
+			str += "\nflagged";
 		}
 
 
