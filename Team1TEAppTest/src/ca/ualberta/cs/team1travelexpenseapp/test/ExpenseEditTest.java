@@ -687,4 +687,3 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 }
 
 
-

@@ -36,23 +36,6 @@
         android:text="Return" />
 
     <Button
-        android:id="@+id/approveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/expensesList"
-        android:onClick="onApproveClick"
-        android:text="Approve" />
-
-    <Button
-        android:id="@+id/Button02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expensesList"
-        android:layout_centerHorizontal="true"
-        android:text="Comment" />
-
-    <Button
         android:id="@+id/approverInfoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,5 +43,22 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="Info" />
+
+    <Button
+        android:id="@+id/Button02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Comment" />
+
+    <Button
+        android:id="@+id/approveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="onApproveClick"
+        android:text="Approve" />
 
 </RelativeLayout>
