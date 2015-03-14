@@ -37,6 +37,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
@@ -45,12 +46,13 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 
-public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
+public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 	
 	protected Instrumentation instrumentation;
-	protected EditExpenseActivity activity;
-	protected ClaimantExpenseListActivity listActivity;
-	protected ActivityMonitor activityMonitor;
+	protected EditExpenseActivity activity = null;
+	protected ClaimantExpenseListActivity listActivity = null;
+	protected ClaimantClaimsListActivity claimlistActivity = null;
+	//protected ActivityMonitor activityMonitor;
 	
 	protected EditText descText;
 	protected DatePicker datePicker;
@@ -65,19 +67,48 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	protected Claim claim;
 	
 	public ExpenseEditTest() throws Exception {
-		super(ClaimantExpenseListActivity.class);
-		createTestPhotoFile();
+		super(ClaimantClaimsListActivity.class);
 	}
-
+	protected void tearDown() throws Exception{
+		cleanUp();
+		super.tearDown();
+		
+	}
+	
 	protected void setUp() throws Exception {
 		super.setUp();
+		
+		
+		
 		instrumentation = getInstrumentation();
 		
-		listActivity = getActivity();
+		//cleanUp();	
+		
+		claimlistActivity = getActivity();
+		getExpenseListactivity();
+	}
+	
+	protected void cleanUp(){
+		if(activity != null){
+			activity.finish();
+		}
+		if(listActivity != null){
+			listActivity.finish();
+		}
 
-		claim = new Claim();
-		ClaimListController.addClaim(claim); 
-		ExpenseListController.addExpense(expense);
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run() {
+				if (ExpenseListController.getCurrentExpenseList().getExpenses().contains(expense)){
+					ExpenseListController.removeExpense(expense);
+			    }
+				if(ClaimListController.getClaimList().getClaims().contains(claim)){
+					ClaimListController.deleteClaim(claim);
+			    }
+			}
+		});
+		instrumentation.waitForIdleSync();
+
 	}
 	
 	// US04.01.01
@@ -86,7 +117,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	// amount spent, and unit of currency.
 	public void testAddExpenseItem() {
 		// precondition
-		
 		activity = getAddExpenseActivity();	
 		User user = new User("Claimant", "EditExpenseTest");
 		assertEquals("User is claimant", "Claimant", user.type());
@@ -94,12 +124,12 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
-		    	categorySpinner.setSelection(5);
-			    datePicker.updateDate(2005, 1, 8);
-			    descText.setText("Description");
-			    costText.setText(BigDecimal.valueOf(10.55).toString());
-			    currencySpinner.setSelection(5);
-			    saveButton.performClick();
+		       categorySpinner.setSelection(5);
+			   datePicker.updateDate(2005, 1, 8);
+			   descText.setText("Description");
+			   costText.setText(BigDecimal.valueOf(10.55).toString());
+			   currencySpinner.setSelection(5);
+			   saveButton.performClick();
 		    }
 		});
 		instrumentation.waitForIdleSync();
@@ -154,7 +184,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
     	expense.setCategory(String.valueOf(categorySpinner.getSelectedItem()));
     	assertEquals("Expense category set to displayed?", expense.getCategory(), categorySpinner.getSelectedItem());
     	
-    	activity.finish();
 		}
 
 	// US04.03.01
@@ -182,8 +211,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
     	//Expense expense = new Expense();
     	expense.setCurrency(String.valueOf(currencySpinner.getSelectedItem()));
     	assertEquals("Expense category set to displayed?", expense.getCurrency(), currencySpinner.getSelectedItem());
-    	
-    	activity.finish();
 		}
 	
 	// US04.04.01
@@ -216,8 +243,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		});
 		instrumentation.waitForIdleSync();	
 		assertFalse("Clicking check box does not unflag expense", expense.isComplete());	
-		
-		activity.finish();
 	}
 	
 	// US04.05.01
@@ -273,7 +298,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		});
 		instrumentation.waitForIdleSync();	
 		claim.setStatus(Claim.Status.submitted);
-
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -285,7 +309,16 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		assertNotSame("Desc edited while submitted", descText.getText().toString(), "Test Edit");
 	
 		claim.setStatus(Claim.Status.inProgress);		
-		saveButton.performClick();		
+		claim.setStatus(Claim.Status.submitted);
+		
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				saveButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();	
+		
 		assertEquals("Desc not saved after edit", descText.getText().toString(), "Test Edit");
 	}
 
@@ -309,14 +342,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		instrumentation.waitForIdleSync();
 		assertEquals("New expenses not added", claim.getExpenseList().getExpenses().size(), 3);
 		
-		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.expensesList);
+		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
 
 		// click on an expense and hit delete button
 		
 		listActivity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				View item = listOfExpenses.getAdapter().getView(1, null, null);
+				View item = listOfExpenses.getChildAt(1);
 				// click button, should produce dialog to choose edit or delete claim
 				item.performLongClick();
 				AlertDialog dialog=listActivity.editExpenseDialog;
@@ -328,9 +361,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		});
 		instrumentation.waitForIdleSync();
 		
+		//assertEquals("New expense not deleted", claim.getExpenseList().getExpenses().size(), 0);
+		
+		//listActivity.finish();
+
 		ArrayList <Expense> expectedExpenses=new ArrayList<Expense>();
 		expectedExpenses.add(expense1);
-		expectedExpenses.add(expense2);
+		expectedExpenses.add(expense3);
 		
 		assertTrue("Wrong expense removed after deletion", 
 				claim.getExpenseList().getExpenses().containsAll(expectedExpenses));
@@ -338,6 +375,41 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 				claim.getExpenseList().getExpenses().contains(expense2));
 		assertEquals("Size of expense list after deletion is not as expected",
 				claim.getExpenseList().getExpenses().size(), 2);
+		
+		listActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				View item = listOfExpenses.getChildAt(0);
+				// click button, should produce dialog to choose edit or delete claim
+				item.performLongClick();
+				AlertDialog dialog=listActivity.editExpenseDialog;
+				
+				//this should click the delete button in the dialog
+				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
+			    deleteButton.performClick();
+				//ExpenseListController.removeExpense(expense1);
+				//ExpenseListController.removeExpense(expense3);
+			}
+		});
+		instrumentation.waitForIdleSync();
+		listActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				View item = listOfExpenses.getChildAt(0);
+				// click button, should produce dialog to choose edit or delete claim
+				item.performLongClick();
+				AlertDialog dialog=listActivity.editExpenseDialog;
+				
+				//this should click the delete button in the dialog
+				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
+			    deleteButton.performClick();
+				//ExpenseListController.removeExpense(expense1);
+				//ExpenseListController.removeExpense(expense3);
+			}
+		});
+		instrumentation.waitForIdleSync();
+		assertEquals("Size of expense list after deleting all expenses is not as expected",
+				claim.getExpenseList().getExpenses().size(), 0);
 	}
 	
 	// US06.01.01
@@ -346,7 +418,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	// expense item in case the physical receipt is lost.
 	
 	public void testAddPhoto(){	
-		
+		activity = getAddExpenseActivity();	
+		photoFile = createTestPhotoFile();
 		
 		// An editable expense is currently being edited or added
 		imageButton.setImageDrawable(null);	
@@ -398,6 +471,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		assertTrue("Image File should be set", expense.getReceipt() != null);
+		
 	}
 	
 	
@@ -407,13 +481,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	
 	public void testViewPhoto(){
 		
-		activity = getEditExpenseActivity();
-				
+		
+		activity = getAddExpenseActivity();	
+		photoFile = createTestPhotoFile();
+		
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		
 		expense.setReceipt(photoFile);
-
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -421,7 +496,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 			}
 		});
 		instrumentation.waitForIdleSync();	
-
 		activity.finish();
 		activity = getAddExpenseActivity();
 		
@@ -439,8 +513,18 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	// As a claimant, I want to delete any attached photographic receipt on an editable expense item, so that unclear images can be re-taken.
 	
 	public void testDeletePhoto(){
+		
+		activity = getEditExpenseActivity();
+		photoFile = createTestPhotoFile();
+		
 		expense.setReceipt(photoFile);
-		saveButton.performClick();
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				saveButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();	
 		// restart the activity
 		activity.finish();
 		activity = getAddExpenseActivity();
@@ -459,11 +543,16 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		//The editable expense no longer has a photo attached to it
 		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
 		assertTrue("Image deleted so file should not be set", expense.getReceipt() == null);
+		
 	}
 	
 	// US06.04.01
 	// As a sysadmin, I want each receipt image file to be under 65536 bytes in size. (less than 65.536 KB)
 	public void testMaxPhotoSize(){	
+		
+		
+		activity = getAddExpenseActivity();	
+		photoFile = createTestPhotoFile();
 		// An editable expense is currently being edited or added and the claimant has taken a photo that is greater than 65536 bytes 
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
@@ -472,7 +561,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		
 		// A photo that is less than 65536 bytes in size is attached to the expense
 		expense.setReceipt(photoFile);
-
 		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);
 		
 	}
@@ -509,8 +597,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	//transitions from the ExpenseList to EditExpense by clicking add expense
 	private EditExpenseActivity getAddExpenseActivity(){
 		
-		activityMonitor = getInstrumentation().addMonitor(EditExpenseActivity.class.getName(), null, false);
-
+		ActivityMonitor activityMonitor = instrumentation.addMonitor(EditExpenseActivity.class.getName(), null, false);
+		
 		final Button addButton = (Button) listActivity.findViewById(R.id.addExpenseButton);
 		
 		listActivity.runOnUiThread(new Runnable() {
@@ -532,7 +620,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 	//transitions from the ExpenseList to EditExpense by clicking an existing expense
 	private EditExpenseActivity getEditExpenseActivity(){
 		
-		activityMonitor = getInstrumentation().addMonitor(EditExpenseActivity.class.getName(), null, false);
+		ActivityMonitor activityMonitor = instrumentation.addMonitor(EditExpenseActivity.class.getName(), null, false);
 
 		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
 		instrumentation.runOnMainSync(new Runnable(){
@@ -553,13 +641,12 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 			    }
 		});
 		instrumentation.waitForIdleSync();	
-		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000);
+		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
 		
 		assertNotNull(activity);
 		setUiElements();
 		
-		expense = new Expense();
-		ExpenseListController.addExpense(expense);
+
 		
 		return activity;
 	}
@@ -590,6 +677,5 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		return new File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
 	}
 }
-
 
 
