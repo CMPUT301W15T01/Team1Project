@@ -1,15 +1,20 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +36,9 @@ public class ApproverExpenseListActivity extends Activity {
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenseList().getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
-        
+		TextView info = (TextView) findViewById(R.id.approverClaimInfoTextView);
+		info.setText(claim.toString());
+
 	}
 	
 	@Override
@@ -67,4 +74,46 @@ public class ApproverExpenseListActivity extends Activity {
 		ClaimListController.onApproveClick();
 		
 	}
+	
+	public void onReturnClick(View v) {
+		ClaimListController.onReturnClick();
+		finish();
+	}
+	public void onInfoClick(View v) {
+		Intent intent = new Intent(this,ApproverClaimInfo.class);
+		startActivity(intent);
+	}
+	public void onCommentClick(View v) {
+		
+		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("Comments");
+		alert.setMessage("Enter your comment.");
+
+		// Set an EditText view to get user input 
+		final EditText input = new EditText(this);
+		alert.setView(input);
+
+		
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int whichButton) {
+		  String value = input.getText().toString();
+		  // save the comment
+		  ClaimListController.onCommentClick(value);
+		  }
+		});
+
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int whichButton) {
+		    // Canceled.
+		  }
+		});
+
+		alert.show();
+	}
+	
+	
+	
 }
+
