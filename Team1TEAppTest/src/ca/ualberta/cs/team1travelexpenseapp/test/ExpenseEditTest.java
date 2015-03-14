@@ -232,7 +232,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		    	checkBox.performClick();
 		    }
 		});
-		
+		instrumentation.waitForIdleSync();	
 		assertTrue("Clicking check box does not flag expense", expense.isComplete());		
 		activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -241,6 +241,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		    	checkBox.performClick();
 		    }
 		});
+		instrumentation.waitForIdleSync();	
 		assertFalse("Clicking check box does not unflag expense", expense.isComplete());	
 	}
 	
@@ -295,6 +296,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				currencySpinner.setSelection(4);	
 			}
 		});
+		instrumentation.waitForIdleSync();	
 		claim.setStatus(Claim.Status.submitted);
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -302,6 +304,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				saveButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();	
 		
 		assertNotSame("Desc edited while submitted", descText.getText().toString(), "Test Edit");
 	
@@ -437,6 +440,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				saveButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();	
 		// restart the activity
 		//activity.finish();
 		ActivityMonitor activityMonitor = instrumentation.addMonitor(EditExpenseActivity.class.getName(), null, false);
@@ -447,7 +451,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			      // click an existing expense to open next activity.
 			    	listOfExpenses.performItemClick(listOfExpenses.getAdapter().getView(0, null, null),0, 0);
 			    }
-			  });
+		});
+		instrumentation.waitForIdleSync();	
 		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
 		
 		assertNotNull(activity);
@@ -461,6 +466,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				saveButton.performClick();
 			}
 		});
+		instrumentation.waitForIdleSync();	
 		
 		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
@@ -489,7 +495,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				saveButton.performClick();
 			}
 		});
-		// restart the activity
+		instrumentation.waitForIdleSync();	
 		activity.finish();
 		activity = getAddExpenseActivity();
 		
@@ -570,7 +576,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 					ClaimListController.addClaim(claim); 
 					ClaimListController.updateCurrentClaim(claim); 
 			    }
-			  });
+		});
 		instrumentation.waitForIdleSync();
 		
 		
@@ -582,6 +588,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		    	//listOfClaims.performItemClick(listOfClaims.getChildAt(0),0,listOfClaims.getAdapter().getItemId(0));
 		    }
 		});
+		instrumentation.waitForIdleSync();	
 		listActivity = (ClaimantExpenseListActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 
 		assertNotNull(listActivity);
 		return listActivity;
@@ -594,13 +601,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		final Button addButton = (Button) listActivity.findViewById(R.id.addExpenseButton);
 		
-		  listActivity.runOnUiThread(new Runnable() {
+		listActivity.runOnUiThread(new Runnable() {
 			    @Override
 			    public void run() {
 			      // click button and open next activity.
 			    	addButton.performClick();
 			    }
-			  });
+		});
+		instrumentation.waitForIdleSync();	
 		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
 		assertNotNull(activity);
 		setUiElements();
@@ -622,16 +630,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 				ExpenseListController.addExpense(expense);
 				//ExpenseListController.updateExpense(expense, expense);
 		    }
-		  });
+		});
 		instrumentation.waitForIdleSync();
 		
-		  listActivity.runOnUiThread(new Runnable() {
+		listActivity.runOnUiThread(new Runnable() {
 			    @Override
 			    public void run() {
 			      // click an existing expense to open next activity.
 			    	listOfExpenses.performItemClick(listOfExpenses.getAdapter().getView(0, null, null),0, 0);
 			    }
-			  });
+		});
+		instrumentation.waitForIdleSync();	
 		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
 		
 		assertNotNull(activity);
