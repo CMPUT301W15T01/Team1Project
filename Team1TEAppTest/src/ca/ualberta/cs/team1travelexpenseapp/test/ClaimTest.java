@@ -70,31 +70,31 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 			    saveButton.performClick();
 		    }
 		  });
-		  
-        /**
-		// get the listview and assert that the user can see it on the screen
-		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
-		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
-		//Assert values match after retreiving the claim
-		Claim claim = ClaimListController.getClaimList().getClaim(0);
-		assertTrue("name?",claim.getClaimantName().equals("name"));
-		assertEquals("start date?",new Date(2012),claim.getStartDate());
-		assertEquals("end date?",new Date(2013),claim.getEndDate());
-		 
-		 
-		
-		// model creating a claim and adding test values
-		claim = new Claim();
-		claim.setClaimantName("name");
-		claim.setStartDate(new Date(2000,11,11));
-		claim.setEndDate(new Date(2015,12,12));
-		final String expected = "name";
-		final String actual = claim.getClaimantName();
-		// Asserting that the values match
-		assertEquals("name?",expected,actual);
-		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
-		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
-		**/
+//		  
+//        /**
+//		// get the listview and assert that the user can see it on the screen
+//		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+//		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
+//		//Assert values match after retreiving the claim
+//		Claim claim = ClaimListController.getClaimList().getClaim(0);
+//		assertTrue("name?",claim.getClaimantName().equals("name"));
+//		assertEquals("start date?",new Date(2012),claim.getStartDate());
+//		assertEquals("end date?",new Date(2013),claim.getEndDate());
+//		 
+//		 
+//		
+//		// model creating a claim and adding test values
+//		claim = new Claim();
+//		claim.setClaimantName("name");
+//		claim.setStartDate(new Date(2000,11,11));
+//		claim.setEndDate(new Date(2015,12,12));
+//		final String expected = "name";
+//		final String actual = claim.getClaimantName();
+//		// Asserting that the values match
+//		assertEquals("name?",expected,actual);
+//		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
+//		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
+//		**/
 	}
 
 	
@@ -181,25 +181,29 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		claim.addDestination("dest 2", "reason 2" );	
 		ClaimListController.addClaim(claim);
 		
+		
+		
 		//get activity
 		final Activity activity = getActivity();
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
 		 // get list view 
  		final ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+ 		TextView claimInfo1= (TextView) view.getChildAt(0);
+ 		assertTrue("Claim info in claim list does not match expected claim info", claim.toString().equals(claimInfo1.getText().toString()));
 		// click the claim
 		  activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
 		      // click button and open the add claim activity.
-	              view.getAdapter().getView(0, null, null).performClick();
+	              view.performItemClick(view.getChildAt(0), 0, view.getAdapter().getItemId(0));
 		    }
 		  });
 		  
 		  Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		  assertNotNull("Expense list for claim failed to open",nextActivity);
-		  TextView claimInfo = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
-		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo);
-		  assertTrue("Claim info on screen does not match expected claim info", claim.toString().equals(claimInfo.getText().toString()));
+		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
+		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo2);
+		  assertTrue("Claim info on in expense list does not match expected claim info", claim.toString().equals(claimInfo2.getText().toString()));
 
 	}
 //	

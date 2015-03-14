@@ -84,8 +84,14 @@ public class ClaimListController {
 		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
 		Date endDate = calendar.getTime();
 		
+		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) activity.findViewById(R.id.claimTagSpinner);
+		ArrayList<Tag> claimTags = (ArrayList<Tag>) tagSpinner.getSelectedItems();
+		Claim newClaim=new Claim(nameText, fromDate, endDate);
 		
-		ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
+		newClaim.setClaimTagList(claimTags);
+		
+		
+		ClaimListController.updateCurrentClaim(newClaim);
 		
 		
 		activity.finish();
