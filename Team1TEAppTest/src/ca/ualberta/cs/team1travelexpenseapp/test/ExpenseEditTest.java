@@ -1,21 +1,14 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
-import junit.framework.TestCase;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,18 +70,13 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		
-		
-		
 		instrumentation = getInstrumentation();
-		
-		//cleanUp();	
-		
 		claimlistActivity = getActivity();
 		getExpenseListactivity();
 	}
 	
 	protected void cleanUp(){
+		instrumentation.waitForIdleSync();
 		if(activity != null){
 			activity.finish();
 		}
@@ -158,17 +146,10 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 
 		activity = getAddExpenseActivity();	
 		
-		ArrayList<String> categories = new ArrayList<String>();
-		categories.add("air fare");
-		categories.add("ground transport");
-		categories.add("vehicle rental");
-		categories.add("private automobile");
-		categories.add("fuel");
-		categories.add("parking");
-		categories.add("registration");
-		categories.add("accommodation");
-		categories.add("meal");
-		categories.add("supplies");
+		// Code for initializing a list adapted on Feb 2015 from Tom's post on 
+		// https://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line 
+		List<String> categories = Arrays.asList(activity.getResources().getStringArray(R.array.expense_categories));
+
 		Spinner categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector);
     	// Ensure that there are the right number of categories in the spinner
     	assertEquals("Amount of categories?", categories.size(), categorySpinner.getAdapter().getCount());
@@ -176,11 +157,11 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
     	// Ensure that the choices in the spinner are the desired categories
     	for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
     		String category = String.valueOf(categorySpinner.getItemAtPosition(i));
-    		assertTrue("Improper category: " + category, 
-    				categories.contains(category));
+    		assertTrue("Improper category: " + category, categories.contains(category));
 			}
     	
     	// Ensure that when user does not select a category the displayed one is used 
+    	expense.setAmount(BigDecimal.valueOf(1));
     	expense.setCategory(String.valueOf(categorySpinner.getSelectedItem()));
     	assertEquals("Expense category set to displayed?", expense.getCategory(), categorySpinner.getSelectedItem());
     	
@@ -195,7 +176,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		// Code for initializing a list adapted on Feb 2015 from Tom's post on 
 		// https://stackoverflow.com/questions/1005073/initialization-of-an-arraylist-in-one-line 
-		List<String> currencies = Arrays.asList("CAD", "USD", "EUR", "GBP", "CHF", "JPY", "CNY");
+		List<String> currencies = Arrays.asList(activity.getResources().getStringArray(R.array.currencies));
 		
     	// Ensure that there are the right number of currencies in the spinner
     	assertEquals("Amount of categories?", currencies.size(), currencySpinner.getAdapter().getCount());
@@ -225,7 +206,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		// Ensure clicking the box toggles whether or not the expense is flagged
 		final CheckBox checkBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
-		activity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
 		      // click button and open next activity.
@@ -234,7 +215,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		});
 		instrumentation.waitForIdleSync();	
 		assertTrue("Clicking check box does not flag expense", expense.isComplete());		
-		activity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
 		      // click button and open next activity.
@@ -331,7 +312,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		final Expense expense2 = new Expense();
 		final Expense expense3 = new Expense();
 		
-		listActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
 				ExpenseListController.addExpense(expense1);
@@ -346,7 +327,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 
 		// click on an expense and hit delete button
 		
-		listActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
 				View item = listOfExpenses.getChildAt(1);
@@ -376,7 +357,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertEquals("Size of expense list after deletion is not as expected",
 				claim.getExpenseList().getExpenses().size(), 2);
 		
-		listActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
 				View item = listOfExpenses.getChildAt(0);
@@ -392,7 +373,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();
-		listActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
 				View item = listOfExpenses.getChildAt(0);
@@ -418,20 +399,14 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	// expense item in case the physical receipt is lost.
 	
 	public void testAddPhoto(){	
-		activity = getAddExpenseActivity();	
+		activity = getEditExpenseActivity();	
 		photoFile = createTestPhotoFile();
 		
 		// An editable expense is currently being edited or added
-		imageButton.setImageDrawable(null);	
-		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);	
-		Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-		imageButton.setImageBitmap(bm);
-		assertTrue("Image should be set in button", imageButton.getDrawable() != null);	
-		imageButton.setImageDrawable(null);	
-		expense.setReceipt(null);
 		
 		// A test photo is added to simulate an actual photo being taken
 		expense.setReceipt(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceipt());
 		
 		claim.setStatus(Claim.Status.submitted);
 		instrumentation.runOnMainSync(new Runnable(){
@@ -472,6 +447,33 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
 		assertTrue("Image File should be set", expense.getReceipt() != null);
 		
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				imageButton.setImageDrawable(null);	
+			}
+		});
+		instrumentation.waitForIdleSync();	
+		
+		assertTrue("Image should not be set in button", imageButton.getDrawable() == null);	
+		final Bitmap bm = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				imageButton.setImageBitmap(bm);
+			}
+		});
+		instrumentation.waitForIdleSync();	
+		assertTrue("Image should be set in button", imageButton.getDrawable() != null);	
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				imageButton.setImageDrawable(null);	
+			}
+		});
+		instrumentation.waitForIdleSync();	
+		expense.setReceipt(null);
+		
 	}
 	
 	
@@ -489,6 +491,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		
 		expense.setReceipt(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceipt());
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -518,6 +521,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		photoFile = createTestPhotoFile();
 		
 		expense.setReceipt(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceipt());
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -551,9 +555,12 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	public void testMaxPhotoSize(){	
 		
 		
-		activity = getAddExpenseActivity();	
+		activity = getEditExpenseActivity();	
 		photoFile = createTestPhotoFile();
 		// An editable expense is currently being edited or added and the claimant has taken a photo that is greater than 65536 bytes 
+		
+		expense.setReceipt(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceipt());
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
 		photoFile = ExpenseListController.compressPhoto(activity, photoFile);
@@ -581,7 +588,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		
 		//instrumentation.runOnMainSync(new Runnable(){
-		claimlistActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
 		    	listOfClaims.performItemClick(listOfClaims.getAdapter().getView(0, null, null),0,listOfClaims.getAdapter().getItemId(0));
@@ -601,7 +608,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		final Button addButton = (Button) listActivity.findViewById(R.id.addExpenseButton);
 		
-		listActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 			    @Override
 			    public void run() {
 			      // click button and open next activity.
@@ -633,7 +640,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		});
 		instrumentation.waitForIdleSync();
 		
-		listActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
 			    @Override
 			    public void run() {
 			      // click an existing expense to open next activity.
@@ -674,7 +681,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		return new File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
+		File photoFile = new  File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
+		return photoFile;
 	}
 }
 
