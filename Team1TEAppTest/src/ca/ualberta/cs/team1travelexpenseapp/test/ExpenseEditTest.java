@@ -205,7 +205,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		    	checkBox.performClick();
 		    }
 		});
-		
+		instrumentation.waitForIdleSync();	
 		assertTrue("Clicking check box does not flag expense", expense.isComplete());		
 		activity.runOnUiThread(new Runnable() {
 		    @Override
@@ -214,6 +214,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		    	checkBox.performClick();
 		    }
 		});
+		instrumentation.waitForIdleSync();	
 		assertFalse("Clicking check box does not unflag expense", expense.isComplete());	
 		
 		activity.finish();
@@ -270,9 +271,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 				currencySpinner.setSelection(4);	
 			}
 		});
+		instrumentation.waitForIdleSync();	
 		claim.setStatus(Claim.Status.submitted);
 
-		saveButton.performClick();
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				saveButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();	
+		
 		assertNotSame("Desc edited while submitted", descText.getText().toString(), "Test Edit");
 	
 		claim.setStatus(Claim.Status.inProgress);		
@@ -352,16 +361,39 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		expense.setReceipt(photoFile);
 		
 		claim.setStatus(Claim.Status.submitted);
-		saveButton.performClick();
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				saveButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();	
 		// restart the activity
-		activity.finish();
-		activity = getAddExpenseActivity();
+		//activity.finish();
+		ActivityMonitor activityMonitor = instrumentation.addMonitor(EditExpenseActivity.class.getName(), null, false);
+		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
+		 listActivity.runOnUiThread(new Runnable() {
+			    @Override
+			    public void run() {
+			      // click an existing expense to open next activity.
+			    	listOfExpenses.performItemClick(listOfExpenses.getAdapter().getView(0, null, null),0, 0);
+			    }
+		});
+		instrumentation.waitForIdleSync();	
+		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
+		
+		assertNotNull(activity);
+		setUiElements();
+		//activity = getAddExpenseActivity();
 		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
 		claim.setStatus(Claim.Status.inProgress);
-		saveButton.performClick();
-		// restart the activity
-		activity.finish();
-		activity = getAddExpenseActivity();
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				saveButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();	
 		
 		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
@@ -381,8 +413,15 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		
 		expense.setReceipt(photoFile);
-		saveButton.performClick();
-		// restart the activity
+
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run(){
+				saveButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();	
+
 		activity.finish();
 		activity = getAddExpenseActivity();
 		
@@ -433,7 +472,38 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		
 		// A photo that is less than 65536 bytes in size is attached to the expense
 		expense.setReceipt(photoFile);
-		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);	
+
+		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);
+		
+	}
+	private ClaimantExpenseListActivity getExpenseListactivity(){
+		
+		ActivityMonitor activityMonitor = instrumentation.addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
+		final ListView listOfClaims = (ListView) claimlistActivity.findViewById(R.id.claimsList);
+		//claimlistActivity.runOnUiThread(new Runnable() {
+		instrumentation.runOnMainSync(new Runnable(){
+			    @Override
+			    public void run() {
+					claim = new Claim();
+					ClaimListController.addClaim(claim); 
+					ClaimListController.updateCurrentClaim(claim); 
+			    }
+		});
+		instrumentation.waitForIdleSync();
+		
+		
+		//instrumentation.runOnMainSync(new Runnable(){
+		claimlistActivity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		    	listOfClaims.performItemClick(listOfClaims.getAdapter().getView(0, null, null),0,listOfClaims.getAdapter().getItemId(0));
+		    	//listOfClaims.performItemClick(listOfClaims.getChildAt(0),0,listOfClaims.getAdapter().getItemId(0));
+		    }
+		});
+		instrumentation.waitForIdleSync();	
+		listActivity = (ClaimantExpenseListActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 
+		assertNotNull(listActivity);
+		return listActivity;
 	}
 	
 	//transitions from the ExpenseList to EditExpense by clicking add expense
@@ -442,15 +512,16 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		activityMonitor = getInstrumentation().addMonitor(EditExpenseActivity.class.getName(), null, false);
 
 		final Button addButton = (Button) listActivity.findViewById(R.id.addExpenseButton);
-		  listActivity.runOnUiThread(new Runnable() {
+		
+		listActivity.runOnUiThread(new Runnable() {
 			    @Override
 			    public void run() {
 			      // click button and open next activity.
 			    	addButton.performClick();
 			    }
-			  });
-		activity = (EditExpenseActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000); 	
-
+		});
+		instrumentation.waitForIdleSync();	
+		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
 		assertNotNull(activity);
 		setUiElements();
 		
@@ -463,15 +534,26 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantEx
 		
 		activityMonitor = getInstrumentation().addMonitor(EditExpenseActivity.class.getName(), null, false);
 
-		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.expensesList);
-		  listActivity.runOnUiThread(new Runnable() {
+		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
+		instrumentation.runOnMainSync(new Runnable(){
+		    @Override
+		    public void run() {
+				expense = new Expense();
+				ExpenseListController.addExpense(expense);
+				//ExpenseListController.updateExpense(expense, expense);
+		    }
+		});
+		instrumentation.waitForIdleSync();
+		
+		listActivity.runOnUiThread(new Runnable() {
 			    @Override
 			    public void run() {
 			      // click an existing expense to open next activity.
 			    	listOfExpenses.performItemClick(listOfExpenses.getAdapter().getView(0, null, null),0, 0);
 			    }
-			  });
-		activity = (EditExpenseActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 10000); 	
+		});
+		instrumentation.waitForIdleSync();	
+		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000);
 		
 		assertNotNull(activity);
 		setUiElements();
