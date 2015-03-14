@@ -1,8 +1,12 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
@@ -15,11 +19,14 @@ import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.User;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
+import android.util.Log;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,7 +35,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 	
 		Activity activity;
 		ListView claimListView;
-	
+			
 		public ApproverExpenseListTest() {
 			super(ApproverExpenseListActivity.class);
 		}
@@ -41,6 +48,9 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			Intent intent = new Intent();
 			setActivityIntent(intent);
 			activity = getActivity();
+			
+			//setup for 8.03.01
+			
 			
 		}
 		
@@ -70,7 +80,28 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 		}
 		
         // COMMENTED OUT BECAUSE THEY DONT WORK YET  
-		 
+		//US08.03.01
+		/*
+		 *Testing if we can see all of
+		 *the claim info for approvers
+		 * */
+		public void testClaimInfo(){
+			
+			// init claim/expenses			
+			Claim claim = new Claim();
+			ClaimListController.setCurrentClaim(claim);
+			ExpenseListController.getCurrentExpenseList();
+			Expense expense1 = new Expense("Airfaire", new Date(), "Skiing", new BigDecimal(20), "USD");
+			Expense expense2 = new Expense("Airfaire", new Date(), "Skiing", new BigDecimal(50), "CAD");
+			ExpenseListController.addExpense(expense1);
+			ExpenseListController.addExpense(expense2);
+
+			
+			TextView info = (TextView) activity.findViewById(R.id.approverClaimInfoTextView);
+			assertEquals("Claim info visible", claim.toString(), info.getText());
+
+			
+		}
 //		//US08.04.01
 //		/*
 //		 * Just checks if expenses 

@@ -40,6 +40,7 @@ public class ApproverClaimsListActivity extends Activity {
 
         
       //taken from https://github.com/abramhindle/student-picker and modified
+		// TODO: show approved claims and make sure the approver doesn't see their own claims
   		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
