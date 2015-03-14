@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -25,6 +26,7 @@ public class ClaimantExpenseListActivity extends Activity {
  	private ListView expenseListView ;
  	private Listener listener;
  	private ExpenseList expenseList;
+ 	private TextView claimInfoHeader;
  	public AlertDialog editExpenseDialog;
  	
 	@Override
@@ -38,7 +40,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		//and whether there is a photographic receipt.
 
 		claim=ClaimListController.getCurrentClaim();
-		expenseList= claim.getExpenseList();
+		expenseList=ExpenseListController.getCurrentExpenseList();
         expenseListView = (ListView) findViewById(R.id.claimantExpensesList);
 
         Collection<Expense> expenses = claim.getExpenseList().getExpenses();
@@ -47,6 +49,7 @@ public class ClaimantExpenseListActivity extends Activity {
         		expensesList);
         expenseListView.setAdapter(expenselistAdapter);
         
+        claimInfoHeader=(TextView) findViewById(R.id.claimInfoHeader);
         //taken from https://github.com/abramhindle/student-picker and modified
   		listener = new Listener() {			
 			@Override
@@ -55,11 +58,14 @@ public class ClaimantExpenseListActivity extends Activity {
 				Collection<Expense> expenses = claim.getExpenseList().getExpenses();
 				expensesList.addAll(expenses);
 				expenselistAdapter.notifyDataSetChanged();
+				claimInfoHeader.setText(claim.toString());	
 			}
 		};
 		
-		/*expenseList.addListener(listener);
-		for (Listener i : ClaimListController.getClaimList().getListeners()) {
+		expenseList.addListener(listener);
+		listener.update();
+		ClaimListController.getClaimList().addListener(listener);
+		/*for (Listener i : ClaimListController.getClaimList().getListeners()) {
 			expenseList.addListener(i);
 		}*/
 		
@@ -116,5 +122,10 @@ public class ClaimantExpenseListActivity extends Activity {
 
 	public void onAddExpenseClick(View v) {
 		ExpenseListController.onAddExpenseClick(this);
+	}
+	
+	public void onDestroy(){
+		super.onDestroy();
+		expenseList.removeListener(listener);
 	}
 }

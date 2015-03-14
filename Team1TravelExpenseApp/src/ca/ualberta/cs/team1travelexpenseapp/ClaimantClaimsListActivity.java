@@ -69,7 +69,7 @@ public class ClaimantClaimsListActivity extends Activity {
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView Parent, View v, int position, long id){
-        		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+        		ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
         	}
