@@ -3,13 +3,16 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.TextView;
 
 public class ApproverClaimInfo extends Activity {
-
+	TextView info;
+		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_approver_claim_info);
+		info = (TextView) findViewById(R.id.approverClaimInfoTextView);
 	}
 
 	@Override
@@ -19,4 +22,8 @@ public class ApproverClaimInfo extends Activity {
 		return true;
 	}
 
+	public void onStart() {
+		super.onStart();
+		info.setText(ClaimListController.getCurrentClaim().toString());
+	}
 }

@@ -140,7 +140,18 @@ public class ClaimListController {
 		
 	}
 	
-
+	public static ClaimList getSubmittedClaim() {
+		// TODO Auto-generated method stub
+		ClaimList submittedclaims = new ClaimList();
+		
+		for (Claim item: claimsList.getClaims()) {
+			
+			if ((item.status.equals(Claim.Status.submitted))) {
+				submittedclaims.addClaim(item);
+			}
+		}
+		return submittedclaims;
+	}
 	public static Claim getSubmittedClaim(int i) {
 		// TODO Auto-generated method stub
 		return null;
@@ -177,7 +188,15 @@ public class ClaimListController {
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
+	public static void onReturnClick() {
+		currentClaim.setStatus(Claim.Status.returned);
+		currentClaim.getApproverList().add(user);
+		currentClaim.setApproverList(currentClaim.getApproverList());
+	}
 
+	public static void onCommentClick(String comment) {
+		currentClaim.getCommentList().put(user.getName(), comment);
+	}
 	
 
 	
