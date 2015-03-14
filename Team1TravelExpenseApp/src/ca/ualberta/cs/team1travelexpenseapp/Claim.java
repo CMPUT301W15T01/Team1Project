@@ -170,20 +170,16 @@ public class Claim {
 	}
 	
 	public Map<String, BigDecimal> getCurrencyTotals() {
-		ArrayList<Expense> cexpenses = this.getExpenseList().getExpenses();
-		Map<String, BigDecimal> totals = new HashMap<String, BigDecimal>();
-		while ( !cexpenses.isEmpty()) {
-			String currency = cexpenses.get(0).getCurrency();
-			if (totals.get(currency) != null) {
-				BigDecimal tempAmount = totals.get(currency);
-				tempAmount.add(cexpenses.get(0).getAmount());
-				totals.put(currency, tempAmount );
-			} else {
-				totals.put(currency, cexpenses.get(0).getAmount());
+		HashMap<String, BigDecimal> counts = new HashMap<String, BigDecimal>();	
+		for (Expense expense : this.getExpenseList().getExpenses()){
+			if(counts.containsKey(expense.getCurrency())){
+				counts.put(expense.getCurrency(), expense.getAmount().add(counts.get(expense.getCurrency())));
 			}
-			cexpenses.remove(0);
+			else {
+				counts.put(expense.getCurrency(), expense.getAmount());
+			}
 		}
-		return totals;
+		return counts;
 	}
 	
 	public String getCurrencyTotal(String currency) {
