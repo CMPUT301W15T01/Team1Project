@@ -17,10 +17,6 @@ import java.util.concurrent.CyclicBarrier;
 
 import android.widget.Toast;
 
-/**
- * warning 
- * skeletal code
- */
 
 public class Claim { 
 	
@@ -180,7 +176,6 @@ public class Claim {
 		}
 		return counts;
 	}
-	
 	public String getCurrencyTotal(String currency) {
 		return getCurrencyTotals().get(currency).toString();
 	}
