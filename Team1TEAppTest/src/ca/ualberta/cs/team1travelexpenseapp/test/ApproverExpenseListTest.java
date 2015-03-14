@@ -142,7 +142,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 //			ApproverClaimsListActivity lastActivity = (ApproverClaimsListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 //			assertNotNull(lastActivity);
 			
-			ListView expenseListLV = (ListView) userSelect.findViewById(R.id.expensesList);
+			ListView expenseListLV = (ListView) userSelect.findViewById(R.id.approverExpensesList);
 			ViewAsserts.assertOnScreen(userSelect.getWindow().getDecorView(),expenseListLV);
 			
 			

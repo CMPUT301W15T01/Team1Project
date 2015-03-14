@@ -17,6 +17,7 @@
 
     <string-array name="tags"></string-array>
     <string-array name="expense_categories">
+        <item>none</item>
         <item>air fare</item>
         <item>ground transport</item>
         <item>vehicle rental</item>
