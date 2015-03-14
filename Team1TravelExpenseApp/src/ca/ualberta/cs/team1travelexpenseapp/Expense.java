@@ -117,8 +117,14 @@ public class Expense {
 		str += getCategory() + "\n";
 		str += getDescription() +"\n";
 		str += getAmount() + getCurrency() + "\n";
-		//str += "Photographic Receipt: " + receipt;
-		
+		if ( receipt == null) {
+			str += "\nPHOTOGRAPHIC RECEIPT ATTACHED";
+		}
+		if ( !isComplete()) {
+			str += "\nincomplete";
+		}
+
+
 		return str;
 	}
 
