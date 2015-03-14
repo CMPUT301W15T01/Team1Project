@@ -95,6 +95,6 @@ public class EditExpenseActivity extends Activity {
 	public void onDestroy(){
 		super.onDestroy();
 		expenseList.removeListener(listener);
-		ExpenseListController.onExpenseSaveClick(this);
+		//ExpenseListController.onExpenseSaveClick(this);
 	}
 }
