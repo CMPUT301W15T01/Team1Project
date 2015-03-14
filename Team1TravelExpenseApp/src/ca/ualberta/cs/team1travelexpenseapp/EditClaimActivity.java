@@ -3,7 +3,11 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.Calendar;
 import java.util.Date;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +33,28 @@ public class EditClaimActivity extends Activity {
 		super.onStart();
 		TextView nameView   = (TextView) findViewById(R.id.claimNameBody);
 		nameView.setText(ClaimListController.getCurrentClaim().getClaimantName());	
+		final AlertDialog.Builder StatusAlert =  new AlertDialog.Builder(EditClaimActivity.this);
+		StatusAlert.setPositiveButton("OK",new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		if(ClaimListController.getCurrentClaim().getStatus()==Status.submitted){
+			
+			
+			
+			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is already submitted.");
+			StatusAlert.show();
+		}
+		if(ClaimListController.getCurrentClaim().getStatus()==Status.approved){
+			
+			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is approved.");
+			StatusAlert.show();
+			
+		}
 	}
 	
 	
@@ -56,6 +82,7 @@ public class EditClaimActivity extends Activity {
 	public void onSaveClick(View v) {
 
 		//editing model happens in controller 
+	
 		ClaimListController.onSaveClick(this);
 	}
 	

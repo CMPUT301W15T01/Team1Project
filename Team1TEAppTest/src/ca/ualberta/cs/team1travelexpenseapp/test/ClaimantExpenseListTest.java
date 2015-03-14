@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import android.test.ViewAsserts;
 import android.text.InputFilter.LengthFilter;
 import android.util.Log;
@@ -39,15 +40,16 @@ import ca.ualberta.cs.team1travelexpenseapp.User;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 
 
-public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
+public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<EditClaimActivity> {
 	Activity activity;
 	ListView expenseListView;
 	Context context;
-	
-
+	//EditText editName;
+	//EditText editDestination;
+	//Button saveBT;
 	
 	public ClaimantExpenseListTest() {
-		super(ClaimantExpenseListActivity.class);
+		super(EditClaimActivity.class);
 	}
 	
 	
@@ -69,24 +71,27 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		//add a claim to test on
-		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-		ClaimListController.addClaim(claim1);	
-		
-		Intent intent = new Intent();
-		intent.putExtra("Index", 0);
-		setActivityIntent(intent);
 		activity = getActivity();
+		
+		
+		//add a claim to test on
+		//Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
+		//ClaimListController.addClaim(claim1);	
+		
+		//Intent intent = new Intent();
+		//intent.putExtra("Index", 0);
+		//setActivityIntent(intent);
+		//activity = getActivity();
 		//expenseListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseList));
 		
 		//add some expense to the claim to test on
-		Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
-				new BigDecimal(10.00), "CURRENCY1");
+		//Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
+			//	new BigDecimal(10.00), "CURRENCY1");
 		//expense1.setIncomplete(true);//this will default to false
-		Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
-				new BigDecimal(20.00), "CURRENCY2");
-		Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
-				new BigDecimal(25.00), "CURRENCY3");
+	//	Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
+		//		new BigDecimal(20.00), "CURRENCY2");
+		//Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
+			//	new BigDecimal(25.00), "CURRENCY3");
 		
 //		claim1.addExpense(expense1);
 //		claim1.addExpense(expense2);
@@ -104,9 +109,22 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	public void testSubmit() {
 		//preconditions - User has a claim made that they are viewing 
 		User user = new User("user","Joe");
-		Activity activity = getActivity();
 		Claim claim = DummyClaim();
 		ClaimListController.setCurrentClaim(claim);
+		Log.i("Help","After the start");
+		
+		
+		
+		ActivityMonitor receiverActivityMonitor = 
+		getInstrumentation().addMonitor(EditClaimActivity.class.getName(),
+				null, false);
+		
+		
+		
+		final Button saveBT = (Button) activity.findViewById(R.id.saveClaimButton);
+		
+		EditClaimActivity receiverActivity = (EditClaimActivity) 
+		receiverActivityMonitor.waitForActivityWithTimeout(720);
 		
 //		// from http://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineConnection
 //		ConnectivityManager cm =
@@ -124,57 +142,48 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(EditClaimActivity.class.getName(), null, false);
 		EditClaimActivity  editClaimActivity = new EditClaimActivity();
+		Log.i("Help","Activity Monitor");
 		
 		
-		EditText claimNameET  = (EditText) editClaimActivity.findViewById(R.id.claimNameBody);
-		EditText DestinationET  = (EditText) editClaimActivity.findViewById(R.id.destination);
+		activity = receiverActivity;
+		
+		final EditText claimNameET  = (EditText) editClaimActivity.findViewById(R.id.claimNameBody);
+		final EditText DestinationET  = (EditText) editClaimActivity.findViewById(R.id.destination);
+		final EditText   reason   = (EditText) activity.findViewById(R.id.claimReasonBody);
+		final DatePicker fromDate = (DatePicker) activity.findViewById(R.id.claimFromDate);
+		final DatePicker endDate  = (DatePicker) activity.findViewById(R.id.claimEndDate);
 		
 		claimNameET.setText("TEST NAME");
 		DestinationET.setText("TESTDEST");
-		final Button saveBT = (Button) editClaimActivity.findViewById(R.id.saveClaimButton);
+		//final Button saveBT = (Button) editClaimActivity.findViewById(R.id.saveClaimButton);
 		editClaimActivity.runOnUiThread(new Runnable(){
 			
 			public void run(){
-				
+				Log.i("Help","right before button click");
 				saveBT.performClick();// approver user type is selected
 				//User type selected : precondition
 			}
 			
 		});
 		
-//		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//		assertNotNull(nextActivity);
-//		
-//		//ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
-//		final ListView claimListLV = (ListView) nextActivity.findViewById(R.id.LVclaimList);
-//		approverCSA.runOnUiThread(new Runnable(){
-//			
-//			public void run(){
-//				
-//				claimListLV.performClick();//onClick would be overrided
-//			}
-//			
-//		});
-//	
-//		
-//		ApproverClaimSummary lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//		assertNotNull(lastActivity);
-//		
-//		final ListView expenseListLV = (ListView) lastActivity.findViewById(R.id.LVExpenseList);
-//		ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		Log.i("Help","nextActivity");
+		assertNotNull(nextActivity);
 		
+		ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(),null);
+		Log.i("Help","Assert on screen");
 	
 		Set<String> setDestTest = null;
 		setDestTest.add("TESTDEST");
 			
-		assertEquals("Status submitted", "Submitted", claim.getStatus());
+		assertEquals("Status submitted", Status.submitted, claim.getStatus());
 		assertFalse("Claim name not editable",ClaimListController.getCurrentClaim().getClaimantName()=="TEST NAME");
 		assertFalse("Claim destination not editable", ClaimListController.getCurrentClaim().getDestinations()==setDestTest);
 
 		
 		
 	}
-//	// old test
+	// old test
 //	public void testSubmitClaim(){
 //		final Claim claim = ClaimListController.getClaim(0);
 //		Button button = (Button) activity.findViewById(R.id.submitClaimButton);
@@ -229,43 +238,45 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	 *  not approved to be denoted by a claim status of returned, with further 
 	 *  changes allowed by me to the claim information.
 	 */
-//	
+	
 	public void testReturned() {
 		// preconditions
-//		Claim claim = ClaimListController.getReturnedClaim(1);
-//		
-//		assertEquals("Claim status returned", "Returned", claim.getStatus());
-//
-//		EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
-//		editName.setText("Joe");
-//		
-//		EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
-//		editDestination.setText("Hawaii");
-//		
-//		EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
-//		editReason.setText("Business");
-//		
-//		final Button button = (Button) activity.findViewById(R.id.saveClaimButton);
-//		activity.runOnUiThread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		      // click button and open next activity.
-//		      button.performClick();
-//		    }
-//		});
-//		
-//		assertEquals("Claim name editable", claim.getName(), "Joe");
-//		assertEquals("Claim destination editable", claim.getDestination(0), "Joe");
-//		assertEquals("Claim reason editable", claim.getReason(), "Business");
+		Claim claim = DummyClaim();
+		claim.setStatus(Status.returned);
+		ClaimListController.setCurrentClaim(claim);
+	//	ClaimListController.addClaim(claim);
+		assertEquals("Claim status returned", Status.returned, ClaimListController.getCurrentClaim().getStatus());
+
+		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
+		editName.setText("Joe");
+		Log.d("help", "Dying after Edit text init");
+		final EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
+		editDestination.setText("Hawaii");
+		
+		final EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
+		editReason.setText("Business");
+		
+		final Button button = (Button) activity.findViewById(R.id.saveClaimButton);
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // click button and open next activity.
+		      button.performClick();
+		    }
+		});
+		
+	//	assertEquals("Claim name editable", claim.getName(), "Joe");
+	//	assertEquals("Claim destination editable", claim.getDestination(0), "Joe");
+		//assertEquals("Claim reason editable", claim.getReason(), "Business");
 	}
 //	
-//	/*
-//	 *  US 7.04.01
-//	 *  As a claimant, I want a submitted expense claim that was 
-//	 *  approved to be denoted by a claim status of approved, with no
-//	 *   further changes allowed by me to the claim information (except the tags).
-//	 */
-//	
+	/*
+	 *  US 7.04.01
+	 *  As a claimant, I want a submitted expense claim that was 
+	 *  approved to be denoted by a claim status of approved, with no
+	 *   further changes allowed by me to the claim information (except the tags).
+	 */
+	
 	public void testApproved(){
 		// precondition - claimant has an approved claim
 		Claim claim = DummyClaim();
@@ -274,9 +285,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		ClaimListController.setCurrentClaim(claim);
 		
 		
-		EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
-		EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
-		EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
+		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
+		final EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
+		final EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
 
 		editName.setText("Joe");
 		editDestination.setText("Hawaii");

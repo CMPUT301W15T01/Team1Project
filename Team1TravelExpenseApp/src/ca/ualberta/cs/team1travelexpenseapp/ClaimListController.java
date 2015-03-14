@@ -83,10 +83,12 @@ public class ClaimListController {
 		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
 		Date endDate = calendar.getTime();
 		
-		
-		ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
-		
-		
+		if(getCurrentClaim().getStatus()!=Status.submitted){
+			if(getCurrentClaim().getStatus()!=Status.approved){
+				ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
+				
+			}
+		}
 		activity.finish();
 		
 	}

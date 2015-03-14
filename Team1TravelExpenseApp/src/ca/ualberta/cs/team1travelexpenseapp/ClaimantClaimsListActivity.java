@@ -88,7 +88,7 @@ public class ClaimantClaimsListActivity extends Activity {
 			    		
 			        	   //toast for debugging
 			    		
-			        	   Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
+			        	 //  Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
 			        	   Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
 			        	   startActivity(edit);
 			    					
