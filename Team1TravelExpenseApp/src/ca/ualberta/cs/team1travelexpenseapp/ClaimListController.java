@@ -129,7 +129,8 @@ public class ClaimListController {
 		ArrayList<Claim> claimArray=getClaimList().getClaims();
 		setCurrentClaim(claim);
 		claimArray.add(claim);
-		claimsList.setClaimList(claimArray);
+		//displays an empty claim in claim list 
+		//claimsList.setClaimList(claimArray);
 		
 	}
 	

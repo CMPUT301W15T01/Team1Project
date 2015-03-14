@@ -17,8 +17,7 @@ public class ExpenseListController {
 	private static ExpenseList currentExpenseList= null;
 
 	public static ExpenseList getCurrentExpenseList() { 
-			currentExpenseList = ClaimListController.getCurrentClaim().getExpenseList();
-		return currentExpenseList;
+		return ClaimListController.getCurrentClaim().getExpenseList();
 	}
 	
 	public static void setCurrentExpense(Expense expense){
@@ -38,8 +37,8 @@ public class ExpenseListController {
 		expenseArray.add(expense);
 		setCurrentExpense(expense);
 		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
-		
-		getCurrentExpenseList().setExpenseList(expenseArray);
+		//display empty expense then show activity to edit empty claim 
+		//getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void removeExpense(Expense expense){
@@ -97,9 +96,6 @@ public class ExpenseListController {
 	}
 
 	public static void onRemoveExpenseClick() {
-		ArrayList<Expense> expenses = getCurrentExpenseList().getExpenses();
-		expenses.remove(currentExpense);
-		currentExpenseList.setExpenseList(expenses);
-		
+		removeExpense(currentExpense);
 	}
 }
