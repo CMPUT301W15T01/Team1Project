@@ -25,6 +25,7 @@ import android.widget.Toast;
  * **/
 public class Claim { 
 	
+	/** enum class Status public to access values of enum **/
 	public enum Status {
 		inProgress, submitted, approved, returned
 	}
@@ -40,7 +41,7 @@ public class Claim {
 	protected ArrayList<Listener> listeners;
 	protected Status status;
 	
-	
+	/** Initializes attributes to new instances **/
 	public Claim() { 
 		claimantName          = "";
 		startDate             = new Date();
@@ -55,6 +56,7 @@ public class Claim {
 		expenseList           = new ExpenseList();
 	}
 
+	/** set claimant name, start and end date, all other attributes are initializes to new instances **/
 	public Claim(String cName, Date sDate, Date eDate) {
 		claimantName = cName;
 		startDate = sDate;
