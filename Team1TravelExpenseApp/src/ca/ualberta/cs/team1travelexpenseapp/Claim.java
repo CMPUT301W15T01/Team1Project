@@ -19,7 +19,10 @@ import java.util.Set;
 import java.util.concurrent.CyclicBarrier;
 import android.widget.Toast;
 
-
+/** 
+ * Model of a Claim used to edit a list of expenses, claimant name, start and end date, destination & reason list, Tag list for the claim,
+ * completeness, list of approvers for the claim, a list of comments, listeners for the views that will use this model, and the status
+ * **/
 public class Claim { 
 	
 	public enum Status {
