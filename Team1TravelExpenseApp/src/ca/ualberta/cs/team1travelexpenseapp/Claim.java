@@ -19,9 +19,13 @@ import java.util.Set;
 import java.util.concurrent.CyclicBarrier;
 import android.widget.Toast;
 
-
+/** 
+ * Model of a Claim used to edit a list of expenses, claimant name, start and end date, destination & reason list, Tag list for the claim,
+ * completeness, list of approvers for the claim, a list of comments, listeners for the views that will use this model, and the status
+ * **/
 public class Claim { 
 	
+	/** enum class Status public to access values of enum **/
 	public enum Status {
 		inProgress, submitted, approved, returned
 	}
@@ -37,7 +41,7 @@ public class Claim {
 	protected ArrayList<Listener> listeners;
 	protected Status status;
 	
-	
+	/** Initializes attributes to new instances **/
 	public Claim() { 
 		claimantName          = "";
 		startDate             = new Date();
@@ -52,6 +56,7 @@ public class Claim {
 		expenseList           = new ExpenseList();
 	}
 
+	/** set claimant name, start and end date, all other attributes are initializes to new instances **/
 	public Claim(String cName, Date sDate, Date eDate) {
 		claimantName = cName;
 		startDate = sDate;
