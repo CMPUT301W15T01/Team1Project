@@ -36,17 +36,15 @@ public class ApproverExpenseListActivity extends Activity {
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		claim.getExpenseList().getExpenses());
         expenseListView.setAdapter(expenselistAdapter);
-		TextView info = (TextView) findViewById(R.id.approverClaimInfoTextView);
-		info.setText(claim.toString());
-
+		
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-        // display general claim info at top of screen
-        TextView claimInfo = (TextView) findViewById(R.id.approverClaimInfoTextView);
-        claimInfo.setText(ClaimListController.getCurrentClaim().toString());
+		TextView info = (TextView) findViewById(R.id.approverClaimInfoTextView);
+		info.setText(claim.toString());
+
 	}
 
 	@Override

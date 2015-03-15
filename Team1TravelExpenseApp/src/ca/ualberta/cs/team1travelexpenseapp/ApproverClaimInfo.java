@@ -12,7 +12,7 @@ public class ApproverClaimInfo extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_approver_claim_info);
-		info = (TextView) findViewById(R.id.approverClaimInfoTextView);
+		info = (TextView) findViewById(R.id.ApproverClaimInfoTextView);
 	}
 
 	@Override
