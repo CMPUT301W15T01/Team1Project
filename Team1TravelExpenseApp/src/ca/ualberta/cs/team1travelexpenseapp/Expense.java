@@ -115,11 +115,11 @@ public class Expense {
 		//date format, has year month day 
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		str += "Date: " + dateformat.format(getDate()) + "\nCategory: " + getCategory();
-		if(getDescription().length() > 0){
+		//if(getDescription().length() > 0){
 			str += "\nDescription:" + getDescription();
-		}
+		//}
 		if (getAmount().intValue() != 0){
-			str += getAmount() + getCurrency();
+			str += "\n" + getAmount() + getCurrency();
 		}
 		if ( receipt != null) {
 			str += "\nHas Photo";

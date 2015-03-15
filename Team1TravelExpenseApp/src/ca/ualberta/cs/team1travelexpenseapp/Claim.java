@@ -226,7 +226,7 @@ public class Claim {
 		//get total currency amounts
 		Map<String,BigDecimal> totals = getCurrencyTotals();
 	    for(Map.Entry<String, BigDecimal> currency: totals.entrySet()) {
-	          // add each currency to string
+	         // add each currency to string
 	    	if(currency.getValue().equals("") || currency.getKey().equals("") ) {
 	    		continue;
 	    	}

@@ -53,8 +53,8 @@ public class ExpenseListController {
 			} else{
 				newExpense.setComplete(false);
 			}
-			if(expense.getAmount().intValue() == 0){
-				newExpense.setCurrency(null);
+			if(newExpense.getAmount().intValue() == 0){
+				newExpense.setCurrency("");
 			}
 			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 			expenseArray.set(expenseArray.indexOf(expense), newExpense);
