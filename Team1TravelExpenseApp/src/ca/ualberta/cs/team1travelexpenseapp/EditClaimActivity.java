@@ -3,6 +3,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 
 public class EditClaimActivity extends Activity {
 
+	private TextView destList;
+	private Claim claim;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,13 +34,25 @@ public class EditClaimActivity extends Activity {
 	
 	protected void onStart(){
 		super.onStart();
-		Claim claim = ClaimListController.getCurrentClaim();
+		claim = ClaimListController.getCurrentClaim();
+		
 		TextView nameView  = (TextView) findViewById(R.id.claimNameBody);
 		nameView.setText(claim.getClaimantName());
+		
 		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
 		tagSpinner.setItems(TagListController.getTagList().getTags());
 		ArrayList<Tag> claimTags=claim.getClaimTagList();
-		tagSpinner.setSelection(claimTags);	
+		tagSpinner.setSelection(claimTags);
+		
+		destList = (TextView) findViewById(R.id.claimDestinationList);
+		updateDestinationText();
+		
+		DatePicker startDate = (DatePicker) findViewById(R.id.claimFromDate);
+		startDate.updateDate(claim.startDate.getYear()+1900, claim.startDate.getMonth(), claim.startDate.getDate());
+		
+		DatePicker endDate = (DatePicker) findViewById(R.id.claimEndDate);
+		endDate.updateDate(claim.startDate.getYear()+1900, claim.startDate.getMonth(), claim.startDate.getDate());
+		
 	}
 	
 	
@@ -69,6 +86,20 @@ public class EditClaimActivity extends Activity {
 	public void onAddDestinationClick(View v) {
 		
 		ClaimListController.onAddDestinationClick(this);
+		updateDestinationText();
+	}
+	
+	public void updateDestinationText(){
+		String destString = "";
+		Map<String, String> destReasons = claim.getDestinationReasonList();
+		Iterator<String> destinations = claim.getDestinations().iterator();
+		String dest;
+		while(destinations.hasNext()){
+			dest=destinations.next();
+			destString+=dest;
+			if(!destReasons.get(dest).equals("")) destString += ": "+destReasons.get(dest)+"\n";
+		}
+		destList.setText(destString);	
 	}
 	
 	public void onDestroy(){
