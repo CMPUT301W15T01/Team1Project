@@ -49,9 +49,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	public ClaimantExpenseListTest() {
 		super(ClaimantExpenseListActivity.class);
 	}
-	
-	
-	
+
 	private Claim DummyClaim(){
 		
 		Claim claim = new Claim();
@@ -98,36 +96,86 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	}
 	
 	/*
-	 *  US 7.01.01
-	 *  As a claimant, I want to submit an expense claim for approval, denoting 
-	 *  the claim status as submitted, with no further changes allowed by me to the 
-	 *  claim information (except the tags).
-	 */
-	
-	public void testSubmitButton(){
-		
-		Claim claim = DummyClaim();
-		claim.setStatus(Status.inProgress);
-		
-		ClaimListController.setCurrentClaim(claim);
-		
-		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
-		activity.runOnUiThread(new Runnable(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				submitButton.performClick();
-			}
-		});
-		getInstrumentation().waitForIdleSync();
-		
-		assertTrue("claim submittied success?", 
-				Status.submitted == ClaimListController.getCurrentClaim().getStatus());
-		
-		
-		
-	}
+//	 *  US 7.01.01
+//	 *  As a claimant, I want to submit an expense claim for approval, denoting 
+//	 *  the claim status as submitted, with no further changes allowed by me to the 
+//	 *  claim information (except the tags).
+//	 */
+//	
+//<<<<<<< HEAD
+//	public void testSubmitButton(){
+//=======
+//
+//	public void testSubmit() {
+//		//preconditions - User has a claim made that they are viewing 
+//		User user = new User("user","Joe");
+//		Claim claim = DummyClaim();
+//		ClaimListController.setCurrentClaim(claim);
+//		Log.i("Help","After the start");
+//		
+//		
+//		
+//		ActivityMonitor receiverActivityMonitor = 
+//		getInstrumentation().addMonitor(EditClaimActivity.class.getName(),
+//				null, false);
+//		
+//>>>>>>> 87c51863cd19661b2540dad11adbf3fc103a7850
+//		
+//		Claim claim = DummyClaim();
+//		claim.setStatus(Status.inProgress);
+//		
+//<<<<<<< HEAD
+//		ClaimListController.setCurrentClaim(claim);
+//=======
+//		final Button saveBT = (Button) activity.findViewById(R.id.saveClaimButton);
+//		
+//		EditClaimActivity receiverActivity = (EditClaimActivity) 
+//		receiverActivityMonitor.waitForActivityWithTimeout(720);
+//		
+//
+////		
+////		final Button button = (Button) activity.findViewById(R.id.submitClaimButton);
+////		activity.runOnUiThread(new Runnable() {
+////		    @Override
+////		    public void run() {
+////		      // click button and open next activity.
+////		      button.performClick();
+////		    }
+////		});
+//		
+////		assertEquals("Status submitted", "Submitted", claim.getStatus());
+//		
+//		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(EditClaimActivity.class.getName(), null, false);
+//		EditClaimActivity  editClaimActivity = new EditClaimActivity();
+//		Log.i("Help","Activity Monitor");
+//		
+//		
+//		activity = receiverActivity;
+//		
+//		final EditText claimNameET  = (EditText) editClaimActivity.findViewById(R.id.claimNameBody);
+//		//final EditText DestinationET  = (EditText) editClaimActivity.findViewById(R.id.destination);
+//		final EditText   reason   = (EditText) activity.findViewById(R.id.claimReasonBody);
+//		final DatePicker fromDate = (DatePicker) activity.findViewById(R.id.claimFromDate);
+//		final DatePicker endDate  = (DatePicker) activity.findViewById(R.id.claimEndDate);
+//>>>>>>> 87c51863cd19661b2540dad11adbf3fc103a7850
+//		
+//		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
+//		activity.runOnUiThread(new Runnable(){
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				submitButton.performClick();
+//			}
+//		});
+//		getInstrumentation().waitForIdleSync();
+//		
+//		assertTrue("claim submittied success?", 
+//				Status.submitted == ClaimListController.getCurrentClaim().getStatus());
+//		
+//		
+//		
+//	}
 	
 	
 	
@@ -223,14 +271,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //		Claim claimSubmitted = ClaimListController.getSubmittedClaim(0);
 //		assertEquals("Claim Submitted", claim, claimSubmitted);
 //		assertEquals("Claim status submitted", "Submitted", claim.getStatus());
-//		assertFalse("Claim name not editable", claim.setName());
-//		assertFalse("Claim destination not editable", claim.addDestination(null));
-//		assertFalse("Claim reason not editable", claim.addReason());
-//		assertFalse("Claim from date not editable", claim.setFromDate());
-//		assertFalse("Claim to date not editable", claim.setToDate());
-//		assertTrue("Claim tags editable", claim.addTag());
-//
+
 //	}
+
 	/*
 	 * US 7.02.01
 	 * As a claimant, I want a visual warning when trying to 
@@ -379,6 +422,8 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			}
 			
 		});
+		getInstrumentation().waitForIdleSync();
+
 		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
@@ -387,5 +432,39 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		nextActivity.finish();
 	}
 	
-	
+	//US08.06.01
+	/*
+	*Tests if an approver comment
+	*was successfully added to 
+	*a claim
+	*/
+	public void testCommentAddable(){
+		Claim claim = new Claim();
+		ClaimListController.setCurrentClaim(claim);
+		User user = new User("Approver", "Geoff");
+		ClaimListController.setUser(user);
+		
+		claim.addComment("comment");
+		
+		final Button commentButton = (Button) activity.findViewById(R.id.viewCommentsButton);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
+		activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				commentButton.performClick();
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+
+		
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
+		assertEquals("Can View Comments","comment", text.getText().toString());
+		assertNotNull(nextActivity);
+		nextActivity.finish();
+
+		
+	}
 }

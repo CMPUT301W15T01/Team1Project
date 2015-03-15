@@ -77,11 +77,10 @@ public class ClaimantExpenseListActivity extends Activity {
 		
 		expenseList.addListener(listener);
 		listener.update();
-		//ClaimListController.getClaimList().addListener(listener);
-		/*for (Listener i : ClaimListController.getClaimList().getListeners()) {
+		ClaimListController.getClaimList().addListener(listener);
+		for (Listener i : ClaimListController.getClaimList().getListeners()) {
 			expenseList.addListener(i);
-		}*/
-		//expenseList.addListener(ClaimListController.getClaimList().getListeners().get(0));
+		}
 			
 		expenseListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){

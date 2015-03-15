@@ -71,7 +71,6 @@ public class ClaimListController {
 	
 	
 	public static void onSaveClick(EditClaimActivity activity) {
-		
 		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
 		String     nameText   = nameView.getText().toString();
 		
@@ -153,7 +152,7 @@ public class ClaimListController {
 		
 	}
 	
-	public static ClaimList getSubmittedClaim() {
+	public static ClaimList getSubmittedClaims() {
 		// TODO Auto-generated method stub
 		ClaimList submittedclaims = new ClaimList();
 		
@@ -181,7 +180,7 @@ public class ClaimListController {
 		return null;
 	}
 
-	public static Claim getApprovedClaim(int i) {
+	public static ArrayList<Claim> getApprovedClaimsList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -215,6 +214,16 @@ public class ClaimListController {
 
 	public static void onCommentClick(String comment) {
 		currentClaim.getCommentList().put(user.getName(), comment);
+	}
+
+	public static void SaveToOnline() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static ClaimList LoadFromOnline() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
