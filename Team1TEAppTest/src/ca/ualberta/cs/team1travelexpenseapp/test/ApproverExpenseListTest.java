@@ -128,39 +128,28 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverExpenseListActivity.class.getName(), null, false);
 			ApproverExpenseListActivity  userSelect = getActivity();
 			
-//			final Button approverBT = (Button) userSelect.findViewById(R.id.approverButton);
-//			userSelect.runOnUiThread(new Runnable(){
-//				
-//				public void run(){
-//					
-//					approverBT.performClick();// approver user type is selected
-//					//User type selected : precondition
-//				}
-//				
-//			});
-			
-			//ApproverExpenseListActivity nextActivity = (ApproverExpenseListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
-			//assertNotNull(nextActivity);
-			
-			//ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
-//			final ListView claimListLV = (ListView) nextActivity.findViewById(R.id.expensesList);
-//			approverCSA.runOnUiThread(new Runnable(){
-//				
-//				public void run(){
-//					
-//					claimListLV.performClick();//onClick would be overrided
-//				}
-//				
-//			});
+			assertNotNull(userSelect);
 		
-			
-//			ApproverClaimsListActivity lastActivity = (ApproverClaimsListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
-//			assertNotNull(lastActivity);
-			
+	
 			ListView expenseListLV = (ListView) userSelect.findViewById(R.id.approverExpensesList);
 			ViewAsserts.assertOnScreen(userSelect.getWindow().getDecorView(),expenseListLV);
 			
+			final Button approverBT = (Button) userSelect.findViewById(R.id.approveButton);
+			userSelect.runOnUiThread(new Runnable(){
+				
+				public void run(){
+					
+					approverBT.performClick();// approver user type is selected
+					//User type selected : precondition
+				}
+				
+			});
 			
+			getInstrumentation().waitForIdleSync();
+			
+			assertEquals("claim not approved",Status.approved,ClaimListController.getCurrentClaim().getStatus());
+			
+			userSelect.finish();
 			
 		}
 //		
