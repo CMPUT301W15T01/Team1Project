@@ -15,7 +15,13 @@ import android.util.AttributeSet;
 import android.widget.ArrayAdapter;  
 import android.widget.Spinner;  
 import android.widget.SpinnerAdapter;  
-  
+/**
+ * Implements a "MultiSelectionSpinner", when clicked it presents a dialog allowing for selection of a subset of items from a
+ * list using checkboxes. Selected items will then show as a comma separated list on the face of the spinner.
+ * The methods allow setting and getting of the selected items, as well as the entire list of possible items.
+ * It can store an arrayList of arbitrary objects in order to recover the selected objects directly.
+ *
+ */
 public class MultiSelectionSpinner extends Spinner implements  
   OnMultiChoiceClickListener {  
  String[] _items = null;  
@@ -32,6 +38,7 @@ public class MultiSelectionSpinner extends Spinner implements
   super.setAdapter(simple_adapter);  
  }  
   
+
  public MultiSelectionSpinner(Context context, AttributeSet attrs) {  
   super(context, attrs);  
   
@@ -40,6 +47,7 @@ public class MultiSelectionSpinner extends Spinner implements
   super.setAdapter(simple_adapter);  
  }  
   
+ 
  public void onClick(DialogInterface dialog, int which, boolean isChecked) {  
   if (mSelection != null && which < mSelection.length) {  
    mSelection[which] = isChecked;  
