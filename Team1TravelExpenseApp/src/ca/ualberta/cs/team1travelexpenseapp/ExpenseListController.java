@@ -1,6 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.io.File;
+import java.io.ObjectInputStream.GetField;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,11 +49,7 @@ public class ExpenseListController {
 	public static void updateExpense(Expense expense, Expense newExpense){
 		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
 				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
-			if(expense.getDescription() != null && newExpense.getCurrency() != "" && newExpense.getCategory() != "none"){
-				newExpense.setComplete(true);
-			} else{
-				newExpense.setComplete(false);
-			}
+			
 			if(newExpense.getAmount().intValue() == 0){
 				newExpense.setCurrency("");
 			}
@@ -84,10 +81,12 @@ public class ExpenseListController {
 		
 
 		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);
-		/*CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
-		if ( completeBox.isChecked() ) {
-			expense.setFlagged(true);
-		}*/
+		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
+		//if not check, set complete 
+		if ( !completeBox.isChecked() ) {
+			expense.setComplete(true);
+		}
+		
 		updateExpense(getCurrentExpense(), expense);
 		
 		

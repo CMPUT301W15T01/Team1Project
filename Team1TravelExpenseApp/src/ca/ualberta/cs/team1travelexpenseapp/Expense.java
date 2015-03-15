@@ -127,9 +127,9 @@ public class Expense {
 		if ( !isComplete()) {
 			str += "\nincomplete";
 		}
-		if (isFlagged()){
+		/*if (isFlagged()){
 			str += "\nflagged";
-		}
+		}*/
 
 
 		return str;
