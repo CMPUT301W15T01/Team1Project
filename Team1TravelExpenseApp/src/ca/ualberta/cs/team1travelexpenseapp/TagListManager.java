@@ -6,7 +6,7 @@ import android.content.Context;
 
 /**
  * Will provide an interface to save the associated TagList to the disk and when possible to the web server (not yet implemented).
- * @author kenny_789
+ *
  *
  */
 public class TagListManager {
@@ -14,7 +14,7 @@ public class TagListManager {
 	
 	/**
 	 * Initialize with the tagList to be managed.
-	 * @param tagList
+	 * @param tagList The TagList to saved from and loaded to
 	 */
 	TagListManager(TagList tagList){
 		this.tagList=tagList;
@@ -29,7 +29,7 @@ public class TagListManager {
 	
 	/**
 	 * load Tags from disk (and if possible sync tags with web server). (not yet implemented)
-	 * @return
+	 * @return Loaded tag list
 	 */
 	public ArrayList<Tag> loadTags(){
 		return null;

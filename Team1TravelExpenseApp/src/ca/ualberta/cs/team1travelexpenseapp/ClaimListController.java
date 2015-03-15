@@ -71,7 +71,6 @@ public class ClaimListController {
 	
 	
 	public static void onSaveClick(EditClaimActivity activity) {
-		
 		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
 		String     nameText   = nameView.getText().toString();
 		

@@ -5,30 +5,48 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.view.View;
 
+/**
+ * Implements a list of claims along along with a set of listeners to be updated whenever the list is modified.
+ * Will eventually provide an interface to a ClaimListManager which will save the list to disk and the web when connected.
+ * Also contains a list of selected Tags which will eventually allow for filter by tag functionality (not yet implemented).
+ *
+ */
 public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
 	private ArrayList<Listener> listeners;
 	
+	/**
+	 * Create the ClaimList with new ArrayLists of Claims, selectedTags, and listeners.
+	 */
 	public ClaimList(){
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
 		listeners = new ArrayList<Listener>();
 	}
 	
+	/**
+	 * Return the underlying ArrayList of Claims.
+	 * @return The underlying ArrayList of Claims.
+	 */
 	public ArrayList<Claim> getClaims() {
 		return claimList;
 	}
 	
-	public void deleteClaim(int index) {
-		claimList.remove(index);
-	}
-	
+	/**
+	 * Add the passed claim to the underlying ArrayList of Claims.
+	 * @param claim The Claim to be added
+	 */
 	public void addClaim(Claim claim) {
 		claimList.add(claim);
 	}
 	
-	//pointer to currentClaim in list and newClaim 
+	/**
+	 * Changes the basic claim information in one claim to match the information in another, does not modify the
+	 * claims expense list, status or approver list.
+	 * @param currentClaim The Claim to be updated
+	 * @param newClaim The Claim to fetch the new info from
+	 */
 	public void updateClaim(Claim currentClaim, Claim newClaim){
 		currentClaim.setClaimantName(newClaim.getClaimantName());
 		//currentClaim.setApproverList(newClaim.getApproverList());

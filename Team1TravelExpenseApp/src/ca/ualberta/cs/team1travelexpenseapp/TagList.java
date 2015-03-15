@@ -2,7 +2,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 /**
- * Stores a list of tags along with a set of listeners to be updated whenever the list is modified.
+ * Stores a list of tags (as an ArrayList) along with a set of listeners to be updated whenever the list is modified.
  * Will eventually provide an interface to a TagListManager which will save the list to disk and the web when connected.
  *
  */
@@ -25,7 +25,7 @@ public class TagList {
 	}
 	/**
 	 * Add a new listener to be updated whenever the tagList is changed.
-	 * @param listener
+	 * @param listener The listener to be added
 	 */
 	public void addListener(Listener listener){
 		listeners.add(listener);
@@ -33,7 +33,7 @@ public class TagList {
 	
 	/**
 	 * Remove a listener so that it will no longer be updated when the tagList is changed.
-	 * @param listener
+	 * @param listener The listener to be removed
 	 */
 	public void removeListener(Listener listener){
 		listeners.remove(listener);
@@ -50,7 +50,7 @@ public class TagList {
 
 	/**
 	 * Returns the stored tagList.
-	 * @return
+	 * @return ArrayList of available tags
 	 */
 	public ArrayList<Tag> getTags() {
 		return tagList;
@@ -58,7 +58,7 @@ public class TagList {
 
 	/**
 	 * Set the stored tagList, will automatically update listeners and save the list once saving is implemented.
-	 * @param tagList
+	 * @param tagList The ArrayList of Tags to be set
 	 */
 	public void setTagList(ArrayList<Tag> tagList) {
 		this.tagList = tagList;
