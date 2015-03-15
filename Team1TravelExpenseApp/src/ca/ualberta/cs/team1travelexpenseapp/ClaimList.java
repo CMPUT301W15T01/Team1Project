@@ -55,63 +55,81 @@ public class ClaimList {
 		currentClaim.setEndDate(newClaim.getEndDate());
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
-		//currentClaim.setStatus(newClaim.getStatus());
+		currentClaim.setStatus(newClaim.getStatus());
 		notifyListeners();
 	}
 	
+	/**
+	 * Return the claim located at the passed index.
+	 * @param index The index of the desired claim.
+	 * @return The claim at the given index.
+	 */
 	public Claim getClaim(int index) {
 		return claimList.get(index);
 	}
 	
+	/**
+	 * Save the claim list to disk (and to the web server if possible) (not currently implemented)
+	 */
 	public void saveClaimList() {
 		//to do 
 	}
 	
+	/**
+	 * Set the selectedTags list to the passed ArrayList of tags. To be used in filtering claims by Tag.
+	 * @param tags ArrayList of tags to filter by.
+	 */
 	public void filterByTags(ArrayList<Tag> tags) {
 		//to-do
 	}
 	
+	/**
+	 * Add a new listener to be updated whenever the tagList is changed.
+	 * @param listener The listener to be added.
+	 */
 	public void addListener(Listener listener) {
 		this.listeners.add(listener);
 	}
 	
+	/**
+	 * Call update method on all listeners (called on tagList changes).
+	 */
 	private void notifyListeners() {
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}
 	}
 	
-	public void onAddDRClick() {
-		//to do
-	}
-
-	public void onAddClaim() {
-		//to do
-	}
-	
-	public void onManageTagsClick() {
-		//to do
-	}
-
+	/**
+	 * Set the underlying ArrayList of Claims to the passed value.
+	 * @param claims The ArrayList of claims to be set.
+	 */
 	public void setClaimList(ArrayList<Claim> claims) {
 		this.claimList = claims;
 		notifyListeners();
 	}
 	
+	/**
+	 * Set the selectedTags.
+	 * @param tags Tags to be set as selected
+	 */
 	public void setSelectedTags(ArrayList<Tag> tags) {
 		this.selectedTags = tags;
 		
 	}
 
-	public void setListeners(ArrayList<Listener> listeners) {
-		this.listeners = listeners;
-		
-	}
-
+	/**
+	 * Remove a listener so that it will no longer be updated when the tagList is changed.
+	 * @param listener The listener to be removed
+	 */
 	public void removeListener(Listener listener) {
 		listeners.remove(listener);
 	}
 	
+	/**
+	 * Returns the full list of listeners listening to the ClaimList
+	 * @return ArrayList of Listeners listening to the ClaimList
+	 */
 	public ArrayList<Listener> getListeners() {
 		return listeners;
 	}
