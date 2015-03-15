@@ -8,16 +8,19 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+
 
 public class ClaimantExpenseListActivity extends Activity {
 
@@ -41,6 +44,15 @@ public class ClaimantExpenseListActivity extends Activity {
 		//and whether there is a photographic receipt.
 
 		claim=ClaimListController.getCurrentClaim();
+		if(claim.getStatus() == Status.submitted || claim.getStatus() ==Status.approved){
+			
+			Button submitBT = (Button) findViewById(R.id.submitButton);
+			submitBT.setClickable(false);
+			submitBT.setFocusable(false);
+			submitBT.setEnabled(false);
+			
+			
+		}
 		expenseList=ExpenseListController.getCurrentExpenseList();
         expenseListView = (ListView) findViewById(R.id.claimantExpensesList);
 
@@ -112,6 +124,7 @@ public class ClaimantExpenseListActivity extends Activity {
 					return true;//not too sure on return value look into this
 	    		}
 	    });	    
+
 	}
 
 	@Override
@@ -132,6 +145,20 @@ public class ClaimantExpenseListActivity extends Activity {
 	}
 	
 	public void onSubmitClick(View v) {
+	
+	if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+		
+		ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+		
+		Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
+		//push online here
+		Intent intent =new Intent(this, ClaimantClaimsListActivity.class);
+		startActivity(intent);
+	}
+	else{
+		Toast.makeText(getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
+
+	}
 		
 		boolean expensesFlag = false;
 		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
@@ -145,11 +172,23 @@ public class ClaimantExpenseListActivity extends Activity {
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		               //Do nothing
+		        	   ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+		        	   Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
+		        	   //push online here
 		           }
 		    });
+			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					Toast.makeText(getApplicationContext(), "Claim was not Submitted", Toast.LENGTH_SHORT).show();
+				}
+			});
 			submitBuilder.setTitle("Claim may be incomplete");
 			submitWarningDialog=submitBuilder.create();
 			submitWarningDialog.show();
+
 		}
 		
 	}
