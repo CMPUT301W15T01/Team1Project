@@ -110,23 +110,26 @@ public class ClaimList {
 	}
 	
 	/**
-	 * 
-	 * @param tags
+	 * Set the selectedTags.
+	 * @param tags Tags to be set as selected
 	 */
 	public void setSelectedTags(ArrayList<Tag> tags) {
 		this.selectedTags = tags;
 		
 	}
 
-	public void setListeners(ArrayList<Listener> listeners) {
-		this.listeners = listeners;
-		
-	}
-
+	/**
+	 * Remove a listener so that it will no longer be updated when the tagList is changed.
+	 * @param listener The listener to be removed
+	 */
 	public void removeListener(Listener listener) {
 		listeners.remove(listener);
 	}
 	
+	/**
+	 * Returns the full list of listeners listening to the ClaimList
+	 * @return ArrayList of Listeners listening to the ClaimList
+	 */
 	public ArrayList<Listener> getListeners() {
 		return listeners;
 	}
