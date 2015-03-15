@@ -106,31 +106,31 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 			    saveButton.performClick();
 		    }
 		  });
-//		  
-//        /**
-//		// get the listview and assert that the user can see it on the screen
-//		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
-//		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
-//		//Assert values match after retreiving the claim
-//		Claim claim = ClaimListController.getClaimList().getClaim(0);
-//		assertTrue("name?",claim.getClaimantName().equals("name"));
-//		assertEquals("start date?",new Date(2012),claim.getStartDate());
-//		assertEquals("end date?",new Date(2013),claim.getEndDate());
-//		 
-//		 
-//		
-//		// model creating a claim and adding test values
-//		claim = new Claim();
-//		claim.setClaimantName("name");
-//		claim.setStartDate(new Date(2000,11,11));
-//		claim.setEndDate(new Date(2015,12,12));
-//		final String expected = "name";
-//		final String actual = claim.getClaimantName();
-//		// Asserting that the values match
-//		assertEquals("name?",expected,actual);
-//		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
-//		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
-//		**/
+		  
+        /**
+		// get the listview and assert that the user can see it on the screen
+		//ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		//ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), view);
+		//Assert values match after retreiving the claim
+		Claim claim = ClaimListController.getClaimList().getClaim(0);
+		assertTrue("name?",claim.getClaimantName().equals("name"));
+		assertEquals("start date?",new Date(2012),claim.getStartDate());
+		assertEquals("end date?",new Date(2013),claim.getEndDate());
+		 
+		 
+		
+		// model creating a claim and adding test values
+		claim = new Claim();
+		claim.setClaimantName("name");
+		claim.setStartDate(new Date(2000,11,11));
+		claim.setEndDate(new Date(2015,12,12));
+		final String expected = "name";
+		final String actual = claim.getClaimantName();
+		// Asserting that the values match
+		assertEquals("name?",expected,actual);
+		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
+		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
+		**/
 	}
 
 	
@@ -325,31 +325,25 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 //		assertTrue("empty list",list.length()==0);
 //
 //	}
-//	//US01.06.01
-//	public void testSaveClaims() {
-//		// Start the main activity of the application under test
-//		ClaimActivity activity = getActivity();
-//		// user has Created and fill the claim with values
-//		ClaimListController list = new ClaimListController();
-//		Claim claim = new Claim();
-//		final String expected = "name";
-//		claim.setName(expected);
-//		claim.setStartDate(new Date(2000,11,11));
-//		claim.setEndDate(new Date(2015,12,12));
-//		list.add(claim);
-//	    // Stop the activity - The onDestroy() method should save the state of the claim
-//		activity.finish();
-//	    // Re-start the Activity - the onResume() method should restore the state of the Spinner
-//		ClaimActivity activity = getActivity();
-//		// Get current claim from the controller
-//		claim = list.get(0);
-//		final String actual = claim.getName();
-//	    // Assert that the current claim is the same as the starting claim
-//		assertEquals("name?",expected,actual);
-//		assertEquals("start date?",new Date(2000,11,11),claim.getStartDate());
-//		assertEquals("end date?",new Date(2015,12,12),claim.getEndDate());
-//		
-//	}
+	//US01.06.01
+	public void testSaveClaims() {
+		// Start the main activity of the application under test
+		Activity activity = getActivity();
+		// user has Created and fill the claim with values
+		ClaimListController list = new ClaimListController();
+		Claim claim = new Claim();
+		ClaimListController.setCurrentClaim(claim);
+	    // Stop the activity - The onDestroy() method should save the state of the claim
+		activity.finish();
+	    // Re-start the Activity - the onResume() method should restore the state of the Spinner
+		activity = getActivity();
+		// Get current claim from the controller
+		Claim claim2 = ClaimListController.getCurrentClaim();
+		final String actual = claim.getClaimantName();
+	    // Assert that the current claim is the same as the starting claim
+		assertEquals("same?", claim, claim2);
+		
+	}
 //	
 //	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
 //	//tags, so that claims can be organized by me into groups.

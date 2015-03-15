@@ -27,6 +27,11 @@ import junit.framework.TestCase;
 public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	
 	
+	public ApproverClaimListTest() {
+		super(LoginActivity.class);
+		// TODO Auto-generated constructor stub
+	}
+
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -128,34 +133,6 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Logi
 	
 	}
 	
-
-	//US08.06.01
-		/*
-		*Tests if an approver comment
-		*was successfully added to 
-		*a claim
-		*/
-	public void testCommentAddable(){
-		String comment = "comment";
-		Claim claim = new Claim();
-		ClaimListController.setCurrentClaim(claim);
-		claim.addComment(comment);
-				
-		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
-
-		activity.runOnUiThread(new Runnable(){
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				button.performClick();
-			}		
-		});
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
-
-		
-		
-	}
 	
 	//US08.07.01
 	/*
@@ -207,9 +184,5 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Logi
 		userSelect.finish();
 		nextActivity.finish();
 	}
-//	
-//	
-//	
-//	
-//	
+
 }

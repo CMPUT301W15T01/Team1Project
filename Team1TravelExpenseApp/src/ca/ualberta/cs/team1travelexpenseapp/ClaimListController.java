@@ -199,6 +199,16 @@ public class ClaimListController {
 	public static void onCommentClick(String comment) {
 		currentClaim.getCommentList().put(user.getName(), comment);
 	}
+
+	public static void SaveToOnline() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static ClaimList LoadFromOnline() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 	

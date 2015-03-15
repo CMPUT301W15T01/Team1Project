@@ -398,7 +398,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	// photograph to an editable expense item, so that there is supporting documentation for the 
 	// expense item in case the physical receipt is lost.
 	
-	/*public void testAddPhoto(){	
+	public void testAddPhoto(){	
 		activity = getEditExpenseActivity();	
 		photoFile = createTestPhotoFile();
 		
@@ -475,7 +475,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		expense.setReceipt(null);
 		
 	}
-	*/
+	
 	
 	
 	// US06.02.01

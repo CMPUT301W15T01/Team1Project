@@ -46,8 +46,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	public ClaimantExpenseListTest() {
 		super(ClaimantExpenseListActivity.class);
 	}
-	
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		//add a claim to test on
@@ -76,18 +75,18 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 	}
 	
-//	/*
-//	 *  US 7.01.01
-//	 *  As a claimant, I want to submit an expense claim for approval, denoting 
-//	 *  the claim status as submitted, with no further changes allowed by me to the 
-//	 *  claim information (except the tags).
-//	 */
-//	
+	/*
+	 *  US 7.01.01
+	 *  As a claimant, I want to submit an expense claim for approval, denoting 
+	 *  the claim status as submitted, with no further changes allowed by me to the 
+	 *  claim information (except the tags).
+	 */
+	
 //	public void testSubmit() {
 //		//preconditions - User has a claim made that they are viewing 
-//		User user = new User("Claimant");
+//		User user = new User("Claimant", "Jeff");
 //		Activity activity = getActivity();
-//		Claim claim = ClaimListController.getClaim(0);
+//		Claim claim = new Claim();
 //		
 //		// from http://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html#DetermineConnection
 //		ConnectivityManager cm =
@@ -110,7 +109,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //		      button.performClick();
 //		    }
 //		});
-//		
+		
 //		assertEquals("Status submitted", "Submitted", claim.getStatus());
 //		assertFalse("Claim name not editable", claim.setName());
 //		assertFalse("Claim destination not editable", claim.addDestination(null));
@@ -118,33 +117,11 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //		assertFalse("Claim from date not editable", claim.setFromDate());
 //		assertFalse("Claim to date not editable", claim.setToDate());
 //		assertTrue("Claim tags editable", claim.addTag());
-//
-//		 
-//		
+
+		 
+		
 //	}
-//	// old test
-//	public void testSubmitClaim(){
-//		final Claim claim = ClaimListController.getClaim(0);
-//		Button button = (Button) activity.findViewById(R.id.submitClaimButton);
-//		button.setOnClickListener(new View.OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				claim.submit();
-//				
-//			}
-//		});
-//		Claim claimSubmitted = ClaimListController.getSubmittedClaim(0);
-//		assertEquals("Claim Submitted", claim, claimSubmitted);
-//		assertEquals("Claim status submitted", "Submitted", claim.getStatus());
-//		assertFalse("Claim name not editable", claim.setName());
-//		assertFalse("Claim destination not editable", claim.addDestination(null));
-//		assertFalse("Claim reason not editable", claim.addReason());
-//		assertFalse("Claim from date not editable", claim.setFromDate());
-//		assertFalse("Claim to date not editable", claim.setToDate());
-//		assertTrue("Claim tags editable", claim.addTag());
-//
-//	}
+
 	/*
 	 * US 7.02.01
 	 * As a claimant, I want a visual warning when trying to 
@@ -322,11 +299,49 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			}
 			
 		});
+		getInstrumentation().waitForIdleSync();
+
 		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","John\nHI it looks good", text.getText().toString());
 		assertNotNull(nextActivity);
 		nextActivity.finish();
+	}
+	
+	//US08.06.01
+	/*
+	*Tests if an approver comment
+	*was successfully added to 
+	*a claim
+	*/
+	public void testCommentAddable(){
+		Claim claim = new Claim();
+		ClaimListController.setCurrentClaim(claim);
+		User user = new User("Approver", "Geoff");
+		ClaimListController.setUser(user);
+		
+		claim.addComment("comment");
+		
+		final Button commentButton = (Button) activity.findViewById(R.id.viewCommentsButton);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
+		activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				commentButton.performClick();
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+
+		
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
+		assertEquals("Can View Comments","comment", text.getText().toString());
+		assertNotNull(nextActivity);
+		nextActivity.finish();
+
+		
 	}
 }

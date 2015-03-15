@@ -30,6 +30,7 @@ import android.test.ViewAsserts;
 import android.util.Log;
 import android.webkit.WebView.FindListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -152,37 +153,32 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			userSelect.finish();
 			
 		}
-//		
-//		
-//		//US08.05.01
-//		/*Checks if receipt is visible
-//		 * for the approver*/
-//		public void testReceiptVisible(){
-//			
-//			 ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimSummaryActivity.class.getName(), null, false);
-//				
-//			 ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
-//			 final ListView expenseListLV = (ListView) approverCSA.findViewById(R.id.LVExpenseList);
-//			 approverCSA.runOnUiThread(new Runnable(){
-//					
-//					public void run(){
-//						
-//						expenseListLV.performClick();//onClick would be overrided
-//					}
-//					
-//				});
-//			
-//				
-//				ApproverExpenseSummary lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//				assertNotNull(lastActivity);
-//				
-//			 
-//			  final ImageButton receipt = lastActivity.findViewById(R.id.receiptImage);
-//			  ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view); 
-//				
-//			
-//
-//		}
+	
+		//US08.05.01
+		/*Checks if receipt is visible
+		 * for the approver*/
+		public void testReceiptVisible(){
+			 // activity doesnt exist yet
+			 //ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimSummaryActivity.class.getName(), null, false);
+			 
+			 final ListView expenseListLV = (ListView) activity.findViewById(R.id.approverExpensesList);
+			 activity.runOnUiThread(new Runnable(){
+					
+					public void run(){
+						
+						expenseListLV.performClick();//onClick would be overrided
+					}
+					
+			});
+			
+				
+			//Activity lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
+			//assertNotNull(lastActivity);
+			
+			// image view doesnt exist yet!
+			//ImageView image = (ImageView)
+			//ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),image); 
+		}
 
 		//US08.08.01
 		/*
