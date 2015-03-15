@@ -144,7 +144,7 @@ public class ClaimListController {
 		// TODO Auto-generated method stub
 		ClaimList submittedclaims = new ClaimList();
 		
-		for (Claim item: claimsList.getClaims()) {
+		for (Claim item: getClaimList().getClaims()) {
 			
 			if ((item.status.equals(Claim.Status.submitted))) {
 				submittedclaims.addClaim(item);
