@@ -19,6 +19,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * View for managing the application's list of tags.
+ * Provides a user interface from which the user can add tags, change tag names and delete tags.
+ * Listens to the underlying tagList.
+ * @author kenny_789
+ *
+ */
 public class TagManagerActivity extends Activity {
 	private TagList tagList;
 	public AlertDialog newTagDialog;
@@ -26,6 +33,12 @@ public class TagManagerActivity extends Activity {
 	private Listener listener;
 
 	@Override
+	/**
+	 * On create we initialize our listener and set it to listen to the TagList.
+	 * We set up the functions to be called to spawn interactive dialogs when list items are long clicked, and when
+	 * the add tag button is clicked.
+	 * 
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_tags);
@@ -123,12 +136,19 @@ public class TagManagerActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * When add tag button is clicked we display a dialog allowing the user to enter the name of the newly added Tag.
+	 * @param v
+	 */
 	public void onAddTagClick(View v){
 		newTagDialog.show();
 		EditText nameField=(EditText) newTagDialog.findViewById(R.id.simpleEditText);
 		nameField.setText("");
 	}
 	
+	/**
+	 * On destroy simply remove the listener so the TagList does not continue to update it.
+	 */
 	public void onDestroy(){
 		super.onDestroy();
 		tagList.removeListener(listener);
