@@ -41,7 +41,7 @@ import ca.ualberta.cs.team1travelexpenseapp.User;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 
 
-public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<EditClaimActivity> {
+public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {
 	Activity activity;
 	ListView expenseListView;
 	Context context;
@@ -50,7 +50,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 	//Button saveBT;
 	
 	public ClaimantExpenseListTest() {
-		super(EditClaimActivity.class);
+		super(ClaimantExpenseListActivity.class);
 	}
 	
 	
@@ -151,13 +151,13 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 		activity = receiverActivity;
 		
 		final EditText claimNameET  = (EditText) editClaimActivity.findViewById(R.id.claimNameBody);
-		final EditText DestinationET  = (EditText) editClaimActivity.findViewById(R.id.destination);
+		//final EditText DestinationET  = (EditText) editClaimActivity.findViewById(R.id.destination);
 		final EditText   reason   = (EditText) activity.findViewById(R.id.claimReasonBody);
 		final DatePicker fromDate = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDate  = (DatePicker) activity.findViewById(R.id.claimEndDate);
 		
 		claimNameET.setText("TEST NAME");
-		DestinationET.setText("TESTDEST");
+		//DestinationET.setText("TESTDEST");
 		//final Button saveBT = (Button) editClaimActivity.findViewById(R.id.saveClaimButton);
 		editClaimActivity.runOnUiThread(new Runnable(){
 			
@@ -229,8 +229,11 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 				submitButton.performClick();
 			}
 		});
-		AlertDialog dia = getActivity().getSubmitDialog();
-		assertTrue("Dialog shows", dia.isShowing());
+		getInstrumentation().waitForIdleSync();
+		AlertDialog dia = getActivity().submitWarningDialog;
+		assertTrue("Not null", dia != null);
+
+		assertTrue("Dialog shows1", dia.isShowing());
 		
 		claim.setComplete(true);
 		Expense expense = new Expense();
@@ -244,8 +247,10 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 				submitButton.performClick();
 			}
 		});
-		dia = getActivity().getSubmitDialog();
-		assertTrue("Dialog shows", dia.isShowing());
+		getInstrumentation().waitForIdleSync();
+
+		dia = getActivity().submitWarningDialog;
+		assertTrue("Dialog shows2", dia.isShowing());
 	}
 //
 	/*
@@ -388,7 +393,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 			}
 			
 		});
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","John\nHI it looks good", text.getText().toString());
