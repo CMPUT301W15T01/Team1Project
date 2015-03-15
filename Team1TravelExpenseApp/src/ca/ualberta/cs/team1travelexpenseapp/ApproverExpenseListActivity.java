@@ -81,7 +81,7 @@ public class ApproverExpenseListActivity extends Activity {
 	}
 	public void onCommentClick(View v) {
 		
-		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
+		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog (March 15, 2015)
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("Comments");

@@ -369,7 +369,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 		// get approve button
 		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
-		//from http://stackoverflow.com/questions/9405561/test-if-a-button-starts-a-new-activity-in-android-junit-pref-without-robotium
+		//from http://stackoverflow.com/a/9406087 (March 15, 2015)
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
 		activity.runOnUiThread(new Runnable(){
 

@@ -80,7 +80,7 @@ public class ClaimantClaimsListActivity extends Activity {
     		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
     			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
     			
-    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
 				
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
