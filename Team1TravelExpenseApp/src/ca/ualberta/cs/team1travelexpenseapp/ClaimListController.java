@@ -191,7 +191,7 @@ public class ClaimListController {
 	}
 	
 	public static void onReturnClick() {
-		currentClaim.setStatus(Claim.Status.returned);
+		currentClaim.setStatus(Status.returned);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}

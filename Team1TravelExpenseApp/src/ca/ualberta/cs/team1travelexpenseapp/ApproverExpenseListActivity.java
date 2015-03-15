@@ -68,7 +68,7 @@ public class ApproverExpenseListActivity extends Activity {
 	
 	public void onApproveClick(View v) {
 		ClaimListController.onApproveClick();
-		
+		finish();
 	}
 	
 	public void onReturnClick(View v) {
