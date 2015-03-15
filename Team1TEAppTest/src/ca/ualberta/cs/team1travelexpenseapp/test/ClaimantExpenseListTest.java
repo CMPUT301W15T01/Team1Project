@@ -329,6 +329,4 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		assertNotNull(nextActivity);
 		nextActivity.finish();
 	}
-	
-	
 }

@@ -140,7 +140,7 @@ public class ClaimListController {
 		
 	}
 	
-	public static ClaimList getSubmittedClaim() {
+	public static ClaimList getSubmittedClaims() {
 		// TODO Auto-generated method stub
 		ClaimList submittedclaims = new ClaimList();
 		
@@ -168,7 +168,7 @@ public class ClaimListController {
 		return null;
 	}
 
-	public static Claim getApprovedClaim(int i) {
+	public static ArrayList<Claim> getApprovedClaimsList() {
 		// TODO Auto-generated method stub
 		return null;
 	}

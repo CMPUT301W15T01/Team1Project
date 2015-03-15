@@ -98,4 +98,14 @@ public class ClaimList {
 		return listeners;
 	}
 	
+	public int length() {
+		return claimList.size();
+		
+	}
+
+	public Claim get(int i) {
+		// TODO Auto-generated method stub
+		return claimList.get(i);
+	}
+	
 }
