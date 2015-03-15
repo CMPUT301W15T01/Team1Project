@@ -32,12 +32,13 @@ public class ClaimList {
 	public void updateClaim(Claim currentClaim, Claim newClaim){
 		currentClaim.setClaimantName(newClaim.getClaimantName());
 		//currentClaim.setApproverList(newClaim.getApproverList());
-		//currentClaim.setClaimTagList(newClaim.getClaimTagList());
+		currentClaim.setClaimTagList(newClaim.getClaimTagList());
 		//currentClaim.setComplete(newClaim.isComplete());
 		currentClaim.setEndDate(newClaim.getEndDate());
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		//currentClaim.setStatus(newClaim.getStatus());
+		notifyListeners();
 	}
 	
 	public Claim getClaim(int index) {
@@ -91,6 +92,10 @@ public class ClaimList {
 
 	public void removeListener(Listener listener) {
 		listeners.remove(listener);
+	}
+	
+	public ArrayList<Listener> getListeners() {
+		return listeners;
 	}
 	
 }

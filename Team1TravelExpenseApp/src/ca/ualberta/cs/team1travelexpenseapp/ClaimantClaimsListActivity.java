@@ -47,7 +47,7 @@ public class ClaimantClaimsListActivity extends Activity {
 
         mainListView = (ListView) findViewById(R.id.claimsList);
         
-      //taken from https://github.com/abramhindle/student-picker and modified
+        //taken from https://github.com/abramhindle/student-picker and modified
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
@@ -68,8 +68,8 @@ public class ClaimantClaimsListActivity extends Activity {
         
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
-        	public void onItemClick( AdapterView Parent, View v, int position, long id){
-        		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
+        		ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
         	}
@@ -77,21 +77,20 @@ public class ClaimantClaimsListActivity extends Activity {
         	
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
-    		public boolean onItemLongClick( AdapterView Parent, View v, int position, long id){
+    		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
     			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
 				
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
+
 			           public void onClick(DialogInterface dialog, int id) {		
 			    		
-			        	   //toast for debugging
-			    		
-			        	 //  Toast.makeText(getApplicationContext(), ClaimListController.getCurrentClaim().toString(), Toast.LENGTH_SHORT).show();
 			        	   Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
 			        	   startActivity(edit);
 			    					
+
 			           }
 			       });
 				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
@@ -160,7 +159,7 @@ public class ClaimantClaimsListActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	public void onDestory(){
+	public void onDestroy(){
 		super.onDestroy();
 		claimList.removeListener(listener);
 	}

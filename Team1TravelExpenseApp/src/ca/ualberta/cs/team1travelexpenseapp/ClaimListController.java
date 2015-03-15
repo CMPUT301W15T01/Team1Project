@@ -56,6 +56,7 @@ public class ClaimListController {
 		}
 		claimsList.updateClaim(currentClaim, newClaim);
 		
+		
 	}
 	
 	public static void setCurrentClaim(Claim claim){
@@ -83,12 +84,29 @@ public class ClaimListController {
 		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
 		Date endDate = calendar.getTime();
 		
-		if(getCurrentClaim().getStatus()!=Status.submitted){
-			if(getCurrentClaim().getStatus()!=Status.approved){
-				ClaimListController.updateCurrentClaim(new Claim(nameText, fromDate, endDate));
+
+	
+		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) activity.findViewById(R.id.claimTagSpinner);
+		ArrayList<Tag> claimTags = (ArrayList<Tag>) tagSpinner.getSelectedItems();
+		//Claim newClaim=new Claim(nameText, fromDate, endDate);
+		
+		//newClaim.setClaimTagList(claimTags);
+		
+		if(getCurrentClaim().getStatus()!=Status.submitted && getCurrentClaim().getStatus()!=Status.approved ){
+		
+				Claim newClaim=new Claim(nameText, fromDate, endDate);
+				newClaim.setClaimTagList(claimTags);
+				ClaimListController.updateCurrentClaim(newClaim);
 				
-			}
+		
+		}else{
+			Claim newClaim = getCurrentClaim();
+			newClaim.setClaimTagList(claimTags);
+			ClaimListController.updateCurrentClaim(newClaim);
+			
 		}
+		
+		
 		activity.finish();
 		
 	}
@@ -130,11 +148,23 @@ public class ClaimListController {
 		ArrayList<Claim> claimArray=getClaimList().getClaims();
 		setCurrentClaim(claim);
 		claimArray.add(claim);
+		//displays an empty claim in claim list 
 		claimsList.setClaimList(claimArray);
 		
 	}
 	
-
+	public static ClaimList getSubmittedClaim() {
+		// TODO Auto-generated method stub
+		ClaimList submittedclaims = new ClaimList();
+		
+		for (Claim item: getClaimList().getClaims()) {
+			
+			if ((item.status.equals(Claim.Status.submitted))) {
+				submittedclaims.addClaim(item);
+			}
+		}
+		return submittedclaims;
+	}
 	public static Claim getSubmittedClaim(int i) {
 		// TODO Auto-generated method stub
 		return null;
@@ -175,7 +205,15 @@ public class ClaimListController {
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
+	public static void onReturnClick() {
+		currentClaim.setStatus(Claim.Status.returned);
+		currentClaim.getApproverList().add(user);
+		currentClaim.setApproverList(currentClaim.getApproverList());
+	}
 
+	public static void onCommentClick(String comment) {
+		currentClaim.getCommentList().put(user.getName(), comment);
+	}
 	
 
 	

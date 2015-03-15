@@ -22,7 +22,6 @@ public class ApproverClaimsListActivity extends Activity {
 
 	
 	private ClaimList claimList;
-
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
@@ -32,22 +31,22 @@ public class ApproverClaimsListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.claimant_activity_main);
+		setContentView(R.layout.approver_display_claims);
 
 		//As an approver, I want to view a list of all the expense claims that were submitted 
 		//for approval, which have their claim status as submitted, showing for each claim:
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 
-        mainListView = (ListView) findViewById(R.id.claimsList);
         
       //taken from https://github.com/abramhindle/student-picker and modified
+		// TODO: show approved claims and make sure the approver doesn't see their own claims
   		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
-  		claimList=ClaimListController.getClaimList();
+  		claimList=ClaimListController.getSubmittedClaim();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
   		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
-  		mainListView.setAdapter(claimsAdapter);
+  		claimsListView.setAdapter(claimsAdapter);
   		
   		listener=new Listener() {			
 			@Override
@@ -62,7 +61,7 @@ public class ApproverClaimsListActivity extends Activity {
         claimList.addListener(listener);
         
         
-        mainListView.setOnItemClickListener(new OnItemClickListener(){
+        claimsListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView Parent, View v, int position, long id){
         		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
         		Intent intent= new Intent(getBaseContext(),ApproverExpenseListActivity.class);	
@@ -99,6 +98,7 @@ public class ApproverClaimsListActivity extends Activity {
 	}
 	
 	public void onDestroy(){
+		super.onDestroy();
 		claimList.removeListener(listener);
 	}
 	

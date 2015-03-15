@@ -38,15 +38,17 @@
         android:layout_below="@+id/editText1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="84dp"
+        android:onClick="userLogin"
         android:text="User" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/approverButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
+        android:onClick="approverLogin"
         android:text="Approver" />
 
 </RelativeLayout>

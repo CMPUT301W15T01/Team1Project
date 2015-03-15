@@ -7,10 +7,10 @@
     tools:context="ca.ualberta.cs.team1travelexpenseapp.MainActivity" >
 
     <ListView
-        android:id="@+id/expensesList"
+        android:id="@+id/claimantExpensesList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/destination"
+        android:layout_below="@+id/claimInfoHeader"
         android:layout_above="@+id/viewCommentsButton"
         android:scrollbars="vertical" >
 
@@ -20,7 +20,7 @@
         android:id="@+id/addExpenseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/destination"
+        android:layout_alignBottom="@+id/claimInfoHeader"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
         android:text="@string/add_expense" />
 
     <TextView
-        android:id="@+id/destination"
+        android:id="@+id/claimInfoHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -55,7 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Submit"
-        android:onClick="onSubmitClick" />
+        android:onClick="onSubmitClick"
+        android:text="Submit" />
+
 
 </RelativeLayout>

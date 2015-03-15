@@ -1,114 +1,116 @@
 
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
+import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.ViewAsserts;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
 
-public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<ApproverClaimsListActivity> {
+public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 
-	public ApproverClaimListTest() {
-		super(ApproverClaimsListActivity.class);
-		// TODO Auto-generated constructor stub
-	}
-//
-//
+
+
 //	private Intent launch;
 //	final Button approverButton;
 //	
-//	
-//	protected void setUp() throws Exception {
-//		super.setUp();
-//        launch = new Intent(getInstrumentation()
-//                .getTargetContext(), ClaimActivity.class);
-//        startActivity(launch, null, null);
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+
+	}
+	public ApproverClaimListTest() {
+		super(LoginActivity.class);
+		// TODO Auto-generated constructor stub
+        //launch = new Intent(getInstrumentation()
+        //        .getTargetContext(), ApproverClaimsListActivity.class);
 //        approverButton = (Button) getActivity()
-//                .findViewById(R.id.approve_button);
-//	}
-//	
-//	
-//	
-//	private Claim DummyClaim(){
-//		
-//		Claim claim = new Claim();
-//		//by default their status is submitted
-//		claim.setStartDate(new Date(100));
-//		claim.setEndDate(new Date(101));
-//		claim.setStatus("submitted");
-//		claim.setName("approver test");
-//		claim.addDestination("test dest");
-//		claim.setTotal(100,"EUR");
-//		
-//		return claim;
-//	}
-//	
-//	private Expense DummyExpense(){
-//			
-//			Expense expense = new Expense("Expense Name");
-//			
-//			expense.setDate(new Date(100));
-//			expense.setTotal(100, USD);
-//			
-//			return expense;
-//			
-//		}
-//	
-//	
-//	private ApproverClaimActivity startWithClaims(ClaimList claims){
-//		
-//		Intent intent = new Intent();
-//		
-//		intent.putExtra(claims);
-//		setActivityIntent(intent);		
-//		
-//		return (ApproverClaimActivity) getActivity();
-//	}
-//	
-//	//US08.01.01
-//	
-//	/*
-//	 * Tests that the Approver can properly
-//	 * navigate to the screen
-//	 * with all the claims
-//	 * 
-//	 * */
-//	public void testgetSubmittedClaims(){
-//		
-//		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
-//		UserSelectActivity  userSelect = new UserSelectActivity();
-//		
-//		final Button approverBT = (Button) userSelect.findViewById(R.id.BTApprover);
-//		userSelect.runOnUiThread(new Runnable(){
-//			
-//			public void run(){
-//				
-//				approverBT.performClick();// approver user type is selected
-//				//User type selected : precondition
-//			}
-//			
-//		});
-//		
-//		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//		assertNotNull(nextActivity);
-//		
-//		ListView claimlistView = (ListView) nextActivity.findViewById(R.id.ApproverClaimLV);
-//		ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(),view);
-//		
-//		nextActivity .finish();
-//		
-//	}
+//                .findViewById(R.id.approveButton);
+	}
+
+	
+	
+	private Claim DummyClaim(){
+		
+		Claim claim = new Claim();
+		//by default their status is submitted
+		claim.setStartDate(new Date(100));
+		claim.setEndDate(new Date(101));
+		claim.setStatus(Claim.Status.returned);
+		claim.getApproverList().add(new User("Approver","bobby"));
+		claim.setApproverList(claim.getApproverList());
+		return claim;
+	}
+	
+	private Expense DummyExpense(){
+			
+			Expense expense = new Expense();
+			
+			expense.setDate(new Date(100));
+			expense.setAmount(new BigDecimal(900));
+			return expense;
+			
+		}
+	
+	
+	private LoginActivity startWithClaims(Intent claims){
+		
+		Intent intent = new Intent();
+		
+		intent.putExtras(claims);
+		setActivityIntent(intent);		
+		
+		return getActivity();
+	}
+	
+	//US08.01.01
+	
+	/*
+	 * Tests that the Approver can properly
+	 * navigate to the screen
+	 * with all the claims
+	 * 
+	 * */
+	public void testgetSubmittedClaims(){
+		
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsListActivity.class.getName(), null, false);
+		LoginActivity  userSelect = (LoginActivity) getActivity();
+		
+		final Button approverBT = (Button) userSelect.findViewById(R.id.approverButton);
+		userSelect.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				approverBT.performClick();// approver user type is selected
+				//User type selected : precondition
+			}
+			
+		});
+		
+		ApproverClaimsListActivity nextActivity = (ApproverClaimsListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		assertNotNull(nextActivity);
+		
+		ListView claimlistView = (ListView) nextActivity.findViewById(R.id.approverclaimList);
+		ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(),claimlistView);
+		
+		nextActivity.finish();
+		//userSelect.finish();		
+	}
 //	
 //	
 //	////US08.02.01
@@ -176,51 +178,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 //	}
 //	
 //	
-//	//US08.03.01
-//	/*
-//	 *Testing if we can see all of
-//	 *the expenses of a claim
-//	 * */
-//	public void testExpensesVisible(){
-//		
-//		  Expense expense = DummyExpense();
-//		  ApproverExpenseActivity ApproverActivity = new ApproverExpenseActivity();
-//		  ClaimListController controller = new ClaimListController();
-//		  
-//		  Claim claim = DummyClaim();
-//		  claim.addExpense(expense);
-//		  controller.add(claim);
-//		  controller.save();
-//		  AssertFalse("claim list not empty?" , controller.LoadClaims().isEmpty());//precondition
-//			
-//		  ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimSummaryActivity.class.getName(), null, false);
-//			
-//		  ApproverClaimSummaryActivity approverCSA = new ApproverClaimSummaryActivity(); 
-//		  final ListView expenseListLV = (ListView) approverCSA.findViewById(R.id.LVExpenseList);
-//		  approverCSA.runOnUiThread(new Runnable(){
-//				
-//				public void run(){
-//					
-//					expenseListLV.performClick();//onClick would be overrided
-//				}
-//				
-//			});
-//		
-//			
-//			Approver lastActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//			assertNotNull(lastActivity);
-//			
-//		 
-//		  final TextView expenseSummary = lastActivity.findViewById(R.id.expenseSummaryTV);
-//		  ViewAsserts.assertOnScreen(lastActivity.getWindow().getDecorView(),view); 
-//			
-//		  String expense_check = expenseSummary.getText();
-//		  
-//		  AssertTrue("details,cost, and description displayed?", expense_check.toLowerCase().contains("details") 
-//				  && expense_check.toLowerCase().contains("desc") && expense_check.toLowerCase().contains("cost"));
-//	
-//		
-//	}
+
 //	
 //	
 //	
@@ -243,54 +201,56 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Appr
 //	}
 //	
 //	
-//	//US08.07.01
-//	/*
-//	* tests if returned claims
-//	* show up for claimants
-//	*
-//	*/
-//	public void testReturnedVisible(){
-//		Claimlist list = new ClaimList();
-//		list.addClaim(DummyClaim());
-//		
-//		
-//		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsActivity.class.getName(), null, false);
-//		ApproverClaimSummaryActivity  ActivityCSA = new ApproverClaimSummaryActivity();
-//		
-//		final Button returnBT = (Button) userSelect.findViewById(R.id.returnBT);
-//		userSelect.runOnUiThread(new Runnable(){
-//			
-//			public void run(){
-//				
-//				returnBT.performClick();// approver user type is selected
-//				//User type selected : precondition
-//			}
-//			
-//		});
-//		
-//		ApproverClaimListActivity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//		assertNotNull(nextActivity);
-//		
-//		claimsListController listControl = new claimsListController();
-//		
-//		ClaimList claimList = new ClaimList();
-//		
-//		claimList = listControl.loadClaims();
-//		
-//		int statuscount;
-//		
-//		for(int i =0; i<claimlist.length; i++){
-//			
-//			if(claimlist.getClaimAtIndex(i).getStatus()=="returned"){
-//				statuscount++;
-//				
-//			}
-//			
-//		}
-//		
-//		assertTrue("Claim was returned?", statuscount > 0);
-//		
-//	}
+	//US08.07.01
+	/*
+	* tests if returned claims
+	* show up for claimants
+	*
+	*/
+	public void testReturnedVisible(){
+		ClaimList list = new ClaimList();
+		list.addClaim(DummyClaim());
+		
+		
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimsListActivity.class.getName(), null, false);
+		
+		LoginActivity  userSelect = getActivity();
+		
+		final Button returnBT = (Button) userSelect.findViewById(R.id.approverButton);
+		userSelect.runOnUiThread(new Runnable(){
+			
+			public void run(){
+				
+				returnBT.performClick();// approver user type is selected
+				//User type selected : precondition
+			}
+			
+		});
+		
+		ApproverClaimsListActivity nextActivity = (ApproverClaimsListActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		assertNotNull(nextActivity);
+		
+		
+		
+		ClaimList claimList = new ClaimList();
+		
+		claimList = ClaimListController.getClaimList();
+		
+		int statuscount = 0;
+		
+		for(int i =0; i<claimList.getClaims().size(); i++){
+			
+			if(claimList.getClaim(i).getStatus().equals(Claim.Status.returned)){
+				statuscount++;
+				
+			}
+			
+		}
+		
+		assertTrue("Claim was returned?", statuscount == 0);
+		userSelect.finish();
+		nextActivity.finish();
+	}
 //	
 //	
 //	

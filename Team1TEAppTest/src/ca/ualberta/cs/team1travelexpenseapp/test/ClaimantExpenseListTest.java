@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
@@ -75,8 +76,10 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 		
 		
 		//add a claim to test on
-		//Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-		//ClaimListController.addClaim(claim1);	
+
+		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
+		ClaimListController.addClaim(claim1);	
+		ClaimListController.setCurrentClaim(claim1);
 		
 		//Intent intent = new Intent();
 		//intent.putExtra("Index", 0);
@@ -206,31 +209,44 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 //		assertTrue("Claim tags editable", claim.addTag());
 //
 //	}
-//	/*
-//	 * US 7.02.01
-//	 * As a claimant, I want a visual warning when trying to 
-//	 * submit an expense claim when there are fields with missing values or 
-//	 * there are any incompleteness indicators on the expense items.
-//	 */
-//	
-//	public void testSubmitWarning() {
-//		//preconditions
-//		Claim claim = ClaimListController.getClaim(0);
-//		Expense expense = claim.getExpense(0);
-//		expense.setIncomplete(true);
-//		//trigger
-//		final Button button = (Button) activity.findViewById(R.id.submitClaimButton);
-//		activity.runOnUiThread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		      // click button and open next activity.
-//		      button.performClick();
-//		    }
-//		});
-//		// Test toast is shown (Check if this is proper way)
-//		View v = activity.getWindow().getDecorView().findViewById(android.R.id.content);
-//		assertTrue("Toast is shown", v.isShown());
-//	}
+	/*
+	 * US 7.02.01
+	 * As a claimant, I want a visual warning when trying to 
+	 * submit an expense claim when there are fields with missing values or 
+	 * there are any incompleteness indicators on the expense items.
+	 */
+	
+	public void testSubmitWarning() {
+		Claim claim = new Claim();
+		claim.setComplete(false);
+		ClaimListController.setCurrentClaim(claim);
+		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				submitButton.performClick();
+			}
+		});
+		AlertDialog dia = getActivity().getSubmitDialog();
+		assertTrue("Dialog shows", dia.isShowing());
+		
+		claim.setComplete(true);
+		Expense expense = new Expense();
+		expense.setFlagged(true);
+		ExpenseListController.addExpense(expense);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				submitButton.performClick();
+			}
+		});
+		dia = getActivity().getSubmitDialog();
+		assertTrue("Dialog shows", dia.isShowing());
+	}
 //
 	/*
 	 *  US 7.03.01
@@ -340,45 +356,45 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Ed
 	* As a claimant, I want to see the name of the approver and any comment(s) 
 	* from the approver on a returned or approved claim.
 	*/
-//	public void testApproverNameComments(){
-//	
-//		ClaimList list = new ClaimList();
-//		final Claim claim =  new Claim();
-//		list.addClaim(claim);
-//		ClaimListController.setCurrentClaim(claim);
-//		
-//		Expense expense = new Expense();
-//		//ClaimListController.getCurrentClaim().addExpense(expense);
-//		ExpenseListController.addExpense(expense);
-//					
-//		User checkUser = new User("approver","John");
-//		ClaimListController.setUser(checkUser);
-//		
-//		ClaimListController.getCurrentClaim().addComment("HI it looks good");
-//		
-//		// get approve button
-//		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
-//		//from http://stackoverflow.com/questions/9405561/test-if-a-button-starts-a-new-activity-in-android-junit-pref-without-robotium
-//		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
-//		activity.runOnUiThread(new Runnable(){
-//
-//			@Override
-//			public void run() {
-//				// click approve button
-//				button.performClick(); 	
-//				
-//			}
-//			
-//		});
-//		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
-//		// next activity is opened and captured.
-//		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
-//		assertEquals("Can View Comments",ClaimListController.getCurrentClaim().getCommentList().toString(), text.getText().toString());
-//		assertNotNull(nextActivity);
-//		nextActivity .finish();
-//		
-//		assertEquals("Can see comments1", ClaimListController.getCurrentClaim().getCommentList().toString(), "{John=HI it looks good}");
-//	}
-//	
+
+	public void testApproverNameComments(){
+	
+		ClaimList list = new ClaimList();
+		final Claim claim =  new Claim();
+		list.addClaim(claim);
+		ClaimListController.addClaim(claim);
+		ClaimListController.setCurrentClaim(claim);
+		
+		Expense expense = new Expense();
+		//ClaimListController.getCurrentClaim().addExpense(expense);
+		ExpenseListController.addExpense(expense);
+					
+		User checkUser = new User("approver","John");
+		ClaimListController.setUser(checkUser);
+		
+		ClaimListController.getCurrentClaim().addComment("HI it looks good");
+		
+		// get approve button
+		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
+		//from http://stackoverflow.com/questions/9405561/test-if-a-button-starts-a-new-activity-in-android-junit-pref-without-robotium
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// click approve button
+				button.performClick(); 	
+				
+			}
+			
+		});
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		// next activity is opened and captured.
+		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
+		assertEquals("Can View Comments","John\nHI it looks good", text.getText().toString());
+		assertNotNull(nextActivity);
+		nextActivity.finish();
+	}
+	
 	
 }

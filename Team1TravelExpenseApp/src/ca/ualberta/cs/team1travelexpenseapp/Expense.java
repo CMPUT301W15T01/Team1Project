@@ -19,9 +19,10 @@ public class Expense {
 
 	public Expense(String description, Date date, String category,
 			BigDecimal amount, String currency) {
+		this.description = description;
 		this.date = date;
 		this.category = category;
-		this.amount = amount;
+		this.amount = amount.setScale(2,BigDecimal.ROUND_HALF_EVEN); 
 		this.currency = currency;
 		
 		isFlagged = false;
@@ -90,7 +91,8 @@ public class Expense {
 	}
 
 	public File getReceipt() {
-		return receipt;
+		//TODO 
+		return null;
 	}
 
 	public void setReceipt(File receipt) {
@@ -112,12 +114,24 @@ public class Expense {
 		
 		//date format, has year month day 
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-		str += "Date: " + dateformat.format(getDate()) + "\n";
-		str += getCategory() + "\n";
-		str += getDescription() +"\n";
-		str += getAmount() + getCurrency() + "\n";
-		//str += "Photographic Receipt: " + receipt;
-		
+		str += "Date: " + dateformat.format(getDate()) + "\nCategory: " + getCategory();
+		//if(getDescription().length() > 0){
+			str += "\nDescription:" + getDescription();
+		//}
+		if (getAmount().intValue() != 0){
+			str += "\n" + getAmount() + getCurrency();
+		}
+		if ( receipt != null) {
+			str += "\nHas Photo";
+		}
+		if ( !isComplete()) {
+			str += "\nincomplete";
+		}
+		if (isFlagged()){
+			str += "\nflagged";
+		}
+
+
 		return str;
 	}
 

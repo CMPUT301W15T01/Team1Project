@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/claimDestinationHeader"
-                android:layout_toLeftOf="@+id/returnButton"
+                android:layout_toLeftOf="@+id/addDestinationButton"
                 android:inputType="textAutoCorrect" />
 
             <TextView
@@ -72,8 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignRight="@+id/claimDestinationBody"
+                android:layout_alignParentRight="true"
                 android:layout_below="@+id/claimNameHeader"
+                android:layout_toLeftOf="@+id/addDestinationButton"
                 android:inputType="textAutoCorrect" />
 
             <TextView
@@ -91,8 +92,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignRight="@+id/claimDestinationBody"
                 android:layout_below="@+id/claimReasonHeader"
+                android:layout_toLeftOf="@+id/addDestinationButton"
                 android:inputType="textAutoCorrect" />
 
             <DatePicker
@@ -130,37 +131,25 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/toDateTextView"
                 android:calendarViewShown="false" />
+            <TextView
+                android:id="@+id/claimTagHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="Tags:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_below="@+id/claimEndDate"
+                />
             
-             <Spinner
-                 android:id="@+id/spinner1"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-               
-                 android:layout_below="@+id/claimEndDate" 
-                 android:entries="@array/tags"/>
+             <ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner  
+        		android:id="@+id/claimTagSpinner"  
+       		    android:layout_width="match_parent"  
+        		android:layout_height="wrap_content" 
+        		android:layout_below="@+id/claimTagHeader" />  
 
              <Button
-                 android:id="@+id/button2"
-                 style="?android:attr/buttonStyleSmall"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_toRightOf="@+id/spinner1"
-                 android:layout_alignBottom="@+id/spinner1"
-                 android:layout_marginTop="25dp"
-               
-                 android:text="(-/+)"/>
-             
-             <TextView
-                 android:id="@+id/claimTagList"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentLeft="true"
-                 android:layout_alignParentStart="true"
-                 android:layout_below="@+id/spinner1"
-                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
-             <Button
-                 android:id="@+id/returnButton"
+                 android:id="@+id/addDestinationButton"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_above="@+id/claimDestinationList"

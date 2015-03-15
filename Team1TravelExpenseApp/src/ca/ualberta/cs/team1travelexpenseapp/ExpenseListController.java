@@ -1,11 +1,13 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Intent;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -13,14 +15,8 @@ import android.widget.Spinner;
 
 public class ExpenseListController {
 	protected static Expense currentExpense = null;
-	private static ExpenseList currentExpenseList= null;
-
 	public static ExpenseList getCurrentExpenseList() { 
-		if (currentExpenseList == null) {
-			currentExpenseList = ClaimListController.getCurrentClaim().getExpenseList();
-		}
-		
-		return currentExpenseList;
+		return ClaimListController.getCurrentClaim().getExpenseList();
 	}
 	
 	public static void setCurrentExpense(Expense expense){
@@ -31,30 +27,40 @@ public class ExpenseListController {
 		return currentExpense;
 	}
 	
-	public static void setCurrentExpenseList(ExpenseList expenseList){
-		currentExpenseList = expenseList; 
+	public static void setCurrentExpenseList(ExpenseList expenseList){ 
 	}
 	
 	public static void addExpense(Expense expense){
 		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.add(expense);
 		setCurrentExpense(expense);
-		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
-		
-		currentExpenseList.setExpenseList(expenseArray);
+		///setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
+		//display empty expense then show activity to edit empty claim otherwise an empty expense will not show after hitting back
+		getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void removeExpense(Expense expense){
 		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
 		expenseArray.remove(expense);
-		currentExpenseList.setExpenseList(expenseArray);
+		getCurrentExpenseList().setExpenseList(expenseArray);
 	}
 	
 	public static void updateExpense(Expense expense, Expense newExpense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
-		expenseArray.set(expenseArray.indexOf(expense), newExpense);
-		//setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
-		currentExpenseList.setExpenseList(expenseArray);
+		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
+				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
+			if(expense.getDescription() != null && newExpense.getCurrency() != "" && newExpense.getCategory() != "none"){
+				newExpense.setComplete(true);
+			} else{
+				newExpense.setComplete(false);
+			}
+			if(newExpense.getAmount().intValue() == 0){
+				newExpense.setCurrency("");
+			}
+			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
+			expenseArray.set(expenseArray.indexOf(expense), newExpense);
+			setCurrentExpense(newExpense);
+			getCurrentExpenseList().setExpenseList(expenseArray);
+		}
 	}
 	
 	public static void onExpenseSaveClick(EditExpenseActivity activity) {
@@ -76,7 +82,13 @@ public class ExpenseListController {
 		Spinner currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);
 		String currencyText = String.valueOf(currencySpinner.getSelectedItem());
 		
-		updateExpense(currentExpense, new Expense(descriptionText, date, categoryText, amountValue, currencyText));
+
+		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);
+		/*CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
+		if ( completeBox.isChecked() ) {
+			expense.setFlagged(true);
+		}*/
+		updateExpense(getCurrentExpense(), expense);
 		
 		
 		activity.finish();	
@@ -87,5 +99,15 @@ public class ExpenseListController {
 		Intent intent = new Intent(activity, EditExpenseActivity.class);
 		activity.startActivity(intent);
 		
+	}
+
+	public static File compressPhoto(EditExpenseActivity activity,
+			File photoFile) {
+		// TODO Compress photofile
+		return photoFile;
+	}
+
+	public static void onRemoveExpenseClick() {
+		removeExpense(currentExpense);
 	}
 }

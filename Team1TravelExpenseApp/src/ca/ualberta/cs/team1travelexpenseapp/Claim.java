@@ -17,13 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CyclicBarrier;
-import android.nfc.Tag;
 import android.widget.Toast;
 
-/**
- * warning 
- * skeletal code
- */
 
 public class Claim { 
 	
@@ -172,22 +167,17 @@ public class Claim {
 	}
 	
 	public Map<String, BigDecimal> getCurrencyTotals() {
-		ArrayList<Expense> cexpenses = this.getExpenseList().getExpenses();
-		Map<String, BigDecimal> totals = new HashMap<String, BigDecimal>();
-		while ( !cexpenses.isEmpty()) {
-			String currency = cexpenses.get(0).getCurrency();
-			if (totals.get(currency) != null) {
-				BigDecimal tempAmount = totals.get(currency);
-				tempAmount.add(cexpenses.get(0).getAmount());
-				totals.put(currency, tempAmount );
-			} else {
-				totals.put(currency, cexpenses.get(0).getAmount());
+		HashMap<String, BigDecimal> counts = new HashMap<String, BigDecimal>();	
+		for (Expense expense : this.getExpenseList().getExpenses()){
+			if(counts.containsKey(expense.getCurrency())){
+				counts.put(expense.getCurrency(), expense.getAmount().add(counts.get(expense.getCurrency())));
 			}
-			cexpenses.remove(0);
+			else {
+				counts.put(expense.getCurrency(), expense.getAmount());
+			}
 		}
-		return totals;
+		return counts;
 	}
-	
 	public String getCurrencyTotal(String currency) {
 		return getCurrencyTotals().get(currency).toString();
 	}
@@ -200,7 +190,7 @@ public class Claim {
 		//date format, has year month day 
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		str += "Starting Date of travel: " + dateformat.format(getStartDate()) + "\n";
-		//str += "End Date: " + dateformat.format(getEndDate()) + "\n";
+		str += "End Date: " + dateformat.format(getEndDate()) + "\n";
 		Iterator<String> destinations = getDestinations().iterator();
 		str += "Destinations:";
 		while (destinations.hasNext()) {
@@ -234,25 +224,16 @@ public class Claim {
 				str += " and " + tempTag;
 			}
 		}
-		
+		str+="\nTotals: ";
 		//get total currency amounts
-		Map<String, BigDecimal> currencyMap = getCurrencyTotals();
-		Iterator<String> currencies = currencyMap.keySet().iterator();
-		str += "\nCurrency Totals:";
-		while (currencies.hasNext()) {
-			String tempCurrency = currencies.next().toString();
-			//if has next iterator or only has one currency
-			if (tags.hasNext() || (currencyMap.keySet().size() == 1) ) {
-				str += " " + tempCurrency + ": ";
-				str += currencyMap.get(tempCurrency).toString();
-				if (getTagCount() != 1) {
-					str += ",";
-				}
-			} else {
-				str += " and " + tempCurrency + ": ";
-				str += currencyMap.get(tempCurrency).toString();
-			}
-		}
+		Map<String,BigDecimal> totals = getCurrencyTotals();
+	    for(Map.Entry<String, BigDecimal> currency: totals.entrySet()) {
+	         // add each currency to string
+	    	if(currency.getValue().equals("") || currency.getKey().equals("") ) {
+	    		continue;
+	    	}
+	    	str += currency.getValue() + "-" + currency.getKey() + " ";
+	    }
 		
 		
 		return str;

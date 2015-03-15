@@ -3,50 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.ualberta.cs.team1travelexpenseapp.MainActivity" >
+    tools:context="ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity" >
+
+    <TextView
+        android:id="@+id/ApproverClaimInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Travel Claims"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ApproverClaimInfoTextView" />
 
     <ListView
         android:id="@+id/approverclaimList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/returnButton"
-        android:layout_below="@+id/Button02"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/spinner1"
         android:scrollbars="vertical" >
-
     </ListView>
-
-    <Button
-        android:id="@+id/submitClaimsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="Return" />
-
-    <Button
-        android:id="@+id/Button02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/expensesList"
-        android:layout_centerHorizontal="true"
-        android:text="Comment" />
-
-    <Button
-        android:id="@+id/Button03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:onClick="onManageTagsClick"
-        android:text="Manage\nTags"
-        android:textSize="12dp" />
-
-    <Button
-        android:id="@+id/approveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Approve" />
 
 </RelativeLayout>
