@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -129,13 +130,14 @@ public class EditClaimActivity extends Activity {
 	
 	public void updateDestinationText(){
 		String destString = "";
-		Map<String, String> destReasons = claim.getDestinationReasonList();
+		HashMap<String, String> destReasons = (HashMap<String, String>) claim.getDestinationReasonList();
 		Iterator<String> destinations = claim.getDestinations().iterator();
 		String dest;
 		while(destinations.hasNext()){
 			dest=destinations.next();
 			destString+=dest;
-			if(!destReasons.get(dest).equals("")) destString += ": "+destReasons.get(dest);
+			//if(!destReasons.get(dest).equals("")) 
+			destString += ": "+destReasons.get(dest);
 			destString+="\n";
 		}
 		destList.setText(destString);	

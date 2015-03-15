@@ -29,7 +29,7 @@ public class Claim {
 	protected String claimantName;
 	protected Date startDate;
 	protected Date endDate;
-	protected Map<String, String> destinationReasonList;
+	protected HashMap<String, String> destinationReasonList;
 	protected ArrayList<Tag> claimTagList;
 	protected boolean isComplete;
 	protected ArrayList<User> approverList;
@@ -86,7 +86,7 @@ public class Claim {
 		return destinationReasonList.get(destination);
 	}
 	
-	public Map<String, String> getDestinationReasonList() {
+	public HashMap<String, String> getDestinationReasonList() {
 		return destinationReasonList;
 	}
 	

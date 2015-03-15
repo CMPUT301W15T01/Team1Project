@@ -39,6 +39,11 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.User;
 
+
+//Tests adding, editing, and deleting expenseitems.
+//When trying to run all the tests in a row one might stop or hang and cause the rest to not run
+//but running each individually should give results. 
+
 public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 	
 	protected Instrumentation instrumentation;
@@ -398,7 +403,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	// photograph to an editable expense item, so that there is supporting documentation for the 
 	// expense item in case the physical receipt is lost.
 	
-	/*public void testAddPhoto(){	
+	public void testAddPhoto(){	
 		activity = getEditExpenseActivity();	
 		photoFile = createTestPhotoFile();
 		
@@ -475,7 +480,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		expense.setReceipt(null);
 		
 	}
-	*/
+	
 	
 	
 	// US06.02.01
@@ -563,7 +568,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertNotNull("Photofile not added to expence", expense.getReceipt());
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
-		photoFile = ExpenseListController.compressPhoto(activity, photoFile);
+		Expense.compressPhoto(activity, photoFile);
 		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getReceipt().length() < 65536);	
 		
 		// A photo that is less than 65536 bytes in size is attached to the expense

@@ -12,7 +12,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-
+/**
+ * View for adding/editing an Expense item.
+ * Provides a user interface from which the user can fill in the info for an Expense item.
+ *
+ */
 public class EditExpenseActivity extends Activity {
 	private ExpenseList expenseList;
 	private Listener listener;
@@ -92,7 +96,7 @@ public class EditExpenseActivity extends Activity {
 		return true;
 	}
 		
-	public void onDestroy(){
+	protected void onDestroy(){
 		super.onDestroy();
 		expenseList.removeListener(listener);
 		//ExpenseListController.onExpenseSaveClick(this);
