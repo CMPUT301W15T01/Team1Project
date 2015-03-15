@@ -145,20 +145,6 @@ public class ClaimantExpenseListActivity extends Activity {
 	}
 	
 	public void onSubmitClick(View v) {
-	
-	if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-		
-		ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-		
-		Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-		//push online here
-		Intent intent =new Intent(this, ClaimantClaimsListActivity.class);
-		startActivity(intent);
-	}
-	else{
-		Toast.makeText(getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
-
-	}
 		
 		boolean expensesFlag = false;
 		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
@@ -189,6 +175,25 @@ public class ClaimantExpenseListActivity extends Activity {
 			submitWarningDialog=submitBuilder.create();
 			submitWarningDialog.show();
 
+		}else{
+			
+			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+				
+				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+				Claim submittedClaim = ClaimListController.getCurrentClaim();
+				submittedClaim.setStatus(Status.submitted);
+				ClaimListController.updateCurrentClaim(submittedClaim);
+				
+				Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
+				//push online here
+				Intent intent =new Intent(this, ClaimantClaimsListActivity.class);
+				startActivity(intent);
+			}
+			else{
+				Toast.makeText(getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
+
+			}
+			
 		}
 		
 	}
