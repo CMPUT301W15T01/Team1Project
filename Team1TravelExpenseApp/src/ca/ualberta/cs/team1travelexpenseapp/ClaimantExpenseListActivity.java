@@ -69,7 +69,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		/*for (Listener i : ClaimListController.getClaimList().getListeners()) {
 			expenseList.addListener(i);
 		}*/
-		expenseList.addListener(ClaimListController.getClaimList().getListeners().get(0));
+		//expenseList.addListener(ClaimListController.getClaimList().getListeners().get(0));
 			
 		expenseListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
@@ -149,6 +149,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		    });
 			submitBuilder.setTitle("Claim may be incomplete");
 			submitWarningDialog=submitBuilder.create();
+			submitWarningDialog.show();
 		}
 		
 	}
@@ -156,10 +157,5 @@ public class ClaimantExpenseListActivity extends Activity {
 	public void onDestroy(){
 		super.onDestroy();
 		expenseList.removeListener(listener);
-	}
-	
-	public AlertDialog getSubmitDialog() {
-		return submitWarningDialog;
-		
 	}
 }

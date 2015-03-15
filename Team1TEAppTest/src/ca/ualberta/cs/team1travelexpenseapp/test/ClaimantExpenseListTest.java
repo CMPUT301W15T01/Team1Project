@@ -165,8 +165,11 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 				submitButton.performClick();
 			}
 		});
-		AlertDialog dia = getActivity().getSubmitDialog();
-		assertTrue("Dialog shows", dia.isShowing());
+		getInstrumentation().waitForIdleSync();
+		AlertDialog dia = getActivity().submitWarningDialog;
+		assertTrue("Not null", dia != null);
+
+		assertTrue("Dialog shows1", dia.isShowing());
 		
 		claim.setComplete(true);
 		Expense expense = new Expense();
@@ -180,8 +183,10 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 				submitButton.performClick();
 			}
 		});
-		dia = getActivity().getSubmitDialog();
-		assertTrue("Dialog shows", dia.isShowing());
+		getInstrumentation().waitForIdleSync();
+
+		dia = getActivity().submitWarningDialog;
+		assertTrue("Dialog shows2", dia.isShowing());
 	}
 //
 //	/*
@@ -317,7 +322,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			}
 			
 		});
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","John\nHI it looks good", text.getText().toString());

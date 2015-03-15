@@ -42,6 +42,7 @@
         android:layout_alignBottom="@+id/approverClaimInfoTextView"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:onClick="onInfoClick"
         android:text="Info" />
 
     <Button

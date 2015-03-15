@@ -8,10 +8,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimInfo;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
@@ -79,7 +81,6 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			
 		}
 		
-        // COMMENTED OUT BECAUSE THEY DONT WORK YET  
 		//US08.03.01
 		/*
 		 *Testing if we can see all of
@@ -94,18 +95,25 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			Expense expense2 = new Expense("Airfaire", new Date(), "Skiing", new BigDecimal(50), "CAD");
 			ExpenseListController.addExpense(expense1);
 			ExpenseListController.addExpense(expense2);
-			final TextView info = (TextView) activity.findViewById(R.id.approverClaimInfoTextView);
+			final TextView infoButton = (TextView) activity.findViewById(R.id.approverInfoButton);
+			
+			//from http://stackoverflow.com/questions/9405561/test-if-a-button-starts-a-new-activity-in-android-junit-pref-without-robotium
+			ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ApproverClaimInfo.class.getName(), null, false);
 			activity.runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					info.setText(ClaimListController.getCurrentClaim().toString());
+					infoButton.performClick();
 				}
 				
 			});
-			
-			assertEquals("Claim info visible", ClaimListController.getCurrentClaim().toString(), info.getText());
+			getInstrumentation().waitForIdleSync();
+			Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+			assertNotNull(nextActivity);
+			TextView text = (TextView) nextActivity.findViewById(R.id.ApproverClaimInfoTextView);
+			assertEquals("Can View Info", ClaimListController.getCurrentClaim().toString(),text.getText());
+			nextActivity.finish();
 
 			
 		}
@@ -198,7 +206,6 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 			
 			ClaimList list = new ClaimList();
 			final Claim claim =  new Claim();
-			list.addClaim(claim);
 			ClaimListController.setCurrentClaim(claim);
 			
 			//ClaimListController.getCurrentClaim().addExpense(expense);
@@ -216,15 +223,16 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 				public void run() {
 					// click approve button
 					button.performClick();
-					assertEquals("Claim is the changed claim", claim, ClaimListController.getCurrentClaim());
-					assertEquals("Status is approved", Status.approved, ClaimListController.getCurrentClaim().getStatus());
-					ArrayList<User> approvers = claim.getApproverList();
-					User user = approvers.get(0);
-					assertEquals("Name is John", "John", ClaimListController.getUser().getName());
-					assertEquals("User is approver", user, ClaimListController.getUser());
 				}
 				
 			});
+			getInstrumentation().waitForIdleSync();
+			assertEquals("Claim is the changed claim", claim, ClaimListController.getCurrentClaim());
+			assertEquals("Status is approved", Status.approved, ClaimListController.getCurrentClaim().getStatus());
+			
+			User user = ClaimListController.getCurrentClaim().getApproverList().get(0);
+			assertEquals("Name is John", "John", ClaimListController.getUser().getName());
+			assertEquals("User is approver", user, ClaimListController.getUser());
 			
 			
 
