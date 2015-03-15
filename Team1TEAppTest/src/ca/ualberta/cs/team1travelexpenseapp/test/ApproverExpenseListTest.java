@@ -100,13 +100,12 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					Log.d("TEST", ClaimListController.getCurrentClaim().toString());
 					info.setText(ClaimListController.getCurrentClaim().toString());
 				}
 				
 			});
 			
-			assertEquals("Claim info visible", ClaimListController.getCurrentClaim().toString(), info.getText().toString());
+			assertEquals("Claim info visible", ClaimListController.getCurrentClaim().toString(), info.getText());
 
 			
 		}

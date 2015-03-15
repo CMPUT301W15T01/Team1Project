@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
@@ -144,31 +145,44 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //		assertTrue("Claim tags editable", claim.addTag());
 //
 //	}
-//	/*
-//	 * US 7.02.01
-//	 * As a claimant, I want a visual warning when trying to 
-//	 * submit an expense claim when there are fields with missing values or 
-//	 * there are any incompleteness indicators on the expense items.
-//	 */
-//	
-//	public void testSubmitWarning() {
-//		//preconditions
-//		Claim claim = ClaimListController.getClaim(0);
-//		Expense expense = claim.getExpense(0);
-//		expense.setIncomplete(true);
-//		//trigger
-//		final Button button = (Button) activity.findViewById(R.id.submitClaimButton);
-//		activity.runOnUiThread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		      // click button and open next activity.
-//		      button.performClick();
-//		    }
-//		});
-//		// Test toast is shown (Check if this is proper way)
-//		View v = activity.getWindow().getDecorView().findViewById(android.R.id.content);
-//		assertTrue("Toast is shown", v.isShown());
-//	}
+	/*
+	 * US 7.02.01
+	 * As a claimant, I want a visual warning when trying to 
+	 * submit an expense claim when there are fields with missing values or 
+	 * there are any incompleteness indicators on the expense items.
+	 */
+	
+	public void testSubmitWarning() {
+		Claim claim = new Claim();
+		claim.setComplete(false);
+		ClaimListController.setCurrentClaim(claim);
+		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				submitButton.performClick();
+			}
+		});
+		AlertDialog dia = getActivity().getSubmitDialog();
+		assertTrue("Dialog shows", dia.isShowing());
+		
+		claim.setComplete(true);
+		Expense expense = new Expense();
+		expense.setFlagged(true);
+		ExpenseListController.addExpense(expense);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				submitButton.performClick();
+			}
+		});
+		dia = getActivity().getSubmitDialog();
+		assertTrue("Dialog shows", dia.isShowing());
+	}
 //
 //	/*
 //	 *  US 7.03.01

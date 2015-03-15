@@ -28,6 +28,7 @@ public class ClaimantExpenseListActivity extends Activity {
  	private ExpenseList expenseList;
  	private TextView claimInfoHeader;
  	public AlertDialog editExpenseDialog;
+ 	public AlertDialog submitWarningDialog;
  	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,8 +131,35 @@ public class ClaimantExpenseListActivity extends Activity {
 		ExpenseListController.onAddExpenseClick(this);
 	}
 	
+	public void onSubmitClick(View v) {
+		
+		boolean expensesFlag = false;
+		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
+			if(expense.isFlagged() == true){
+				expensesFlag = true;
+			}
+		}
+		
+		if(ClaimListController.getCurrentClaim().isComplete() == false || expensesFlag == true){
+			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(this);
+			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		               //Do nothing
+		           }
+		    });
+			submitBuilder.setTitle("Claim may be incomplete");
+			submitWarningDialog=submitBuilder.create();
+		}
+		
+	}
+	
 	public void onDestroy(){
 		super.onDestroy();
 		expenseList.removeListener(listener);
+	}
+	
+	public AlertDialog getSubmitDialog() {
+		return submitWarningDialog;
+		
 	}
 }
