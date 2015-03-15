@@ -71,7 +71,6 @@ public class ClaimListController {
 	
 	
 	public static void onSaveClick(EditClaimActivity activity) {
-		
 		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
 		String     nameText   = nameView.getText().toString();
 		
@@ -84,14 +83,27 @@ public class ClaimListController {
 		calendar.set(eDateView.getYear(), eDateView.getMonth(), eDateView.getDayOfMonth());
 		Date endDate = calendar.getTime();
 		
+
+	
 		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) activity.findViewById(R.id.claimTagSpinner);
 		ArrayList<Tag> claimTags = (ArrayList<Tag>) tagSpinner.getSelectedItems();
-		Claim newClaim=new Claim(nameText, fromDate, endDate);
+		//Claim newClaim=new Claim(nameText, fromDate, endDate);
 		
-		newClaim.setClaimTagList(claimTags);
+		//newClaim.setClaimTagList(claimTags);
 		
+		if(getCurrentClaim().getStatus()!=Status.submitted && getCurrentClaim().getStatus()!=Status.approved ){
 		
-		ClaimListController.updateCurrentClaim(newClaim);
+				Claim newClaim=new Claim(nameText, fromDate, endDate);
+				newClaim.setClaimTagList(claimTags);
+				ClaimListController.updateCurrentClaim(newClaim);
+				
+		
+		}else{
+			Claim newClaim = getCurrentClaim();
+			newClaim.setClaimTagList(claimTags);
+			ClaimListController.updateCurrentClaim(newClaim);
+			
+		}
 		
 		
 		activity.finish();
@@ -174,9 +186,13 @@ public class ClaimListController {
 	}
 
 	public static void onRemoveClaimClick() {
-		ArrayList<Claim> claims = getClaimList().getClaims();
-		claims.remove(currentClaim);
-		claimsList.setClaimList(claims);
+		
+		if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+		
+			ArrayList<Claim> claims = getClaimList().getClaims();
+			claims.remove(currentClaim);
+			claimsList.setClaimList(claims);
+		}
 		
 	}
 

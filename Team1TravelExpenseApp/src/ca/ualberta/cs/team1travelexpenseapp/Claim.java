@@ -1,6 +1,9 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -14,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CyclicBarrier;
-
 import android.widget.Toast;
 
 

@@ -6,14 +6,20 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +28,6 @@ public class EditClaimActivity extends Activity {
 
 	private TextView destList;
 	private Claim claim;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +39,38 @@ public class EditClaimActivity extends Activity {
 	
 	protected void onStart(){
 		super.onStart();
+			
+		final AlertDialog.Builder StatusAlert =  new AlertDialog.Builder(EditClaimActivity.this);
+		StatusAlert.setPositiveButton("OK",new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		if(ClaimListController.getCurrentClaim().getStatus()==Status.submitted
+				|| ClaimListController.getCurrentClaim().getStatus()==Status.approved){
+			
+			
+			EditText nameET = (EditText) findViewById(R.id.claimNameBody);
+			nameET.setFocusable(false);
+			EditText destinationET = (EditText) findViewById(R.id.claimDestinationBody);
+			destinationET.setFocusable(false);
+			EditText reasonET = (EditText) findViewById(R.id.claimReasonBody);
+			reasonET.setFocusable(false);
+			DatePicker dateStartPick = (DatePicker) findViewById(R.id.claimFromDate);
+			dateStartPick.setFocusable(false);
+			DatePicker dateEndPick = (DatePicker) findViewById(R.id.claimEndDate);
+			dateEndPick.setFocusable(false);
+			Button addDestBT = (Button) findViewById(R.id.addDestinationButton);
+			addDestBT.setFocusable(false);
+			
+			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is already"
+			+ ClaimListController.getCurrentClaim().getStatus().toString());
+			
+			StatusAlert.show();
+		}
 		claim = ClaimListController.getCurrentClaim();
 		
 		TextView nameView  = (TextView) findViewById(R.id.claimNameBody);
@@ -80,6 +117,7 @@ public class EditClaimActivity extends Activity {
 	public void onSaveClick(View v) {
 
 		//editing model happens in controller 
+	
 		ClaimListController.onSaveClick(this);
 	}
 	
@@ -97,7 +135,8 @@ public class EditClaimActivity extends Activity {
 		while(destinations.hasNext()){
 			dest=destinations.next();
 			destString+=dest;
-			if(!destReasons.get(dest).equals("")) destString += ": "+destReasons.get(dest)+"\n";
+			if(!destReasons.get(dest).equals("")) destString += ": "+destReasons.get(dest);
+			destString+="\n";
 		}
 		destList.setText(destString);	
 	}

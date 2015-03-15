@@ -23,7 +23,6 @@ import android.widget.AdapterView.OnItemClickListener;
  * View for managing the application's list of tags.
  * Provides a user interface from which the user can add tags, change tag names and delete tags.
  * Listens to the underlying tagList.
- * @author kenny_789
  *
  */
 public class TagManagerActivity extends Activity {
@@ -138,9 +137,9 @@ public class TagManagerActivity extends Activity {
 	
 	/**
 	 * When add tag button is clicked we display a dialog allowing the user to enter the name of the newly added Tag.
-	 * @param v
+	 * @param view The view that was clicked
 	 */
-	public void onAddTagClick(View v){
+	public void onAddTagClick(View view){
 		newTagDialog.show();
 		EditText nameField=(EditText) newTagDialog.findViewById(R.id.simpleEditText);
 		nameField.setText("");
