@@ -221,7 +221,7 @@ public class Expense {
 		//if(getDescription().length() > 0){
 			str += "\nDescription:" + getDescription();
 		//}
-		if (getAmount().intValue() != 0){
+		if (getAmount().floatValue() != 0){
 			str += "\n" + getAmount() + getCurrency();
 		}
 		if ( receipt != null) {
