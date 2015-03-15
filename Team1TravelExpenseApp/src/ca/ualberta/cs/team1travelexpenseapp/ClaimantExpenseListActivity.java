@@ -95,7 +95,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	    		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
 	    			 ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
 	    			
-	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html
+	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 					 AlertDialog.Builder editExpenseDialogBuilder = new AlertDialog.Builder(ClaimantExpenseListActivity.this);
 					
 					 editExpenseDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
