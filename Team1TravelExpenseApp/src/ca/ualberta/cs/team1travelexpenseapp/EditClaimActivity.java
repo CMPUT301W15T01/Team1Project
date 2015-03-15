@@ -35,7 +35,6 @@ public class EditClaimActivity extends Activity {
 		setContentView(R.layout.activity_edit_claim);
 	}
 
-	//TODO 
 	//on start method that loads all of the CurrentClaim values into the editTexts
 	
 	protected void onStart(){
@@ -46,7 +45,6 @@ public class EditClaimActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				dialog.dismiss();
 			}
 		});
