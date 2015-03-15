@@ -45,9 +45,6 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	Activity activity;
 	ListView expenseListView;
 	Context context;
-	//EditText editName;
-	//EditText editDestination;
-	//Button saveBT;
 	
 	public ClaimantExpenseListTest() {
 		super(ClaimantExpenseListActivity.class);
@@ -72,8 +69,6 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		activity = getActivity();
-		
 		
 		//add a claim to test on
 
@@ -81,20 +76,20 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		ClaimListController.addClaim(claim1);	
 		ClaimListController.setCurrentClaim(claim1);
 		
-		//Intent intent = new Intent();
-		//intent.putExtra("Index", 0);
-		//setActivityIntent(intent);
-		//activity = getActivity();
-		//expenseListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.expenseList));
+		Intent intent = new Intent();
+		intent.putExtra("Index", 0);
+		setActivityIntent(intent);
+		activity = getActivity();
+		expenseListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimantExpensesList));
 		
 		//add some expense to the claim to test on
-		//Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
-			//	new BigDecimal(10.00), "CURRENCY1");
-		//expense1.setIncomplete(true);//this will default to false
-	//	Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
-		//		new BigDecimal(20.00), "CURRENCY2");
-		//Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
-			//	new BigDecimal(25.00), "CURRENCY3");
+		Expense expense1=new Expense("Expense1",new Date(2000,11,11),"category1",
+				new BigDecimal(10.00), "CURRENCY1");
+		expense1.setComplete(false);//this will default to false
+		Expense expense2=new Expense("Expense2",new Date(200,11,13),"category2",
+				new BigDecimal(20.00), "CURRENCY2");
+		Expense expense3=new Expense("Expense3",new Date(200,11,12),"category3",
+				new BigDecimal(25.00), "CURRENCY3");
 		
 //		claim1.addExpense(expense1);
 //		claim1.addExpense(expense2);

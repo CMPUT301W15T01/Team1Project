@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,15 @@ public class ClaimantExpenseListActivity extends Activity {
 		//and whether there is a photographic receipt.
 
 		claim=ClaimListController.getCurrentClaim();
+		if(claim.getStatus() == Status.submitted || claim.getStatus() ==Status.approved){
+			
+			Button submitBT = (Button) findViewById(R.id.submitButton);
+			submitBT.setClickable(false);
+			submitBT.setFocusable(false);
+			submitBT.setEnabled(false);
+			
+			
+		}
 		expenseList=ExpenseListController.getCurrentExpenseList();
         expenseListView = (ListView) findViewById(R.id.claimantExpensesList);
 

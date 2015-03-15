@@ -17,7 +17,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,6 @@ public class EditClaimActivity extends Activity {
 
 	private TextView destList;
 	private Claim claim;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,18 +49,27 @@ public class EditClaimActivity extends Activity {
 				dialog.dismiss();
 			}
 		});
-		if(ClaimListController.getCurrentClaim().getStatus()==Status.submitted){
+		if(ClaimListController.getCurrentClaim().getStatus()==Status.submitted
+				|| ClaimListController.getCurrentClaim().getStatus()==Status.approved){
 			
 			
+			EditText nameET = (EditText) findViewById(R.id.claimNameBody);
+			nameET.setFocusable(false);
+			EditText destinationET = (EditText) findViewById(R.id.claimDestinationBody);
+			destinationET.setFocusable(false);
+			EditText reasonET = (EditText) findViewById(R.id.claimReasonBody);
+			reasonET.setFocusable(false);
+			DatePicker dateStartPick = (DatePicker) findViewById(R.id.claimFromDate);
+			dateStartPick.setFocusable(false);
+			DatePicker dateEndPick = (DatePicker) findViewById(R.id.claimEndDate);
+			dateEndPick.setFocusable(false);
+			Button addDestBT = (Button) findViewById(R.id.addDestinationButton);
+			addDestBT.setFocusable(false);
 			
-			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is already submitted.");
+			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is already"
+			+ ClaimListController.getCurrentClaim().getStatus().toString());
+			
 			StatusAlert.show();
-		}
-		if(ClaimListController.getCurrentClaim().getStatus()==Status.approved){
-			
-			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is approved.");
-			StatusAlert.show();
-			
 		}
 		claim = ClaimListController.getCurrentClaim();
 		
