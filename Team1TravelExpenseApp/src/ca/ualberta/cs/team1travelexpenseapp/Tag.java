@@ -9,7 +9,7 @@ public class Tag {
 	
 	/**
 	 * Create a new Tag with a specific name.
-	 * @param name
+	 * @param name A String to be used as the name of the new tag.
 	 */
 	public Tag(String name){
 		this.name=name;
@@ -17,14 +17,14 @@ public class Tag {
 	
 	/**
 	 * Get the current name of the Tag.
-	 * @return
+	 * @return The name of the Tag.
 	 */
 	public String getName(){
 		return name;
 	}
 	
 	/**
-	 * Print a string representation of the Tag (currently just the name).
+	 * return a string representation of the Tag (currently just the name).
 	 */
 	@Override
 	public String toString() {
@@ -32,7 +32,7 @@ public class Tag {
 	}
 	/**
 	 * Change the name of the tag to newName.
-	 * @param newName
+	 * @param newName A String to be used as the new name for the Tag
 	 */
 	public void setName(String newName){
 		this.name=newName;

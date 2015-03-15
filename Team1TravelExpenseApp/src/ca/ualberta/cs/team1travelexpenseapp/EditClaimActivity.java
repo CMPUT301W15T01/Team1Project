@@ -97,7 +97,8 @@ public class EditClaimActivity extends Activity {
 		while(destinations.hasNext()){
 			dest=destinations.next();
 			destString+=dest;
-			if(!destReasons.get(dest).equals("")) destString += ": "+destReasons.get(dest)+"\n";
+			if(!destReasons.get(dest).equals("")) destString += ": "+destReasons.get(dest);
+			destString+="\n";
 		}
 		destList.setText(destString);	
 	}
