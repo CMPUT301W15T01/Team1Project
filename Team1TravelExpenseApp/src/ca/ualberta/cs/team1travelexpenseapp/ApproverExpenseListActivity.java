@@ -45,10 +45,8 @@ public class ApproverExpenseListActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
         // display general claim info at top of screen
-      	Claim myClaim = ClaimListController.getCurrentClaim();
         TextView claimInfo = (TextView) findViewById(R.id.approverClaimInfoTextView);
-        String infoString = myClaim.toString();
-        claimInfo.setText(infoString);
+        claimInfo.setText(ClaimListController.getCurrentClaim().toString());
 	}
 
 	@Override

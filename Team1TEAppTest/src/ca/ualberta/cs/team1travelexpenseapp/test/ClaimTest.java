@@ -13,7 +13,6 @@ import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-
 import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
 import android.app.AlertDialog;
