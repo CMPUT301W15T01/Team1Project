@@ -1,6 +1,10 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
+import junit.framework.Assert;
 
 import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
@@ -8,13 +12,22 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.ViewAsserts;
 import android.view.View;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 
+
+// @------------!!!NOTE!!!-------------@
+// @!!! ensure emulator is unlocked !!!@
+// @------------!!!NOTE!!!-------------@
 public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 
 	Activity activity;
@@ -31,13 +44,13 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 	}
 	
 
-	/**
+	/*
 	 * http://developer.android.com/training/activity-testing/activity-functional-testing.html
 	 * 03/06/2015
 	 * -test activity navigation
 	 * -test US01.01.01
 	 * -test US01.02.01
-	 **/
+	 */
 	public void testAddClaimUI() {
 		
 		//change activity 
@@ -89,7 +102,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		        name.requestFocus();
 		    }
 		});
-		
+
 		getInstrumentation().waitForIdleSync();
 		getInstrumentation().sendStringSync("Cool Guy");
 		getInstrumentation().waitForIdleSync();
@@ -145,10 +158,12 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 				fromDate.getDayOfMonth());
 		assertFalse("SAME" , beforeUIcalF.getTime().toString()
 				.equals(testDate.getTime().toString()));
+		Date sDate = testDate.getTime();
 		testDate.set(endDate.getYear(), endDate.getMonth(), 
 				endDate.getDayOfMonth());
 		assertFalse("SAME" , beforeUIcalE.getTime().toString()
 				.equals(testDate.getTime().toString()));
+		Date eDate = testDate.getTime();
 		
 		getInstrumentation().removeMonitor(receiverActivityMonitor);
 		//monitor ClaimClaimsListActivity
@@ -157,16 +172,12 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 						null, false);
 		 
 		
+		final View decorView = activity.getWindow().getDecorView();
+		ViewAsserts.assertOnScreen(decorView, saveClaimButton);
 		// @------------!!!NOTE!!!-------------@
 		// @!!! ensure emulator is unlocked !!!@
 		// @------------!!!NOTE!!!-------------@
 		TouchUtils.clickView(this, saveClaimButton); //check that ClaimantClaimsListActivity started
-		
-		
-
-		
-		final View decorView = activity.getWindow().getDecorView();
-		ViewAsserts.assertOnScreen(decorView, saveClaimButton);
 
 
 		
@@ -177,12 +188,22 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		        0, receiverActivityMonitor.getHits());
 		assertEquals("Activity is of wrong type",
 				ClaimantClaimsListActivity.class, newReceiverActivity.getClass());
+		
+		//checks one ClaimantClaimsListActivity 
+		ViewAsserts.assertOnScreen(newReceiverActivity.getWindow().getDecorView(),newReceiverActivity.findViewById(R.id.claimsList) );
 
+
+		Claim uiClaim = ClaimListController.getClaimList().get(0);
+		Claim claim = new Claim("Cool Guy", sDate, eDate);
+		claim.addDestination("Cool dest","Cool reason");
+		assertTrue(claim.toString().equals(uiClaim.toString()) );
+		
 		// Remove the ActivityMonitor
 		getInstrumentation().removeMonitor(receiverActivityMonitor);
 		
+		activity.finish();
 		
-		
+
 	}
 	
 	

@@ -18,6 +18,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * Allows the approver to view the expenses contained in a clicked claim and provides the option
+ * to approve, return or comment on the claim via buttons on the bottom.
+ *
+ */
 public class ApproverExpenseListActivity extends Activity {
 
 	public Claim claim;
@@ -66,6 +71,10 @@ public class ApproverExpenseListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * 
+	 * @param v
+	 */
 	public void onApproveClick(View v) {
 		ClaimListController.onApproveClick();
 		finish();
@@ -81,7 +90,7 @@ public class ApproverExpenseListActivity extends Activity {
 	}
 	public void onCommentClick(View v) {
 		
-		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
+		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog (March 15, 2015)
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("Comments");

@@ -44,7 +44,13 @@ public class Expense {
 		
 		isFlagged = false;
 		receipt = null;
-		isComplete = false;
+		
+		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none")){
+			isComplete = false;
+		}
+		else {
+			isComplete = true;
+		}
 	}
 	/**
 	 * Create a new Expense with its values uninitialized.
@@ -221,7 +227,7 @@ public class Expense {
 		//if(getDescription().length() > 0){
 			str += "\nDescription:" + getDescription();
 		//}
-		if (getAmount().intValue() != 0){
+		if (getAmount().floatValue() != 0){
 			str += "\n" + getAmount() + getCurrency();
 		}
 		if ( receipt != null) {
@@ -230,9 +236,9 @@ public class Expense {
 		if ( !isComplete()) {
 			str += "\nincomplete";
 		}
-		/*if (isFlagged()){
+		if (isFlagged()){
 			str += "\nflagged";
-		}*/
+		}
 
 
 		return str;

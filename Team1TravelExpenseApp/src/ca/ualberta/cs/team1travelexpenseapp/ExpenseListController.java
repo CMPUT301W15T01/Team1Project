@@ -3,7 +3,6 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.io.File;
 import java.io.ObjectInputStream.GetField;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,7 +83,7 @@ public class ExpenseListController {
 		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
 				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
 			
-			if(newExpense.getAmount().intValue() == 0){
+			if(newExpense.getAmount().floatValue() == 0){
 				newExpense.setCurrency("");
 			}
 			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
@@ -119,16 +118,8 @@ public class ExpenseListController {
 		Spinner currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);
 		String currencyText = String.valueOf(currencySpinner.getSelectedItem());
 		
-
-		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);
-		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
-		//if not check, set complete 
-		if ( !completeBox.isChecked() ) {
-			expense.setComplete(true);
-		}
-		
+		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);	
 		updateExpense(getCurrentExpense(), expense);
-		
 		
 		activity.finish();	
 	}
@@ -153,4 +144,5 @@ public class ExpenseListController {
 	public static void onRemoveExpenseClick() {
 		removeExpense(currentExpense);
 	}
+	
 }

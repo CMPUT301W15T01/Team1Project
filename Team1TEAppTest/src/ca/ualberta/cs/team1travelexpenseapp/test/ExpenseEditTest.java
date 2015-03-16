@@ -75,6 +75,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		ClaimListController.clearClaimList();
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
 		getExpenseListactivity();
@@ -326,7 +327,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();
-		assertEquals("New expenses not added", claim.getExpenseList().getExpenses().size(), 3);
+		assertEquals("New expenses not added", 3, claim.getExpenseList().getExpenses().size());
 		
 		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
 

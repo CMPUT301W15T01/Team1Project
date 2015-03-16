@@ -9,7 +9,6 @@ import android.widget.EditText;
  * Controller for TagList, uses lazy singleton design pattern. 
  * The contained TagList will be automatically created when getTagList is called for the first time.
  * Provides a set of methods which allow the TagListManagerActivity view to modify the underlying TagList data.
- * @author Team1
  */
 public class TagListController {
 	private static TagList tagList=null;
@@ -88,5 +87,12 @@ public class TagListController {
      */
     public static void onRemoveTagClick(DialogInterface dialog, Tag tag) {
     	TagListController.removeTag(tag);
+    }
+    
+    /**
+     * Reset the TagList to a new TagList removing all it's old contents.
+     */
+    public static void clearTagList(){
+    	tagList=new TagList();
     }
 }

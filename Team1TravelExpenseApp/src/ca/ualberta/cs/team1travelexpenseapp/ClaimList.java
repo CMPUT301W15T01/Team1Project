@@ -133,12 +133,19 @@ public class ClaimList {
 	public ArrayList<Listener> getListeners() {
 		return listeners;
 	}
-	
+	/**
+	 * Returns the length of the claimlist
+	 * @return interger length of the claim list
+	 */
 	public int length() {
 		return claimList.size();
 		
 	}
-
+	/**
+	 * Gets the claim at an index in the list
+	 * @param i The index
+	 * @return The claim at the index
+	 */
 	public Claim get(int i) {
 		// TODO Auto-generated method stub
 		return claimList.get(i);

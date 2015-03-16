@@ -83,6 +83,10 @@ public class EditExpenseActivity extends Activity {
 		updateValues();
 	}
 	
+	/**
+	 * When the user clicks the save expense button (or back button) call the onExpenseSaveClick button in ExpenseListController
+	 * @param v
+	 */
 	public void onExpenseSaveClick(View v) {
 
 		//editing model happens in controller 

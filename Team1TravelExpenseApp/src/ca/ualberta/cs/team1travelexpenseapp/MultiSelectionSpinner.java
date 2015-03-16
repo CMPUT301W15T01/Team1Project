@@ -1,4 +1,4 @@
-//taken and modified from http://v4all123.blogspot.in/2013/09/spinner-with-multiple-selection-in.html March 14 2015, used with permission of author
+//taken and modified from http://v4all123.blogspot.in/2013/09/spinner-with-multiple-selection-in.html (March 14 2015), used with permission of author
 package ca.ualberta.cs.team1travelexpenseapp;  
   
 import java.util.ArrayList;

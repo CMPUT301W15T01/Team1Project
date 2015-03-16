@@ -1,6 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 /**
- * Implementes the Tags which will be added to Claims in order to provide a way of filtering specific types of Claim.
+ * Implements the Tags which will be added to Claims in order to provide a way of filtering specific types of Claim.
  * Very simple class which contains only a name that can be changed.
  *
  */

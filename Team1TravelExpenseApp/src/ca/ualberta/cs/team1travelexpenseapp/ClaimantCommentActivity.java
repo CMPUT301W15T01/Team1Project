@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.widget.TextView;
-
+/**
+ * The view for viewing comments attached to claims as a claimant
+ * 
+ *
+ */
 public class ClaimantCommentActivity extends Activity {
 	
 	Claim claim;
@@ -25,7 +29,7 @@ public class ClaimantCommentActivity extends Activity {
 		//String commentString = claim.getCommentList().toString();
 		String commentString = "";
 		Map<String, String> commentList = claim.getCommentList();
-		// how to iterate through keys found at http://stackoverflow.com/questions/46898/iterate-over-each-entry-in-a-map
+		// how to iterate through keys found at http://stackoverflow.com/questions/46898/iterate-over-each-entry-in-a-map (March 15, 2015)
 		for(Map.Entry<String, String> comment : commentList.entrySet()) {
 			commentString += comment.getKey() + "\n" + comment.getValue();
 		}
