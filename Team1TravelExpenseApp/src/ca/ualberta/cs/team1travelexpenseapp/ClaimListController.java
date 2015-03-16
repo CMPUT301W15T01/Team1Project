@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
@@ -186,7 +187,7 @@ public class ClaimListController {
 	}
 	
 	/**
-	 * The onClick method for the save button when editing/ading claims
+	 * The onClick method for the save button when editing/adding claims
 	 * @param activity The edit claim activity containing the views
 	 */
 	public static void onSaveClick(EditClaimActivity activity) {
@@ -224,6 +225,15 @@ public class ClaimListController {
 			
 		}
 		
+		HashMap<String,String> daMAP = new HashMap<String, String>();
+		
+		
+		if(!getCurrentClaim().getClaimantName().equals("")  && !getCurrentClaim().getDestinationReasonList().equals(daMAP)
+				&& !getCurrentClaim().getCurrencyTotals().equals("")){
+			
+			getCurrentClaim().setComplete(true);
+			
+		}
 		
 		activity.finish();
 		
