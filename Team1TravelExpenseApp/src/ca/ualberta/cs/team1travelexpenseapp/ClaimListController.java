@@ -103,7 +103,7 @@ public class ClaimListController {
 	}
 	
 	/**
-	 * The onClick method for the save button when editing/ading claims
+	 * The onClick method for the save button when editing/adding claims
 	 * @param activity The edit claim activity containing the views
 	 */
 	public static void onSaveClick(EditClaimActivity activity) {
