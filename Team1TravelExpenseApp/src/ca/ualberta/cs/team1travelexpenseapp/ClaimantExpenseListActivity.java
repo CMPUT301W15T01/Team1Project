@@ -21,7 +21,11 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-
+/**
+ * View for showing the expense items of a chosen claim
+ * Allows navigation to add/edit expense items
+ * Allows claimants to submit claims, as well as view comments from approvers
+ */
 public class ClaimantExpenseListActivity extends Activity {
 
 	public Claim claim;

@@ -24,7 +24,11 @@ import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * View for adding/editing claims
+ * Provides UI for entering claim information
+ *
+ */
 public class EditClaimActivity extends Activity {
 
 	private TextView destList;
@@ -112,20 +116,28 @@ public class EditClaimActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	
+	/**
+	 * The onClick method for the save button, allowing the user to save the data they hav entered
+	 * @param v The view passed when the save button is clicked
+	 */
 	public void onSaveClick(View v) {
 
 		//editing model happens in controller 
 	
 		ClaimListController.onSaveClick(this);
 	}
-	
+	/**
+	 * The onClick method for the button allowing the user to add a destination/reason pair to a claim
+	 * @param v The view passed when the add destination/reason button is clicked
+	 */
 	public void onAddDestinationClick(View v) {
 		
 		ClaimListController.onAddDestinationClick(this);
 		updateDestinationText();
 	}
-	
+	/**
+	 * Allows the user to see the destination/reason pairs that they add to a claim
+	 */
 	public void updateDestinationText(){
 		String destString = "";
 		HashMap<String, String> destReasons = (HashMap<String, String>) claim.getDestinationReasonList();
