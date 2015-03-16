@@ -136,17 +136,30 @@ public class ClaimantExpenseListActivity extends Activity {
 		getMenuInflater().inflate(R.menu.claimant_expense_list, menu);
 		return true;
 	}
-	
+	/**
+	 * The onClick method for the button that allows the claimant to view comments attached to a claim
+	 * Navigates to the comment view activity
+	 * @param v The view from the onClick
+	 */
 	public void onCommentClick(View v) {
 		Intent intent = new Intent(this, ClaimantCommentActivity.class);
 		startActivity(intent);
 
 	}
-
+	/**
+	 * The onClick for the add expense button
+	 * Redirects to the function within the ClaimListController
+	 * @param v the view from the onClick
+	 */
 	public void onAddExpenseClick(View v) {
 		ExpenseListController.onAddExpenseClick(this);
 	}
-	
+	/**
+	 * The onClick for the submit button
+	 * Shows a warning dialog if the claim or expense is incomplete
+	 * Redirects to the function within the ClaimListController
+	 * @param v
+	 */
 	public void onSubmitClick(View v) {
 		
 		boolean expensesFlag = false;
