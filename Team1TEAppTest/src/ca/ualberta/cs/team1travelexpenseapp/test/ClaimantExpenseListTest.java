@@ -108,7 +108,6 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 		Claim claim = DummyClaim();
 		claim.setStatus(Status.inProgress);
-		
 		ClaimListController.setCurrentClaim(claim);
 		ClaimListController.updateCurrentClaim(claim);
 		
