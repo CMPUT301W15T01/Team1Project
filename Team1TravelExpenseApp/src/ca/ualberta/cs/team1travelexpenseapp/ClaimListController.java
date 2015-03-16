@@ -164,6 +164,7 @@ public class ClaimListController {
 		}
 		return submittedclaims;
 	}
+	
 	public static Claim getSubmittedClaim(int i) {
 		// TODO Auto-generated method stub
 		return null;

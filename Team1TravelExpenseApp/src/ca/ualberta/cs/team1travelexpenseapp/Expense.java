@@ -44,7 +44,13 @@ public class Expense {
 		
 		isFlagged = false;
 		receipt = null;
-		isComplete = false;
+		
+		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none")){
+			isComplete = false;
+		}
+		else {
+			isComplete = true;
+		}
 	}
 	/**
 	 * Create a new Expense with its values uninitialized.
@@ -230,9 +236,9 @@ public class Expense {
 		if ( !isComplete()) {
 			str += "\nincomplete";
 		}
-		/*if (isFlagged()){
+		if (isFlagged()){
 			str += "\nflagged";
-		}*/
+		}
 
 
 		return str;
