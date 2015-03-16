@@ -13,15 +13,33 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
+/**
+ * The controller allowing modifications from the ui to change the claims and claims lists
+ * Allows general functionality like adding/deleting claims
+ *
+ */
 
 public class ClaimListController {
-	
+	/**
+	 * The apps main list of claims
+	 */
 	protected static ClaimList claimsList = null;
+	/**
+	 * The list of claims that are to be displayed in a view
+	 */
 	protected static ClaimList displayedClaimList = null;
+	/**
+	 * The claim that is currently in use when the user selects a claim for viewing/modification
+	 */
 	protected static Claim currentClaim = null;
+	/**
+	 * The current user of the app
+	 */
 	protected static User user = null;
-	
+	/**
+	 * Gets the current claims list
+	 * @return returns the current claims list
+	 */
 	public static ClaimList getClaimList() { 
 		if (claimsList == null) {
 			claimsList = new ClaimList();
@@ -29,7 +47,10 @@ public class ClaimListController {
 		
 		return claimsList;
 	}
-	
+	/**
+	 * Gets the displayed claims list
+	 * @return returns the displayed claims list
+	 */
 	public static ClaimList getDisplayedClaims() {
 		if (displayedClaimList == null) {
 			displayedClaimList = getClaimList();
@@ -37,7 +58,9 @@ public class ClaimListController {
 		
 		return displayedClaimList;
 	}
-	
+	/**
+	 * Sets the current claim's status to returned and add the users name to the list of approvers
+	 */
 	public void returnClaim() {
 		//As an approver, I want to return a submitted expense claim that was not approved, 
 		//denoting the claim status as returned and setting my name as the approver for the expense claim.
@@ -45,7 +68,10 @@ public class ClaimListController {
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
-	
+	/**
+	 * Sets the displayed claims list
+	 * @param claims The claims list to be displayed
+	 */
 	public static void setDisplayedClaims(ClaimList claims) {
 		displayedClaimList = claims;
 	}
