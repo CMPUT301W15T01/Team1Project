@@ -199,11 +199,15 @@ public class ClaimListController {
 	public static void onApproveClick() {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
+		Claim approvedClaim =getCurrentClaim();		
+		approvedClaim.setStatus(Status.approved);
 		
-		currentClaim.setStatus(Status.approved);
-		ArrayList<User> approverList = currentClaim.getApproverList();
+		ArrayList<User> approverList = approvedClaim.getApproverList();
 		approverList.add(user);
-		currentClaim.setApproverList(approverList);
+		approvedClaim.setApproverList(approverList);
+		ClaimListController.updateCurrentClaim(approvedClaim);
+		
+		
 	}
 	
 	public static void onReturnClick() {

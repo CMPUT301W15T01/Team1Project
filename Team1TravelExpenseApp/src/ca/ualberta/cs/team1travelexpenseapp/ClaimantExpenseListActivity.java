@@ -157,7 +157,11 @@ public class ClaimantExpenseListActivity extends Activity {
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		               //Do nothing
-		        	   ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+		        	   Claim submittedClaim = ClaimListController.getCurrentClaim();
+						submittedClaim.setStatus(Status.submitted);
+						ClaimListController.updateCurrentClaim(submittedClaim);
+		        	   
+		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 		        	   Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
 		        	   //push online here
 		           }

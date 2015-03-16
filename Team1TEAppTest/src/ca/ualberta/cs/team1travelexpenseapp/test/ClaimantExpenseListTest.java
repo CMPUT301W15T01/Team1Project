@@ -185,36 +185,37 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		dia = getActivity().submitWarningDialog;
 		assertTrue("Dialog shows2", dia.isShowing());
 	}
-//
 
-//	
 
-//	
-//	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 
-//	//in order of entry, showing for each expense item: the date the expense was 
-//	//incurred, the category, the textual description, amount spent, unit of currency, 
-//	//whether there is a photographic receipt, and incompleteness indicator.
-//	public void testListExpense(){
-//		//precondition
-//		Claim claim = ClaimListController.getClaim(0);
-//		
-//		int claimCount = expenseListView.getCount();
-//		for(int i=0; i < claimCount; i++){
-//			//get text info from a claim at position of i of expenseListView 
-//			TextView expenseInfo = (TextView) expenseListView.getItemAtPosition(i);
-//			
-//			//toString() method should be checked manually to verify it contains the correct info
-//			String viewText = expenseInfo.getText().toString();
-//
-//			//get expense at position i of expenseList of claim for the activity
-//			Expense expense=((ClaimantExpenseListActivity) activity).claim.getExpense(i);
-//			String expenseText=expense.toString();
-//			
-//			String expectedText =((ClaimantExpenseListActivity) activity).claim.toString();
-//			assertEquals("Expense summary at list item "+i+" does not match expected value",expectedText, viewtext);	
-//		}
-//		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),expenseListView);
-//	}
+	
+
+	
+	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 
+	//in order of entry, showing for each expense item: the date the expense was 
+	//incurred, the category, the textual description, amount spent, unit of currency, 
+	//whether there is a photographic receipt, and incompleteness indicator.
+	public void testListExpense(){
+		//precondition
+		ClaimListController.getClaimList().addClaim(new Claim());
+		Claim claim = ClaimListController.getClaimList().get(0);
+		
+		int claimCount = expenseListView.getCount();
+		for(int i=0; i < claimCount; i++){
+			//get text info from a claim at position of i of expenseListView 
+			TextView expenseInfo = (TextView) expenseListView.getItemAtPosition(i);
+			
+			//toString() method should be checked manually to verify it contains the correct info
+			String viewText = expenseInfo.getText().toString();
+
+			//get expense at position i of expenseList of claim for the activity
+			Expense expense=((ClaimantExpenseListActivity) activity).claim.getExpenseList().getExpenses().get(i);
+			String expenseText=expense.toString();
+			
+			String expectedText =((ClaimantExpenseListActivity) activity).claim.toString();
+			assertEquals("Expense summary at list item "+i+" does not match expected value",expectedText, viewText);	
+		}
+		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),expenseListView);
+	}
 	
 	/* US07.05.01
 	* As a claimant, I want to see the name of the approver and any comment(s) 
@@ -268,6 +269,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	*was successfully added to 
 	*a claim
 	*/
+	
+	//this test is for PART 5
+	
 	public void testCommentAddable(){
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
 		Claim claim = new Claim();

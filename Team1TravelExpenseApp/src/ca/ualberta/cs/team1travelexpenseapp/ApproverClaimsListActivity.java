@@ -41,7 +41,7 @@ public class ApproverClaimsListActivity extends Activity {
         
       //taken from https://github.com/abramhindle/student-picker and modified
 		// TODO: show approved claims and make sure the approver doesn't see their own claims
-  		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
+		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
   		claimList=ClaimListController.getSubmittedClaims();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
@@ -52,7 +52,8 @@ public class ApproverClaimsListActivity extends Activity {
 			@Override
 			public void update() {
 				claimsList.clear();
-				Collection<Claim> claims = ClaimListController.getClaimList().getClaims();
+		  		claimList=ClaimListController.getSubmittedClaims();
+				Collection<Claim> claims = claimList.getClaims();
 				claimsList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
 			}
@@ -70,6 +71,18 @@ public class ApproverClaimsListActivity extends Activity {
         });
         	
 
+	}
+	
+	@Override
+	public void onStart(){
+		super.onStart();
+		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
+  		claimList=ClaimListController.getSubmittedClaims();
+  		Collection<Claim> claims = claimList.getClaims();
+		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
+  		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
+  		claimsListView.setAdapter(claimsAdapter);
+  		
 	}
 
 	@Override
