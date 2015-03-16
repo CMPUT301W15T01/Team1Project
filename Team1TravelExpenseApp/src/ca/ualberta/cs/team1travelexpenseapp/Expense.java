@@ -22,7 +22,9 @@ public class Expense {
 	protected File receipt;
 
 	/**
-	 * Create a new Expense with a given description, date, and category.
+	 * Create a new Expense with a given description, date, and category. If all these values are
+	 * set as something the Expense will be designated as complete by setting Expense.isComplete
+	 * to true. 
 	 * @param description
 	 * The Description for the Expense as a String.
 	 * @param date
@@ -45,7 +47,8 @@ public class Expense {
 		isFlagged = false;
 		receipt = null;
 		
-		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none")){
+		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none") 
+				|| date.equals(null) ){
 			isComplete = false;
 		}
 		else {
