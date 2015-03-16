@@ -24,6 +24,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		TagListController.clearTagList();
 		Intent intent = new Intent();
 		setActivityIntent(intent);
 		activity = getActivity();
@@ -50,7 +51,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		});
 		getInstrumentation().waitForIdleSync();
 		
-		assertTrue("tags list on screen does not reflect tags added via controller",checkTags(strings));
+		assertTrue("Tags list on screen does not reflect tags added via controller",checkTags(strings));
 		
 		//get tag list item at position 1
 		final View item=tagListView.getChildAt(1);
