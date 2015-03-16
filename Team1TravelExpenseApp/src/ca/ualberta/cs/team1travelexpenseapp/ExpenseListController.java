@@ -137,10 +137,8 @@ public class ExpenseListController {
 		
 		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
 		//if not check, set complete
-		if ( !completeBox.isChecked() ) {
-			if( expense.getDescription().equals("") ) {
-					expense.setFlagged(true);
-			}
+		if ( completeBox.isChecked() ) {
+			expense.setFlagged(true);
 		}
 		updateExpense(getCurrentExpense(), expense);
 		
