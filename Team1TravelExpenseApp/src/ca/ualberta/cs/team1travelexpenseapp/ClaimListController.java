@@ -91,6 +91,7 @@ public class ClaimListController {
 	}
 	/**
 	 * Sets the current claim that is selected by user
+	 * DOES NOT UPDATE CLAIMS LIST 
 	 * @param claim The claim that is selected
 	 */
 	public static void setCurrentClaim(Claim claim){
@@ -113,7 +114,6 @@ public class ClaimListController {
 	 * @param activity 
 	 */
 	public static void onSubmitClick (final ClaimantExpenseListActivity activity) {
-		AlertDialog submitWarningDialog;
 	
 		
 		boolean expensesFlag = false;
@@ -154,8 +154,8 @@ public class ClaimListController {
 				}
 			});
 			submitBuilder.setTitle("Claim may be incomplete");
-			submitWarningDialog=submitBuilder.create();
-			submitWarningDialog.show();
+			activity.submitWarningDialog=submitBuilder.create();
+			activity.submitWarningDialog.show();
 
 		}else{
 			
