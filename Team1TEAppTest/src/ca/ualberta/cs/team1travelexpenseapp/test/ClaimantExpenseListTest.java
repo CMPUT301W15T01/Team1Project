@@ -327,38 +327,38 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	 *   further changes allowed by me to the claim information (except the tags).
 	 */
 	
-	public void testApproved(){
-		// precondition - claimant has an approved claim
-		Claim claim = DummyClaim();
-		claim.setStatus(Status.approved);
-		claim.setClaimantName("Dummy");
-		ClaimListController.setCurrentClaim(claim);
-		
-		
-		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
-		final EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
-		final EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
-
-		editName.setText("Joe");
-		editDestination.setText("Hawaii");
-		editReason.setText("Business");
-//		claim.addTag("Holiday");
+//	public void testApproved(){
+//		// precondition - claimant has an approved claim
+//		Claim claim = DummyClaim();
+//		claim.setStatus(Status.approved);
+//		claim.setClaimantName("Dummy");
+//		ClaimListController.setCurrentClaim(claim);
+//		
+//		
+//		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
+//		final EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
+//		final EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
 //
-		final Button button = (Button) activity.findViewById(R.id.saveClaimButton);
-		activity.runOnUiThread(new Runnable() {
-		    @Override
-		    public void run() {
-		      // click button and open next activity.
-		      button.performClick();
-		    }
-		});
-//		assertEquals("Claim status Approved", "Approved", claim.getStatus());
-//		assertEquals("Claim tags editable", claim.getTag(0), "Holiday");
-		assertNotSame("Claim name not editable", ClaimListController.getCurrentClaim().getClaimantName(), "Joe");
-		assertNotSame("Claim destination not editable", ClaimListController.getCurrentClaim().getDestinations(), "Hawaii");
-		assertNotSame("Claim reason not editable", ClaimListController.getCurrentClaim().getReason("Hawaii"), "Business");
-//
-	}
+//		editName.setText("Joe");
+//		editDestination.setText("Hawaii");
+//		editReason.setText("Business");
+////		claim.addTag("Holiday");
+////
+//		final Button button = (Button) activity.findViewById(R.id.saveClaimButton);
+//		activity.runOnUiThread(new Runnable() {
+//		    @Override
+//		    public void run() {
+//		      // click button and open next activity.
+//		      button.performClick();
+//		    }
+//		});
+////		assertEquals("Claim status Approved", "Approved", claim.getStatus());
+////		assertEquals("Claim tags editable", claim.getTag(0), "Holiday");
+//		assertNotSame("Claim name not editable", ClaimListController.getCurrentClaim().getClaimantName(), "Joe");
+//		assertNotSame("Claim destination not editable", ClaimListController.getCurrentClaim().getDestinations(), "Hawaii");
+//		assertNotSame("Claim reason not editable", ClaimListController.getCurrentClaim().getReason("Hawaii"), "Business");
+////
+//	}
 //	
 //	//US05.01.01: As a claimant, I want to list all the expense items for a claim, 
 //	//in order of entry, showing for each expense item: the date the expense was 
@@ -396,11 +396,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		ClaimList list = new ClaimList();
 		final Claim claim =  new Claim();
 		list.addClaim(claim);
-		ClaimListController.addClaim(claim);
 		ClaimListController.setCurrentClaim(claim);
 		
 		Expense expense = new Expense();
-		//ClaimListController.getCurrentClaim().addExpense(expense);
 		ExpenseListController.addExpense(expense);
 					
 		User checkUser = new User("approver","John");
@@ -459,7 +457,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		getInstrumentation().waitForIdleSync();
 
 		
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","comment", text.getText().toString());
 		assertNotNull(nextActivity);
