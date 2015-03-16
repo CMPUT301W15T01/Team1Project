@@ -7,6 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * 
+ * Activity providing initial 
+ *
+ */
 public class LoginActivity extends Activity {
 
 	@Override
