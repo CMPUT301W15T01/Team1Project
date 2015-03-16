@@ -3,7 +3,6 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.io.File;
 import java.io.ObjectInputStream.GetField;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -159,4 +158,5 @@ public class ExpenseListController {
 	public static void onRemoveExpenseClick() {
 		removeExpense(currentExpense);
 	}
+	
 }
