@@ -158,8 +158,8 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		
 		
 		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
-		final EditText editDestination = (EditText) activity.findViewById(R.id.claimDestinationBody);
-		final EditText editReason = (EditText) activity.findViewById(R.id.claimReasonBody);
+		final DatePicker startDatePick = (DatePicker) activity.findViewById(R.id.claimFromDate);
+		final DatePicker endDatePick = (DatePicker) activity.findViewById(R.id.claimEndDate);
 
 		
 		//editDestination.setText("Hawaii");
@@ -171,6 +171,8 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		    @Override
 		    public void run() {
 		      // click button and open next activity.
+		    startDatePick.updateDate(2015, 0, 10);
+			   endDatePick.updateDate(2015, 0, 21);
 		      editName.setText("Joe");
 		      button.performClick();
 		    }
@@ -178,12 +180,17 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		
 		getInstrumentation().waitForIdleSync();
 		
-//		assertEquals("Claim status Approved", "Approved", claim.getStatus());
-//		assertEquals("Claim tags editable", claim.getTag(0), "Holiday");
-		assertNotSame("Claim name not editable", ClaimListController.getCurrentClaim().getClaimantName(), "Joe");
-		//assertNotSame("Claim destination not editable", ClaimListController.getCurrentClaim().getDestinations(), "Hawaii");
-		//assertNotSame("Claim reason not editable", ClaimListController.getCurrentClaim().getReason("Hawaii"), "Business");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		String startdate = format.format(new Date(1993-1900,10,20));
+		String enddate = format.format(new Date(1994-1900,9,21));
 		
+		String  startDateFromClaim = format.format(ClaimListController.getCurrentClaim().getStartDate());
+		String  endDateFromClaim = format.format(ClaimListController.getCurrentClaim().getEndDate());
+		
+		
+		assertNotSame("Claim name not editable", ClaimListController.getCurrentClaim().getClaimantName(), "Joe");
+		assertFalse("Claim start date not editable",startDateFromClaim == startdate);
+		assertFalse("Claim end date not editable", endDateFromClaim == enddate);
 	}
 	
 	

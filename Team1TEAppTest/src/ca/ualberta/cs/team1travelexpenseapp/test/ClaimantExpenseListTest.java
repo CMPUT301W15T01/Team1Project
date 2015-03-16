@@ -95,13 +95,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 	}
 	
-	protected void tearDown(){
-		
-		activity.finish();
-		activity=getActivity();
-		
-		
-	}
+
 	
 	/*
 //	 *  US 7.01.01
@@ -112,12 +106,12 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //	
 
 	public void testSubmitButton(){
-
 		
 		
 		//claim
 		
-	
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		
 		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
 		activity.runOnUiThread(new Runnable(){
 
@@ -139,6 +133,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		assertTrue("claim submittied success?",
 				Status.submitted == ClaimListController.getCurrentClaim().getStatus());
 		
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
+		nextActivity.finish();
+		
 		
 	}
 	
@@ -151,6 +148,8 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	 */
 	
 	public void testSubmitWarning() {
+		
+		
 		Claim claim = new Claim();
 		claim.setComplete(false);
 		ClaimListController.setCurrentClaim(claim);
@@ -255,7 +254,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		});
 		getInstrumentation().waitForIdleSync();
 
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 500);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","John\nHI it looks good", text.getText().toString());
@@ -270,6 +269,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	*a claim
 	*/
 	public void testCommentAddable(){
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
 		Claim claim = new Claim();
 		ClaimListController.setCurrentClaim(claim);
 		User user = new User("Approver", "Geoff");
@@ -278,19 +278,19 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		claim.addComment("comment");
 		
 		final Button commentButton = (Button) activity.findViewById(R.id.viewCommentsButton);
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				commentButton.performClick();
-			}
-		});
-		getInstrumentation().waitForIdleSync();
+		
+//		activity.runOnUiThread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				commentButton.performClick();
+//			}
+//		});
+//		getInstrumentation().waitForIdleSync();
 
 		
-		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 50);
+		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
 		assertEquals("Can View Comments","comment", text.getText().toString());
 		assertNotNull(nextActivity);
