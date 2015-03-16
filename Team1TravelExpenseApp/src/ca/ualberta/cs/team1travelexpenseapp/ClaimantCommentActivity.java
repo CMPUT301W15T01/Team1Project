@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.widget.TextView;
-
+/**
+ * The view for viewing comments attached to claims as a claimant
+ * 
+ *
+ */
 public class ClaimantCommentActivity extends Activity {
 	
 	Claim claim;
