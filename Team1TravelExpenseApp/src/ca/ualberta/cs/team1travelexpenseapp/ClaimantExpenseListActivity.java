@@ -154,6 +154,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	public void onAddExpenseClick(View v) {
 		ExpenseListController.onAddExpenseClick(this);
 	}
+	
 	/**
 	 * The onClick for the submit button
 	 * Shows a warning dialog if the claim or expense is incomplete
@@ -162,59 +163,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	 */
 	public void onSubmitClick(View v) {
 		
-		boolean expensesFlag = false;
-		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
-			if(expense.isFlagged() == true){
-				expensesFlag = true;
-			}
-		}
-		
-		if(ClaimListController.getCurrentClaim().isComplete() == false || expensesFlag == true){
-			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(this);
-			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		               //Do nothing
-		        	   Claim submittedClaim = ClaimListController.getCurrentClaim();
-						submittedClaim.setStatus(Status.submitted);
-						ClaimListController.updateCurrentClaim(submittedClaim);
-		        	   
-		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-		        	   Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-		        	   //push online here
-		           }
-		    });
-			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					Toast.makeText(getApplicationContext(), "Claim was not Submitted", Toast.LENGTH_SHORT).show();
-				}
-			});
-			submitBuilder.setTitle("Claim may be incomplete");
-			submitWarningDialog=submitBuilder.create();
-			submitWarningDialog.show();
-
-		}else{
-			
-			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-				
-				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-				Claim submittedClaim = ClaimListController.getCurrentClaim();
-				submittedClaim.setStatus(Status.submitted);
-				ClaimListController.updateCurrentClaim(submittedClaim);
-				
-				Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-				//push online here
-				Intent intent =new Intent(this, ClaimantClaimsListActivity.class);
-				startActivity(intent);
-			}
-			else{
-				Toast.makeText(getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
-
-			}
-			
-		}
+		ClaimListController.onSubmitClick(this);
 		
 	}
 	
