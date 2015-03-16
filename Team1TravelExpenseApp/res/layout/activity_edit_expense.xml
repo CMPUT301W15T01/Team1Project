@@ -125,7 +125,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_below="@+id/currencySelector"
 		        android:layout_marginRight="25dp"
-		        android:text="Incomplete" />
+		        android:text="Flag as incomplete" />
 		    
 		   <TextView
 		        android:id="@+id/recieptHeader"
