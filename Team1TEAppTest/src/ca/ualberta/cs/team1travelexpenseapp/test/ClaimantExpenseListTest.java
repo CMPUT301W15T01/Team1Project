@@ -71,7 +71,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		//add a claim to test on
 
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-		ClaimListController.addClaim(claim1);	
+		//ClaimListController.addClaim(claim1);	
 		ClaimListController.setCurrentClaim(claim1);
 		
 		Intent intent = new Intent();
@@ -95,6 +95,14 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 	}
 	
+	protected void tearDown(){
+		
+		activity.finish();
+		activity=getActivity();
+		
+		
+	}
+	
 	/*
 //	 *  US 7.01.01
 //	 *  As a claimant, I want to submit an expense claim for approval, denoting 
@@ -103,7 +111,37 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //	 */
 //	
 
+	public void testSubmitButton(){
 
+		
+		
+		//claim
+		
+	
+		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
+		activity.runOnUiThread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Claim claim = DummyClaim();
+				claim.setStatus(Status.inProgress);
+				claim.setComplete(true);
+				
+				ClaimListController.setCurrentClaim(claim);
+				ClaimListController.updateCurrentClaim(claim);
+				
+				submitButton.performClick();
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+		
+		assertTrue("claim submittied success?",
+				Status.submitted == ClaimListController.getCurrentClaim().getStatus());
+		
+		
+	}
+	
 
 	/*
 	 * US 7.02.01
@@ -257,6 +295,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		assertEquals("Can View Comments","comment", text.getText().toString());
 		assertNotNull(nextActivity);
 		nextActivity.finish();
+		
 
 		
 	}
