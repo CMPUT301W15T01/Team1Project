@@ -227,6 +227,12 @@ public class ClaimListController {
 		return null;
 	}
 	
+    /**
+     * Reset the claimList to a new claimList removing all it's old contents.
+     */
+    public static void clearClaimList(){
+    	claimsList=new ClaimList();
+    }
 
 	
 	

@@ -9,7 +9,8 @@ import android.view.View;
 
 /**
  * 
- * Activity providing initial 
+ * Activity providing login screen where user can enter a user name for them self and then choose to enter either the claimant or
+ * approver mode of the application.
  *
  */
 public class LoginActivity extends Activity {
@@ -38,11 +39,20 @@ public class LoginActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	/**
+	 * Start the ApproverClaimsListActivity if the user chooses to log in as an approver.
+	 * @param v the button clicked by the user.
+	 */
 	public void approverLogin(View v) {
 		Intent intent = new Intent(LoginActivity.this,ApproverClaimsListActivity.class);
 		startActivity(intent);
 	}
 	
+	/**
+	 * Start the ClaimantClaimsListActivity if the user chooses to log in as an claimant.
+	 * @param v the button clicked by the user.
+	 */
 	public void userLogin(View v){
 		Intent intent = new Intent(LoginActivity.this,ClaimantClaimsListActivity.class);
 		startActivity(intent);

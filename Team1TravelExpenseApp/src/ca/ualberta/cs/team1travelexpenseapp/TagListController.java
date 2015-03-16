@@ -88,4 +88,11 @@ public class TagListController {
     public static void onRemoveTagClick(DialogInterface dialog, Tag tag) {
     	TagListController.removeTag(tag);
     }
+    
+    /**
+     * Reset the TagList to a new TagList removing all it's old contents.
+     */
+    public static void clearTagList(){
+    	tagList=new TagList();
+    }
 }

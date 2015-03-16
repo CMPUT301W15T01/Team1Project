@@ -5,6 +5,10 @@ import android.app.Activity;
 import android.view.Menu;
 import android.widget.TextView;
 
+/**
+ * Activity displaying a claim for an approver, approvers get this view instead of EditClaimActivity since they can't edit a claim
+ * but may need to view all the info available in the EditClaimActivity.
+ */
 public class ApproverClaimInfo extends Activity {
 	TextView info;
 		
