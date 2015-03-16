@@ -103,32 +103,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 //	 */
 //	
 
-	public void testSubmitButton(){
 
-		
-		Claim claim = DummyClaim();
-		claim.setStatus(Status.inProgress);
-		ClaimListController.setCurrentClaim(claim);
-		ClaimListController.updateCurrentClaim(claim);
-		
-		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
-		activity.runOnUiThread(new Runnable(){
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				submitButton.performClick();
-			}
-		});
-		getInstrumentation().waitForIdleSync();
-		
-		assertTrue("claim submittied success?", 
-				Status.submitted == ClaimListController.getCurrentClaim().getStatus());
-		
-		
-		
-	}
-	
 
 	/*
 	 * US 7.02.01
