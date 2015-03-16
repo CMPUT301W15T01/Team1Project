@@ -119,6 +119,14 @@ public class ExpenseListController {
 		String currencyText = String.valueOf(currencySpinner.getSelectedItem());
 		
 		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);	
+		
+		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
+		//if not check, set complete
+		if ( !completeBox.isChecked() ) {
+			if( expense.getDescription().equals("") ) {
+					expense.setFlagged(true);
+			}
+		}
 		updateExpense(getCurrentExpense(), expense);
 		
 		activity.finish();	

@@ -118,13 +118,21 @@ public class ClaimListController {
 	
 		
 		boolean expensesFlag = false;
+		boolean expensesComplete = true;
 		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
+			//flag check 
 			if(expense.isFlagged() == true){
 				expensesFlag = true;
 			}
+			//empty field check for expense 
+			if (expense.isComplete() == false ) {
+				expensesComplete = false;
+			}
 		}
 		
-		if(ClaimListController.getCurrentClaim().isComplete() == false || expensesFlag == true){
+		if(ClaimListController.getCurrentClaim().isComplete() == false 
+				|| expensesFlag == true || expensesComplete == false){
+			
 			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(activity);
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
