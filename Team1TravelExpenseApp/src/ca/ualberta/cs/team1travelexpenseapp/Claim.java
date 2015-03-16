@@ -58,7 +58,10 @@ public class Claim {
 		expenseList           = new ExpenseList();
 	}
 
-	/** set claimant name, start and end date, all other attributes are initializes to new instances **/
+	/** set claimant name, start and end date, all other attributes are initializes to new instances 
+	 * @param cName - a string
+	 * @param sDate - a Date
+	 * @param eDate - a Date **/
 	public Claim(String cName, Date sDate, Date eDate) {
 		claimantName = cName;
 		startDate = sDate;
@@ -75,20 +78,40 @@ public class Claim {
 	}
 
 
+	/** 	 
+	 * returns a exenepseList object that contains 
+	 * list of expenses for the claim 
+	 * @param 
+	 * @return ExpenseList object **/
 	public ExpenseList getExpenseList() {
 		return expenseList;
 	}
 
+	
+	/** 
+	 * sets the claim's expense list object to a given expenseList
+	 * @param expenseList
+	 */
 	public void setExpenseList(ExpenseList expenseList) {
 		this.expenseList = expenseList;
 	}
 	
-	//if destination already exist, new reason will write over old reason 
-	//else new destination will reason will be added to the Map 
+	/**
+	 * adds a destination, with a reason to the claim 
+	 * if destination already exist, new reason will write over old reason 
+	else new destination will reason will be added to the Map 
+	 * @param destination - a string
+	 * @param reason - a string 
+	 */
 	public void addDestination(String destination, String reason) {
 			destinationReasonList.put(destination, reason);
 	}
 	
+	/**
+	 * 
+	 * @param destination - a string 
+	 * @return
+	 */
 	public String getReason(String destination) {
 		return destinationReasonList.get(destination);
 	}

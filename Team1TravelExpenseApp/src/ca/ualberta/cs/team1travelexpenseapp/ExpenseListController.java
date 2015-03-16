@@ -121,10 +121,16 @@ public class ExpenseListController {
 		
 
 		Expense expense = new Expense(descriptionText, date, categoryText, amountValue, currencyText);
+		
+		
 		CheckBox completeBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
 		//if not check, set complete 
 		if ( !completeBox.isChecked() ) {
+			if(expense.getDescription().equals("") || expense.getCurrency().equals("0.00") || expense.getCategory().equals("none") ){
+				expense.setComplete(false);
+			} else {
 			expense.setComplete(true);
+			}
 		}
 		
 		updateExpense(getCurrentExpense(), expense);
