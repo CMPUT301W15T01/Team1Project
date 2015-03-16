@@ -86,22 +86,36 @@ public class ApproverExpenseListActivity extends Activity {
 	}
 	
 	/**
-	 * 
-	 * @param v
+	 * Call the onApproveClick function in ClaimListController
+	 * @param v The button clicked by the user.
 	 */
 	public void onApproveClick(View v) {
 		ClaimListController.onApproveClick();
 		finish();
 	}
 	
+	/**
+	 * Call the onReturnClick function in ClaimListController.
+	 * @param v The button clicked by the user.
+	 */
 	public void onReturnClick(View v) {
 		ClaimListController.onReturnClick();
 		finish();
 	}
+	
+	/**
+	 * On info click open the ApproverClaimInfo Activity.
+	 * @param v The button clicked by the user.
+	 */
 	public void onInfoClick(View v) {
 		Intent intent = new Intent(this,ApproverClaimInfo.class);
 		startActivity(intent);
 	}
+	
+	/**
+	 * On comment click show a dialog to allow the user to enter a comment.
+	 * @param v The button clicked by the user.
+	 */
 	public void onCommentClick(View v) {
 		
 		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog (March 15, 2015)

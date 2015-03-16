@@ -39,6 +39,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+/**
+ * Displays the claimant's list of claims and allows them to be clicked to view the underlying 
+ * expenses. Items in the list can also be long clicked to open a dialog to choose to delete or 
+ * edit the info of the claim.
+ *
+ */
 public class ClaimantClaimsListActivity extends Activity {
 	
 	private ClaimList claimList;
@@ -164,15 +170,26 @@ public class ClaimantClaimsListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Call the onAddClaimClick function in the ClaimListController
+	 * @param v The button clicked by the user.
+	 */
 	public void onAddClaimClick(View v) {
 		ClaimListController.onAddClaimClick(this);
 	}
 	
+	/**
+	 * Open the TagManagerActivity to allow the user to add, edit and delete available Tags.
+	 * @param v The button clicked by the user.
+	 */
 	public void onManageTagsClick(View v){
 		Intent intent= new Intent(this, TagManagerActivity.class);
 		startActivity(intent);
 	}
 	
+	/**
+	 * On destroy remove the listener from the claimList so it does not continue notifying it.
+	 */
 	public void onDestroy(){
 		super.onDestroy();
 		claimList.removeListener(listener);
