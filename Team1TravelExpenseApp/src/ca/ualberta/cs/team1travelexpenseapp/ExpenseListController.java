@@ -84,7 +84,7 @@ public class ExpenseListController {
 		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
 				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
 			
-			if(newExpense.getAmount().intValue() == 0){
+			if(newExpense.getAmount().floatValue() == 0){
 				newExpense.setCurrency("");
 			}
 			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
