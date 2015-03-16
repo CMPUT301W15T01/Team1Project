@@ -39,7 +39,7 @@ public class ApproverClaimsListActivity extends Activity {
 		//claim status, total currency amounts, and any approver name.
 
         
-      //taken from https://github.com/abramhindle/student-picker (March 15 2015) and modified
+      //taken from https://github.com/abramhindle/student-picker (March 15, 2015) and modified
 		// TODO: show approved claims and make sure the approver doesn't see their own claims
   		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
   		claimList=ClaimListController.getSubmittedClaims();
