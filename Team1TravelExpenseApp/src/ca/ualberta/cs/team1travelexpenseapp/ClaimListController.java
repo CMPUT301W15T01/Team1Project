@@ -7,11 +7,15 @@ import java.util.Map;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * The controller allowing modifications from the ui to change the claims and claims lists
@@ -100,6 +104,77 @@ public class ClaimListController {
 		ArrayList<Claim> claims=claimsList.getClaims();
 		claims.remove(claim);
 		claimsList.setClaimList(claims);
+	}
+	
+	/**
+	 * The onClick for the submit button
+	 * Shows a warning dialog if the claim or expense is incomplete
+	 * Redirects to the function within the ClaimListController
+	 * @param activity 
+	 */
+	public static void onSubmitClick (final ClaimantExpenseListActivity activity) {
+		AlertDialog submitWarningDialog;
+	
+		
+		boolean expensesFlag = false;
+		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
+			if(expense.isFlagged() == true){
+				expensesFlag = true;
+			}
+		}
+		
+		if(ClaimListController.getCurrentClaim().isComplete() == false || expensesFlag == true){
+			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(activity);
+			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		               //Do nothing
+		        	   Claim submittedClaim = ClaimListController.getCurrentClaim();
+						submittedClaim.setStatus(Status.submitted);
+						ClaimListController.updateCurrentClaim(submittedClaim);
+		        	   
+		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+		        	   Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
+		        	   //push online here
+		           }
+		    });
+			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					Toast.makeText(activity.getApplicationContext(), "Claim was not Submitted", Toast.LENGTH_SHORT).show();
+				}
+			});
+			submitBuilder.setTitle("Claim may be incomplete");
+			submitWarningDialog=submitBuilder.create();
+			submitWarningDialog.show();
+
+		}else{
+			
+			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+				
+				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+				Claim submittedClaim = ClaimListController.getCurrentClaim();
+				submittedClaim.setStatus(Status.submitted);
+				ClaimListController.updateCurrentClaim(submittedClaim);
+				
+				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
+				//push online here
+				Intent intent = new Intent(activity, ClaimantClaimsListActivity.class);
+				activity.startActivity(intent);
+			}
+			else{
+				Toast.makeText(activity.getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
+
+			}
+			
+		}
+		
+		
+		
+		
+		
+		
 	}
 	
 	/**
@@ -301,7 +376,5 @@ public class ClaimListController {
     public static void clearClaimList(){
     	claimsList=new ClaimList();
     }
-
-	
 	
 }
