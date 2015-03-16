@@ -64,8 +64,10 @@ public class EditClaimActivity extends Activity {
 			reasonET.setFocusable(false);
 			DatePicker dateStartPick = (DatePicker) findViewById(R.id.claimFromDate);
 			dateStartPick.setFocusable(false);
+			dateStartPick.setClickable(false);
 			DatePicker dateEndPick = (DatePicker) findViewById(R.id.claimEndDate);
 			dateEndPick.setFocusable(false);
+			dateEndPick.setClickable(false);
 			Button addDestBT = (Button) findViewById(R.id.addDestinationButton);
 			addDestBT.setFocusable(false);
 			
