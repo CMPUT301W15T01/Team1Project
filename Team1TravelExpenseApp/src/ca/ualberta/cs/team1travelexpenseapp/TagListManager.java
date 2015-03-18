@@ -14,7 +14,17 @@ limitations under the License.
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
 
@@ -25,6 +35,7 @@ import android.content.Context;
  */
 public class TagListManager {
 	private TagList tagList;
+	private Context context;
 	
 	/**
 	 * Initialize with the tagList to be managed.
@@ -35,18 +46,58 @@ public class TagListManager {
 	}
 	
 	/**
-	 * saveTags to disk (and if possible to web server). (not yet implemented)
+	 * save Tags to disk (and if possible to web server). (not yet implemented)
 	 */
 	public void saveTags(){
-		
+		Gson gson = new Gson();
+		String saveFile=ClaimListController.getUser().getName()+"_tags"+".sav";
+		try {
+			FileOutputStream fos = context.openFileOutput(saveFile, 0);
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			gson.toJson(tagList.getTags(), osw);
+			osw.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * load Tags from disk (and if possible sync tags with web server). (not yet implemented)
 	 * @return Loaded tag list
 	 */
-	public ArrayList<Tag> loadTags(){
-		return null;
+	public void loadTags(){
+		Gson gson = new Gson();
+		ArrayList<Tag> tags=new ArrayList <Tag>();
+		String saveFile=ClaimListController.getUser().getName()+"_tags"+".sav";
+		try {
+			FileInputStream fis = context.openFileInput(saveFile);
+			InputStreamReader in =new InputStreamReader(fis);
+			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
+			Type typeOfT = new TypeToken<ArrayList<Tag>>(){}.getType();
+			tags = gson.fromJson(in, typeOfT);
+			fis.close();
+
+		} catch (FileNotFoundException e) {
+			//if we can't find the save file create a new one and start the TagList fresh
+			tagList.setTagList(new ArrayList<Tag>());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tagList.setTagList(tags);
 		
+	}
+	
+	/**
+	 * Context must be set to save/load from file
+	 * @param context
+	 */
+	public void setContext(Context context){
+		this.context=context;
 	}
 }
