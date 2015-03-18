@@ -105,7 +105,7 @@ public class ClaimList {
 	 * @param tags ArrayList of tags to filter by.
 	 */
 	public void filterByTags(ArrayList<Tag> tags) {
-		manager.saveClaims();
+		//to do
 	}
 	
 	/**
