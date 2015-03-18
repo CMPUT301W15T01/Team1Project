@@ -87,6 +87,8 @@ public class LoginActivity extends Activity {
 		ClaimListController.setUser(currentUser);
 		TagListController.getTagList().getManager().setContext(getApplicationContext());
 		TagListController.getTagList().loadTags();
+		ClaimListController.getClaimList().getManager().setContext(getApplicationContext());
+		ClaimListController.getClaimList().loadClaims();
 		startActivity(intent);
 	}
 }

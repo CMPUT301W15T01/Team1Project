@@ -90,7 +90,7 @@ public class ClaimList {
 	 * Save the claim list to disk (and to the web server if possible) (not currently implemented)
 	 */
 	public void saveClaims() {
-		//to do 
+		manager.saveClaims();
 	}
 	
 	/**

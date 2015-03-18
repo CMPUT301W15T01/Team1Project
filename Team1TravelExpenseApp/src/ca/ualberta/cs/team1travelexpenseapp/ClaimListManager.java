@@ -31,7 +31,7 @@ public class ClaimListManager {
 	 */
 	public void saveClaims(){
 		Gson gson = new Gson();
-		String saveFile=ClaimListController.getUser().getName()+"_tags"+".sav";
+		String saveFile=ClaimListController.getUser().getName()+"_claims"+".sav";
 		try {
 			FileOutputStream fos = context.openFileOutput(saveFile, 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -48,8 +48,8 @@ public class ClaimListManager {
 	}
 	
 	/**
-	 * load Claims from disk (and if possible sync tags with web server). (not yet implemented)
-	 * @return Loaded tag list
+	 * load Claims from disk (and if possible sync claims with web server). (not yet implemented)
+	 * @return Loaded claim list
 	 */
 	public void loadClaims(){
 		Gson gson = new Gson();
