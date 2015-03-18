@@ -332,14 +332,6 @@ public class ClaimListController {
 		return submittedclaims;
 	}
 	/**
-	 * clears the claims list
-	 */
-	public static void clearClaims() {
-		claimsList = null;
-		getClaimList();
-		
-	}
-	/**
 	 * The onClick method for deleting a claim
 	 */
 	public static void onRemoveClaimClick() {

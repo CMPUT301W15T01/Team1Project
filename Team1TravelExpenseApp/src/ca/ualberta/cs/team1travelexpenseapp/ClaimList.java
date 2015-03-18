@@ -29,6 +29,7 @@ import android.view.View;
 public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
+	private ClaimListManager manager;
 	private ArrayList<Listener> listeners;
 	
 	/**
@@ -38,6 +39,7 @@ public class ClaimList {
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
 		listeners = new ArrayList<Listener>();
+		manager=new ClaimListManager(this);
 	}
 	
 	/**
@@ -71,6 +73,7 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		currentClaim.setStatus(newClaim.getStatus());
+		saveClaims();
 		notifyListeners();
 	}
 	
@@ -86,8 +89,15 @@ public class ClaimList {
 	/**
 	 * Save the claim list to disk (and to the web server if possible) (not currently implemented)
 	 */
-	public void saveClaimList() {
+	public void saveClaims() {
 		//to do 
+	}
+	
+	/**
+	 * Load the claim list from disk (and to the web server if possible) (not currently implemented)
+	 */
+	public void loadClaims() {
+		manager.loadClaims();
 	}
 	
 	/**
@@ -95,7 +105,7 @@ public class ClaimList {
 	 * @param tags ArrayList of tags to filter by.
 	 */
 	public void filterByTags(ArrayList<Tag> tags) {
-		//to-do
+		manager.saveClaims();
 	}
 	
 	/**
@@ -121,6 +131,7 @@ public class ClaimList {
 	 */
 	public void setClaimList(ArrayList<Claim> claims) {
 		this.claimList = claims;
+		saveClaims();
 		notifyListeners();
 	}
 	
@@ -164,6 +175,10 @@ public class ClaimList {
 	public Claim get(int i) {
 		// TODO Auto-generated method stub
 		return claimList.get(i);
+	}
+
+	public ClaimListManager getManager() {
+		return this.manager;
 	}
 	
 }

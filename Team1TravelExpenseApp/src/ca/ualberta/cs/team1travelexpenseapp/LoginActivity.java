@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 /**
  * 
@@ -61,6 +62,15 @@ public class LoginActivity extends Activity {
 	 */
 	public void approverLogin(View v) {
 		Intent intent = new Intent(LoginActivity.this,ApproverClaimsListActivity.class);
+		EditText userNameField = (EditText) findViewById(R.id.userNameField);
+		String currentUserName=userNameField.getText().toString();
+		if(currentUserName.equals("")) currentUserName="Guest";
+		User currentUser=new User("Approver", currentUserName);
+		ClaimListController.setUser(currentUser);
+		TagListController.getTagList().getManager().setContext(getApplicationContext());
+		TagListController.getTagList().loadTags();
+		ClaimListController.getClaimList().getManager().setContext(getApplicationContext());
+		ClaimListController.getClaimList().loadClaims();
 		startActivity(intent);
 	}
 	
@@ -70,6 +80,13 @@ public class LoginActivity extends Activity {
 	 */
 	public void userLogin(View v){
 		Intent intent = new Intent(LoginActivity.this,ClaimantClaimsListActivity.class);
+		EditText userNameField = (EditText) findViewById(R.id.userNameField);
+		String currentUserName=userNameField.getText().toString();
+		if(currentUserName.equals("")) currentUserName="Guest";
+		User currentUser=new User("Claimant", currentUserName);
+		ClaimListController.setUser(currentUser);
+		TagListController.getTagList().getManager().setContext(getApplicationContext());
+		TagListController.getTagList().loadTags();
 		startActivity(intent);
 	}
 }
