@@ -50,7 +50,7 @@ public class TagListManager {
 	 */
 	public void saveTags(){
 		Gson gson = new Gson();
-		String saveFile=ClaimListController.getUser().getName()+"_tags"+".sav";
+		String saveFile="tags.sav";
 		try {
 			FileOutputStream fos = context.openFileOutput(saveFile, 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -73,7 +73,7 @@ public class TagListManager {
 	public void loadTags(){
 		Gson gson = new Gson();
 		ArrayList<Tag> tags=new ArrayList <Tag>();
-		String saveFile=ClaimListController.getUser().getName()+"_tags"+".sav";
+		String saveFile="tags.sav";
 		try {
 			FileInputStream fis = context.openFileInput(saveFile);
 			InputStreamReader in =new InputStreamReader(fis);
