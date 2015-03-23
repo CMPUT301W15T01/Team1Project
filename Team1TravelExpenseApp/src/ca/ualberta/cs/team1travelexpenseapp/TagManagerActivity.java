@@ -16,7 +16,6 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -31,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 /**
  * View for managing the application's list of tags.
@@ -87,7 +87,11 @@ public class TagManagerActivity extends Activity {
 						 editTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
 						 editTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   TagListController.onSetTagClick(dialog, tag);
+					        	   boolean tagChanged=TagListController.onSetTagClick(dialog, tag);
+					        	   if(!tagChanged){
+					            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that "
+					            	   		+ "name exists (not modified)",Toast.LENGTH_LONG).show();
+					               }
 					           }
 					       });
 						editTagDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
@@ -116,7 +120,11 @@ public class TagManagerActivity extends Activity {
 		
 		newTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               TagListController.onAddTagClick(dialog);
+	               boolean tagAdded=TagListController.onAddTagClick(dialog);
+	               if(!tagAdded){
+	            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that name exists (not added)",
+	            			   Toast.LENGTH_LONG).show();
+	               }
 	           }
 	       });
 		newTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {

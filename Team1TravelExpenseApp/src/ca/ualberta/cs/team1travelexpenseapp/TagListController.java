@@ -75,10 +75,16 @@ public class TagListController {
 	 * Grabs the string entered by the user and creates a new tag by that name in the TagList.
 	 * @param dialog The Dialog in which the add tag button resides
 	 */
-    public static void onAddTagClick(DialogInterface dialog) {
+    public static boolean onAddTagClick(DialogInterface dialog) {
         EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
+        if(getTagList().hasTagNamed(name)){
+        	return false;
+        }
+        else{
         TagListController.addTag(new Tag(name));
+        return true;
+        }
     }
     
     /**
@@ -87,10 +93,16 @@ public class TagListController {
      * @param dialog The Dialog in which the set tag button resides
      * @param tag The Tag to be modified
      */
-    public static void onSetTagClick(DialogInterface dialog, Tag tag) {
+    public static boolean onSetTagClick(DialogInterface dialog, Tag tag) {
  	   	EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
-        TagListController.updateTag(tag, name);;
+        if(getTagList().hasTagNamed(name)){
+        	return false;
+        }
+        else{
+        TagListController.updateTag(tag, name);
+        return true;
+        }
     }
 
     /**

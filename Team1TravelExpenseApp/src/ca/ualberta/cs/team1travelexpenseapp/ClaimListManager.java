@@ -31,7 +31,7 @@ public class ClaimListManager {
 	 */
 	public void saveClaims(){
 		Gson gson = new Gson();
-		String saveFile="claims.sav";
+		String saveFile=ClaimListController.getUser().getName()+"_claims.sav";
 		try {
 			FileOutputStream fos = context.openFileOutput(saveFile, 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -54,7 +54,7 @@ public class ClaimListManager {
 	public void loadClaims(){
 		Gson gson = new Gson();
 		ArrayList<Claim> claims=new ArrayList <Claim>();
-		String saveFile="claims.sav";
+		String saveFile=ClaimListController.getUser().getName()+"_claims.sav";
 		try {
 			FileInputStream fis = context.openFileInput(saveFile);
 			InputStreamReader in =new InputStreamReader(fis);
