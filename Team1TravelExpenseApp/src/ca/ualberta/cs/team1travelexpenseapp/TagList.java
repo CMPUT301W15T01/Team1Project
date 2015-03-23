@@ -81,6 +81,20 @@ public class TagList {
 	}
 	
 	/**
+	 * Check whether a tag with a given name exists in the TagList.
+	 * @param name A String corresponding to the name of the Tag to check for.
+	 * @return
+	 */
+	public boolean hasTagNamed(String name){
+		for (Tag tag : getTags()){
+			if(tag.getName().equals(name)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Save the stored tagList to disk/the web server (not yet implemented).
 	 */
 	public void saveTags(){
