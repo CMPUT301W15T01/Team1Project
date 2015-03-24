@@ -199,7 +199,7 @@ public class Expense {
 	 */
 	public File getReceipt() {
 		//Stub
-		return null;
+		return this.receipt;
 	}
 	
 	/**
@@ -248,13 +248,15 @@ public class Expense {
 			str += "\n" + getAmount() + getCurrency();
 		}
 		if ( receipt != null) {
-			str += "\nHas Photo";
+			str += "\nPhoto: Yes";
+		} else {
+			str += "\nPhoto: No";
 		}
 		if ( !isComplete()) {
-			str += "\nincomplete";
+			str += "\nMISSING FIELDS";
 		}
 		if (isFlagged()){
-			str += "\nflagged";
+			str += "\nFlagged as incomplete";
 		}
 
 
@@ -271,5 +273,7 @@ public class Expense {
 	public static void compressPhoto(EditExpenseActivity activity,
 			File photoFile) {
 		// TODO Compress photofile
+		
+		
 	}
 }
