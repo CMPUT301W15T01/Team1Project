@@ -82,8 +82,8 @@ public class ApproverClaimsListActivity extends Activity {
         
         
         claimsListView.setOnItemClickListener(new OnItemClickListener(){
-        	public void onItemClick( AdapterView Parent, View v, int position, long id){
-        		ClaimListController.setCurrentClaim(ClaimListController.getClaimList().getClaim(position));
+        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
+        		ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ApproverExpenseListActivity.class);	
         		startActivity(intent);
         	}

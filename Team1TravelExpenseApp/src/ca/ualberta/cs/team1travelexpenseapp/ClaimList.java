@@ -87,7 +87,6 @@ public class ClaimList {
 	 * @return The claim at the given index.
 	 */
 	public Claim getClaim(int index) {
-		Collections.sort(claimList);
 		return claimList.get(index);
 	}
 	
