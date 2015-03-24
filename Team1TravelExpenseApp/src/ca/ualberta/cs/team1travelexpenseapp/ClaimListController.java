@@ -400,5 +400,9 @@ public class ClaimListController {
     public static void clearClaimList(){
     	claimsList=new ClaimList();
     }
+	public static String getUserType() {
+		// TODO Auto-generated method stub
+		return user.type();
+	}
 	
 }

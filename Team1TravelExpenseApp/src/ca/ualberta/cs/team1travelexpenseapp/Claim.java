@@ -378,11 +378,15 @@ public class Claim implements Comparable<Claim>{
 	//https://docs.oracle.com/javase/tutorial/collections/interfaces/order.html 03/24/15 
 	/**
 	 * override comapreTo method so that claims will be sorted by largest to smallest date 
+	 * for a Claimant user and oldest to newest for an Approver user. Note only two types of users exists.
 	 * use Collections.sort(ArrayList<Claim> Object); to sort Object. 
 	 */
 	@Override
 	public int compareTo( Claim claim ) {
-		return claim.startDate.compareTo(this.startDate);
+		if (ClaimListController.getUserType().equals("Claimant")) {
+			return claim.startDate.compareTo(this.startDate);
+		}
+		return this.startDate.compareTo(claim.startDate);
 	}
 	
 }
