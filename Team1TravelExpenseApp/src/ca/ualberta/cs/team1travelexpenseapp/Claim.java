@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
@@ -39,7 +40,7 @@ import android.widget.Toast;
  * Model of a Claim used to edit a list of expenses, claimant name, start and end date, destination & reason list, Tag list for the claim,
  * completeness, list of approvers for the claim, a list of comments, listeners for the views that will use this model, and the status
  * **/
-public class Claim { 
+public class Claim implements Comparable<Claim>{ 
 	
 	/** enum class Status public to access values of enum **/
 	public enum Status {
@@ -90,8 +91,8 @@ public class Claim {
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
 	}
-
-
+	
+	
 	/** 	 
 	 * returns a exenepseList object that contains 
 	 * list of expenses for the claim 
@@ -373,5 +374,15 @@ public class Claim {
 		
 	}
 
+	//sorting
+	//https://docs.oracle.com/javase/tutorial/collections/interfaces/order.html 03/24/15 
+	/**
+	 * override comapreTo method so that claims will be sorted by largest to smallest date 
+	 * use Collections.sort(ArrayList<Claim> Object); to sort Object. 
+	 */
+	@Override
+	public int compareTo( Claim claim ) {
+		return claim.startDate.compareTo(this.startDate);
+	}
 	
 }

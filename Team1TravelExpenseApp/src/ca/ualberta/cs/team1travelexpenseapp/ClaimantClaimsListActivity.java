@@ -18,6 +18,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 
@@ -71,6 +73,9 @@ public class ClaimantClaimsListActivity extends Activity {
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
+
+		
+		
   		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
   		mainListView.setAdapter(claimsAdapter);
   		
