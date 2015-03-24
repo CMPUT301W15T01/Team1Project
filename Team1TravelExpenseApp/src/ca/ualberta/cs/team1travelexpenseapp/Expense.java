@@ -199,7 +199,7 @@ public class Expense {
 	 */
 	public File getReceipt() {
 		//Stub
-		return null;
+		return this.receipt;
 	}
 	
 	/**
@@ -273,5 +273,7 @@ public class Expense {
 	public static void compressPhoto(EditExpenseActivity activity,
 			File photoFile) {
 		// TODO Compress photofile
+		
+		
 	}
 }
