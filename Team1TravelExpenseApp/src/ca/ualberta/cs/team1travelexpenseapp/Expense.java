@@ -248,13 +248,15 @@ public class Expense {
 			str += "\n" + getAmount() + getCurrency();
 		}
 		if ( receipt != null) {
-			str += "\nHas Photo";
+			str += "\nPhoto: Yes";
+		} else {
+			str += "\nPhoto: No";
 		}
 		if ( !isComplete()) {
-			str += "\nincomplete";
+			str += "\nMISSING FIELDS";
 		}
 		if (isFlagged()){
-			str += "\nflagged";
+			str += "\nFlagged as incomplete";
 		}
 
 

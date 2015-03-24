@@ -43,6 +43,11 @@ public class ClaimListController {
 	 * The apps main list of claims
 	 */
 	protected static ClaimList claimsList = null;
+	
+	/**
+	 * all claims in the system 
+	 */
+	protected static ClaimList allClaims = null;
 	/**
 	 * The list of claims that are to be displayed in a view
 	 */
@@ -65,6 +70,17 @@ public class ClaimListController {
 		}
 		
 		return claimsList;
+	}
+	/**
+	 * Gets the all claims list
+	 * @return returns the all claims list
+	 */
+	public static ClaimList getAllClaimList() { 
+		if (allClaims == null) {
+			allClaims = new ClaimList();
+		}
+		
+		return allClaims;
 	}
 	/**
 	 * Gets the displayed claims list
@@ -311,6 +327,8 @@ public class ClaimListController {
 		ArrayList<Claim> claimArray=getClaimList().getClaims();
 		setCurrentClaim(claim);
 		claimArray.add(claim);
+		getAllClaimList();
+		allClaims.addClaim(claim);
 		//displays an empty claim in claim list 
 		claimsList.setClaimList(claimArray);
 		
@@ -323,12 +341,13 @@ public class ClaimListController {
 		// TODO Auto-generated method stub
 		ClaimList submittedclaims = new ClaimList();
 		
-		for (Claim item: getClaimList().getClaims()) {
+		for (Claim item: getAllClaimList().getClaims()) {
 			
 			if ((item.status.equals(Claim.Status.submitted))) {
 				submittedclaims.addClaim(item);
 			}
 		}
+		//claimsList.setClaimList(submittedclaims.getClaims());
 		return submittedclaims;
 	}
 	/**
@@ -340,6 +359,7 @@ public class ClaimListController {
 		
 			ArrayList<Claim> claims = getClaimList().getClaims();
 			claims.remove(currentClaim);
+			allClaims.getClaims().remove(currentClaim);
 			claimsList.setClaimList(claims);
 		}
 		
@@ -400,5 +420,9 @@ public class ClaimListController {
     public static void clearClaimList(){
     	claimsList=new ClaimList();
     }
+	public static String getUserType() {
+		// TODO Auto-generated method stub
+		return user.type();
+	}
 	
 }

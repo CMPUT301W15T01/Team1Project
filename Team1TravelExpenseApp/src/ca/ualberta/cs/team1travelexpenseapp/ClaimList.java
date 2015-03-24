@@ -16,6 +16,8 @@ limitations under the License.
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.app.Activity;
 import android.view.View;
@@ -47,6 +49,7 @@ public class ClaimList {
 	 * @return The underlying ArrayList of Claims.
 	 */
 	public ArrayList<Claim> getClaims() {
+		Collections.sort(claimList);
 		return claimList;
 	}
 	
@@ -56,6 +59,7 @@ public class ClaimList {
 	 */
 	public void addClaim(Claim claim) {
 		claimList.add(claim);
+		Collections.sort(claimList);
 	}
 	
 	/**
@@ -131,6 +135,7 @@ public class ClaimList {
 	 */
 	public void setClaimList(ArrayList<Claim> claims) {
 		this.claimList = claims;
+		Collections.sort(claimList);
 		saveClaims();
 		notifyListeners();
 	}
