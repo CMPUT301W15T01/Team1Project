@@ -92,7 +92,6 @@ public class MultiSelectionSpinner extends Spinner implements
 	public void onDismiss(DialogInterface dialog) {
 		// TODO Auto-generated method stub
 		Activity a = ClaimantClaimsListActivity.activity;
-		Log.d("HEY", "You made it");
 		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) a.findViewById(R.id.claimFilterSpinner);
 		ListView mainListView = (ListView) a.findViewById(R.id.claimsList);
 		ArrayList<Claim> displayList;
