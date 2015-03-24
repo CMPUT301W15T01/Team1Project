@@ -57,7 +57,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
-				ClaimListController.clearClaims();
+				ClaimListController.clearClaimList();
 			}
 		});
 		instrumentation.waitForIdleSync();

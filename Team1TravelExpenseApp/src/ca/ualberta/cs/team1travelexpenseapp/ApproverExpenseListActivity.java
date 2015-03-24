@@ -1,3 +1,17 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
@@ -72,22 +86,36 @@ public class ApproverExpenseListActivity extends Activity {
 	}
 	
 	/**
-	 * 
-	 * @param v
+	 * Call the onApproveClick function in ClaimListController
+	 * @param v The button clicked by the user.
 	 */
 	public void onApproveClick(View v) {
 		ClaimListController.onApproveClick();
 		finish();
 	}
 	
+	/**
+	 * Call the onReturnClick function in ClaimListController.
+	 * @param v The button clicked by the user.
+	 */
 	public void onReturnClick(View v) {
 		ClaimListController.onReturnClick();
 		finish();
 	}
+	
+	/**
+	 * On info click open the ApproverClaimInfo Activity.
+	 * @param v The button clicked by the user.
+	 */
 	public void onInfoClick(View v) {
 		Intent intent = new Intent(this,ApproverClaimInfo.class);
 		startActivity(intent);
 	}
+	
+	/**
+	 * On comment click show a dialog to allow the user to enter a comment.
+	 * @param v The button clicked by the user.
+	 */
 	public void onCommentClick(View v) {
 		
 		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog (March 15, 2015)

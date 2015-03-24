@@ -1,3 +1,17 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.math.BigDecimal;
@@ -116,86 +130,170 @@ public class Claim {
 		return destinationReasonList.get(destination);
 	}
 	
+	/**
+	 * Returns a HashMap with destinations as keys and reasons as values.
+	 * @return HashMap of destinations (String) mapped to reasons (String).
+	 */
 	public HashMap<String, String> getDestinationReasonList() {
 		return destinationReasonList;
 	}
 	
+	/**
+	 * Return the number of destinations in the Claim.
+	 * @return int corresponding to number of destinations in Claim.
+	 */
 	private int getDestinationCount() {
 		return destinationReasonList.size();
 	}
 	
+	/**
+	 * Return the set of destinations for the Claim.
+	 * @return Set of destinations (Strings) in claim
+	 */
 	public Set<String>  getDestinations() {
 		return destinationReasonList.keySet();
 	}
 	
+	/**
+	 * Set the claimantName for the Claim.
+	 * @param name The name of the claimant for the Claim.
+	 */
 	public void setClaimantName(String name) {
 		claimantName = name;
 	}
 
+	/**
+	 * Get the claimantName for the Claim.
+	 * @return name The name of the claimant for the Claim.
+	 */
 	public String getClaimantName() {
 		return claimantName;
 	}
 
+	/**
+	 * Get the ArrayList of Tags claimTagList for the claim.
+	 * @return ArrayList of Tags containing the tags set for the claim.
+	 */
 	public ArrayList<Tag> getClaimTagList() {
 		return claimTagList;
 	}
 	
+	/**
+	 * Get the number of tags in the claim.
+	 * @return int corresponding the number of tags set for the claim.
+	 */
 	private int getTagCount() {
 		return claimTagList.size();
 	}
 
+	/**
+	 * Set the TagList for the claim
+	 * @param claimTagList The TagList containing the new tags to be set for the claim.
+	 */
 	public void setClaimTagList(ArrayList<Tag> claimTagList) {
 		this.claimTagList = claimTagList;
 	}
 
+	/**
+	 * Get the status (inProgress, submitted, approved, returned) for the claim.
+	 * @return Status for the claim.
+	 */
 	public Status getStatus() {
 		return status;
 	}
 
+	/**
+	 * Set the status (inProgress, submitted, approved, returned) for the claim.
+	 * @param status enum Status to be set as claim status.
+	 */
 	public void setStatus(Status status) {
 		this.status = status;
 	}
 
+	/**
+	 * Return a boolean indicating whether the claim is "complete".
+	 * @return boolean indicating whether claim is complete.
+	 */
 	public boolean isComplete() {
 		return isComplete;
 	}
 
+	/**
+	 * Set the completeness of the claim.
+	 * @param isComplete true or false, is the claim complete?
+	 */
 	public void setComplete(boolean isComplete) {
 		this.isComplete = isComplete;
 	}
 
+	/**
+	 * Get the list of approvers for the current Claim
+	 * @return ArrayList of Users corresponding to the approvers who have returned or approved the claim
+	 */
 	public ArrayList<User> getApproverList() {
 		return approverList;
 	}
 
+	/**
+	 * Set the list of approvers for the current Claim
+	 * @param approverList ArrayList of Users corresponding to the approvers who have returned or approved the claim
+	 */
 	public void setApproverList(ArrayList<User> approverList) {
 		this.approverList = approverList;
 	}
 
+	/**
+	 * Get a Map mapping approvers of the claim to any comments they may have left.
+	 * @return Map from approver name (String) to that approver's comments (String).
+	 */
 	public Map<String, String> getCommentList() {
 		return commentList;
 	}
 	
+	/**
+	 * Add a comment to the claim from the current User.
+	 * @param comment String to be added as comment.
+	 */
 	public void addComment(String comment) {
 		commentList.put(ClaimListController.getUser().getName(), comment);
 	}
 
+	/**
+	 * Return the startDate for the Claim.
+	 * @return startDate (Date) of the Claim.
+	 */
 	public Date getStartDate() {
 		return startDate;
 	}
 	
+	/**
+	 * Set the startDate of the Claim.
+	 * @param date startDate to be set for the current Claim.
+	 */
 	public void setStartDate(Date date) {
 		startDate = date;
 	}
 	
+	/**
+	 * Return the endDate for the Claim.
+	 * @return endDate (Date) of the Claim.
+	 */
 	public Date getEndDate() {
 		return endDate;
 	}
 	
+	/**
+	 * Set the endDate of the Claim.
+	 * @param date endDate to be set for the current Claim.
+	 */
 	public void setEndDate(Date date) {
 		endDate = date;
 	}
 	
+	/**
+	 * Return a map from currency types (String) to amounts (BigDecimal) of the currency spent in the expenses of the Claim.
+	 * @return Map from currency types (String) to amount of that currency spent (BigDecimal).
+	 */
 	public Map<String, BigDecimal> getCurrencyTotals() {
 		HashMap<String, BigDecimal> counts = new HashMap<String, BigDecimal>();	
 		for (Expense expense : this.getExpenseList().getExpenses()){
@@ -214,7 +312,9 @@ public class Claim {
 		return getCurrencyTotals().get(currency).toString();
 	}
 	
-
+	/**
+	 * Return a String representation of the information contained in the claim to be printed to a list item or similar.
+	 */
 	public String toString(){
 		
 		String str = claimantName + "\n";

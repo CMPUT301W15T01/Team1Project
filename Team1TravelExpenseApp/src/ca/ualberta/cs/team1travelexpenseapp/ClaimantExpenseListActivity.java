@@ -1,3 +1,17 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
@@ -154,6 +168,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	public void onAddExpenseClick(View v) {
 		ExpenseListController.onAddExpenseClick(this);
 	}
+	
 	/**
 	 * The onClick for the submit button
 	 * Shows a warning dialog if the claim or expense is incomplete
@@ -162,59 +177,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	 */
 	public void onSubmitClick(View v) {
 		
-		boolean expensesFlag = false;
-		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
-			if(expense.isFlagged() == true){
-				expensesFlag = true;
-			}
-		}
-		
-		if(ClaimListController.getCurrentClaim().isComplete() == false || expensesFlag == true){
-			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(this);
-			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		               //Do nothing
-		        	   Claim submittedClaim = ClaimListController.getCurrentClaim();
-						submittedClaim.setStatus(Status.submitted);
-						ClaimListController.updateCurrentClaim(submittedClaim);
-		        	   
-		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-		        	   Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-		        	   //push online here
-		           }
-		    });
-			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					Toast.makeText(getApplicationContext(), "Claim was not Submitted", Toast.LENGTH_SHORT).show();
-				}
-			});
-			submitBuilder.setTitle("Claim may be incomplete");
-			submitWarningDialog=submitBuilder.create();
-			submitWarningDialog.show();
-
-		}else{
-			
-			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-				
-				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-				Claim submittedClaim = ClaimListController.getCurrentClaim();
-				submittedClaim.setStatus(Status.submitted);
-				ClaimListController.updateCurrentClaim(submittedClaim);
-				
-				Toast.makeText(getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-				//push online here
-				Intent intent =new Intent(this, ClaimantClaimsListActivity.class);
-				startActivity(intent);
-			}
-			else{
-				Toast.makeText(getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
-
-			}
-			
-		}
+		ClaimListController.onSubmitClick(this);
 		
 	}
 	

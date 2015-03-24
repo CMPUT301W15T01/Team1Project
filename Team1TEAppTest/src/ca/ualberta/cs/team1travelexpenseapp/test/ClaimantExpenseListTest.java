@@ -152,7 +152,10 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		
 		Claim claim = new Claim();
 		claim.setComplete(false);
+		ClaimListController.clearClaimList();
+		ClaimListController.addClaim(claim);
 		ClaimListController.setCurrentClaim(claim);
+		
 		final Button submitButton = (Button) activity.findViewById(R.id.submitButton);
 		activity.runOnUiThread(new Runnable(){
 
@@ -160,6 +163,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			public void run() {
 				// TODO Auto-generated method stub
 				submitButton.performClick();
+				AlertDialog dia = getActivity().submitWarningDialog;
+				assertTrue("Not null", dia != null);
+				
 			}
 		});
 		getInstrumentation().waitForIdleSync();

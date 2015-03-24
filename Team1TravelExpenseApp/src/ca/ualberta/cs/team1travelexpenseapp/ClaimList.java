@@ -1,3 +1,18 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
@@ -14,6 +29,7 @@ import android.view.View;
 public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
+	private ClaimListManager manager;
 	private ArrayList<Listener> listeners;
 	
 	/**
@@ -23,6 +39,7 @@ public class ClaimList {
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
 		listeners = new ArrayList<Listener>();
+		manager=new ClaimListManager(this);
 	}
 	
 	/**
@@ -56,6 +73,7 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		currentClaim.setStatus(newClaim.getStatus());
+		saveClaims();
 		notifyListeners();
 	}
 	
@@ -71,8 +89,15 @@ public class ClaimList {
 	/**
 	 * Save the claim list to disk (and to the web server if possible) (not currently implemented)
 	 */
-	public void saveClaimList() {
-		//to do 
+	public void saveClaims() {
+		manager.saveClaims();
+	}
+	
+	/**
+	 * Load the claim list from disk (and to the web server if possible) (not currently implemented)
+	 */
+	public void loadClaims() {
+		manager.loadClaims();
 	}
 	
 	/**
@@ -80,7 +105,7 @@ public class ClaimList {
 	 * @param tags ArrayList of tags to filter by.
 	 */
 	public void filterByTags(ArrayList<Tag> tags) {
-		//to-do
+		//to do
 	}
 	
 	/**
@@ -106,6 +131,7 @@ public class ClaimList {
 	 */
 	public void setClaimList(ArrayList<Claim> claims) {
 		this.claimList = claims;
+		saveClaims();
 		notifyListeners();
 	}
 	
@@ -149,6 +175,10 @@ public class ClaimList {
 	public Claim get(int i) {
 		// TODO Auto-generated method stub
 		return claimList.get(i);
+	}
+
+	public ClaimListManager getManager() {
+		return this.manager;
 	}
 	
 }
