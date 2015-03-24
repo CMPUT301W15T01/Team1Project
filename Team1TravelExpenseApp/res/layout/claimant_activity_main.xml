@@ -18,22 +18,12 @@
         android:text="@string/travel_claims"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/addClaimButton"
-        android:layout_toLeftOf="@+id/returnButton"
-        android:entries="@array/tags" />
-
     <ListView
         android:id="@+id/claimsList"
         android:layout_width="fill_parent"
         android:layout_height="263dp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/spinner1"
+        android:layout_below="@+id/manageTagsButton"
         android:scrollbars="vertical" >
 
     </ListView>
@@ -48,13 +38,21 @@
         android:text="@string/add_claim" />
 
     <Button
-        android:id="@+id/returnButton"
+        android:id="@+id/manageTagsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/spinner1"
+        android:layout_alignLeft="@+id/addClaimButton"
+        android:layout_below="@+id/addClaimButton"
         android:onClick="onManageTagsClick"
         android:text="Manage\nTags"
-        android:textSize="12dp" />
+        android:textSize="10dp" />
+
+    <ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner
+        android:id="@+id/claimFilterSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/claimsList"
+        android:layout_below="@+id/travelClaims"
+        android:layout_toLeftOf="@+id/addClaimButton" />
 
 </RelativeLayout>

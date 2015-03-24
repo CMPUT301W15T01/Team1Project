@@ -179,6 +179,20 @@ public class Claim {
 	}
 	
 	/**
+	 * Get a list of the names of all the tags attached to the claim
+	 * @return
+	 */
+	public ArrayList<String> getClaimTagNameList() {
+		ArrayList<String> tagNames = new ArrayList<String>();
+		ArrayList<Tag> tags = getClaimTagList();
+		for(Tag tag : tags) {
+			tagNames.add(tag.getName());
+		}
+		
+		return tagNames;
+	}
+	
+	/**
 	 * Get the number of tags in the claim.
 	 * @return int corresponding the number of tags set for the claim.
 	 */

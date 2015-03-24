@@ -18,16 +18,21 @@ package ca.ualberta.cs.team1travelexpenseapp;
   
 import java.util.ArrayList;
 import java.util.Arrays;  
+import java.util.Collection;
 import java.util.LinkedList;  
 import java.util.List;  
   
 
+import android.app.Activity;
 import android.app.AlertDialog;  
 import android.content.Context;  
 import android.content.DialogInterface;  
+import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;  
 import android.util.AttributeSet;  
+import android.util.Log;
 import android.widget.ArrayAdapter;  
+import android.widget.ListView;
 import android.widget.Spinner;  
 import android.widget.SpinnerAdapter;  
 /**
@@ -42,12 +47,13 @@ public class MultiSelectionSpinner extends Spinner implements
  String[] _items = null;  
  boolean[] mSelection = null;
  ArrayList itemsList  = null;
+ Context context;
   
  ArrayAdapter<String> simple_adapter;
   
  public MultiSelectionSpinner(Context context) {  
   super(context);  
-  
+  this.context = context;
   simple_adapter = new ArrayAdapter<String>(context,  
     android.R.layout.simple_spinner_item);  
   super.setAdapter(simple_adapter);  
@@ -56,7 +62,7 @@ public class MultiSelectionSpinner extends Spinner implements
 
  public MultiSelectionSpinner(Context context, AttributeSet attrs) {  
   super(context, attrs);  
-  
+  this.context = context;
   simple_adapter = new ArrayAdapter<String>(context,  
     android.R.layout.simple_spinner_item);  
   super.setAdapter(simple_adapter);  
@@ -78,7 +84,48 @@ public class MultiSelectionSpinner extends Spinner implements
  @Override  
  public boolean performClick() {  
   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());  
-  builder.setMultiChoiceItems(_items, mSelection, this);  
+  builder.setMultiChoiceItems(_items, mSelection, this); 
+  
+  builder.setOnDismissListener(new OnDismissListener() {
+	
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		// TODO Auto-generated method stub
+		Activity a = ClaimantClaimsListActivity.activity;
+		Log.d("HEY", "You made it");
+		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) a.findViewById(R.id.claimFilterSpinner);
+		ListView mainListView = (ListView) a.findViewById(R.id.claimsList);
+		ArrayList<Claim> displayList;
+        //taken from https://github.com/abramhindle/student-picker and modified
+  		ClaimList claimList=ClaimListController.getClaimList();
+  		Collection<Claim> claims = claimList.getClaims();
+  		
+  		
+  		List<String> selectedTags = tagSpinner.getSelectedStrings();
+  		
+  		if(selectedTags.size() > 0) {
+  			displayList = new ArrayList<Claim>();
+	  		
+	  		//only show filtered tags
+	  		for(Claim claim : claims) {
+	  			for(String tag : claim.getClaimTagNameList()){
+	  				if(selectedTags.contains(tag)) {
+	  					displayList.add(claim);
+	  				}
+	  			}
+	  		}
+  		} else {
+  			displayList = new ArrayList<Claim>(claims);
+
+  		}
+  		
+		
+  		final ArrayAdapter<Claim> claimAdapter = new ArrayAdapter<Claim>(context, android.R.layout.simple_list_item_1, displayList);
+  		mainListView.setAdapter(claimAdapter);
+	
+	}
+  });
+  
   builder.show();  
   return true;  
  }  
