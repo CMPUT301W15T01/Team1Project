@@ -18,14 +18,14 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
-
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,6 +54,9 @@ public class ClaimantClaimsListActivity extends Activity {
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
+ 	private ArrayList<Claim> displayList;
+ 	
+ 	public static Activity activity;
 
  	
 	
@@ -61,30 +64,54 @@ public class ClaimantClaimsListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.claimant_activity_main);
+		activity = this;
+		
+		//set up the tag filter spinner
+		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		tagSpinner.setItems(TagListController.getTagList().getTags());
+		//ArrayList<Tag> claimTags=ClaimListController.getCurrentClaim().getClaimTagList();
+		//tagSpinner.setSelection(claimTags);
 
 		//As an approver, I want to view a list of all the expense claims that were submitted 
 		//for approval, which have their claim status as submitted, showing for each claim:
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 
-        mainListView = (ListView) findViewById(R.id.claimsList);
+		mainListView = (ListView) findViewById(R.id.claimsList);
         
         //taken from https://github.com/abramhindle/student-picker and modified
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
-		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
+  		
+  		List<String> selectedTags = tagSpinner.getSelectedStrings();
+  		
+  		if(selectedTags.size() > 0) {
+  			displayList = new ArrayList<Claim>();
+	  		
+	  		//only show filtered tags
+	  		for(Claim claim : claims) {
+	  			for(String tag : claim.getClaimTagNameList()){
+	  				if(selectedTags.contains(tag)) {
+	  					displayList.add(claim);
+	  				}
+	  			}
+	  		}
+  		} else {
+  			displayList = new ArrayList<Claim>(claims);
 
+  		}
+  		
 		
-		
-  		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
+  		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, displayList);
+
   		mainListView.setAdapter(claimsAdapter);
   		
   		listener=new Listener() {			
 			@Override
 			public void update() {
-				claimsList.clear();
+				displayList.clear();
 				Collection<Claim> claims = ClaimListController.getClaimList().getClaims();
-				claimsList.addAll(claims);
+		  		displayList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
 			}
 		};
@@ -149,13 +176,18 @@ public class ClaimantClaimsListActivity extends Activity {
     		}
     	      	
     });
-        
-        
-        
-        
 
 	}
-
+	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		tagSpinner.setItems(TagListController.getTagList().getTags());
+	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
