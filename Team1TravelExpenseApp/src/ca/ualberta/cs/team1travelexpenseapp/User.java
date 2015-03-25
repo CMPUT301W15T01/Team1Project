@@ -18,7 +18,16 @@ package ca.ualberta.cs.team1travelexpenseapp;
  */
 public class User {
 	
-	private String name = null;
+	private String name;
+	private Claim currentClaim;
+
+	public Claim getCurrentClaim() {
+		return currentClaim;
+	}
+
+	public void setCurrentClaim(Claim currentClaim) {
+		this.currentClaim = currentClaim;
+	}
 
 	/**
 	 * Create the user with a passed name and type

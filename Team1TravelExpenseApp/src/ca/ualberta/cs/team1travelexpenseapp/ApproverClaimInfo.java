@@ -25,10 +25,13 @@ import android.widget.TextView;
  */
 public class ApproverClaimInfo extends Activity {
 	TextView info;
+	private User user;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		user = UserSingleton.getUserSingleton().getUser();
+		
 		setContentView(R.layout.activity_approver_claim_info);
 		info = (TextView) findViewById(R.id.ApproverClaimInfoTextView);
 	}
@@ -42,6 +45,7 @@ public class ApproverClaimInfo extends Activity {
 
 	public void onStart() {
 		super.onStart();
-		info.setText(ClaimListController.getCurrentClaim().toString());
+		UserSingleton.
+		info.setText(user.getCurrentClaim.toString());
 	}
 }
