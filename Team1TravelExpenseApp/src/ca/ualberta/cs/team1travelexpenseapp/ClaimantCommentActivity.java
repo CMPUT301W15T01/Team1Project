@@ -29,12 +29,14 @@ public class ClaimantCommentActivity extends Activity {
 	
 	Claim claim;
 	TextView comments;
+	User user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_claimant_comment);
-		claim = ClaimListController.getCurrentClaim();
+		user=UserSingleton.getUserSingleton().getUser();
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 	}
 	
 	public void onStart() {

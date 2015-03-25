@@ -28,7 +28,7 @@ public class TagList {
 	private static TagListManager manager;
 	
 	TagList(){
-		manager=new TagListManager(this);
+		manager=new TagListManager(this,UserSingleton.getUserSingleton().getUser().getName());
 		tagList=new ArrayList<Tag>();
 		listeners=new ArrayList<Listener>();
 	}

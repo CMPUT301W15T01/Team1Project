@@ -60,6 +60,7 @@ public class ClaimantClaimsListActivity extends Activity {
  	public static Activity activity;
  	private static ArrayAdapter<Claim> claimsAdapter;
  	private Claimant user;
+ 	private ClaimListController claimListController;
 
  	
 	
@@ -69,6 +70,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		setContentView(R.layout.claimant_activity_main);
 		
 		user=(Claimant) UserSingleton.getUserSingleton().getUser();
+		claimListController= new ClaimListController(user.getClaimList());
+		
 		
 		activity = this;
 		
@@ -108,7 +111,7 @@ public class ClaimantClaimsListActivity extends Activity {
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
-        		user.setCurrentClaim(claimsAdapter.getItem(position));
+        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
         	}
@@ -117,7 +120,7 @@ public class ClaimantClaimsListActivity extends Activity {
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
     		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
-    			 user.setCurrentClaim(claimsAdapter.getItem(position));
+    			SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claimsAdapter.getItem(position));
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
@@ -135,9 +138,9 @@ public class ClaimantClaimsListActivity extends Activity {
 				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
-			        	   if(user.getCurrentClaim().getStatus()!= Status.submitted){
-			        			   if (user.getCurrentClaim().getStatus() != Status.approved){
-			        				   user.onRemoveClaimClick();
+			        	   if(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().getStatus()!= Status.submitted){
+			        			   if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().getStatus() != Status.approved){
+			        				   claimListController.onRemoveClaimClick();
 			        			   }
 			        			   else{
 			        				   Toast.makeText(getApplicationContext(),"This claim can not be deleted", Toast.LENGTH_SHORT).show();
@@ -195,7 +198,7 @@ public class ClaimantClaimsListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onAddClaimClick(View v) {
-		ClaimListController.onAddClaimClick(this);
+		claimListController.onAddClaimClick(this);
 	}
 	
 	/**

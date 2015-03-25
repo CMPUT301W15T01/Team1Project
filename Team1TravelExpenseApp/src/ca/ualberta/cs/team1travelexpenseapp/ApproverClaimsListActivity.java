@@ -16,6 +16,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Currency;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -84,7 +85,7 @@ public class ApproverClaimsListActivity extends Activity {
         
         claimsListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
-        		user.setCurrentClaim(claimsAdapter.getItem(position));
+        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ApproverExpenseListActivity.class);	
         		startActivity(intent);
         	}

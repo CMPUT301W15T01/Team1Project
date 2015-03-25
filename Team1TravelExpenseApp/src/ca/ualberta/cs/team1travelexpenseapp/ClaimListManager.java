@@ -17,13 +17,15 @@ import com.google.gson.reflect.TypeToken;
 public class ClaimListManager {
 	private ClaimList claimList;
 	private Context context;
+	private String userName;
 	
 	/**
 	 * Initialize with the claimList to be managed.
 	 * @param claimList The ClaimList to saved from and loaded to
 	 */
-	ClaimListManager(ClaimList claimList){
+	ClaimListManager(ClaimList claimList, String userName){
 		this.claimList=claimList;
+		this.userName=userName;
 	}
 	
 	/**
@@ -31,7 +33,7 @@ public class ClaimListManager {
 	 */
 	public void saveClaims(){
 		Gson gson = new Gson();
-		String saveFile=ClaimListController.getUser().getName()+"_claims.sav";
+		String saveFile=userName+"_claims.sav";
 		try {
 			FileOutputStream fos = context.openFileOutput(saveFile, 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -54,7 +56,7 @@ public class ClaimListManager {
 	public void loadClaims(){
 		Gson gson = new Gson();
 		ArrayList<Claim> claims=new ArrayList <Claim>();
-		String saveFile=ClaimListController.getUser().getName()+"_claims.sav";
+		String saveFile=userName+"_claims.sav";
 		try {
 			FileInputStream fis = context.openFileInput(saveFile);
 			InputStreamReader in =new InputStreamReader(fis);

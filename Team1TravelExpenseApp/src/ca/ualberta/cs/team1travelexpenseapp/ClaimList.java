@@ -41,7 +41,7 @@ public class ClaimList {
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
 		listeners = new ArrayList<Listener>();
-		manager=new ClaimListManager(this);
+		manager=new ClaimListManager(this,UserSingleton.getUserSingleton().getUser().getName());
 	}
 	
 	/**

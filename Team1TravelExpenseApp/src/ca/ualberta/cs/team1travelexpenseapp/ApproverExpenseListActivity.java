@@ -53,7 +53,7 @@ public class ApproverExpenseListActivity extends Activity {
 		setContentView(R.layout.approver_display_expenses);
 		
 		// display current claims expense items 
-		claim = user.getCurrentClaim();
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 		
 		expenseListView = (ListView) findViewById(R.id.approverExpensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 

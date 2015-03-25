@@ -36,13 +36,15 @@ import android.content.Context;
 public class TagListManager {
 	private TagList tagList;
 	private Context context;
+	private String userName;
 	
 	/**
 	 * Initialize with the tagList to be managed.
 	 * @param tagList The TagList to saved from and loaded to
 	 */
-	TagListManager(TagList tagList){
+	TagListManager(TagList tagList, String userName){
 		this.tagList=tagList;
+		this.userName=userName;
 	}
 	
 	/**
@@ -50,7 +52,7 @@ public class TagListManager {
 	 */
 	public void saveTags(){
 		Gson gson = new Gson();
-		String saveFile=ClaimListController.getUser().getName()+"_tags.sav";
+		String saveFile=userName+"_tags.sav";
 		try {
 			FileOutputStream fos = context.openFileOutput(saveFile, 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -73,7 +75,7 @@ public class TagListManager {
 	public void loadTags(){
 		Gson gson = new Gson();
 		ArrayList<Tag> tags=new ArrayList <Tag>();
-		String saveFile=ClaimListController.getUser().getName()+"_tags.sav";
+		String saveFile=userName+"_tags.sav";
 		try {
 			FileInputStream fis = context.openFileInput(saveFile);
 			InputStreamReader in =new InputStreamReader(fis);

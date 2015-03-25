@@ -47,9 +47,12 @@ public class ClaimantExpenseListActivity extends Activity {
  	private ListView expenseListView ;
  	private Listener listener;
  	private ExpenseList expenseList;
+ 	private ExpenseListController expenseListController;
  	private TextView claimInfoHeader;
  	public AlertDialog editExpenseDialog;
  	public AlertDialog submitWarningDialog;
+ 	private User user;
+ 	private ClaimListController claimListController;
  	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,13 @@ public class ClaimantExpenseListActivity extends Activity {
 		//in order of entry, showing for each expense item: the date the expense was incurred,
 		//the category, the textual description, amount spent, unit of currency, 
 		//and whether there is a photographic receipt.
-
-		claim=ClaimListController.getCurrentClaim();
+		
+		user=UserSingleton.getUserSingleton().getUser();
+		claimListController=new ClaimListController(user.getClaimList());
+		expenseList=claim.getExpenseList();
+		expenseListController= new ExpenseListController(expenseList);
+		
+		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 		if(claim.getStatus() == Status.submitted || claim.getStatus() ==Status.approved){
 			
 			Button submitBT = (Button) findViewById(R.id.submitButton);
@@ -71,7 +79,6 @@ public class ClaimantExpenseListActivity extends Activity {
 			
 			
 		}
-		expenseList=ExpenseListController.getCurrentExpenseList();
         expenseListView = (ListView) findViewById(R.id.claimantExpensesList);
 
         Collection<Expense> expenses = claim.getExpenseList().getExpenses();
@@ -95,14 +102,14 @@ public class ClaimantExpenseListActivity extends Activity {
 		
 		expenseList.addListener(listener);
 		listener.update();
-		ClaimListController.getClaimList().addListener(listener);
-		for (Listener i : ClaimListController.getClaimList().getListeners()) {
+		user.getClaimList().addListener(listener);
+		for (Listener i : user.getClaimList().getListeners()) {
 			expenseList.addListener(i);
 		}
 			
 		expenseListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
-        		ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
+        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expenselistAdapter.getItem(position));
     			Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
     			startActivity(edit);
         	}
@@ -111,7 +118,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 	        	
 	    		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
-	    			 ExpenseListController.setCurrentExpense(expenselistAdapter.getItem(position));
+	    			SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expenselistAdapter.getItem(position));
 	    			
 	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 					 AlertDialog.Builder editExpenseDialogBuilder = new AlertDialog.Builder(ClaimantExpenseListActivity.this);
@@ -127,7 +134,7 @@ public class ClaimantExpenseListActivity extends Activity {
 				       });
 					editExpenseDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
-				        	   ExpenseListController.onRemoveExpenseClick();
+				        	   expenseListController.onRemoveExpenseClick();
 				           }
 				       });
 					editExpenseDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
@@ -166,7 +173,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	 * @param v the view from the onClick
 	 */
 	public void onAddExpenseClick(View v) {
-		ExpenseListController.onAddExpenseClick(this);
+		expenseListController.onAddExpenseClick(this);
 	}
 	
 	/**
@@ -177,7 +184,7 @@ public class ClaimantExpenseListActivity extends Activity {
 	 */
 	public void onSubmitClick(View v) {
 		
-		ClaimListController.onSubmitClick(this);
+		claimListController.onSubmitClick(this);
 		
 	}
 	

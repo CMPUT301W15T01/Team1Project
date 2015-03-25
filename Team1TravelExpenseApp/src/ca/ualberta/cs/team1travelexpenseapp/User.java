@@ -18,8 +18,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
  */
 public class User {
 	
-	private String name;
-	private Claim currentClaim;
+	protected String name;
 	protected ClaimList claimList;
 
 	public ClaimList getClaimList() {
@@ -28,14 +27,6 @@ public class User {
 
 	public void setClaimList(ClaimList claimList) {
 		this.claimList = claimList;
-	}
-
-	public Claim getCurrentClaim() {
-		return currentClaim;
-	}
-
-	public void setCurrentClaim(Claim currentClaim) {
-		this.currentClaim = currentClaim;
 	}
 
 	/**
