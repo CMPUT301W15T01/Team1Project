@@ -1,52 +1,25 @@
-/*
-Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
-package ca.ualberta.cs.team1travelexpenseapp;
+package ca.ualberta.cs.team1travelexpenseapp.claims;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CyclicBarrier;
 
 import android.util.Log;
-import android.widget.Toast;
 
-/** 
- * Model of a Claim used to edit a list of expenses, claimant name, start and end date, destination & reason list, Tag list for the claim,
- * completeness, list of approvers for the claim, a list of comments, listeners for the views that will use this model, and the status
- * **/
-public class Claim implements Comparable<Claim>{ 
-	
-	/** enum class Status public to access values of enum **/
-	public enum Status {
-		inProgress, submitted, approved, returned
-	}
-	
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
+import ca.ualberta.cs.team1travelexpenseapp.Listener;
+import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.User;
+
+public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	protected ExpenseList expenseList;
 	protected String claimantName;
 	protected Date startDate;
@@ -57,16 +30,16 @@ public class Claim implements Comparable<Claim>{
 	protected ArrayList<User> approverList;
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
-	protected Status status;
+	protected String status = null;
+	
 	
 	/** Initializes attributes to new instances **/
-	public Claim() { 
+	public AbstractClaim(){ 
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = Status.inProgress;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
@@ -78,14 +51,13 @@ public class Claim implements Comparable<Claim>{
 	 * @param cName - a string
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
-	public Claim(String cName, Date sDate, Date eDate) {
+	public AbstractClaim(String cName, Date sDate, Date eDate) {
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
 		
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = Status.inProgress;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
@@ -109,7 +81,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param expenseList
 	 */
 	public void setExpenseList(ExpenseList expenseList) {
-		this.expenseList = expenseList;
+		//need to implement 
 	}
 	
 	/**
@@ -120,7 +92,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param reason - a string 
 	 */
 	public void addDestination(String destination, String reason) {
-			destinationReasonList.put(destination, reason);
+			//need to implement 
 	}
 	
 	/**
@@ -161,7 +133,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param name The name of the claimant for the Claim.
 	 */
 	public void setClaimantName(String name) {
-		claimantName = name;
+		//need to implement 
 	}
 
 	/**
@@ -193,23 +165,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param claimTagList The TagList containing the new tags to be set for the claim.
 	 */
 	public void setClaimTagList(ArrayList<Tag> claimTagList) {
-		this.claimTagList = claimTagList;
-	}
-
-	/**
-	 * Get the status (inProgress, submitted, approved, returned) for the claim.
-	 * @return Status for the claim.
-	 */
-	public Status getStatus() {
-		return status;
-	}
-
-	/**
-	 * Set the status (inProgress, submitted, approved, returned) for the claim.
-	 * @param status enum Status to be set as claim status.
-	 */
-	public void setStatus(Status status) {
-		this.status = status;
+		//need to implement 
 	}
 
 	/**
@@ -225,7 +181,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param isComplete true or false, is the claim complete?
 	 */
 	public void setComplete(boolean isComplete) {
-		this.isComplete = isComplete;
+		//need to implement 
 	}
 
 	/**
@@ -241,7 +197,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param approverList ArrayList of Users corresponding to the approvers who have returned or approved the claim
 	 */
 	public void setApproverList(ArrayList<User> approverList) {
-		this.approverList = approverList;
+		//need to implement 
 	}
 
 	/**
@@ -257,7 +213,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param comment String to be added as comment.
 	 */
 	public void addComment(String comment) {
-		commentList.put(ClaimListController.getUser().getName(), comment);
+		//need to implement 
 	}
 
 	/**
@@ -273,7 +229,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param date startDate to be set for the current Claim.
 	 */
 	public void setStartDate(Date date) {
-		startDate = date;
+		//need to implement 
 	}
 	
 	/**
@@ -289,7 +245,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param date endDate to be set for the current Claim.
 	 */
 	public void setEndDate(Date date) {
-		endDate = date;
+		//need to implement 
 	}
 	
 	/**
@@ -341,7 +297,7 @@ public class Claim implements Comparable<Claim>{
 		}
 		
 		//get status
-		str += "\nStatus: " + getStatus().toString();
+		//str += "\nStatus: " + getStatus().toString();
 		
 		//get tag list 
 		str += "\nTags:";
@@ -383,11 +339,10 @@ public class Claim implements Comparable<Claim>{
 	 * use Collections.sort(ArrayList<Claim> Object); to sort Object. 
 	 */
 	@Override
-	public int compareTo( Claim claim ) {
+	public int compareTo( AbstractClaim claim ) {
 		if (ClaimListController.getUserType().equals("Claimant")) {
 			return claim.startDate.compareTo(this.startDate);
 		}
 		return this.startDate.compareTo(claim.startDate);
 	}
-	
 }
