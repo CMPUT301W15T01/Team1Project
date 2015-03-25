@@ -84,47 +84,7 @@ public class MultiSelectionSpinner extends Spinner implements
  @Override  
  public boolean performClick() {  
   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());  
-  builder.setMultiChoiceItems(_items, mSelection, this); 
-  
-  builder.setOnDismissListener(new OnDismissListener() {
-	
-	@Override
-	public void onDismiss(DialogInterface dialog) {
-		// TODO Auto-generated method stub
-		Activity a = ClaimantClaimsListActivity.activity;
-		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) a.findViewById(R.id.claimFilterSpinner);
-		ListView mainListView = (ListView) a.findViewById(R.id.claimsList);
-		ArrayList<Claim> displayList;
-        //taken from https://github.com/abramhindle/student-picker and modified
-  		ClaimList claimList=ClaimListController.getClaimList();
-  		Collection<Claim> claims = claimList.getClaims();
-  		
-  		
-  		List<String> selectedTags = tagSpinner.getSelectedStrings();
-  		
-  		if(selectedTags.size() > 0) {
-  			displayList = new ArrayList<Claim>();
-	  		
-	  		//only show filtered tags
-	  		for(Claim claim : claims) {
-	  			for(String tag : claim.getClaimTagNameList()){
-	  				if(selectedTags.contains(tag)) {
-	  					displayList.add(claim);
-	  				}
-	  			}
-	  		}
-  		} else {
-  			displayList = new ArrayList<Claim>(claims);
-
-  		}
-  		
-		
-  		final ArrayAdapter<Claim> claimAdapter = new ArrayAdapter<Claim>(context, android.R.layout.simple_list_item_1, displayList);
-  		mainListView.setAdapter(claimAdapter);
-	
-	}
-  });
-  
+  builder.setMultiChoiceItems(_items, mSelection, this);
   builder.show();  
   return true;  
  }  

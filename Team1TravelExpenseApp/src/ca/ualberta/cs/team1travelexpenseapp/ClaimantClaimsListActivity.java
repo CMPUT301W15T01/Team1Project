@@ -54,9 +54,10 @@ public class ClaimantClaimsListActivity extends Activity {
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
- 	private ArrayList<Claim> displayList;
+ 	private static ArrayList<Claim> displayList;
  	
  	public static Activity activity;
+ 	private static ArrayAdapter<Claim> claimsAdapter;
 
  	
 	
@@ -82,27 +83,8 @@ public class ClaimantClaimsListActivity extends Activity {
         //taken from https://github.com/abramhindle/student-picker and modified
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
-  		
-  		List<String> selectedTags = tagSpinner.getSelectedStrings();
-  		
-  		if(selectedTags.size() > 0) {
-  			displayList = new ArrayList<Claim>();
-	  		
-	  		//only show filtered tags
-	  		for(Claim claim : claims) {
-	  			for(String tag : claim.getClaimTagNameList()){
-	  				if(selectedTags.contains(tag)) {
-	  					displayList.add(claim);
-	  				}
-	  			}
-	  		}
-  		} else {
-  			displayList = new ArrayList<Claim>(claims);
-
-  		}
-  		
-		
-  		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, displayList);
+  		displayList = new ArrayList<Claim>(claims);
+  		claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, displayList);
 
   		mainListView.setAdapter(claimsAdapter);
   		
@@ -179,14 +161,10 @@ public class ClaimantClaimsListActivity extends Activity {
 
 	}
 	
-	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
-		tagSpinner.setItems(TagListController.getTagList().getTags());
 	}
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -231,6 +209,11 @@ public class ClaimantClaimsListActivity extends Activity {
 		super.onDestroy();
 		claimList.removeListener(listener);
 	}
-	
+
+
+	public static ArrayAdapter<Claim> getArrayAdapter() {
+		// TODO Auto-generated method stub
+		return claimsAdapter;
+	}
 	
 }
