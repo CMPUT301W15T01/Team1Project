@@ -44,6 +44,7 @@ public class ApproverClaimsListActivity extends Activity {
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
+ 	public  User user;
 
  	
 	

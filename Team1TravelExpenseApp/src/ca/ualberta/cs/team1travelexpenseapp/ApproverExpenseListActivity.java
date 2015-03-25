@@ -42,10 +42,12 @@ public class ApproverExpenseListActivity extends Activity {
 	public Claim claim;
 	private ArrayAdapter<Expense> expenselistAdapter ;
  	private ListView expenseListView ;
+ 	private User user;
  	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		user=UserSingleton.getUserSingleton().getUser();
 		setContentView(R.layout.approver_display_expenses);
 		
 		// display current claims expense items 

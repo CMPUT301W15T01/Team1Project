@@ -45,7 +45,6 @@ public class ApproverClaimInfo extends Activity {
 
 	public void onStart() {
 		super.onStart();
-		UserSingleton.
-		info.setText(user.getCurrentClaim.toString());
+		info.setText(user.getCurrentClaim().toString());
 	}
 }

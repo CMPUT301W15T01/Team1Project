@@ -20,6 +20,15 @@ public class User {
 	
 	private String name;
 	private Claim currentClaim;
+	protected ClaimList claimList;
+
+	public ClaimList getClaimList() {
+		return claimList;
+	}
+
+	public void setClaimList(ClaimList claimList) {
+		this.claimList = claimList;
+	}
 
 	public Claim getCurrentClaim() {
 		return currentClaim;
@@ -37,6 +46,7 @@ public class User {
 	public User(String name) {
 		// TODO Auto-generated constructor stub
 		this.name = name;
+		this.claimList=new ClaimList();
 	}
 
 	/**
