@@ -18,16 +18,21 @@ package ca.ualberta.cs.team1travelexpenseapp;
   
 import java.util.ArrayList;
 import java.util.Arrays;  
+import java.util.Collection;
 import java.util.LinkedList;  
 import java.util.List;  
   
 
+import android.app.Activity;
 import android.app.AlertDialog;  
 import android.content.Context;  
 import android.content.DialogInterface;  
+import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;  
 import android.util.AttributeSet;  
+import android.util.Log;
 import android.widget.ArrayAdapter;  
+import android.widget.ListView;
 import android.widget.Spinner;  
 import android.widget.SpinnerAdapter;  
 /**
@@ -42,12 +47,13 @@ public class MultiSelectionSpinner extends Spinner implements
  String[] _items = null;  
  boolean[] mSelection = null;
  ArrayList itemsList  = null;
+ Context context;
   
  ArrayAdapter<String> simple_adapter;
   
  public MultiSelectionSpinner(Context context) {  
   super(context);  
-  
+  this.context = context;
   simple_adapter = new ArrayAdapter<String>(context,  
     android.R.layout.simple_spinner_item);  
   super.setAdapter(simple_adapter);  
@@ -56,7 +62,7 @@ public class MultiSelectionSpinner extends Spinner implements
 
  public MultiSelectionSpinner(Context context, AttributeSet attrs) {  
   super(context, attrs);  
-  
+  this.context = context;
   simple_adapter = new ArrayAdapter<String>(context,  
     android.R.layout.simple_spinner_item);  
   super.setAdapter(simple_adapter);  
@@ -78,7 +84,7 @@ public class MultiSelectionSpinner extends Spinner implements
  @Override  
  public boolean performClick() {  
   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());  
-  builder.setMultiChoiceItems(_items, mSelection, this);  
+  builder.setMultiChoiceItems(_items, mSelection, this);
   builder.show();  
   return true;  
  }  
