@@ -76,24 +76,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	}
 
 	
-	/** 
-	 * sets the claim's expense list object to a given expenseList
-	 * @param expenseList
-	 */
-	public void setExpenseList(ExpenseList expenseList) {
-		//need to implement 
-	}
-	
-	/**
-	 * adds a destination, with a reason to the claim 
-	 * if destination already exist, new reason will write over old reason 
-	else new destination will reason will be added to the Map 
-	 * @param destination - a string
-	 * @param reason - a string 
-	 */
-	public void addDestination(String destination, String reason) {
-			//need to implement 
-	}
+
 	
 	/**
 	 * 
@@ -128,13 +111,6 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return destinationReasonList.keySet();
 	}
 	
-	/**
-	 * Set the claimantName for the Claim.
-	 * @param name The name of the claimant for the Claim.
-	 */
-	public void setClaimantName(String name) {
-		//need to implement 
-	}
 
 	/**
 	 * Get the claimantName for the Claim.
@@ -160,13 +136,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return claimTagList.size();
 	}
 
-	/**
-	 * Set the TagList for the claim
-	 * @param claimTagList The TagList containing the new tags to be set for the claim.
-	 */
-	public void setClaimTagList(ArrayList<Tag> claimTagList) {
-		//need to implement 
-	}
+
 
 	/**
 	 * Return a boolean indicating whether the claim is "complete".
@@ -176,13 +146,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return isComplete;
 	}
 
-	/**
-	 * Set the completeness of the claim.
-	 * @param isComplete true or false, is the claim complete?
-	 */
-	public void setComplete(boolean isComplete) {
-		//need to implement 
-	}
+
 
 	/**
 	 * Get the list of approvers for the current Claim
@@ -192,13 +156,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return approverList;
 	}
 
-	/**
-	 * Set the list of approvers for the current Claim
-	 * @param approverList ArrayList of Users corresponding to the approvers who have returned or approved the claim
-	 */
-	public void setApproverList(ArrayList<User> approverList) {
-		//need to implement 
-	}
+
 
 	/**
 	 * Get a Map mapping approvers of the claim to any comments they may have left.
@@ -207,14 +165,8 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	public Map<String, String> getCommentList() {
 		return commentList;
 	}
+
 	
-	/**
-	 * Add a comment to the claim from the current User.
-	 * @param comment String to be added as comment.
-	 */
-	public void addComment(String comment) {
-		//need to implement 
-	}
 
 	/**
 	 * Return the startDate for the Claim.
@@ -224,14 +176,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return startDate;
 	}
 	
-	/**
-	 * Set the startDate of the Claim.
-	 * @param date startDate to be set for the current Claim.
-	 */
-	public void setStartDate(Date date) {
-		//need to implement 
-	}
-	
+
 	/**
 	 * Return the endDate for the Claim.
 	 * @return endDate (Date) of the Claim.
@@ -240,13 +185,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return endDate;
 	}
 	
-	/**
-	 * Set the endDate of the Claim.
-	 * @param date endDate to be set for the current Claim.
-	 */
-	public void setEndDate(Date date) {
-		//need to implement 
-	}
+
 	
 	/**
 	 * Return a map from currency types (String) to amounts (BigDecimal) of the currency spent in the expenses of the Claim.
@@ -297,7 +236,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		}
 		
 		//get status
-		//str += "\nStatus: " + getStatus().toString();
+		str += "\nStatus: " + status.toString();
 		
 		//get tag list 
 		str += "\nTags:";
