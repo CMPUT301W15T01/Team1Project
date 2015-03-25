@@ -58,11 +58,11 @@ public class ApproverClaimsListActivity extends Activity {
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 
-        
+		user=UserSingleton.getUserSingleton().getUser();
       //taken from https://github.com/abramhindle/student-picker (March 15, 2015) and modified
 		// TODO: show approved claims and make sure the approver doesn't see their own claims
 		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
-  		claimList=ClaimListController.getSubmittedClaims();
+  		claimList=user.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
   		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
@@ -72,7 +72,7 @@ public class ApproverClaimsListActivity extends Activity {
 			@Override
 			public void update() {
 				claimsList.clear();
-		  		claimList=ClaimListController.getSubmittedClaims();
+		  		claimList=user.getClaimList();
 				Collection<Claim> claims = claimList.getClaims();
 				claimsList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
@@ -84,7 +84,7 @@ public class ApproverClaimsListActivity extends Activity {
         
         claimsListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
-        		ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
+        		user.setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ApproverExpenseListActivity.class);	
         		startActivity(intent);
         	}
@@ -97,7 +97,7 @@ public class ApproverClaimsListActivity extends Activity {
 	public void onStart(){
 		super.onStart();
 		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);
-  		claimList=ClaimListController.getSubmittedClaims();
+  		claimList=user.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
 		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
   		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
