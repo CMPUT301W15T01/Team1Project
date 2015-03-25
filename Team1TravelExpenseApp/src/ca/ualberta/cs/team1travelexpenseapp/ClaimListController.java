@@ -41,6 +41,9 @@ public class ClaimListController {
 	 * The current user of the app
 	 */
 	protected static User user = null;
+	
+	public static AlertDialog submitWarningDialog;
+	
 	/**
 	 * Gets the current claims list
 	 * @return returns the current claims list
@@ -114,7 +117,7 @@ public class ClaimListController {
 	 * @param activity 
 	 */
 	public static void onSubmitClick (final ClaimantExpenseListActivity activity) {
-		AlertDialog submitWarningDialog;
+		
 	
 		
 		boolean expensesFlag = false;
@@ -179,12 +182,9 @@ public class ClaimListController {
 			
 		}
 		
-		
-		
-		
-		
-		
+			
 	}
+	
 	
 	/**
 	 * The onClick method for the save button when editing/adding claims
