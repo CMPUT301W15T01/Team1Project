@@ -66,11 +66,11 @@ public class ClaimantExpenseListActivity extends Activity {
 		
 		user=UserSingleton.getUserSingleton().getUser();
 		claimListController=new ClaimListController(user.getClaimList());
+		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 		expenseList=claim.getExpenseList();
 		expenseListController= new ExpenseListController(expenseList);
 		
-		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
-		if(claim.getStatus() == Status.submitted || claim.getStatus() ==Status.approved){
+		if(claim.getStatus() == Status.submitted || claim.getStatus() == Status.approved){
 			
 			Button submitBT = (Button) findViewById(R.id.submitButton);
 			submitBT.setClickable(false);
@@ -118,7 +118,8 @@ public class ClaimantExpenseListActivity extends Activity {
 	    expenseListView.setOnItemLongClickListener(new OnItemLongClickListener(){
 	        	
 	    		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
-	    			SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expenselistAdapter.getItem(position));
+	    			final Expense clickedExpense=expenselistAdapter.getItem(position);
+	    			expenseListController.setCurrentExpense(clickedExpense);
 	    			
 	    			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 					 AlertDialog.Builder editExpenseDialogBuilder = new AlertDialog.Builder(ClaimantExpenseListActivity.this);
@@ -126,6 +127,7 @@ public class ClaimantExpenseListActivity extends Activity {
 					 editExpenseDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
 				    			//if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+				        	    SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(clickedExpense);
 				    			Intent edit = new Intent(getBaseContext(), EditExpenseActivity.class);
 				    			startActivity(edit);
 				    				

@@ -120,7 +120,8 @@ public class ClaimantClaimsListActivity extends Activity {
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
     		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
-    			SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claimsAdapter.getItem(position));
+    			final Claim clickedClaim=claimsAdapter.getItem(position);
+    			claimListController.setCurrentClaim(clickedClaim);
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
@@ -128,7 +129,7 @@ public class ClaimantClaimsListActivity extends Activity {
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 
 			           public void onClick(DialogInterface dialog, int id) {		
-			    		
+			        	   SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(clickedClaim);
 			        	   Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
 			        	   startActivity(edit);
 			    					
@@ -138,8 +139,8 @@ public class ClaimantClaimsListActivity extends Activity {
 				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
-			        	   if(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().getStatus()!= Status.submitted){
-			        			   if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().getStatus() != Status.approved){
+			        	   if(claimListController.getCurrentClaim().getStatus()!= Status.submitted){
+			        			   if (claimListController.getCurrentClaim().getStatus() != Status.approved){
 			        				   claimListController.onRemoveClaimClick();
 			        			   }
 			        			   else{

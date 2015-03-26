@@ -34,10 +34,31 @@ import android.widget.Spinner;
  */
 public class ExpenseListController {
 	protected ExpenseList expenseList;
+	protected Expense currentExpense;
 	
 	
 	public ExpenseListController(ExpenseList expenseList) {
 		this.expenseList=expenseList;
+	}
+	
+	
+	/**
+	 * Sets the current Expense item that is to be controlled.
+	 * @param expense
+	 * An Expense.
+	 */
+	public void setCurrentExpense(Expense expense){
+		currentExpense = expense; 
+	}
+	
+	
+	/**
+	 * Returns the current Expense item that is being controlled.
+	 * @return
+	 * An Expense.
+	 */
+	public Expense getCurrentExpense(){
+		return currentExpense;
 	}
 	
 	
@@ -58,6 +79,7 @@ public class ExpenseListController {
 	public void addExpense(Expense expense){
 		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		expenseArray.add(expense);
+		setCurrentExpense(expense);
 		///setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
 		//display empty expense then show activity to edit empty claim otherwise an empty expense will not show after hitting back
 		expenseList.setExpenseList(expenseArray);
@@ -90,7 +112,7 @@ public class ExpenseListController {
 			}
 			ArrayList<Expense> expenseArray=expenseList.getExpenses();
 			expenseArray.set(expenseArray.indexOf(expense), newExpense);
-			SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(newExpense);
+			setCurrentExpense(newExpense);
 			expenseList.setExpenseList(expenseArray);
 		}
 	}
@@ -127,9 +149,9 @@ public class ExpenseListController {
 		if ( completeBox.isChecked() ) {
 			expense.setFlagged(true);
 		}
-		expense.setReceipt(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense().getReceipt());
+		expense.setReceipt(getCurrentExpense().getReceipt());
 		
-		updateExpense(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense(), expense);
+		updateExpense(getCurrentExpense(), expense);
 		
 		activity.finish();	
 	}
@@ -152,7 +174,7 @@ public class ExpenseListController {
 	 * Simply removes the expense that was selected. 
 	 */
 	public void onRemoveExpenseClick() {
-		removeExpense(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense());
+		removeExpense(getCurrentExpense());
 	}
 	
 }

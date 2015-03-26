@@ -45,10 +45,6 @@ public class ClaimListController {
 	protected ClaimList claimsList;
 	
 	/**
-	 * all claims in the system 
-	 */
-	protected ClaimList allClaims;
-	/**
 	 * The list of claims that are to be displayed in a view
 	 */
 	protected ClaimList displayedClaimList;
@@ -240,7 +236,9 @@ public class ClaimListController {
 	 * @param activity The activity which holds the add claim button
 	 */
 	public void onAddClaimClick(ClaimantClaimsListActivity activity) {
-		addClaim(new Claim());
+		Claim claim = new Claim();
+		addClaim(claim);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim);
 		Intent intent = new Intent(activity, EditClaimActivity.class);
 		activity.startActivity(intent);
 		
@@ -298,7 +296,8 @@ public class ClaimListController {
 		claimsList.setClaimList(claimArray);
 		
 	}
-	private void setCurrentClaim(Claim claim) {
+	
+	public void setCurrentClaim(Claim claim) {
 		currentClaim=claim;	
 	}
 
@@ -312,7 +311,6 @@ public class ClaimListController {
 		
 			ArrayList<Claim> claims = getClaimList().getClaims();
 			claims.remove(currentClaim);
-			allClaims.getClaims().remove(currentClaim);
 			claimsList.setClaimList(claims);
 		}
 		

@@ -55,14 +55,15 @@ public class EditClaimActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_claim);
 		user=(Claimant) UserSingleton.getUserSingleton().getUser();
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 		claimListController=new ClaimListController(user.getClaimList());
+		claimListController.setCurrentClaim(claim);
 	}
 
 	//on start method that loads all of the CurrentClaim values into the editTexts
 	
 	protected void onStart(){
 		super.onStart();
-		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 			
 		final AlertDialog.Builder StatusAlert =  new AlertDialog.Builder(EditClaimActivity.this);
 		StatusAlert.setPositiveButton("OK",new OnClickListener() {

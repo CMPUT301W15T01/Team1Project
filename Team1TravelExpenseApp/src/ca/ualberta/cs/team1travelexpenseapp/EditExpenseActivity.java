@@ -54,10 +54,10 @@ public class EditExpenseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit_expense);	
-		expenseList = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().getExpenseList();
-		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+		setContentView(R.layout.activity_edit_expense);
 		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
+		expenseList = claim.getExpenseList();
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
 		expenseListController=new ExpenseListController(expenseList);
 		
 		listener=new Listener() {			

@@ -84,9 +84,13 @@ public class LoginActivity extends Activity {
 		if(currentUserName.equals("")) currentUserName="Guest";
 		Claimant currentUser=new Claimant(currentUserName);
 		UserSingleton.getUserSingleton().setUser(currentUser);
-		currentUser.getTagList().getManager().setContext(getApplicationContext());
+		TagListManager tagListManager=currentUser.getTagList().getManager();
+		tagListManager.setContext(getApplicationContext());
+		tagListManager.setSaveFile(currentUserName+"_tags.sav");
 		currentUser.getTagList().loadTags();
-		currentUser.getClaimList().getManager().setContext(getApplicationContext());
+		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
+		claimListManager.setContext(getApplicationContext());
+		claimListManager.setSaveFile(currentUserName+"_claims.sav");
 		currentUser.getClaimList().loadClaims();
 		startActivity(intent);
 	}
