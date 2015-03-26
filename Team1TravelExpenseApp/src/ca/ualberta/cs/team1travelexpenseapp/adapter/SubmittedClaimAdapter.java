@@ -1,4 +1,4 @@
-package ca.ualberta.cs.team1travelexpenseapp.claims;
+package ca.ualberta.cs.team1travelexpenseapp.adapter;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -11,62 +11,23 @@ import java.util.Map;
 import java.util.Set;
 
 import android.util.Log;
-
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
-import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.User;
+import ca.ualberta.cs.team1travelexpenseapp.claims.AbstractClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 
-public abstract class AbstractClaim implements Comparable<AbstractClaim> {
-	protected ExpenseList expenseList;
-	protected String claimantName;
-	protected Date startDate;
-	protected Date endDate;
-	protected HashMap<String, String> destinationReasonList;
-	protected ArrayList<Tag> claimTagList;
-	protected boolean isComplete;
-	protected ArrayList<User> approverList;
-	protected Map<String, String> commentList;
-	protected ArrayList<Listener> listeners;
-	protected String status = null;
+public class SubmittedClaimAdapter extends SubmittedClaim{
 	
+	ProgressClaim progressClaim;
 	
-	/** Initializes attributes to new instances **/
-	public AbstractClaim(){ 
-		claimantName          = "";
-		startDate             = new Date();
-		endDate               = new Date();
-		destinationReasonList = new HashMap<String, String>();
-		claimTagList          = new ArrayList<Tag>();
-		isComplete            = false;
-		approverList          = new ArrayList<User>();
-		commentList           = new HashMap<String, String>();
-		listeners             = new ArrayList<Listener>();
-		expenseList           = new ExpenseList();
+	public SubmittedClaimAdapter(ProgressClaim claim) {
+		progressClaim = claim;
+		status = "submitted";
 	}
-
-	/** set claimant name, start and end date, all other attributes are initializes to new instances 
-	 * @param cName - a string
-	 * @param sDate - a Date
-	 * @param eDate - a Date **/
-	public AbstractClaim(String cName, Date sDate, Date eDate) {
-		claimantName = cName;
-		startDate = sDate;
-		endDate = eDate;
-		
-		destinationReasonList = new HashMap<String, String>();
-		claimTagList          = new ArrayList<Tag>();
-		isComplete            = false;
-		approverList          = new ArrayList<User>();
-		commentList           = new HashMap<String, String>();
-		listeners             = new ArrayList<Listener>();
-		expenseList           = new ExpenseList();
-	}
-	
-	
-
 	
 	/** 	 
 	 * returns a exenepseList object that contains 
@@ -74,7 +35,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @param 
 	 * @return ExpenseList object **/
 	public ExpenseList getExpenseList() {
-		return expenseList;
+		return progressClaim.getExpenseList();
 	}
 
 	
@@ -86,7 +47,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return
 	 */
 	public String getReason(String destination) {
-		return destinationReasonList.get(destination);
+		return progressClaim.getReason(destination);
 	}
 	
 	/**
@@ -94,7 +55,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return HashMap of destinations (String) mapped to reasons (String).
 	 */
 	public HashMap<String, String> getDestinationReasonList() {
-		return destinationReasonList;
+		return progressClaim.getDestinationReasonList();
 	}
 	
 	/**
@@ -102,7 +63,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return int corresponding to number of destinations in Claim.
 	 */
 	private int getDestinationCount() {
-		return destinationReasonList.size();
+		return progressClaim.getDestinationReasonList().size();
 	}
 	
 	/**
@@ -110,7 +71,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return Set of destinations (Strings) in claim
 	 */
 	public Set<String>  getDestinations() {
-		return destinationReasonList.keySet();
+		return progressClaim.getDestinationReasonList().keySet();
 	}
 	
 
@@ -119,7 +80,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return name The name of the claimant for the Claim.
 	 */
 	public String getClaimantName() {
-		return claimantName;
+		return progressClaim.getClaimantName();
 	}
 
 	/**
@@ -127,7 +88,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return ArrayList of Tags containing the tags set for the claim.
 	 */
 	public ArrayList<Tag> getClaimTagList() {
-		return claimTagList;
+		return progressClaim.getClaimTagList();
 	}
 	
 	/**
@@ -135,7 +96,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return int corresponding the number of tags set for the claim.
 	 */
 	private int getTagCount() {
-		return claimTagList.size();
+		return progressClaim.getClaimTagList().size();
 	}
 
 
@@ -145,20 +106,8 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return boolean indicating whether claim is complete.
 	 */
 	public boolean isComplete() {
-		return isComplete;
+		return progressClaim.isComplete();
 	}
-
-
-
-	/**
-	 * Get the list of approvers for the current Claim
-	 * @return ArrayList of Users corresponding to the approvers who have returned or approved the claim
-	 */
-	public ArrayList<User> getApproverList() {
-		return approverList;
-	}
-
-
 
 	/**
 	 * Get a Map mapping approvers of the claim to any comments they may have left.
@@ -175,7 +124,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return startDate (Date) of the Claim.
 	 */
 	public Date getStartDate() {
-		return startDate;
+		return progressClaim.getStartDate();
 	}
 	
 
@@ -184,15 +133,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * @return endDate (Date) of the Claim.
 	 */
 	public Date getEndDate() {
-		return endDate;
-	}
-	
-	/**
-	 * Set the TagList for the claim
-	 * @param claimTagList The TagList containing the new tags to be set for the claim.
-	 */
-	public void setClaimTagList(ArrayList<Tag> claimTagList) {
-		this.claimTagList = claimTagList;
+		return progressClaim.getEndDate();
 	}
 	
 
@@ -289,6 +230,9 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 */
 	@Override
 	public int compareTo( AbstractClaim claim ) {
-		return this.startDate.compareTo(claim.startDate);
+		if (ClaimListController.getUserType().equals("Claimant")) {
+			return claim.getStartDate().compareTo(this.startDate);
+		}
+		return this.startDate.compareTo(claim.getStartDate());
 	}
 }

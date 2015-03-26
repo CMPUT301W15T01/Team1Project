@@ -15,5 +15,4 @@ public class ReturnedClaim extends AbstractClaim {
 		
 	}
 	
-
 }
