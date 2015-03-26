@@ -59,6 +59,7 @@ public class EditExpenseActivity extends Activity {
 		expenseList = claim.getExpenseList();
 		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
 		expenseListController=new ExpenseListController(expenseList);
+		expenseListController.setCurrentExpense(expense);
 		
 		listener=new Listener() {			
 			@Override

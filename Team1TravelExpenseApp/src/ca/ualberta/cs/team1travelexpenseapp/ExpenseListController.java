@@ -164,6 +164,7 @@ public class ExpenseListController {
 	 */
 	public void onAddExpenseClick(ClaimantExpenseListActivity activity) {
 		addExpense(new Expense());
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(currentExpense);
 		Intent intent = new Intent(activity, EditExpenseActivity.class);
 		activity.startActivity(intent);
 		
