@@ -138,18 +138,19 @@
 		        android:textAppearance="?android:attr/textAppearanceMedium" />
 		    
 		   <ImageButton
-		        android:id="@+id/imageButton1"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-				android:layout_below="@+id/recieptHeader"
-		        android:src="@android:drawable/btn_star" />
+		       android:id="@+id/viewPhotoButton"
+		       android:layout_width="fill_parent"
+		       android:layout_height="wrap_content"
+		       android:layout_below="@+id/recieptHeader"
+		       android:src="@android:drawable/btn_star" />
 
 		   <Button
 		       android:id="@+id/deletePhotoButton"
 		       style="?android:attr/buttonStyleSmall"
 		       android:layout_width="wrap_content"
 		       android:layout_height="wrap_content"
-		       android:layout_below="@+id/imageButton1"
+		       android:layout_below="@+id/viewPhotoButton"
+		       android:onClick="onDeletePhotoClick"
 		       android:text="(-)" />
 
 		   <Button
@@ -159,6 +160,7 @@
 		       android:layout_height="wrap_content"
 		       android:layout_alignParentBottom="true"
 		       android:layout_toRightOf="@+id/deletePhotoButton"
+		       android:onClick="takePhoto"
 		       android:text="(+)" />
 
         </RelativeLayout>

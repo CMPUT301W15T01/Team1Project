@@ -1,3 +1,17 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
@@ -61,10 +75,16 @@ public class TagListController {
 	 * Grabs the string entered by the user and creates a new tag by that name in the TagList.
 	 * @param dialog The Dialog in which the add tag button resides
 	 */
-    public static void onAddTagClick(DialogInterface dialog) {
+    public static boolean onAddTagClick(DialogInterface dialog) {
         EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
+        if(getTagList().hasTagNamed(name)){
+        	return false;
+        }
+        else{
         TagListController.addTag(new Tag(name));
+        return true;
+        }
     }
     
     /**
@@ -73,10 +93,16 @@ public class TagListController {
      * @param dialog The Dialog in which the set tag button resides
      * @param tag The Tag to be modified
      */
-    public static void onSetTagClick(DialogInterface dialog, Tag tag) {
+    public static boolean onSetTagClick(DialogInterface dialog, Tag tag) {
  	   	EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
-        TagListController.updateTag(tag, name);;
+        if(getTagList().hasTagNamed(name)){
+        	return false;
+        }
+        else{
+        TagListController.updateTag(tag, name);
+        return true;
+        }
     }
 
     /**
@@ -95,4 +121,5 @@ public class TagListController {
     public static void clearTagList(){
     	tagList=new TagList();
     }
+    
 }

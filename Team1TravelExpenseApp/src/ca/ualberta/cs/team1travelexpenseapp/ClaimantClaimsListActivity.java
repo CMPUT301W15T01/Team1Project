@@ -1,15 +1,31 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 // this is the starting claim menu 
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +41,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+/**
+ * Displays the claimant's list of claims and allows them to be clicked to view the underlying 
+ * expenses. Items in the list can also be long clicked to open a dialog to choose to delete or 
+ * edit the info of the claim.
+ *
+ */
 public class ClaimantClaimsListActivity extends Activity {
 	
 	private ClaimList claimList;
@@ -32,6 +54,10 @@ public class ClaimantClaimsListActivity extends Activity {
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
+ 	private static ArrayList<Claim> displayList;
+ 	
+ 	public static Activity activity;
+ 	private static ArrayAdapter<Claim> claimsAdapter;
 
  	
 	
@@ -39,27 +65,35 @@ public class ClaimantClaimsListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.claimant_activity_main);
+		activity = this;
+		
+		//set up the tag filter spinner
+		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		tagSpinner.setItems(TagListController.getTagList().getTags());
+		//ArrayList<Tag> claimTags=ClaimListController.getCurrentClaim().getClaimTagList();
+		//tagSpinner.setSelection(claimTags);
 
 		//As an approver, I want to view a list of all the expense claims that were submitted 
 		//for approval, which have their claim status as submitted, showing for each claim:
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 
-        mainListView = (ListView) findViewById(R.id.claimsList);
+		mainListView = (ListView) findViewById(R.id.claimsList);
         
         //taken from https://github.com/abramhindle/student-picker and modified
   		claimList=ClaimListController.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
-		final ArrayList<Claim> claimsList = new ArrayList<Claim>(claims);
-  		final ArrayAdapter<Claim> claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, claimsList);
+  		displayList = new ArrayList<Claim>(claims);
+  		claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, displayList);
+
   		mainListView.setAdapter(claimsAdapter);
   		
   		listener=new Listener() {			
 			@Override
 			public void update() {
-				claimsList.clear();
+				displayList.clear();
 				Collection<Claim> claims = ClaimListController.getClaimList().getClaims();
-				claimsList.addAll(claims);
+		  		displayList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
 			}
 		};
@@ -124,13 +158,14 @@ public class ClaimantClaimsListActivity extends Activity {
     		}
     	      	
     });
-        
-        
-        
-        
 
 	}
-
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -150,19 +185,35 @@ public class ClaimantClaimsListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	/**
+	 * Call the onAddClaimClick function in the ClaimListController
+	 * @param v The button clicked by the user.
+	 */
 	public void onAddClaimClick(View v) {
 		ClaimListController.onAddClaimClick(this);
 	}
 	
+	/**
+	 * Open the TagManagerActivity to allow the user to add, edit and delete available Tags.
+	 * @param v The button clicked by the user.
+	 */
 	public void onManageTagsClick(View v){
 		Intent intent= new Intent(this, TagManagerActivity.class);
 		startActivity(intent);
 	}
 	
+	/**
+	 * On destroy remove the listener from the claimList so it does not continue notifying it.
+	 */
 	public void onDestroy(){
 		super.onDestroy();
 		claimList.removeListener(listener);
 	}
-	
+
+
+	public static ArrayAdapter<Claim> getArrayAdapter() {
+		// TODO Auto-generated method stub
+		return claimsAdapter;
+	}
 	
 }

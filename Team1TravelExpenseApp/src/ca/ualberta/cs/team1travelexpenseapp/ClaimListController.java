@@ -1,3 +1,17 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
@@ -29,6 +43,11 @@ public class ClaimListController {
 	 * The apps main list of claims
 	 */
 	protected static ClaimList claimsList = null;
+	
+	/**
+	 * all claims in the system 
+	 */
+	protected static ClaimList allClaims = null;
 	/**
 	 * The list of claims that are to be displayed in a view
 	 */
@@ -54,6 +73,17 @@ public class ClaimListController {
 		}
 		
 		return claimsList;
+	}
+	/**
+	 * Gets the all claims list
+	 * @return returns the all claims list
+	 */
+	public static ClaimList getAllClaimList() { 
+		if (allClaims == null) {
+			allClaims = new ClaimList();
+		}
+		
+		return allClaims;
 	}
 	/**
 	 * Gets the displayed claims list
@@ -95,6 +125,7 @@ public class ClaimListController {
 	}
 	/**
 	 * Sets the current claim that is selected by user
+	 * DOES NOT UPDATE CLAIMS LIST 
 	 * @param claim The claim that is selected
 	 */
 	public static void setCurrentClaim(Claim claim){
@@ -117,8 +148,6 @@ public class ClaimListController {
 	 * @param activity 
 	 */
 	public static void onSubmitClick (final ClaimantExpenseListActivity activity) {
-		
-	
 		
 		boolean expensesFlag = false;
 		boolean expensesComplete = true;
@@ -158,8 +187,8 @@ public class ClaimListController {
 				}
 			});
 			submitBuilder.setTitle("Claim may be incomplete");
-			submitWarningDialog=submitBuilder.create();
-			submitWarningDialog.show();
+			activity.submitWarningDialog=submitBuilder.create();
+			activity.submitWarningDialog.show();
 
 		}else{
 			
@@ -297,6 +326,8 @@ public class ClaimListController {
 		ArrayList<Claim> claimArray=getClaimList().getClaims();
 		setCurrentClaim(claim);
 		claimArray.add(claim);
+		getAllClaimList();
+		allClaims.addClaim(claim);
 		//displays an empty claim in claim list 
 		claimsList.setClaimList(claimArray);
 		
@@ -309,21 +340,14 @@ public class ClaimListController {
 		// TODO Auto-generated method stub
 		ClaimList submittedclaims = new ClaimList();
 		
-		for (Claim item: getClaimList().getClaims()) {
+		for (Claim item: getAllClaimList().getClaims()) {
 			
 			if ((item.status.equals(Claim.Status.submitted))) {
 				submittedclaims.addClaim(item);
 			}
 		}
+		//claimsList.setClaimList(submittedclaims.getClaims());
 		return submittedclaims;
-	}
-	/**
-	 * clears the claims list
-	 */
-	public static void clearClaims() {
-		claimsList = null;
-		getClaimList();
-		
 	}
 	/**
 	 * The onClick method for deleting a claim
@@ -334,6 +358,7 @@ public class ClaimListController {
 		
 			ArrayList<Claim> claims = getClaimList().getClaims();
 			claims.remove(currentClaim);
+			allClaims.getClaims().remove(currentClaim);
 			claimsList.setClaimList(claims);
 		}
 		
@@ -394,5 +419,9 @@ public class ClaimListController {
     public static void clearClaimList(){
     	claimsList=new ClaimList();
     }
+	public static String getUserType() {
+		// TODO Auto-generated method stub
+		return user.type();
+	}
 	
 }

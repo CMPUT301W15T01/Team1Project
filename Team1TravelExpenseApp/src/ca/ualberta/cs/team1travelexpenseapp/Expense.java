@@ -1,3 +1,17 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.io.File;
@@ -22,7 +36,9 @@ public class Expense {
 	protected File receipt;
 
 	/**
-	 * Create a new Expense with a given description, date, and category.
+	 * Create a new Expense with a given description, date, and category. If all these values are
+	 * set as something the Expense will be designated as complete by setting Expense.isComplete
+	 * to true. 
 	 * @param description
 	 * The Description for the Expense as a String.
 	 * @param date
@@ -45,7 +61,8 @@ public class Expense {
 		isFlagged = false;
 		receipt = null;
 		
-		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none")){
+		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none") 
+				|| date.equals(null) ){
 			isComplete = false;
 		}
 		else {
@@ -182,7 +199,7 @@ public class Expense {
 	 */
 	public File getReceipt() {
 		//Stub
-		return null;
+		return this.receipt;
 	}
 	
 	/**
@@ -231,13 +248,15 @@ public class Expense {
 			str += "\n" + getAmount() + getCurrency();
 		}
 		if ( receipt != null) {
-			str += "\nHas Photo";
+			str += "\nPhoto: Yes";
+		} else {
+			str += "\nPhoto: No";
 		}
 		if ( !isComplete()) {
-			str += "\nincomplete";
+			str += "\nMISSING FIELDS";
 		}
 		if (isFlagged()){
-			str += "\nflagged";
+			str += "\nFlagged as incomplete";
 		}
 
 
@@ -254,5 +273,7 @@ public class Expense {
 	public static void compressPhoto(EditExpenseActivity activity,
 			File photoFile) {
 		// TODO Compress photofile
+		
+		
 	}
 }

@@ -9,7 +9,7 @@
     tools:context="ca.ualberta.cs.team1travelexpenseapp.LoginActivity" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/userNameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/usernameTextView"
@@ -35,7 +35,7 @@
         android:id="@+id/userButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/userNameField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="84dp"
         android:onClick="userLogin"

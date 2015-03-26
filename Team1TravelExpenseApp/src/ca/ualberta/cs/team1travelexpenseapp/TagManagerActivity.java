@@ -1,8 +1,20 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 /**
  * View for managing the application's list of tags.
@@ -74,7 +87,11 @@ public class TagManagerActivity extends Activity {
 						 editTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
 						 editTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   TagListController.onSetTagClick(dialog, tag);
+					        	   boolean tagChanged=TagListController.onSetTagClick(dialog, tag);
+					        	   if(!tagChanged){
+					            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that "
+					            	   		+ "name exists (not modified)",Toast.LENGTH_LONG).show();
+					               }
 					           }
 					       });
 						editTagDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
@@ -103,7 +120,11 @@ public class TagManagerActivity extends Activity {
 		
 		newTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               TagListController.onAddTagClick(dialog);
+	               boolean tagAdded=TagListController.onAddTagClick(dialog);
+	               if(!tagAdded){
+	            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that name exists (not added)",
+	            			   Toast.LENGTH_LONG).show();
+	               }
 	           }
 	       });
 		newTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {

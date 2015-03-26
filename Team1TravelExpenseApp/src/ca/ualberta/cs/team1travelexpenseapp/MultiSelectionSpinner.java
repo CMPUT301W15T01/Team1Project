@@ -1,18 +1,38 @@
+/*
+Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
 //taken and modified from http://v4all123.blogspot.in/2013/09/spinner-with-multiple-selection-in.html (March 14 2015), used with permission of author
 package ca.ualberta.cs.team1travelexpenseapp;  
   
 import java.util.ArrayList;
 import java.util.Arrays;  
+import java.util.Collection;
 import java.util.LinkedList;  
 import java.util.List;  
   
 
+import android.app.Activity;
 import android.app.AlertDialog;  
 import android.content.Context;  
 import android.content.DialogInterface;  
+import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;  
 import android.util.AttributeSet;  
+import android.util.Log;
 import android.widget.ArrayAdapter;  
+import android.widget.ListView;
 import android.widget.Spinner;  
 import android.widget.SpinnerAdapter;  
 /**
@@ -27,12 +47,13 @@ public class MultiSelectionSpinner extends Spinner implements
  String[] _items = null;  
  boolean[] mSelection = null;
  ArrayList itemsList  = null;
+ Context context;
   
  ArrayAdapter<String> simple_adapter;
   
  public MultiSelectionSpinner(Context context) {  
   super(context);  
-  
+  this.context = context;
   simple_adapter = new ArrayAdapter<String>(context,  
     android.R.layout.simple_spinner_item);  
   super.setAdapter(simple_adapter);  
@@ -41,7 +62,7 @@ public class MultiSelectionSpinner extends Spinner implements
 
  public MultiSelectionSpinner(Context context, AttributeSet attrs) {  
   super(context, attrs);  
-  
+  this.context = context;
   simple_adapter = new ArrayAdapter<String>(context,  
     android.R.layout.simple_spinner_item);  
   super.setAdapter(simple_adapter);  
@@ -63,7 +84,7 @@ public class MultiSelectionSpinner extends Spinner implements
  @Override  
  public boolean performClick() {  
   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());  
-  builder.setMultiChoiceItems(_items, mSelection, this);  
+  builder.setMultiChoiceItems(_items, mSelection, this);
   builder.show();  
   return true;  
  }  

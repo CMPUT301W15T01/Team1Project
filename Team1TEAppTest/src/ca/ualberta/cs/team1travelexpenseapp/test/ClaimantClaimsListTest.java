@@ -164,7 +164,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	//US04.08.01
 	public void testNav() {
 		
-		ClaimListController.clearClaims();
+		ClaimListController.clearClaimList();
 		Calendar CalDate = Calendar.getInstance();
 		CalDate.set(2014,10,10,0,0,0);
 		Date startDate = CalDate.getTime();

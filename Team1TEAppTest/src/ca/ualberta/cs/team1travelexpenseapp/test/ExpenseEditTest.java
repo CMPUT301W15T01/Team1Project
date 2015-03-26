@@ -76,6 +76,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	protected void setUp() throws Exception {
 		super.setUp();
 		ClaimListController.clearClaimList();
+		
+		ClaimListController.setUser(new User("claimant", "test"));
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
 		getExpenseListactivity();
@@ -670,7 +672,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
     	costText = (EditText) activity.findViewById( R.id.currencyBody);  
     	categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector); 
     	currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
-    	imageButton = (ImageButton) activity.findViewById(R.id.imageButton1);
+    	imageButton = (ImageButton) activity.findViewById(R.id.viewPhotoButton);
 		saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);	
 	}
 	
