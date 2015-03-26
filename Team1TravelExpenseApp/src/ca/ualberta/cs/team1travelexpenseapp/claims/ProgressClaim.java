@@ -1,10 +1,9 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
-import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.SubmittedClaimAdapter;
 
 public class ProgressClaim extends AbstractClaim {
 
@@ -16,6 +15,13 @@ public class ProgressClaim extends AbstractClaim {
 	public ProgressClaim(String cName, Date sDate, Date eDate) {
 		super(cName, sDate, eDate);
 		status = "inProgress";
+	}
+	
+	/**
+	 * returns the same claim information but wrapped in a SubmittedClaim object
+	 */
+	public SubmittedClaim changeStatus() {
+		return new SubmittedClaimAdapter(this);
 	}
 	
 	/** 
@@ -43,14 +49,6 @@ public class ProgressClaim extends AbstractClaim {
 	 */
 	public void setClaimantName(String name) {
 		claimantName = name;
-	}
-	
-	/**
-	 * Set the TagList for the claim
-	 * @param claimTagList The TagList containing the new tags to be set for the claim.
-	 */
-	public void setClaimTagList(ArrayList<Tag> claimTagList) {
-		this.claimTagList = claimTagList;
 	}
 	
 	/**
