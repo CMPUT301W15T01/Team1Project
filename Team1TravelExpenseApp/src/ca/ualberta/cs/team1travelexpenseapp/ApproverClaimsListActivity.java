@@ -44,7 +44,7 @@ public class ApproverClaimsListActivity extends Activity {
 	private ClaimList claimList;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
- 	public  User user;
+ 	public  Approver user;
 
  	
 	
@@ -58,7 +58,7 @@ public class ApproverClaimsListActivity extends Activity {
 		//the claimant name, the starting date of travel, the destination(s) of travel, the 
 		//claim status, total currency amounts, and any approver name.
 
-		user=UserSingleton.getUserSingleton().getUser();
+		user=(Approver)UserSingleton.getUserSingleton().getUser();
       //taken from https://github.com/abramhindle/student-picker (March 15, 2015) and modified
 		// TODO: show approved claims and make sure the approver doesn't see their own claims
 		final ListView claimsListView = (ListView) findViewById(R.id.approverclaimList);

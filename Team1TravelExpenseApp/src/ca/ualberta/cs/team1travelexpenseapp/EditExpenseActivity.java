@@ -69,6 +69,7 @@ public class EditExpenseActivity extends Activity {
 		};
 		
 		expenseList.addListener(listener);
+		
 	}
 
 	private void updateValues(){

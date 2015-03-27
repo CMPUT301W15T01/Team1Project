@@ -153,6 +153,7 @@ public class ExpenseListController {
 		
 		updateExpense(getCurrentExpense(), expense);
 		
+		
 		activity.finish();	
 	}
 	

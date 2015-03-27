@@ -67,6 +67,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		user=UserSingleton.getUserSingleton().getUser();
 		claimListController=new ClaimListController(user.getClaimList());
 		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
+		claimListController.setCurrentClaim(claim);
 		expenseList=claim.getExpenseList();
 		expenseListController= new ExpenseListController(expenseList);
 		

@@ -162,8 +162,7 @@ public class ClaimListController {
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
 				//push online here
-				Intent intent = new Intent(activity, ClaimantClaimsListActivity.class);
-				activity.startActivity(intent);
+				activity.finish();
 			}
 			else{
 				Toast.makeText(activity.getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
