@@ -11,14 +11,20 @@ import java.util.Map;
 import java.util.Set;
 
 import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.User;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 
 public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
+	
 
 	protected ExpenseList expenseList;
 	protected String claimantName;
@@ -31,6 +37,7 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
 	protected Class<?> status;
+
 	
 	/** Initializes attributes to new instances **/
 	public BasicClaim() { 
@@ -84,8 +91,6 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	public void setExpenseList(ExpenseList expenseList) {
 		this.expenseList = expenseList;
 	}
-	
-	
 	
 	/**
 	 * adds a destination, with a reason to the claim 
@@ -230,7 +235,7 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	 * @param comment String to be added as comment.
 	 */
 	public void addComment(String comment) {
-		commentList.put(ClaimListController.getUser().getName(), comment);
+		commentList.put(UserSingleton.getUserSingleton().getUser().getName(), comment);
 	}
 
 	/**
@@ -357,22 +362,16 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	 */
 	@Override
 	public int compareTo( BasicClaim claim ) {
-		if (ClaimListController.getUserType().equals("Claimant")) {
+		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
 			return claim.getStartDate().compareTo(this.startDate);
 		}
 		return this.startDate.compareTo(claim.getStartDate());
-	}
-
-	@Override
-	public BasicClaim changeStatus(Class<?> claimStatusType) {
-		return this;
 	}
 
 	/**
 	 * Get the status (inProgress, submitted, approved, returned) for the claim.
 	 * @return Status for the claim.
 	 */
-	@Override
 	public Class<?> getStatus() {
 		return status;
 	}
@@ -381,12 +380,18 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	 * Set the status (inProgress, submitted, approved, returned) for the claim.
 	 * @param status enum Status to be set as claim status.
 	 */
-	@Override
-	public void setStatus(Class<?> claimStatusType) {
-		if (claimStatusType.isInstance(BasicClaim.class) ) {
-		this.status = claimStatusType;
+	public void setStatus(Class<?> status) {
+		if (status.isInstance(BasicClaim.class)) {
+			this.status = status;
+		} else {
+			throw new RuntimeException("Not a claim type");
 		}
 	}
 
+	@Override
+	public BasicClaim changeStatus(Class<?> claimStatusType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

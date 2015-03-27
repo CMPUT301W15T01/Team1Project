@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
+
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -58,6 +59,8 @@ public class ClaimantClaimsListActivity extends Activity {
  	
  	public static Activity activity;
  	private static ArrayAdapter<Claim> claimsAdapter;
+ 	private Claimant user;
+ 	private ClaimListController claimListController;
 
  	
 	
@@ -65,11 +68,16 @@ public class ClaimantClaimsListActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.claimant_activity_main);
+		
+		user=(Claimant) UserSingleton.getUserSingleton().getUser();
+		claimListController= new ClaimListController(user.getClaimList());
+		
+		
 		activity = this;
 		
 		//set up the tag filter spinner
 		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
-		tagSpinner.setItems(TagListController.getTagList().getTags());
+		tagSpinner.setItems(user.getTagList().getTags());
 		//ArrayList<Tag> claimTags=ClaimListController.getCurrentClaim().getClaimTagList();
 		//tagSpinner.setSelection(claimTags);
 
@@ -81,7 +89,7 @@ public class ClaimantClaimsListActivity extends Activity {
 		mainListView = (ListView) findViewById(R.id.claimsList);
         
         //taken from https://github.com/abramhindle/student-picker and modified
-  		claimList=ClaimListController.getClaimList();
+  		claimList=user.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
   		displayList = new ArrayList<Claim>(claims);
   		claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, displayList);
@@ -92,7 +100,7 @@ public class ClaimantClaimsListActivity extends Activity {
 			@Override
 			public void update() {
 				displayList.clear();
-				Collection<Claim> claims = ClaimListController.getClaimList().getClaims();
+				Collection<Claim> claims = user.getClaimList().getClaims();
 		  		displayList.addAll(claims);
 				claimsAdapter.notifyDataSetChanged();
 			}
@@ -103,7 +111,7 @@ public class ClaimantClaimsListActivity extends Activity {
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
-        		ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
+        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claimsAdapter.getItem(position));
         		Intent intent= new Intent(getBaseContext(),ClaimantExpenseListActivity.class);	
         		startActivity(intent);
         	}
@@ -112,7 +120,8 @@ public class ClaimantClaimsListActivity extends Activity {
        mainListView.setOnItemLongClickListener(new OnItemLongClickListener(){
         	
     		public boolean onItemLongClick( AdapterView<?> Parent, View v, int position, long id){
-    			 ClaimListController.setCurrentClaim(claimsAdapter.getItem(position));
+    			final Claim clickedClaim=claimsAdapter.getItem(position);
+    			claimListController.setCurrentClaim(clickedClaim);
     			
     			//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (March 15, 2015)
 				 AlertDialog.Builder editClaimDialogBuilder = new AlertDialog.Builder(ClaimantClaimsListActivity.this);
@@ -120,7 +129,7 @@ public class ClaimantClaimsListActivity extends Activity {
 				 editClaimDialogBuilder.setPositiveButton("edit", new DialogInterface.OnClickListener() {
 
 			           public void onClick(DialogInterface dialog, int id) {		
-			    		
+			        	   SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(clickedClaim);
 			        	   Intent edit = new Intent(getBaseContext(), EditClaimActivity.class);
 			        	   startActivity(edit);
 			    					
@@ -130,9 +139,9 @@ public class ClaimantClaimsListActivity extends Activity {
 				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
-			        	   if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted){
-			        			   if (ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-			        				   ClaimListController.onRemoveClaimClick();
+			        	   if(claimListController.getCurrentClaim().getStatus()!= Status.submitted){
+			        			   if (claimListController.getCurrentClaim().getStatus() != Status.approved){
+			        				   claimListController.onRemoveClaimClick();
 			        			   }
 			        			   else{
 			        				   Toast.makeText(getApplicationContext(),"This claim can not be deleted", Toast.LENGTH_SHORT).show();
@@ -190,7 +199,7 @@ public class ClaimantClaimsListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onAddClaimClick(View v) {
-		ClaimListController.onAddClaimClick(this);
+		claimListController.onAddClaimClick(this);
 	}
 	
 	/**

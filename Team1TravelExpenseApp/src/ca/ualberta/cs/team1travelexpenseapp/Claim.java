@@ -271,7 +271,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param comment String to be added as comment.
 	 */
 	public void addComment(String comment) {
-		commentList.put(ClaimListController.getUser().getName(), comment);
+		commentList.put(UserSingleton.getUserSingleton().getUser().getName(), comment);
 	}
 
 	/**
@@ -398,9 +398,6 @@ public class Claim implements Comparable<Claim>{
 	 */
 	@Override
 	public int compareTo( Claim claim ) {
-		if (ClaimListController.getUserType().equals("Claimant")) {
-			return claim.startDate.compareTo(this.startDate);
-		}
 		return this.startDate.compareTo(claim.startDate);
 	}
 	

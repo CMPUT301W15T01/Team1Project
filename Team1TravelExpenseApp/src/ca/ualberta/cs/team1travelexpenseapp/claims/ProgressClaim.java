@@ -87,6 +87,7 @@ public class ProgressClaim extends BasicClaim {
 	}
 
 
+	
 	@Override
 	public BasicClaim changeStatus(Class<?> claimStatusType) {
 		return new ClaimAdapter<ProgressClaim>(this, claimStatusType);
