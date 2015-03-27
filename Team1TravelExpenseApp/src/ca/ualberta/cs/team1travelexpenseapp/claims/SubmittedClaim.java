@@ -5,6 +5,7 @@ import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.User;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 
 public class SubmittedClaim extends AbstractClaim {
 
@@ -31,7 +32,7 @@ public class SubmittedClaim extends AbstractClaim {
 	 * @param comment String to be added as comment.
 	 */
 	public void addComment(String comment) {
-		commentList.put(ClaimListController.getUser().getName(), comment);
+		commentList.put(UserSingleton.getUserSingleton().getUser().getName(), comment);
 	}
 
 }

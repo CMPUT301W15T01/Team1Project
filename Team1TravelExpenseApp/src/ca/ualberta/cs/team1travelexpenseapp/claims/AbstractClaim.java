@@ -289,9 +289,6 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 */
 	@Override
 	public int compareTo( AbstractClaim claim ) {
-		if (ClaimListController.getUserType().equals("Claimant")) {
-			return claim.startDate.compareTo(this.startDate);
-		}
 		return this.startDate.compareTo(claim.startDate);
 	}
 }

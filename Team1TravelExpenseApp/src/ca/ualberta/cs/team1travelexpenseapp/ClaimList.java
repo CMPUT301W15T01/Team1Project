@@ -32,7 +32,7 @@ public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
 	private ClaimListManager manager;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	
 	/**
 	 * Create the ClaimList with new ArrayLists of Claims, selectedTags, and listeners.

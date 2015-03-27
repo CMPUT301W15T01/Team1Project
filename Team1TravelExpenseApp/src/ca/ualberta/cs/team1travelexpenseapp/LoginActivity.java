@@ -65,12 +65,15 @@ public class LoginActivity extends Activity {
 		EditText userNameField = (EditText) findViewById(R.id.userNameField);
 		String currentUserName=userNameField.getText().toString();
 		if(currentUserName.equals("")) currentUserName="Guest";
-		User currentUser=new User("Approver", currentUserName);
-		ClaimListController.setUser(currentUser);
-		TagListController.getTagList().getManager().setContext(getApplicationContext());
-		TagListController.getTagList().loadTags();
-		ClaimListController.getClaimList().getManager().setContext(getApplicationContext());
-		ClaimListController.getClaimList().loadClaims();
+		Approver currentUser=new Approver(currentUserName);
+		UserSingleton.getUserSingleton().setUser(currentUser);
+		ClaimList claimList=currentUser.getClaimList();
+		claimList.getManager().setContext(getApplicationContext());
+		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
+		claimListManager.setContext(getApplicationContext());
+		//temporary savefile name for testing approver side without online funcitonality
+		claimListManager.setSaveFile("Guest_claims.sav");
+		claimList.loadClaims();
 		startActivity(intent);
 	}
 	
@@ -78,17 +81,29 @@ public class LoginActivity extends Activity {
 	 * Start the ClaimantClaimsListActivity if the user chooses to log in as an claimant.
 	 * @param v the button clicked by the user.
 	 */
-	public void userLogin(View v){
+	public void claimantLogin(View v){
 		Intent intent = new Intent(LoginActivity.this,ClaimantClaimsListActivity.class);
 		EditText userNameField = (EditText) findViewById(R.id.userNameField);
 		String currentUserName=userNameField.getText().toString();
 		if(currentUserName.equals("")) currentUserName="Guest";
-		User currentUser=new User("Claimant", currentUserName);
-		ClaimListController.setUser(currentUser);
-		TagListController.getTagList().getManager().setContext(getApplicationContext());
-		TagListController.getTagList().loadTags();
-		ClaimListController.getClaimList().getManager().setContext(getApplicationContext());
-		ClaimListController.getClaimList().loadClaims();
+		
+		
+		Claimant currentUser=new Claimant(currentUserName);
+		UserSingleton.getUserSingleton().setUser(currentUser);
+		
+		
+		TagListManager tagListManager=currentUser.getTagList().getManager();
+		tagListManager.setContext(getApplicationContext());
+		tagListManager.setSaveFile(currentUserName+"_tags.sav");
+		currentUser.getTagList().loadTags();
+		
+		
+		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
+		claimListManager.setContext(getApplicationContext());
+		claimListManager.setSaveFile(currentUserName+"_claims.sav");
+		currentUser.getClaimList().loadClaims();
+		
+		
 		startActivity(intent);
 	}
 }
