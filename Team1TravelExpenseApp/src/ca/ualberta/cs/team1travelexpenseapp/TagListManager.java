@@ -36,7 +36,7 @@ import android.content.Context;
 public class TagListManager {
 	private TagList tagList;
 	private Context context;
-	private String saveFile;
+	private String claimantName;
 	
 	/**
 	 * Initialize with the tagList to be managed.
@@ -44,11 +44,11 @@ public class TagListManager {
 	 */
 	TagListManager(TagList tagList){
 		this.tagList=tagList;
-		this.saveFile="tags.sav";
+		this.claimantName="Guest";
 	}
 
-	public void setSaveFile(String savefile) {
-		this.saveFile = savefile;
+	public void setClaimantName(String claimantName) {
+		this.claimantName=claimantName;
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class TagListManager {
 	public void saveTags(){
 		Gson gson = new Gson();
 		try {
-			FileOutputStream fos = context.openFileOutput(saveFile, 0);
+			FileOutputStream fos = context.openFileOutput(claimantName+"_tags.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			gson.toJson(tagList.getTags(), osw);
 			osw.flush();
@@ -79,7 +79,7 @@ public class TagListManager {
 		Gson gson = new Gson();
 		ArrayList<Tag> tags=new ArrayList <Tag>();
 		try {
-			FileInputStream fis = context.openFileInput(saveFile);
+			FileInputStream fis = context.openFileInput(claimantName+"_tags.sav");
 			InputStreamReader in =new InputStreamReader(fis);
 			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
 			Type typeOfT = new TypeToken<ArrayList<Tag>>(){}.getType();

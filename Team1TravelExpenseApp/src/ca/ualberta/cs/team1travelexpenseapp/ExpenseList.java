@@ -30,7 +30,6 @@ public class ExpenseList {
 	 */
 	public ExpenseList(){
 		expenseList=new ArrayList<Expense>();
-		listeners=new ArrayList<Listener>();
 	}
 	
 	/**
@@ -39,6 +38,9 @@ public class ExpenseList {
 	 * a listener object
 	 */
 	public void addListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.add(listener);
 	}
 	
@@ -48,6 +50,9 @@ public class ExpenseList {
 	 * a listener object
 	 */
 	public void removeListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	

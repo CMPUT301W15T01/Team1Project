@@ -31,7 +31,7 @@ import android.view.View;
 public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
-	private ClaimListManager manager;
+	private ClaimantClaimListManager manager;
 	private transient ArrayList<Listener> listeners;
 	
 	/**
@@ -40,8 +40,7 @@ public class ClaimList {
 	public ClaimList(){
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
-		listeners = new ArrayList<Listener>();
-		manager=new ClaimListManager(this);
+		manager=new ClaimantClaimListManager(this);
 	}
 	
 	/**
@@ -117,6 +116,9 @@ public class ClaimList {
 	 * @param listener The listener to be added.
 	 */
 	public void addListener(Listener listener) {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		this.listeners.add(listener);
 	}
 	
@@ -154,6 +156,9 @@ public class ClaimList {
 	 * @param listener The listener to be removed
 	 */
 	public void removeListener(Listener listener) {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	
@@ -182,7 +187,7 @@ public class ClaimList {
 		return claimList.get(i);
 	}
 
-	public ClaimListManager getManager() {
+	public ClaimantClaimListManager getManager() {
 		return this.manager;
 	}
 	

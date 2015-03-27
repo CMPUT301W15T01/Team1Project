@@ -71,10 +71,10 @@ public class LoginActivity extends Activity {
 		UserSingleton.getUserSingleton().setUser(currentUser);
 		ClaimList claimList=currentUser.getClaimList();
 		claimList.getManager().setContext(getApplicationContext());
-		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
-		claimListManager.setContext(getApplicationContext());
-		//temporary savefile name for testing approver side without online funcitonality
-		claimListManager.setSaveFile("Guest_claims.sav");
+		ClaimantClaimListManager claimantClaimListManager=currentUser.getClaimList().getManager();
+		claimantClaimListManager.setContext(getApplicationContext());
+		//temporary savefile name for testing approver side without online functionality
+		claimantClaimListManager.setClaimantName(currentUserName);
 		claimList.loadClaims();
 		startActivity(intent);
 	}
@@ -96,13 +96,13 @@ public class LoginActivity extends Activity {
 		
 		TagListManager tagListManager=currentUser.getTagList().getManager();
 		tagListManager.setContext(getApplicationContext());
-		tagListManager.setSaveFile(currentUserName+"_tags.sav");
+		tagListManager.setClaimantName(currentUserName);
 		currentUser.getTagList().loadTags();
 		
 		
-		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
-		claimListManager.setContext(getApplicationContext());
-		claimListManager.setSaveFile(currentUserName+"_claims.sav");
+		ClaimantClaimListManager claimantClaimListManager=currentUser.getClaimList().getManager();
+		claimantClaimListManager.setContext(getApplicationContext());
+		claimantClaimListManager.setClaimantName(currentUserName);
 		currentUser.getClaimList().loadClaims();
 		
 		

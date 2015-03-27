@@ -30,7 +30,6 @@ public class TagList {
 	public TagList(){
 		manager=new TagListManager(this);
 		tagList=new ArrayList<Tag>();
-		listeners=new ArrayList<Listener>();
 	}
 	
 	/**
@@ -38,6 +37,9 @@ public class TagList {
 	 * @param listener The listener to be added
 	 */
 	public void addListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.add(listener);
 	}
 	
@@ -46,6 +48,9 @@ public class TagList {
 	 * @param listener The listener to be removed
 	 */
 	public void removeListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	

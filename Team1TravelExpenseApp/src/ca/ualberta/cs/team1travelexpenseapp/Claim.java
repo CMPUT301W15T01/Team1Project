@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CyclicBarrier;
 
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -59,9 +60,11 @@ public class Claim implements Comparable<Claim>{
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
 	protected Status status;
+	protected UUID uniqueId;
+	protected boolean synced;
 	
 	/** Initializes attributes to new instances **/
-	public Claim() { 
+	public Claim() {
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
@@ -73,6 +76,8 @@ public class Claim implements Comparable<Claim>{
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		uniqueId=UUID.randomUUID();
+		synced=false;
 	}
 
 	/** set claimant name, start and end date, all other attributes are initializes to new instances 
