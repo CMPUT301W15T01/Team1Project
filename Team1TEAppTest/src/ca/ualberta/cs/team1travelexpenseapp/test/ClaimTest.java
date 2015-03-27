@@ -17,10 +17,6 @@ import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
-import ca.ualberta.cs.team1travelexpenseapp.adapter.SubmittedClaimAdapter;
-import ca.ualberta.cs.team1travelexpenseapp.claims.AbstractClaim;
-import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
-import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;
@@ -37,7 +33,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 
 	protected Instrumentation instrumentation;
 	protected ClaimantClaimsListActivity activity = null;
-	ProgressClaim testClaim;
 
 	public ClaimTest() {
 		super(ClaimantClaimsListActivity.class);
@@ -46,7 +41,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	protected void setUp() throws Exception {
 		super.setUp();
 		instrumentation = getInstrumentation();
-		testClaim = new ProgressClaim();
 	}
 	
 	protected void tearDown() throws Exception{
@@ -71,22 +65,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	}
 	
 	
-	public void testAbstractClaim() {
-		testClaim.setClaimantName("John");
-		
-		ArrayList<Tag> tags = new ArrayList<Tag>();
-		tags.add(new Tag("PROGRESS TEST"));
-		testClaim.setClaimTagList(tags);
-		
-		SubmittedClaim submittedClaim = testClaim.changeStatus();
-		assertEquals("Same Tag List", testClaim.getClaimTagList(), submittedClaim.getClaimTagList());
-		
-		tags.add(new Tag("PROGRESS TEST"));
-		submittedClaim.setClaimTagList(tags);
-		
-		assertEquals("Same Tag List", testClaim.getClaimTagList(), submittedClaim.getClaimTagList());
-		
-	}
+
 	
 	
 	//US01.01.01 is in ClaimClaimsListActivityTest.java 
