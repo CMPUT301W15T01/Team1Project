@@ -12,7 +12,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package ca.ualberta.cs.team1travelexpenseapp;
+package ca.ualberta.cs.team1travelexpenseapp.users;
+
+import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
+
 /**
  * Class representing a user that can add and approve claims, has a name and a type which should be either claimant or approver
  */

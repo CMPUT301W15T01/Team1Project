@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CyclicBarrier;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.util.Log;
 import android.widget.Toast;
 

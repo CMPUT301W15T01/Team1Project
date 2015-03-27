@@ -15,6 +15,8 @@ limitations under the License.
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

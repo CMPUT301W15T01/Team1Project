@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Map;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Currency;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

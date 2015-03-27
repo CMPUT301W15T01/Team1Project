@@ -1,5 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
+
 public class UserSingleton {
 	private static UserSingleton userSingleton=null;
 	private User user;

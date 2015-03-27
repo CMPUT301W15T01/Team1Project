@@ -1,10 +1,12 @@
-package ca.ualberta.cs.team1travelexpenseapp;
+package ca.ualberta.cs.team1travelexpenseapp.users;
+
+import ca.ualberta.cs.team1travelexpenseapp.TagList;
 
 public class Claimant extends User {
 	private TagList tagList;
 	
 	
-	Claimant(String name){
+	public Claimant(String name){
 		super(name);
 		this.tagList= new TagList();
 	}

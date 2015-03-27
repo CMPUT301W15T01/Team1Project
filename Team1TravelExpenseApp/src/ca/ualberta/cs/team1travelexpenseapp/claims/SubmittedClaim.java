@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
-import ca.ualberta.cs.team1travelexpenseapp.User;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class SubmittedClaim extends BasicClaim {
 

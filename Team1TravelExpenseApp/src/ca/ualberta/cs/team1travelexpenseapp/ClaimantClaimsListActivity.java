@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ExpandableListActivity;

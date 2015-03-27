@@ -13,15 +13,15 @@ import java.util.Set;
 import android.util.Log;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
-import ca.ualberta.cs.team1travelexpenseapp.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-import ca.ualberta.cs.team1travelexpenseapp.User;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	

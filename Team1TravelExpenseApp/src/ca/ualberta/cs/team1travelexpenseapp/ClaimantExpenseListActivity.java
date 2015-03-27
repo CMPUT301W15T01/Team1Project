@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
