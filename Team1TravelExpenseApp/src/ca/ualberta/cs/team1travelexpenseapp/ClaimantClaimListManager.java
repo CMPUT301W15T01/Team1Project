@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -27,7 +29,8 @@ public class ClaimantClaimListManager {
 	private Context context;
 	private String claimantName;
 	private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/";
-	private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/_search";
+	private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/_search";
+	private HttpClient httpclient = new DefaultHttpClient();
 	
 	
 
@@ -61,9 +64,53 @@ public class ClaimantClaimListManager {
 	}
 	
 	
-	private ArrayList<Claim> loadClaimsFromWeb(){
-		return new ArrayList<Claim>();
+	/**
+	 * get the http response and return json string
+	 */
+	String getEntityContent(HttpResponse response) throws IOException {
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader((response.getEntity().getContent())));
+		String output;
+		System.err.println("Output from Server -> ");
+		String json = "";
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
+			json += output;
+		}
+		System.err.println("JSON:"+json);
+		return json;
 	}
+	
+	private void saveClaimsToWeb(ArrayList<Claim> claims){
+		
+	}
+	
+	
+	private ArrayList<Claim> loadClaimsFromWeb(){
+		ArrayList<Claim> claims =new ArrayList<Claim>();
+		try {
+			HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:"+claimantName);
+			Gson gson = new Gson();
+			searchRequest.setHeader("Accept","application/json");
+			HttpResponse response = httpclient.execute(searchRequest);
+			String json = getEntityContent(response);
+			Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>(){}.getType();
+			ElasticSearchSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
+			Collection <ElasticSearchResponse<Claim>> esResponseList = esResponse.getHits();
+			for(ElasticSearchResponse<Claim> result: esResponseList){
+				claims.add(result.getSource());
+			}
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return claims;
+	}
+	
 	
 	/**
 	 * load Claims from disk (and if possible sync claims with web server). (not yet implemented)
