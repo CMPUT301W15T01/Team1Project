@@ -78,8 +78,6 @@ public class EditClaimActivity extends Activity {
 				|| claim.getStatus()==Status.approved){
 			
 			
-			EditText nameET = (EditText) findViewById(R.id.claimNameBody);
-			nameET.setFocusable(false);
 			EditText destinationET = (EditText) findViewById(R.id.claimDestinationBody);
 			destinationET.setFocusable(false);
 			EditText reasonET = (EditText) findViewById(R.id.claimReasonBody);
@@ -98,9 +96,6 @@ public class EditClaimActivity extends Activity {
 			
 			StatusAlert.show();
 		}
-		
-		TextView nameView  = (TextView) findViewById(R.id.claimNameBody);
-		nameView.setText(claim.getClaimantName());
 		
 		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
 		tagSpinner.setItems(user.getTagList().getTags());

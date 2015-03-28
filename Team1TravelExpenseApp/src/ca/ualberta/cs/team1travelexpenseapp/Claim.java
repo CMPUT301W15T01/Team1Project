@@ -63,6 +63,18 @@ public class Claim implements Comparable<Claim>{
 	protected UUID uniqueId;
 	protected boolean synced;
 	
+	public UUID getUniqueId() {
+		return uniqueId;
+	}
+
+	public boolean isSynced() {
+		return synced;
+	}
+
+	public void setSynced(boolean synced) {
+		this.synced = synced;
+	}
+	
 	/** Initializes attributes to new instances **/
 	public Claim() {
 		claimantName          = "";
@@ -320,7 +332,6 @@ public class Claim implements Comparable<Claim>{
 		HashMap<String, BigDecimal> counts = new HashMap<String, BigDecimal>();	
 		for (Expense expense : this.getExpenseList().getExpenses()){
 			if(counts.containsKey(expense.getCurrency())){
-				Log.d("String test", expense.getAmount().toString());
 				counts.put(expense.getCurrency(), expense.getAmount().add(counts.get(expense.getCurrency())));
 			}
 			else {
@@ -383,7 +394,6 @@ public class Claim implements Comparable<Claim>{
 		Map<String,BigDecimal> totals = getCurrencyTotals();
 	    for(Map.Entry<String, BigDecimal> currency: totals.entrySet()) {
 	         // add each currency to string
-	    	//Log.d("String test", currency.getValue().toString());
 	    	if(currency.getValue().floatValue()==0 || currency.getKey().equals("") ) {
 	    		continue;
 	    	}

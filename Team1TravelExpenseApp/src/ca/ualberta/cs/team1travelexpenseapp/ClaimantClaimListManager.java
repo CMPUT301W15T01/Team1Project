@@ -7,19 +7,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,9 +35,8 @@ public class ClaimantClaimListManager {
 	private ClaimList claimList;
 	private Context context;
 	private String claimantName;
-	private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/";
+	private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/";
 	private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/_search";
-	private HttpClient httpclient = new DefaultHttpClient();
 	
 	
 
@@ -47,24 +53,25 @@ public class ClaimantClaimListManager {
 	 * save Claims to disk (and if possible to web server). (not yet implemented)
 	 */
 	public void saveClaims(){
-		Gson gson = new Gson();
+		ArrayList<Claim> claims=claimList.getClaims();
+		saveClaimsToWeb(claims);	
+		Gson gson= new Gson();
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			gson.toJson(claimList.getClaims(), osw);
+			gson.toJson(claims, osw);
 			osw.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	
 	/**
+	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015
 	 * get the http response and return json string
 	 */
 	String getEntityContent(HttpResponse response) throws IOException {
@@ -81,34 +88,126 @@ public class ClaimantClaimListManager {
 		return json;
 	}
 	
-	private void saveClaimsToWeb(ArrayList<Claim> claims){
-		
+	
+	private void saveClaimToWeb(final Claim claim){
+		if(NetworkAvailable()){
+			
+			Thread t=new Thread(new Runnable() {
+		        public void run() {
+					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
+					StringEntity stringentity = null;
+					Gson gson= new Gson();
+					HttpClient httpclient = new DefaultHttpClient();
+					try {
+						stringentity = new StringEntity(gson.toJson(claim));
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					httpPost.setHeader("Accept","application/json");
+			
+					httpPost.setEntity(stringentity);
+					HttpResponse response = null;
+					try {
+						response = httpclient.execute(httpPost);
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					}
+			
+					String status = response.getStatusLine().toString();
+					Log.d("onlineTest", status);
+					//do something with this response if necessary
+					HttpEntity entity = response.getEntity();
+		        }
+			});
+			t.start();
+		}
 	}
 	
+	private void saveClaimsToWeb(ArrayList<Claim> claims){
+		for(Claim claim: claims){
+			saveClaimToWeb(claim);
+			claim.setSynced(true);
+		}
+	}
 	
+	/**
+	 * Load and return all claims corresponding to the claimantName for this manager from the web server
+	 * @return ArrayList<Claim> containing all claims made by the claimant
+	 */
 	private ArrayList<Claim> loadClaimsFromWeb(){
-		ArrayList<Claim> claims =new ArrayList<Claim>();
-		try {
-			HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:"+claimantName);
-			Gson gson = new Gson();
-			searchRequest.setHeader("Accept","application/json");
-			HttpResponse response = httpclient.execute(searchRequest);
-			String json = getEntityContent(response);
-			Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>(){}.getType();
-			ElasticSearchSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
-			Collection <ElasticSearchResponse<Claim>> esResponseList = esResponse.getHits();
-			for(ElasticSearchResponse<Claim> result: esResponseList){
-				claims.add(result.getSource());
-			}
+		final ArrayList<Claim> claims=new ArrayList<Claim>();
+		if(NetworkAvailable()){
+			Thread t=new Thread(new Runnable() {
+		        public void run() {
+		        	Gson gson= new Gson();
+		        	HttpClient httpclient = new DefaultHttpClient();
+					try {
+						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:"+claimantName);
+						searchRequest.setHeader("Accept","application/json");
+						HttpResponse response = httpclient.execute(searchRequest);
+						String json = getEntityContent(response);
+						Log.d("onlineTest", json);
+						Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>(){}.getType();
+						ElasticSearchSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
+						Collection <ElasticSearchResponse<Claim>> esResponseList = esResponse.getHits();
+						for(ElasticSearchResponse<Claim> result: esResponseList){
+							Log.d("onlineTest", "in web load function:"+result.getSource().toString());
+							claims.add(result.getSource());
+						}
+					} catch (ClientProtocolException e) {
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					} catch (IOException e) {
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					}
+		        }
+			});
+			t.start();
 			
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return claims;
+	}
+	
+	/**
+	 * Remove the passed Claim from the web server.
+	 */
+	public void removeClaimFromWeb(final Claim claim){
+		if(NetworkAvailable()){
+			Thread t=new Thread(new Runnable() {
+		        public void run() {
+		        	HttpClient httpclient = new DefaultHttpClient();
+					HttpDelete httpDelete = new HttpDelete(RESOURCE_URL+claim.getUniqueId());
+					httpDelete.addHeader("Accept","application/json");
+					
+					HttpResponse response=null;
+					try {
+						response = httpclient.execute(httpDelete);
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					}
+			
+					String status = response.getStatusLine().toString();
+					Log.d("onlineTest", status);
+			
+					HttpEntity entity = response.getEntity();
+				}
+			});
+			t.start();
+		}
 	}
 	
 	
@@ -117,14 +216,17 @@ public class ClaimantClaimListManager {
 	 * @return Loaded claim list
 	 */
 	public void loadClaims(){
-		Gson gson = new Gson();
-		ArrayList<Claim> claims=new ArrayList <Claim>();
+		ArrayList<Claim> localClaims = new ArrayList <Claim>();
+		ArrayList<Claim> webClaims = new ArrayList <Claim>();
+		webClaims = loadClaimsFromWeb();
+		
+		Gson gson= new Gson();
 		try {
 			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
 			InputStreamReader in =new InputStreamReader(fis);
 			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
 			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
-			claims = gson.fromJson(in, typeOfT);
+			localClaims = gson.fromJson(in, typeOfT);
 			fis.close();
 
 		} catch (FileNotFoundException e) {
@@ -133,6 +235,29 @@ public class ClaimantClaimListManager {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		ArrayList<Claim> claims = new ArrayList <Claim>();
+		
+		
+		//assemble claimList from local and web claims, only use local version if it is marked as unsynced, otherwise
+		//use the web version
+		for(Claim claim: localClaims){
+			Log.d("onlineTest", "From Local:"+claim.toString());
+			if(!claim.isSynced()){
+				claims.add(claim);
+			}
+		}
+		for(Claim claim: webClaims){
+			boolean exists=false;
+			Log.d("onlineTest", "From web:"+claim.toString());
+			for(Claim existingClaim: claims){
+				if (claim.getUniqueId().equals(existingClaim.getUniqueId())){
+					exists=true;
+				}
+			}
+			if(!exists){
+				claims.add(claim);
+			}
 		}
 		claimList.setClaimList(claims);
 		
@@ -148,5 +273,13 @@ public class ClaimantClaimListManager {
 	
 	public void setClaimantName(String claimantName) {
 		this.claimantName = claimantName;
+	}
+	
+	//from http://stackoverflow.com/a/4239019 March 28
+	private boolean NetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 }

@@ -58,6 +58,9 @@ public class TagList {
 	 * Call update method on all listeners (called on tagList changes).
 	 */
 	private void notifyListeners(){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}

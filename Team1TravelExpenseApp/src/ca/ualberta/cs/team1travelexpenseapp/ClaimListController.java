@@ -99,6 +99,7 @@ public class ClaimListController {
 	public void deleteClaim(Claim claim){
 		ArrayList<Claim> claims=claimsList.getClaims();
 		claims.remove(claim);
+		claimsList.getManager().removeClaimFromWeb(claim);
 		claimsList.setClaimList(claims);
 	}
 	
@@ -184,9 +185,6 @@ public class ClaimListController {
 	 * @param activity The edit claim activity containing the views
 	 */
 	public void onSaveClick(EditClaimActivity activity) {
-		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
-		String     nameText   = nameView.getText().toString();
-		
 		DatePicker fDateView  = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		Calendar   calendar   = Calendar.getInstance();
 		calendar.set(fDateView.getYear(), fDateView.getMonth(), fDateView.getDayOfMonth());
@@ -206,7 +204,7 @@ public class ClaimListController {
 		
 		if(getCurrentClaim().getStatus()!=Status.submitted && getCurrentClaim().getStatus()!=Status.approved ){
 		
-				Claim newClaim=new Claim(nameText, fromDate, endDate);
+				Claim newClaim=new Claim(UserSingleton.getUserSingleton().getUser().getName(), fromDate, endDate);
 				newClaim.setClaimTagList(claimTags);
 				updateCurrentClaim(newClaim);
 				
