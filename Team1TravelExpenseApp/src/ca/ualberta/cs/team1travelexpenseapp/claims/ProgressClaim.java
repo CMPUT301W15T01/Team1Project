@@ -19,7 +19,7 @@ import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class ProgressClaim extends BasicClaim {
+public class ProgressClaim extends Claim {
 	/** Initializes attributes to new instances **/
 	public ProgressClaim() { 
 		super();
@@ -89,7 +89,7 @@ public class ProgressClaim extends BasicClaim {
 
 	
 	@Override
-	public BasicClaim changeStatus(Class<?> claimStatusType) {
+	public Claim changeStatus(Class<?> claimStatusType) {
 		return new ClaimAdapter<ProgressClaim>(this, claimStatusType);
 	}
 

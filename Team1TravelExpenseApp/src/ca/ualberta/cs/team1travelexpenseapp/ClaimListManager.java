@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import android.content.Context;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

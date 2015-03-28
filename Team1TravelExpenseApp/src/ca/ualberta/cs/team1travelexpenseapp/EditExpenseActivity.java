@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
