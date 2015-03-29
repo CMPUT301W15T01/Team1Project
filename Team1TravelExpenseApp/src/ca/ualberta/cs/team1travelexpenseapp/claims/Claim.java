@@ -360,7 +360,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		}
 		
 		//get status
-		str += "\nStatus: " + getStatus().toString();
+		str += "\nStatus: " + getStatusString();
 		
 		//get tag list 
 		str += "\nTags:";
@@ -392,6 +392,14 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		
 		return str;
 		
+	}
+
+	private String getStatusString() {
+		if ( getStatus() == ApprovedClaim.class )  { return "approved";   }
+		if ( getStatus() == ProgressClaim.class )  { return "inProgrees"; }
+		if ( getStatus() == SubmittedClaim.class)  { return "submitted";  }
+		if ( getStatus() == ReturnedClaim.class )  { return "returned";   }
+		return "";
 	}
 
 	//sorting
