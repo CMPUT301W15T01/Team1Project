@@ -17,7 +17,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.os.Bundle;
 import android.app.Activity;
@@ -43,7 +43,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
  */
 public class ClaimantExpenseListActivity extends Activity {
 
-	public Claim claim;
+	private Claim claim;
 	private ArrayAdapter<Expense> expenselistAdapter ;
  	private ListView expenseListView ;
  	private Listener listener;
@@ -72,7 +72,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		expenseList=claim.getExpenseList();
 		expenseListController= new ExpenseListController(expenseList);
 		
-		if(claim.getStatus() == Status.submitted || claim.getStatus() == Status.approved){
+		if( !claim.isSubmittable() ) {
 			
 			Button submitBT = (Button) findViewById(R.id.submitButton);
 			submitBT.setClickable(false);

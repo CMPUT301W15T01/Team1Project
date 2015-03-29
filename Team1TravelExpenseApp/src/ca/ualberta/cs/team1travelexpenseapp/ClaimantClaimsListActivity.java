@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -141,8 +143,8 @@ public class ClaimantClaimsListActivity extends Activity {
 				editClaimDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
 			        	   
-			        	   if(claimListController.getCurrentClaim().getStatus()!= Status.submitted){
-			        			   if (claimListController.getCurrentClaim().getStatus() != Status.approved){
+			        	   if(claimListController.getCurrentClaim().getStatus()!= SubmittedClaim.class){
+			        			   if (claimListController.getCurrentClaim().getStatus() != ApprovedClaim.class){
 			        				   claimListController.onRemoveClaimClick();
 			        			   }
 			        			   else{

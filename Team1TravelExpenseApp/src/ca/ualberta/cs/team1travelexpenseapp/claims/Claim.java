@@ -9,21 +9,21 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import android.util.Log;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
+import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
 import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
+public class Claim implements ClaimStatus, Comparable<Claim> {
 	
 
 	protected ExpenseList expenseList;
@@ -37,16 +37,31 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
 	protected Class<?> status;
+	protected UUID uniqueId;
+	protected boolean synced;
+	
+	
+	public UUID getUniqueId() {
+		return uniqueId;
+	}
+
+	public boolean isSynced() {
+		return synced;
+	}
+
+	public void setSynced(boolean synced) {
+		this.synced = synced;
+	}
 
 	
 	/** Initializes attributes to new instances **/
-	public BasicClaim() { 
+	public Claim() { 
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = BasicClaim.class;
+		status                = Claim.class;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
@@ -58,14 +73,14 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	 * @param cName - a string
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
-	public BasicClaim(String cName, Date sDate, Date eDate) {
+	public Claim(String cName, Date sDate, Date eDate) {
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
 		
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = BasicClaim.class;
+		status                = Claim.class;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
@@ -361,7 +376,7 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	 * use Collections.sort(ArrayList<Claim> Object); to sort Object. 
 	 */
 	@Override
-	public int compareTo( BasicClaim claim ) {
+	public int compareTo( Claim claim ) {
 		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
 			return claim.getStartDate().compareTo(this.startDate);
 		}
@@ -381,7 +396,7 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	 * @param status enum Status to be set as claim status.
 	 */
 	public void setStatus(Class<?> status) {
-		if (status.isInstance(BasicClaim.class)) {
+		if (status.getClass().isInstance(Claim.class)) {
 			this.status = status;
 		} else {
 			throw new RuntimeException("Not a claim type");
@@ -389,9 +404,15 @@ public class BasicClaim implements ClaimStatus, Comparable<BasicClaim> {
 	}
 
 	@Override
-	public BasicClaim changeStatus(Class<?> claimStatusType) {
+	public Claim changeStatus(Class<?> claimStatusType) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isSubmittable() {
+		// TODO Auto-generated method stub
+		return status != SubmittedClaim.class && 
+				status != ApprovedClaim.class;
 	}
 	
 }

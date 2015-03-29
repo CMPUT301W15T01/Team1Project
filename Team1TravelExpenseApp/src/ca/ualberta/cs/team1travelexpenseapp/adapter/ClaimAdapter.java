@@ -17,29 +17,29 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
-import ca.ualberta.cs.team1travelexpenseapp.claims.BasicClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class ClaimAdapter<T> extends BasicClaim {
+public class ClaimAdapter<T> extends Claim {
 	
 	T adapteeClaim;
 	
 	public ClaimAdapter(T claim, Class<?> claimStatusType ) {
 		adapteeClaim = claim;
 		
-		claimantName          = ((BasicClaim) adapteeClaim).getClaimantName();
-		startDate             = ((BasicClaim) adapteeClaim).getStartDate();
-		endDate               = ((BasicClaim) adapteeClaim).getEndDate();
-		destinationReasonList = ((BasicClaim) adapteeClaim).getDestinationReasonList();
-		claimTagList          = ((BasicClaim) adapteeClaim).getClaimTagList();
+		claimantName          = ((Claim) adapteeClaim).getClaimantName();
+		startDate             = ((Claim) adapteeClaim).getStartDate();
+		endDate               = ((Claim) adapteeClaim).getEndDate();
+		destinationReasonList = ((Claim) adapteeClaim).getDestinationReasonList();
+		claimTagList          = ((Claim) adapteeClaim).getClaimTagList();
 		status                = claimStatusType;
-		isComplete            = ((BasicClaim) adapteeClaim).isComplete();
-		approverList          = ((BasicClaim) adapteeClaim).getApproverList();
-		commentList           = ((BasicClaim) adapteeClaim).getCommentList();
-		expenseList           = ((BasicClaim) adapteeClaim).getExpenseList();
+		isComplete            = ((Claim) adapteeClaim).isComplete();
+		approverList          = ((Claim) adapteeClaim).getApproverList();
+		commentList           = ((Claim) adapteeClaim).getCommentList();
+		expenseList           = ((Claim) adapteeClaim).getExpenseList();
 	}
 	
 }

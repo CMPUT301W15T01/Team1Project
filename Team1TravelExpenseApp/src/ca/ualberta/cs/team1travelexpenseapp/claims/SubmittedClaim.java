@@ -9,7 +9,7 @@ import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class SubmittedClaim extends BasicClaim {
+public class SubmittedClaim extends Claim {
 
 	public SubmittedClaim() {
 		super();
@@ -38,7 +38,7 @@ public class SubmittedClaim extends BasicClaim {
 	}
 	
 	@Override
-	public BasicClaim changeStatus(Class<?> claimStatusType) {
+	public Claim changeStatus(Class<?> claimStatusType) {
 		return new ClaimAdapter<SubmittedClaim>(this, claimStatusType);
 	}
 

@@ -20,7 +20,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -87,7 +91,7 @@ public class ClaimListController {
 	public void returnClaim() {
 		//As an approver, I want to return a submitted expense claim that was not approved, 
 		//denoting the claim status as returned and setting my name as the approver for the expense claim.
-		currentClaim.setStatus(Status.returned);
+		currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
@@ -133,7 +137,7 @@ public class ClaimListController {
 		           public void onClick(DialogInterface dialog, int id) {
 		               //Do nothing
 		        	   Claim submittedClaim = getCurrentClaim();
-						submittedClaim.setStatus(Status.submitted);
+						submittedClaim.setStatus(SubmittedClaim.class);
 						updateCurrentClaim(submittedClaim);
 		        	   
 		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
@@ -155,11 +159,11 @@ public class ClaimListController {
 
 		}else{
 			
-			if(getCurrentClaim().getStatus()!= Status.submitted && getCurrentClaim().getStatus() != Status.approved){
+			if(getCurrentClaim().isSubmittable()){
 				
 				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 				Claim submittedClaim = getCurrentClaim();
-				submittedClaim.setStatus(Status.submitted);
+				submittedClaim.setStatus(SubmittedClaim.class);
 				updateCurrentClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
@@ -202,7 +206,7 @@ public class ClaimListController {
 		
 		//newClaim.setClaimTagList(claimTags);
 		
-		if(getCurrentClaim().getStatus()!=Status.submitted && getCurrentClaim().getStatus()!=Status.approved ){
+		if(getCurrentClaim().isSubmittable() ){
 		
 				Claim newClaim=new Claim(UserSingleton.getUserSingleton().getUser().getName(), fromDate, endDate);
 				newClaim.setClaimTagList(claimTags);
@@ -234,7 +238,7 @@ public class ClaimListController {
 	 * @param activity The activity which holds the add claim button
 	 */
 	public void onAddClaimClick(ClaimantClaimsListActivity activity) {
-		Claim claim = new Claim();
+		ProgressClaim claim = new ProgressClaim();
 		addClaim(claim);
 		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim);
 		Intent intent = new Intent(activity, EditClaimActivity.class);
@@ -305,7 +309,7 @@ public class ClaimListController {
 	 */
 	public void onRemoveClaimClick() {
 		
-		if(getCurrentClaim().getStatus()!= Status.submitted && getCurrentClaim().getStatus() != Status.approved){
+		if(getCurrentClaim().isSubmittable()){
 			deleteClaim(currentClaim);
 		}
 		
@@ -318,7 +322,7 @@ public class ClaimListController {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
 		Claim approvedClaim = getCurrentClaim();		
-		approvedClaim.setStatus(Status.approved);
+		approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();
 		approverList.add(user);
@@ -332,7 +336,7 @@ public class ClaimListController {
 	 * Sets the claim status as returned and adds user to approver list
 	 */
 	public void onReturnClick() {
-		currentClaim.setStatus(Status.returned);
+		currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
@@ -344,21 +348,7 @@ public class ClaimListController {
 	public void onCommentClick(String comment) {
 		currentClaim.getCommentList().put(user.getName(), comment);
 	}
-	/**
-	 * Save the data to the elastic server
-	 */
-	public void SaveToOnline() {
-		// TODO Auto-generated method stub
-		
-	}
-	/**
-	 * loads the data from the elastic server
-	 * @return
-	 */
-	public static ClaimList LoadFromOnline() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
     /**
      * Reset the claimList to a new claimList removing all it's old contents.

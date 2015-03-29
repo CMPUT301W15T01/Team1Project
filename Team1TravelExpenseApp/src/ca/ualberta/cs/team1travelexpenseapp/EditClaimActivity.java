@@ -21,7 +21,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -74,8 +76,8 @@ public class EditClaimActivity extends Activity {
 				dialog.dismiss();
 			}
 		});
-		if(claim.getStatus()==Status.submitted
-				|| claim.getStatus()==Status.approved){
+		if(claim.getStatus()==SubmittedClaim.class
+				|| claim.getStatus()==ApprovedClaim.class){
 			
 			
 			EditText destinationET = (EditText) findViewById(R.id.claimDestinationBody);
@@ -106,10 +108,10 @@ public class EditClaimActivity extends Activity {
 		updateDestinationText();
 		
 		DatePicker startDate = (DatePicker) findViewById(R.id.claimFromDate);
-		startDate.updateDate(claim.startDate.getYear()+1900, claim.startDate.getMonth(), claim.startDate.getDate());
+		startDate.updateDate(claim.getStartDate().getYear()+1900, claim.getStartDate().getMonth(), claim.getStartDate().getDate());
 		
 		DatePicker endDate = (DatePicker) findViewById(R.id.claimEndDate);
-		endDate.updateDate(claim.startDate.getYear()+1900, claim.startDate.getMonth(), claim.startDate.getDate());
+		endDate.updateDate(claim.getEndDate().getYear()+1900, claim.getEndDate().getMonth(), claim.getEndDate().getDate());
 		
 	}
 	

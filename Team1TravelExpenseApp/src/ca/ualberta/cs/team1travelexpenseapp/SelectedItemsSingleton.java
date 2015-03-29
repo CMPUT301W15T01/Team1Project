@@ -1,5 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+
 public class SelectedItemsSingleton {
 	private static SelectedItemsSingleton selectedItemsSingleton=null;
 	private Claim currentClaim;

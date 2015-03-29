@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import android.app.Activity;
 import android.view.View;
 

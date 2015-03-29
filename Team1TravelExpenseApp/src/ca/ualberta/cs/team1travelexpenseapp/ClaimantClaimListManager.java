@@ -27,6 +27,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
