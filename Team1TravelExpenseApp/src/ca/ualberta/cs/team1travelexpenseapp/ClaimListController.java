@@ -306,10 +306,7 @@ public class ClaimListController {
 	public void onRemoveClaimClick() {
 		
 		if(getCurrentClaim().getStatus()!= Status.submitted && getCurrentClaim().getStatus() != Status.approved){
-		
-			ArrayList<Claim> claims = getClaimList().getClaims();
-			claims.remove(currentClaim);
-			claimsList.setClaimList(claims);
+			deleteClaim(currentClaim);
 		}
 		
 	}

@@ -76,6 +76,8 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		currentClaim.setStatus(newClaim.getStatus());
+		//claim is modified and therefore no longer synced online
+		currentClaim.setSynced(false);
 		saveClaims();
 		notifyListeners();
 	}

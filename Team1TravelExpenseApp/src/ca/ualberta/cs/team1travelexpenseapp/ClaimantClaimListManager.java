@@ -55,18 +55,7 @@ public class ClaimantClaimListManager {
 	public void saveClaims(){
 		ArrayList<Claim> claims=claimList.getClaims();
 		saveClaimsToWeb(claims);	
-		Gson gson= new Gson();
-		try {
-			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			gson.toJson(claims, osw);
-			osw.flush();
-			fos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		saveClaimsToDisk(claims);
 	}
 	
 	
@@ -110,6 +99,7 @@ public class ClaimantClaimListManager {
 					HttpResponse response = null;
 					try {
 						response = httpclient.execute(httpPost);
+						claim.setSynced(true);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
@@ -128,10 +118,24 @@ public class ClaimantClaimListManager {
 		}
 	}
 	
+	private void saveClaimsToDisk(ArrayList<Claim> claims){
+		Gson gson= new Gson();
+		try {
+			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			gson.toJson(claims, osw);
+			osw.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void saveClaimsToWeb(ArrayList<Claim> claims){
 		for(Claim claim: claims){
 			saveClaimToWeb(claim);
-			claim.setSynced(true);
 		}
 	}
 	
@@ -178,6 +182,29 @@ public class ClaimantClaimListManager {
 		return claims;
 	}
 	
+	
+	private ArrayList<Claim> loadClaimsFromDisk(){
+		Gson gson= new Gson();
+		ArrayList<Claim> claims = new ArrayList<Claim>();
+		try {
+			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
+			InputStreamReader in =new InputStreamReader(fis);
+			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
+			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
+			claims = gson.fromJson(in, typeOfT);
+			fis.close();
+
+		} catch (FileNotFoundException e) {
+			//if we can't find the save file create a new one and start the ClaimList fresh
+			claims = new ArrayList<Claim>();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return claims;
+		
+	}
+	
 	/**
 	 * Remove the passed Claim from the web server.
 	 */
@@ -186,7 +213,8 @@ public class ClaimantClaimListManager {
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
 		        	HttpClient httpclient = new DefaultHttpClient();
-					HttpDelete httpDelete = new HttpDelete(RESOURCE_URL+claim.getUniqueId());
+					HttpDelete httpDelete = new HttpDelete(RESOURCE_URL+claim.getUniqueId().toString());
+					Log.d("onlineTest", RESOURCE_URL+claim.getUniqueId().toString());
 					httpDelete.addHeader("Accept","application/json");
 					
 					HttpResponse response=null;
@@ -216,50 +244,43 @@ public class ClaimantClaimListManager {
 	 * @return Loaded claim list
 	 */
 	public void loadClaims(){
-		ArrayList<Claim> localClaims = new ArrayList <Claim>();
-		ArrayList<Claim> webClaims = new ArrayList <Claim>();
-		webClaims = loadClaimsFromWeb();
+		ArrayList<Claim> localClaims = loadClaimsFromDisk();
+		ArrayList<Claim> webClaims = loadClaimsFromWeb();
 		
-		Gson gson= new Gson();
-		try {
-			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
-			InputStreamReader in =new InputStreamReader(fis);
-			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
-			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
-			localClaims = gson.fromJson(in, typeOfT);
-			fis.close();
-
-		} catch (FileNotFoundException e) {
-			//if we can't find the save file create a new one and start the ClaimList fresh
-			claimList.setClaimList(new ArrayList<Claim>());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		//if webClaims is empty, either this user has no saved claims online or the connection failed, either way just use the locally save list
+		if(webClaims.isEmpty()){
+			claimList.setClaimList(localClaims);
 		}
-		ArrayList<Claim> claims = new ArrayList <Claim>();
 		
-		
-		//assemble claimList from local and web claims, only use local version if it is marked as unsynced, otherwise
-		//use the web version
-		for(Claim claim: localClaims){
-			Log.d("onlineTest", "From Local:"+claim.toString());
-			if(!claim.isSynced()){
-				claims.add(claim);
-			}
-		}
-		for(Claim claim: webClaims){
-			boolean exists=false;
-			Log.d("onlineTest", "From web:"+claim.toString());
-			for(Claim existingClaim: claims){
-				if (claim.getUniqueId().equals(existingClaim.getUniqueId())){
-					exists=true;
+		//if webClaims is not empty then we want to use the web version of all claims except those that have been locally modified and not synced, any claims which are synced
+		//but are not on the web server are assumed to have been deleted elsewhere
+		else{
+			ArrayList<Claim> claims = new ArrayList <Claim>();
+			
+			for(Claim claim: localClaims){
+				Log.d("onlineTest", "From Local:"+claim.toString());
+				if(!claim.isSynced()){
+					claims.add(claim);
 				}
 			}
-			if(!exists){
-				claims.add(claim);
+			
+			for(Claim claim: webClaims){
+				boolean exists=false;
+				Log.d("onlineTest", "From web:"+claim.toString());
+				for(Claim existingClaim: claims){
+					if (claim.getUniqueId().equals(existingClaim.getUniqueId())){
+						exists=true;
+					}
+				}
+				if(!exists){
+					claims.add(claim);
+				}
 			}
+			claimList.setClaimList(claims);
 		}
-		claimList.setClaimList(claims);
+		//after loading from both sources attempt to saveClaims in order to sync online with local
+		saveClaims();
 		
 	}
 	
