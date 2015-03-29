@@ -20,6 +20,11 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import dataManagers.ApproverClaimListManager;
+import dataManagers.ClaimListManager;
+import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
 import android.view.View;
 
@@ -38,11 +43,16 @@ public class ClaimList {
 	/**
 	 * Create the ClaimList with new ArrayLists of Claims, selectedTags, and listeners.
 	 */
-	public ClaimList(){
+	public ClaimList(Claimant claimant){
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
-		listeners = new ArrayList<Listener>();
-		manager=new ClaimListManager(this);
+		manager=new ClaimantClaimListManager(this);
+	}
+	
+	public ClaimList(Approver approver){
+		claimList = new ArrayList<Claim>();
+		selectedTags = new ArrayList<Tag>();
+		manager = new ApproverClaimListManager(this);
 	}
 	
 	/**
@@ -78,7 +88,9 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		currentClaim.setStatus(newClaim.getStatus());
-		//saveClaims();
+		//claim is modified and therefore no longer synced online
+		currentClaim.setSynced(false);
+		saveClaims();
 		notifyListeners();
 	}
 	
@@ -95,7 +107,7 @@ public class ClaimList {
 	 * Save the claim list to disk (and to the web server if possible) (not currently implemented)
 	 */
 	public void saveClaims() {
-		//manager.saveClaims();
+		manager.saveClaims();
 	}
 	
 	/**
@@ -118,6 +130,9 @@ public class ClaimList {
 	 * @param listener The listener to be added.
 	 */
 	public void addListener(Listener listener) {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		this.listeners.add(listener);
 	}
 	
@@ -125,6 +140,9 @@ public class ClaimList {
 	 * Call update method on all listeners (called on tagList changes).
 	 */
 	private void notifyListeners() {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}
@@ -155,6 +173,9 @@ public class ClaimList {
 	 * @param listener The listener to be removed
 	 */
 	public void removeListener(Listener listener) {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	

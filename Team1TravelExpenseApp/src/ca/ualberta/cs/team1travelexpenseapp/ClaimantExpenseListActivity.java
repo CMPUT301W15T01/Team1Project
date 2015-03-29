@@ -72,7 +72,7 @@ public class ClaimantExpenseListActivity extends Activity {
 		expenseList=claim.getExpenseList();
 		expenseListController= new ExpenseListController(expenseList);
 		
-		if( !claim.isSubmittalbe() ) {
+		if( !claim.isSubmittable() ) {
 			
 			Button submitBT = (Button) findViewById(R.id.submitButton);
 			submitBT.setClickable(false);

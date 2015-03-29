@@ -17,6 +17,10 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import dataManagers.ApproverClaimListManager;
+import dataManagers.ClaimListManager;
+import dataManagers.ClaimantClaimListManager;
+import dataManagers.TagListManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,14 +71,16 @@ public class LoginActivity extends Activity {
 		EditText userNameField = (EditText) findViewById(R.id.userNameField);
 		String currentUserName=userNameField.getText().toString();
 		if(currentUserName.equals("")) currentUserName="Guest";
+		
+		
 		Approver currentUser=new Approver(currentUserName);
 		UserSingleton.getUserSingleton().setUser(currentUser);
+		
+		
 		ClaimList claimList=currentUser.getClaimList();
 		claimList.getManager().setContext(getApplicationContext());
-		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
-		claimListManager.setContext(getApplicationContext());
-		//temporary savefile name for testing approver side without online funcitonality
-		claimListManager.setSaveFile("Guest_claims.sav");
+		ApproverClaimListManager approverClaimListManager = (ApproverClaimListManager) currentUser.getClaimList().getManager();
+		approverClaimListManager.setContext(getApplicationContext());
 		claimList.loadClaims();
 		startActivity(intent);
 	}
@@ -96,13 +102,13 @@ public class LoginActivity extends Activity {
 		
 		TagListManager tagListManager=currentUser.getTagList().getManager();
 		tagListManager.setContext(getApplicationContext());
-		tagListManager.setSaveFile(currentUserName+"_tags.sav");
+		tagListManager.setClaimantName(currentUserName);
 		currentUser.getTagList().loadTags();
 		
 		
-		ClaimListManager claimListManager=currentUser.getClaimList().getManager();
-		claimListManager.setContext(getApplicationContext());
-		claimListManager.setSaveFile(currentUserName+"_claims.sav");
+		ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) currentUser.getClaimList().getManager();
+		claimantClaimListManager.setContext(getApplicationContext());
+		claimantClaimListManager.setClaimantName(currentUserName);
 		currentUser.getClaimList().loadClaims();
 		
 		

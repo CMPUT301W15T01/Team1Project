@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp.users;
 
+import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.TagList;
 
 public class Claimant extends User {
@@ -8,6 +9,7 @@ public class Claimant extends User {
 	
 	public Claimant(String name){
 		super(name);
+		this.claimList=new ClaimList(this);
 		this.tagList= new TagList();
 	}
 

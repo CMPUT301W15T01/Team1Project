@@ -103,6 +103,7 @@ public class ClaimListController {
 	public void deleteClaim(Claim claim){
 		ArrayList<Claim> claims=claimsList.getClaims();
 		claims.remove(claim);
+		claimsList.getManager().removeClaim(claim);
 		claimsList.setClaimList(claims);
 	}
 	
@@ -158,7 +159,7 @@ public class ClaimListController {
 
 		}else{
 			
-			if(getCurrentClaim().isSubmittalbe()){
+			if(getCurrentClaim().isSubmittable()){
 				
 				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 				Claim submittedClaim = getCurrentClaim();
@@ -188,9 +189,6 @@ public class ClaimListController {
 	 * @param activity The edit claim activity containing the views
 	 */
 	public void onSaveClick(EditClaimActivity activity) {
-		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
-		String     nameText   = nameView.getText().toString();
-		
 		DatePicker fDateView  = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		Calendar   calendar   = Calendar.getInstance();
 		calendar.set(fDateView.getYear(), fDateView.getMonth(), fDateView.getDayOfMonth());
@@ -208,9 +206,9 @@ public class ClaimListController {
 		
 		//newClaim.setClaimTagList(claimTags);
 		
-		if(getCurrentClaim().isSubmittalbe() ){
+		if(getCurrentClaim().isSubmittable() ){
 		
-				Claim newClaim=new Claim(nameText, fromDate, endDate);
+				Claim newClaim=new Claim(UserSingleton.getUserSingleton().getUser().getName(), fromDate, endDate);
 				newClaim.setClaimTagList(claimTags);
 				updateCurrentClaim(newClaim);
 				
@@ -311,12 +309,9 @@ public class ClaimListController {
 	 */
 	public void onRemoveClaimClick() {
 		
-		if(getCurrentClaim().isSubmittalbe()){
-		
-			ArrayList<Claim> claims = getClaimList().getClaims();
-			claims.remove(currentClaim);
 
-			claimsList.setClaimList(claims);
+		if(getCurrentClaim().isSubmittable()){
+			deleteClaim(currentClaim);
 		}
 		
 	}
@@ -354,27 +349,13 @@ public class ClaimListController {
 	public void onCommentClick(String comment) {
 		currentClaim.getCommentList().put(user.getName(), comment);
 	}
-	/**
-	 * Save the data to the elastic server
-	 */
-	public void SaveToOnline() {
-		// TODO Auto-generated method stub
-		
-	}
-	/**
-	 * loads the data from the elastic server
-	 * @return
-	 */
-	public static ClaimList LoadFromOnline() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
     /**
      * Reset the claimList to a new claimList removing all it's old contents.
      */
     public void clearClaimList(){
-    	claimsList=new ClaimList();
+    	claimsList.getClaims().clear();
     }
 	
 }

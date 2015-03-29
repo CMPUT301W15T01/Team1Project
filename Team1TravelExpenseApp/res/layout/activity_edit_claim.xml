@@ -53,29 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/claimNameBody"
                 android:text="Add Destination:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-            
-            <TextView
-                android:id="@+id/claimNameHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="Name:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            
-            <EditText
-                android:id="@+id/claimNameBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/claimNameHeader"
-                android:layout_toLeftOf="@+id/addDestinationButton"
-                android:inputType="textAutoCorrect" />
 
             <TextView
                 android:id="@+id/claimReasonHeader"
