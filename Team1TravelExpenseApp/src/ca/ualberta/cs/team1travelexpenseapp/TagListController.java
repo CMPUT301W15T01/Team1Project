@@ -25,26 +25,22 @@ import android.widget.EditText;
  * Provides a set of methods which allow the TagListManagerActivity view to modify the underlying TagList data.
  */
 public class TagListController {
-	private static TagList tagList=null;
+	private TagList tagList;
 
 	/**
 	 * Return the controlled TagList, will be created on the first call.
 	 * @return The controlled TagList
 	 */
-	public static TagList getTagList() { 
-		if (tagList == null) {
-			tagList = new TagList();
-		}
-		
-		return tagList;
+	TagListController(TagList tagList){
+		this.tagList=tagList;
 	}
 	
 	/**
 	 * Add a Tag to the TagList.
 	 * @param tag The Tag to be added
 	 */
-	public static void addTag(Tag tag){
-		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+	public void addTag(Tag tag){
+		ArrayList<Tag> tagArray=tagList.getTags();
 		tagArray.add(tag);
 		tagList.setTagList(tagArray);
 	}
@@ -53,8 +49,8 @@ public class TagListController {
 	 * Remove the passed tag from the TagList.
 	 * @param tag The Tag to be removed
 	 */
-	public static void removeTag(Tag tag){
-		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+	public void removeTag(Tag tag){
+		ArrayList<Tag> tagArray=tagList.getTags();
 		tagArray.remove(tag);
 		tagList.setTagList(tagArray);
 	}
@@ -64,8 +60,8 @@ public class TagListController {
 	 * @param tag The Tag to be modified
 	 * @param newName A String to be used as the new name for tag
 	 */
-	public static void updateTag(Tag tag, String newName){
-		ArrayList<Tag> tagArray=TagListController.getTagList().getTags();
+	public void updateTag(Tag tag, String newName){
+		ArrayList<Tag> tagArray=tagList.getTags();
 		tagArray.set(tagArray.indexOf(tag), new Tag(newName));
 		tagList.setTagList(tagArray);
 	}
@@ -75,14 +71,14 @@ public class TagListController {
 	 * Grabs the string entered by the user and creates a new tag by that name in the TagList.
 	 * @param dialog The Dialog in which the add tag button resides
 	 */
-    public static boolean onAddTagClick(DialogInterface dialog) {
+    public boolean onAddTagClick(DialogInterface dialog) {
         EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
-        if(getTagList().hasTagNamed(name)){
+        if(tagList.hasTagNamed(name)){
         	return false;
         }
         else{
-        TagListController.addTag(new Tag(name));
+        addTag(new Tag(name));
         return true;
         }
     }
@@ -93,14 +89,14 @@ public class TagListController {
      * @param dialog The Dialog in which the set tag button resides
      * @param tag The Tag to be modified
      */
-    public static boolean onSetTagClick(DialogInterface dialog, Tag tag) {
+    public boolean onSetTagClick(DialogInterface dialog, Tag tag) {
  	   	EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
-        if(getTagList().hasTagNamed(name)){
+        if(tagList.hasTagNamed(name)){
         	return false;
         }
         else{
-        TagListController.updateTag(tag, name);
+        updateTag(tag, name);
         return true;
         }
     }
@@ -111,14 +107,14 @@ public class TagListController {
      * @param dialog The Dialog in which remove tag button resides
      * @param tag A Tag to be removed
      */
-    public static void onRemoveTagClick(DialogInterface dialog, Tag tag) {
-    	TagListController.removeTag(tag);
+    public void onRemoveTagClick(DialogInterface dialog, Tag tag) {
+    	removeTag(tag);
     }
     
     /**
      * Reset the TagList to a new TagList removing all it's old contents.
      */
-    public static void clearTagList(){
+    public void clearTagList(){
     	tagList=new TagList();
     }
     

@@ -13,10 +13,10 @@ import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-import ca.ualberta.cs.team1travelexpenseapp.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;
@@ -63,6 +63,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		instrumentation.waitForIdleSync();
 
 	}
+
 	
 	
 	//US01.01.01 is in ClaimClaimsListActivityTest.java 

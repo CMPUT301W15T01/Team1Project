@@ -36,6 +36,7 @@ import android.content.Context;
 public class TagListManager {
 	private TagList tagList;
 	private Context context;
+	private String saveFile;
 	
 	/**
 	 * Initialize with the tagList to be managed.
@@ -43,14 +44,18 @@ public class TagListManager {
 	 */
 	TagListManager(TagList tagList){
 		this.tagList=tagList;
+		this.saveFile="tags.sav";
 	}
-	
+
+	public void setSaveFile(String savefile) {
+		this.saveFile = savefile;
+	}
+
 	/**
 	 * save Tags to disk (and if possible to web server). (not yet implemented)
 	 */
 	public void saveTags(){
 		Gson gson = new Gson();
-		String saveFile=ClaimListController.getUser().getName()+"_tags.sav";
 		try {
 			FileOutputStream fos = context.openFileOutput(saveFile, 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -73,7 +78,6 @@ public class TagListManager {
 	public void loadTags(){
 		Gson gson = new Gson();
 		ArrayList<Tag> tags=new ArrayList <Tag>();
-		String saveFile=ClaimListController.getUser().getName()+"_tags.sav";
 		try {
 			FileInputStream fis = context.openFileInput(saveFile);
 			InputStreamReader in =new InputStreamReader(fis);

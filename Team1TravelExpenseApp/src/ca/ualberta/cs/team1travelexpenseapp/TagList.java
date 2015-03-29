@@ -24,10 +24,10 @@ import android.content.Context;
  */
 public class TagList {
 	private ArrayList<Tag> tagList;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	private static TagListManager manager;
 	
-	TagList(){
+	public TagList(){
 		manager=new TagListManager(this);
 		tagList=new ArrayList<Tag>();
 		listeners=new ArrayList<Listener>();

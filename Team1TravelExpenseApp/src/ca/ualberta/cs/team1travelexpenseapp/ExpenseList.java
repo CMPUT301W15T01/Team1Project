@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ExpenseList {
 
 	private ArrayList<Expense> expenseList;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	
 	/**
 	 * Create a new empty ExpenseList
@@ -58,6 +58,8 @@ public class ExpenseList {
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}
+		//added for now so claimslist is saved whenever expenselist is modified, probably suboptimal
+		UserSingleton.getUserSingleton().getUser().getClaimList().saveClaims();
 	}
 
 	/**

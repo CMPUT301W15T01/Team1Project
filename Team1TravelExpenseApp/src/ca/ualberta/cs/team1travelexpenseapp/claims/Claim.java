@@ -1,51 +1,30 @@
-/*
-Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
-package ca.ualberta.cs.team1travelexpenseapp;
+package ca.ualberta.cs.team1travelexpenseapp.claims;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CyclicBarrier;
 
 import android.util.Log;
-import android.widget.Toast;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
+import ca.ualberta.cs.team1travelexpenseapp.Listener;
+import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-/** 
- * Model of a Claim used to edit a list of expenses, claimant name, start and end date, destination & reason list, Tag list for the claim,
- * completeness, list of approvers for the claim, a list of comments, listeners for the views that will use this model, and the status
- * **/
-public class Claim implements Comparable<Claim>{ 
+public class Claim implements ClaimStatus, Comparable<Claim> {
 	
-	/** enum class Status public to access values of enum **/
-	public enum Status {
-		inProgress, submitted, approved, returned
-	}
+
 	protected ExpenseList expenseList;
 	protected String claimantName;
 	protected Date startDate;
@@ -56,7 +35,8 @@ public class Claim implements Comparable<Claim>{
 	protected ArrayList<User> approverList;
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
-	protected Status status;
+	protected Class<?> status;
+
 	
 	/** Initializes attributes to new instances **/
 	public Claim() { 
@@ -65,7 +45,7 @@ public class Claim implements Comparable<Claim>{
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = Status.inProgress;
+		status                = Claim.class;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
@@ -84,7 +64,7 @@ public class Claim implements Comparable<Claim>{
 		
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
-		status                = Status.inProgress;
+		status                = Claim.class;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
@@ -210,22 +190,6 @@ public class Claim implements Comparable<Claim>{
 	}
 
 	/**
-	 * Get the status (inProgress, submitted, approved, returned) for the claim.
-	 * @return Status for the claim.
-	 */
-	public Status getStatus() {
-		return status;
-	}
-
-	/**
-	 * Set the status (inProgress, submitted, approved, returned) for the claim.
-	 * @param status enum Status to be set as claim status.
-	 */
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	/**
 	 * Return a boolean indicating whether the claim is "complete".
 	 * @return boolean indicating whether claim is complete.
 	 */
@@ -270,7 +234,7 @@ public class Claim implements Comparable<Claim>{
 	 * @param comment String to be added as comment.
 	 */
 	public void addComment(String comment) {
-		commentList.put(ClaimListController.getUser().getName(), comment);
+		commentList.put(UserSingleton.getUserSingleton().getUser().getName(), comment);
 	}
 
 	/**
@@ -397,10 +361,42 @@ public class Claim implements Comparable<Claim>{
 	 */
 	@Override
 	public int compareTo( Claim claim ) {
-		if (ClaimListController.getUserType().equals("Claimant")) {
-			return claim.startDate.compareTo(this.startDate);
+		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
+			return claim.getStartDate().compareTo(this.startDate);
 		}
-		return this.startDate.compareTo(claim.startDate);
+		return this.startDate.compareTo(claim.getStartDate());
+	}
+
+	/**
+	 * Get the status (inProgress, submitted, approved, returned) for the claim.
+	 * @return Status for the claim.
+	 */
+	public Class<?> getStatus() {
+		return status;
+	}
+
+	/**
+	 * Set the status (inProgress, submitted, approved, returned) for the claim.
+	 * @param status enum Status to be set as claim status.
+	 */
+	public void setStatus(Class<?> status) {
+		if (status.getClass().isInstance(Claim.class)) {
+			this.status = status;
+		} else {
+			throw new RuntimeException("Not a claim type");
+		}
+	}
+
+	@Override
+	public Claim changeStatus(Class<?> claimStatusType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isSubmittalbe() {
+		// TODO Auto-generated method stub
+		return status != SubmittedClaim.class && 
+				status != ApprovedClaim.class;
 	}
 	
 }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import android.app.Activity;
 import android.view.View;
 
@@ -32,7 +33,7 @@ public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
 	private ClaimListManager manager;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	
 	/**
 	 * Create the ClaimList with new ArrayLists of Claims, selectedTags, and listeners.
@@ -77,7 +78,7 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		currentClaim.setStatus(newClaim.getStatus());
-		saveClaims();
+		//saveClaims();
 		notifyListeners();
 	}
 	
@@ -94,7 +95,7 @@ public class ClaimList {
 	 * Save the claim list to disk (and to the web server if possible) (not currently implemented)
 	 */
 	public void saveClaims() {
-		manager.saveClaims();
+		//manager.saveClaims();
 	}
 	
 	/**

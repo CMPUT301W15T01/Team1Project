@@ -21,7 +21,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -47,10 +50,17 @@ public class EditClaimActivity extends Activity {
 
 	private TextView destList;
 	private Claim claim;
+	private Claimant user;
+	private ClaimListController claimListController;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_claim);
+		user=(Claimant) UserSingleton.getUserSingleton().getUser();
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
+		claimListController=new ClaimListController(user.getClaimList());
+		claimListController.setCurrentClaim(claim);
 	}
 
 	//on start method that loads all of the CurrentClaim values into the editTexts
@@ -66,8 +76,8 @@ public class EditClaimActivity extends Activity {
 				dialog.dismiss();
 			}
 		});
-		if(ClaimListController.getCurrentClaim().getStatus()==Status.submitted
-				|| ClaimListController.getCurrentClaim().getStatus()==Status.approved){
+		if(claim.getStatus()==SubmittedClaim.class
+				|| claim.getStatus()==ApprovedClaim.class){
 			
 			
 			EditText nameET = (EditText) findViewById(R.id.claimNameBody);
@@ -86,17 +96,16 @@ public class EditClaimActivity extends Activity {
 			addDestBT.setFocusable(false);
 			
 			StatusAlert.setMessage("ONLY TAGS may be edited in this claim as it is already"
-			+ ClaimListController.getCurrentClaim().getStatus().toString());
+			+ claim.getStatus().toString());
 			
 			StatusAlert.show();
 		}
-		claim = ClaimListController.getCurrentClaim();
 		
 		TextView nameView  = (TextView) findViewById(R.id.claimNameBody);
 		nameView.setText(claim.getClaimantName());
 		
 		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
-		tagSpinner.setItems(TagListController.getTagList().getTags());
+		tagSpinner.setItems(user.getTagList().getTags());
 		ArrayList<Tag> claimTags=claim.getClaimTagList();
 		tagSpinner.setSelection(claimTags);
 		
@@ -104,10 +113,10 @@ public class EditClaimActivity extends Activity {
 		updateDestinationText();
 		
 		DatePicker startDate = (DatePicker) findViewById(R.id.claimFromDate);
-		startDate.updateDate(claim.startDate.getYear()+1900, claim.startDate.getMonth(), claim.startDate.getDate());
+		startDate.updateDate(claim.getStartDate().getYear()+1900, claim.getStartDate().getMonth(), claim.getStartDate().getDate());
 		
 		DatePicker endDate = (DatePicker) findViewById(R.id.claimEndDate);
-		endDate.updateDate(claim.startDate.getYear()+1900, claim.startDate.getMonth(), claim.startDate.getDate());
+		endDate.updateDate(claim.getEndDate().getYear()+1900, claim.getEndDate().getMonth(), claim.getEndDate().getDate());
 		
 	}
 	
@@ -140,7 +149,7 @@ public class EditClaimActivity extends Activity {
 
 		//editing model happens in controller 
 	
-		ClaimListController.onSaveClick(this);
+		claimListController.onSaveClick(this);
 	}
 	/**
 	 * The onClick method for the button allowing the user to add a destination/reason pair to a claim
@@ -148,7 +157,7 @@ public class EditClaimActivity extends Activity {
 	 */
 	public void onAddDestinationClick(View v) {
 		
-		ClaimListController.onAddDestinationClick(this);
+		claimListController.onAddDestinationClick(this);
 		updateDestinationText();
 	}
 	/**
@@ -170,7 +179,7 @@ public class EditClaimActivity extends Activity {
 	
 	public void onDestroy(){
 		super.onDestroy();
-		ClaimListController.onSaveClick(this);
+		claimListController.onSaveClick(this);
 	}
 
 }
