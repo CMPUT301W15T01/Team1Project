@@ -12,7 +12,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package ca.ualberta.cs.team1travelexpenseapp;
+package dataManagers;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +22,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.TagList;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -36,19 +39,19 @@ import android.content.Context;
 public class TagListManager {
 	private TagList tagList;
 	private Context context;
-	private String saveFile;
+	private String claimantName;
 	
 	/**
 	 * Initialize with the tagList to be managed.
 	 * @param tagList The TagList to saved from and loaded to
 	 */
-	TagListManager(TagList tagList){
+	public TagListManager(TagList tagList){
 		this.tagList=tagList;
-		this.saveFile="tags.sav";
+		this.claimantName="Guest";
 	}
 
-	public void setSaveFile(String savefile) {
-		this.saveFile = savefile;
+	public void setClaimantName(String claimantName) {
+		this.claimantName=claimantName;
 	}
 
 	/**
@@ -57,7 +60,7 @@ public class TagListManager {
 	public void saveTags(){
 		Gson gson = new Gson();
 		try {
-			FileOutputStream fos = context.openFileOutput(saveFile, 0);
+			FileOutputStream fos = context.openFileOutput(claimantName+"_tags.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			gson.toJson(tagList.getTags(), osw);
 			osw.flush();
@@ -79,7 +82,7 @@ public class TagListManager {
 		Gson gson = new Gson();
 		ArrayList<Tag> tags=new ArrayList <Tag>();
 		try {
-			FileInputStream fis = context.openFileInput(saveFile);
+			FileInputStream fis = context.openFileInput(claimantName+"_tags.sav");
 			InputStreamReader in =new InputStreamReader(fis);
 			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
 			Type typeOfT = new TypeToken<ArrayList<Tag>>(){}.getType();

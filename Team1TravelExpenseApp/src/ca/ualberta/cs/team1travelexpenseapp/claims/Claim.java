@@ -5,10 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import android.util.Log;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
@@ -19,6 +21,8 @@ import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.RuntimeTypeAdapterFactory;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
@@ -35,11 +39,44 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	protected ArrayList<User> approverList;
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
-	protected Class<?> status;
+	transient protected Class<?> status;
+	protected UUID uniqueId;
+	protected boolean synced;
+	
+	
+	/*//from http://stackoverflow.com/a/22081826 March 29 2015
+	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
+            RuntimeTypeAdapterFactory.of(Claim.class);
+
+    private static final HashSet<Class<?>> registeredClasses= new HashSet<Class<?>>();
+
+    static {
+        GsonUtils.registerType(adapter);
+    }
+    
+    private synchronized void registerClass() {
+        if (!this.registeredClasses.contains(this.getClass())) {
+            adapter.registerSubtype(this.getClass());
+        }
+    }*/
+	
+	
+	public UUID getUniqueId() {
+		return uniqueId;
+	}
+
+	public boolean isSynced() {
+		return synced;
+	}
+
+	public void setSynced(boolean synced) {
+		this.synced = synced;
+	}
 
 	
 	/** Initializes attributes to new instances **/
 	public Claim() { 
+		//registerClass();
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
@@ -51,6 +88,8 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		synced                = false;
+		uniqueId              = UUID.randomUUID();
 	}
 
 	/** set claimant name, start and end date, all other attributes are initializes to new instances 
@@ -58,6 +97,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
 	public Claim(String cName, Date sDate, Date eDate) {
+		//registerClass();
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
@@ -70,6 +110,8 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		synced                = false;
+		uniqueId              = UUID.randomUUID();
 	}
 	
 	
@@ -393,7 +435,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		return null;
 	}
 
-	public boolean isSubmittalbe() {
+	public boolean isSubmittable() {
 		// TODO Auto-generated method stub
 		return status != SubmittedClaim.class && 
 				status != ApprovedClaim.class;

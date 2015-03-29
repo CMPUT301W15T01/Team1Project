@@ -104,7 +104,7 @@ public class ExpenseListController {
 	 * The new Expense.
 	 */
 	public void updateExpense(Expense expense, Expense newExpense){
-		if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().isSubmittalbe()){
+		if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().isSubmittable()){
 			
 			if(newExpense.getAmount().floatValue() == 0){
 				newExpense.setCurrency("");

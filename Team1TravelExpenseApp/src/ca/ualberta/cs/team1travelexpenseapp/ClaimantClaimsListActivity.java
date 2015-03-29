@@ -73,6 +73,7 @@ public class ClaimantClaimsListActivity extends Activity {
 		setContentView(R.layout.claimant_activity_main);
 		
 		user=(Claimant) UserSingleton.getUserSingleton().getUser();
+		//user.toString();
 		claimListController= new ClaimListController(user.getClaimList());
 		
 		
