@@ -24,7 +24,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -101,8 +103,8 @@ public class EditExpenseActivity extends Activity {
 			}
 		}
 		
-		if (claim.status == Claim.Status.submitted || 
-				claim.status == Claim.Status.approved){
+		if ( claim.getStatus() == SubmittedClaim.class || 
+				claim.getStatus() == ApprovedClaim.class ){
 			//Disable UI if the claim is not editable
 			descriptionView.setEnabled(false);
 			dateView.setEnabled(false);

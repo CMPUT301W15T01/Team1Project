@@ -380,7 +380,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	 * @param status enum Status to be set as claim status.
 	 */
 	public void setStatus(Class<?> status) {
-		if (status.isInstance(Claim.class)) {
+		if (status.getClass().isInstance(Claim.class)) {
 			this.status = status;
 		} else {
 			throw new RuntimeException("Not a claim type");

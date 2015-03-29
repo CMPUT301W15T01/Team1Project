@@ -34,6 +34,7 @@ public class ClaimListManager {
 	/**
 	 * save Claims to disk (and if possible to web server). (not yet implemented)
 	 */
+	/*
 	public void saveClaims(){
 		Gson gson = new Gson();
 		try {
@@ -49,7 +50,7 @@ public class ClaimListManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/**
 	 * load Claims from disk (and if possible sync claims with web server). (not yet implemented)

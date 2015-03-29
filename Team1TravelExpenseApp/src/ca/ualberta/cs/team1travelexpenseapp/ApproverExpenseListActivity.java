@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Map;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,9 +41,9 @@ import android.widget.TextView;
  */
 public class ApproverExpenseListActivity extends Activity {
 
-	public Claim claim;
+	private Claim claim;
 	private ClaimListController claimListController;
-	private ArrayAdapter<Expense> expenselistAdapter ;
+	private ArrayAdapter<Expense> expenselistAdapter;
  	private ListView expenseListView ;
  	private User user;
  	
