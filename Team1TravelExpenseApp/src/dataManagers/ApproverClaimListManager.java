@@ -32,6 +32,10 @@ import com.google.gson.reflect.TypeToken;
 
 public class ApproverClaimListManager extends ClaimListManager{
 	
+	public ApproverClaimListManager(ClaimList claimList){
+		this.claimList=claimList;
+	}
+	
 	private void saveClaimToWeb(final Claim claim){
 		if(NetworkAvailable()){
 			

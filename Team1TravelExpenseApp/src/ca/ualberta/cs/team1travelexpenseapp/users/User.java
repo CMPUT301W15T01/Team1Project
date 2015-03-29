@@ -19,7 +19,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 /**
  * Class representing a user that can add and approve claims, has a name and a type which should be either claimant or approver
  */
-public class User {
+public abstract class User {
 	
 	protected String name;
 	protected ClaimList claimList;
@@ -40,7 +40,6 @@ public class User {
 	public User(String name) {
 		// TODO Auto-generated constructor stub
 		this.name = name;
-		this.claimList=new ClaimList();
 	}
 
 	/**

@@ -12,7 +12,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package ca.ualberta.cs.team1travelexpenseapp;
+package dataManagers;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +22,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.TagList;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,7 +45,7 @@ public class TagListManager {
 	 * Initialize with the tagList to be managed.
 	 * @param tagList The TagList to saved from and loaded to
 	 */
-	TagListManager(TagList tagList){
+	public TagListManager(TagList tagList){
 		this.tagList=tagList;
 		this.claimantName="Guest";
 	}

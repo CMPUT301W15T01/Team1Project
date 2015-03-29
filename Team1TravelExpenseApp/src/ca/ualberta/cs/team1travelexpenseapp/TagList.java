@@ -16,6 +16,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import dataManagers.TagListManager;
 import android.content.Context;
 /**
  * Stores a list of tags (as an ArrayList) along with a set of listeners to be updated whenever the list is modified.

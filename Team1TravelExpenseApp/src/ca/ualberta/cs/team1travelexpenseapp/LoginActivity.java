@@ -20,6 +20,7 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import dataManagers.ApproverClaimListManager;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
+import dataManagers.TagListManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

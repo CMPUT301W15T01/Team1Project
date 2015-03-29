@@ -354,7 +354,7 @@ public class ClaimListController {
      * Reset the claimList to a new claimList removing all it's old contents.
      */
     public void clearClaimList(){
-    	claimsList=new ClaimList();
+    	claimsList.getClaims().clear();
     }
 	
 }

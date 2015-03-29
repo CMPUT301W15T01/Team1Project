@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import dataManagers.ApproverClaimListManager;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
@@ -40,10 +43,16 @@ public class ClaimList {
 	/**
 	 * Create the ClaimList with new ArrayLists of Claims, selectedTags, and listeners.
 	 */
-	public ClaimList(){
+	public ClaimList(Claimant claimant){
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
 		manager=new ClaimantClaimListManager(this);
+	}
+	
+	public ClaimList(Approver approver){
+		claimList = new ArrayList<Claim>();
+		selectedTags = new ArrayList<Tag>();
+		manager = new ApproverClaimListManager(this);
 	}
 	
 	/**
