@@ -95,6 +95,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
 	public Claim(String cName, Date sDate, Date eDate) {
+		registerClass();
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
