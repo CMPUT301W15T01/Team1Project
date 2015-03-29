@@ -73,7 +73,6 @@ public class LoginActivity extends Activity {
 		claimList.getManager().setContext(getApplicationContext());
 		ClaimantClaimListManager claimantClaimListManager=currentUser.getClaimList().getManager();
 		claimantClaimListManager.setContext(getApplicationContext());
-		//temporary savefile name for testing approver side without online functionality
 		claimantClaimListManager.setClaimantName(currentUserName);
 		claimList.loadClaims();
 		startActivity(intent);

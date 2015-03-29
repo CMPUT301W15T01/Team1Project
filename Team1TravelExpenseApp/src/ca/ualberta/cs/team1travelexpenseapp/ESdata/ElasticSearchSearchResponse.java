@@ -1,5 +1,5 @@
 //from https://github.com/rayzhangcl/ESDemo March 27 2015
-package ca.ualberta.cs.team1travelexpenseapp;
+package ca.ualberta.cs.team1travelexpenseapp.ESdata;
 
 import java.util.ArrayList;
 import java.util.Collection;

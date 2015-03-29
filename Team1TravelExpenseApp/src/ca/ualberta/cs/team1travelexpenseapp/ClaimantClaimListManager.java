@@ -27,6 +27,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
+import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 
 import com.google.gson.Gson;
@@ -124,7 +126,8 @@ public class ClaimantClaimListManager {
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			gson.toJson(claims, osw);
+			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
+			gson.toJson(claims, typeOfT , osw);
 			osw.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -186,7 +189,7 @@ public class ClaimantClaimListManager {
 	
 	private ArrayList<Claim> loadClaimsFromDisk(){
 		Gson gson= new Gson();
-		ArrayList<Claim> claims = new ArrayList<Claim>();
+		ArrayList<Claim> claims = null;
 		try {
 			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
 			InputStreamReader in =new InputStreamReader(fis);
@@ -197,10 +200,12 @@ public class ClaimantClaimListManager {
 
 		} catch (FileNotFoundException e) {
 			//if we can't find the save file create a new one and start the ClaimList fresh
-			claims = new ArrayList<Claim>();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if(claims==null){
+			claims = new ArrayList<Claim>();
 		}
 		return claims;
 		
