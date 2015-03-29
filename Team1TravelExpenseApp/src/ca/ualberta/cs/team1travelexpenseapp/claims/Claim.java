@@ -39,12 +39,12 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	protected ArrayList<User> approverList;
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
-	protected Class<?> status;
+	transient protected Class<?> status;
 	protected UUID uniqueId;
 	protected boolean synced;
 	
 	
-	//from http://stackoverflow.com/a/22081826 March 29 2015
+	/*//from http://stackoverflow.com/a/22081826 March 29 2015
 	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
             RuntimeTypeAdapterFactory.of(Claim.class);
 
@@ -58,7 +58,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
         if (!this.registeredClasses.contains(this.getClass())) {
             adapter.registerSubtype(this.getClass());
         }
-    }
+    }*/
 	
 	
 	public UUID getUniqueId() {
@@ -76,7 +76,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	
 	/** Initializes attributes to new instances **/
 	public Claim() { 
-		registerClass();
+		//registerClass();
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
@@ -88,6 +88,8 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		synced                = false;
+		uniqueId              = UUID.randomUUID();
 	}
 
 	/** set claimant name, start and end date, all other attributes are initializes to new instances 
@@ -95,7 +97,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
 	public Claim(String cName, Date sDate, Date eDate) {
-		registerClass();
+		//registerClass();
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
@@ -108,6 +110,8 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		synced                = false;
+		uniqueId              = UUID.randomUUID();
 	}
 	
 	

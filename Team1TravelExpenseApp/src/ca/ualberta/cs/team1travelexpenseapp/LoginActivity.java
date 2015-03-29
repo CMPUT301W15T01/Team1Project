@@ -17,6 +17,9 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import dataManagers.ApproverClaimListManager;
+import dataManagers.ClaimListManager;
+import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,13 +70,16 @@ public class LoginActivity extends Activity {
 		EditText userNameField = (EditText) findViewById(R.id.userNameField);
 		String currentUserName=userNameField.getText().toString();
 		if(currentUserName.equals("")) currentUserName="Guest";
+		
+		
 		Approver currentUser=new Approver(currentUserName);
 		UserSingleton.getUserSingleton().setUser(currentUser);
+		
+		
 		ClaimList claimList=currentUser.getClaimList();
 		claimList.getManager().setContext(getApplicationContext());
-		ClaimantClaimListManager claimantClaimListManager=currentUser.getClaimList().getManager();
-		claimantClaimListManager.setContext(getApplicationContext());
-		claimantClaimListManager.setClaimantName(currentUserName);
+		ApproverClaimListManager approverClaimListManager = (ApproverClaimListManager) currentUser.getClaimList().getManager();
+		approverClaimListManager.setContext(getApplicationContext());
 		claimList.loadClaims();
 		startActivity(intent);
 	}
@@ -99,7 +105,7 @@ public class LoginActivity extends Activity {
 		currentUser.getTagList().loadTags();
 		
 		
-		ClaimantClaimListManager claimantClaimListManager=currentUser.getClaimList().getManager();
+		ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) currentUser.getClaimList().getManager();
 		claimantClaimListManager.setContext(getApplicationContext());
 		claimantClaimListManager.setClaimantName(currentUserName);
 		currentUser.getClaimList().loadClaims();

@@ -1,6 +1,5 @@
-package ca.ualberta.cs.team1travelexpenseapp;
+package dataManagers;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,10 +21,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
@@ -34,20 +31,14 @@ import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class ClaimantClaimListManager {
-	private ClaimList claimList;
-	private Context context;
+public class ClaimantClaimListManager extends ClaimListManager {
 	private String claimantName;
-	private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/";
-	private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/_search";
 	
-	
-
 	/**
 	 * Initialize with the claimList to be managed.
 	 * @param claimList The ClaimList to saved from and loaded to
 	 */
-	ClaimantClaimListManager(ClaimList claimList){
+	public ClaimantClaimListManager(ClaimList claimList){
 		this.claimList=claimList;
 		this.claimantName="Guest";
 	}
@@ -62,25 +53,6 @@ public class ClaimantClaimListManager {
 	}
 	
 	
-	/**
-	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015
-	 * get the http response and return json string
-	 */
-	String getEntityContent(HttpResponse response) throws IOException {
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader((response.getEntity().getContent())));
-		String output;
-		System.err.println("Output from Server -> ");
-		String json = "";
-		while ((output = br.readLine()) != null) {
-			System.err.println(output);
-			json += output;
-		}
-		System.err.println("JSON:"+json);
-		return json;
-	}
-	
-	
 	private void saveClaimToWeb(final Claim claim){
 		if(NetworkAvailable()){
 			
@@ -88,7 +60,7 @@ public class ClaimantClaimListManager {
 		        public void run() {
 					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
 					StringEntity stringentity = null;
-					Gson gson= GsonUtils.getGson();
+					Gson gson= new Gson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
 						stringentity = new StringEntity(gson.toJson(claim));
@@ -122,12 +94,11 @@ public class ClaimantClaimListManager {
 	}
 	
 	private void saveClaimsToDisk(ArrayList<Claim> claims){
-		Gson gson= GsonUtils.getGson();
+		Gson gson= new Gson();
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
-			gson.toJson(claims, osw);
+			gson.toJson(claims,osw);
 			osw.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -152,7 +123,7 @@ public class ClaimantClaimListManager {
 		if(NetworkAvailable()){
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
-		        	Gson gson= GsonUtils.getGson();
+		        	Gson gson= new Gson();
 		        	HttpClient httpclient = new DefaultHttpClient();
 					try {
 						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:"+claimantName);
@@ -188,7 +159,7 @@ public class ClaimantClaimListManager {
 	
 	
 	private ArrayList<Claim> loadClaimsFromDisk(){
-		Gson gson= GsonUtils.getGson();
+		Gson gson= new Gson();
 		ArrayList<Claim> claims = null;
 		try {
 			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
@@ -214,7 +185,7 @@ public class ClaimantClaimListManager {
 	/**
 	 * Remove the passed Claim from the web server.
 	 */
-	public void removeClaimFromWeb(final Claim claim){
+	public void removeClaim(final Claim claim){
 		if(NetworkAvailable()){
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
@@ -290,23 +261,7 @@ public class ClaimantClaimListManager {
 		
 	}
 	
-	/**
-	 * Context must be set to save/load from file
-	 * @param context
-	 */
-	public void setContext(Context context){
-		this.context=context;
-	}
-	
 	public void setClaimantName(String claimantName) {
 		this.claimantName = claimantName;
-	}
-	
-	//from http://stackoverflow.com/a/4239019 March 28
-	private boolean NetworkAvailable() {
-	    ConnectivityManager connectivityManager 
-	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 }

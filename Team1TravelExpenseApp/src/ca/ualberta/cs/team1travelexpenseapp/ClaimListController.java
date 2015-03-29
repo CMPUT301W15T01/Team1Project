@@ -103,7 +103,7 @@ public class ClaimListController {
 	public void deleteClaim(Claim claim){
 		ArrayList<Claim> claims=claimsList.getClaims();
 		claims.remove(claim);
-		claimsList.getManager().removeClaimFromWeb(claim);
+		claimsList.getManager().removeClaim(claim);
 		claimsList.setClaimList(claims);
 	}
 	

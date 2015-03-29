@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import dataManagers.ClaimListManager;
+import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
 import android.view.View;
 
@@ -32,7 +34,7 @@ import android.view.View;
 public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
-	private ClaimantClaimListManager manager;
+	private ClaimListManager manager;
 	private transient ArrayList<Listener> listeners;
 	
 	/**
@@ -193,7 +195,7 @@ public class ClaimList {
 		return claimList.get(i);
 	}
 
-	public ClaimantClaimListManager getManager() {
+	public ClaimListManager getManager() {
 		return this.manager;
 	}
 	
