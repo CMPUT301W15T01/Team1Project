@@ -21,7 +21,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -30,6 +29,7 @@ import android.util.Log;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -88,7 +88,7 @@ public class ClaimantClaimListManager {
 		        public void run() {
 					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
 					StringEntity stringentity = null;
-					Gson gson= new Gson();
+					Gson gson= GsonUtils.getGson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
 						stringentity = new StringEntity(gson.toJson(claim));
@@ -122,12 +122,12 @@ public class ClaimantClaimListManager {
 	}
 	
 	private void saveClaimsToDisk(ArrayList<Claim> claims){
-		Gson gson= new Gson();
+		Gson gson= GsonUtils.getGson();
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
-			gson.toJson(claims, typeOfT , osw);
+			gson.toJson(claims, osw);
 			osw.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -152,7 +152,7 @@ public class ClaimantClaimListManager {
 		if(NetworkAvailable()){
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
-		        	Gson gson= new Gson();
+		        	Gson gson= GsonUtils.getGson();
 		        	HttpClient httpclient = new DefaultHttpClient();
 					try {
 						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:"+claimantName);
@@ -188,7 +188,7 @@ public class ClaimantClaimListManager {
 	
 	
 	private ArrayList<Claim> loadClaimsFromDisk(){
-		Gson gson= new Gson();
+		Gson gson= GsonUtils.getGson();
 		ArrayList<Claim> claims = null;
 		try {
 			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
