@@ -359,7 +359,7 @@ public class ClaimListController {
 		
 			ArrayList<Claim> claims = getClaimList().getClaims();
 			claims.remove(currentClaim);
-			allClaims.getClaims().remove(currentClaim);
+			//allClaims.getClaims().remove(currentClaim);
 			claimsList.setClaimList(claims);
 		}
 		
