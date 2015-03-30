@@ -19,9 +19,12 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Arrays;  
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;  
 import java.util.List;  
   
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 
 import android.app.Activity;
 import android.app.AlertDialog;  
@@ -46,7 +49,7 @@ public class MultiSelectionSpinner extends Spinner implements
   OnMultiChoiceClickListener {  
  String[] _items = null;  
  boolean[] mSelection = null;
- ArrayList itemsList  = null;
+ ArrayList<?> itemsList  = null;
  Context context;
   
  ArrayAdapter<String> simple_adapter;
@@ -85,6 +88,47 @@ public class MultiSelectionSpinner extends Spinner implements
  public boolean performClick() {  
   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());  
   builder.setMultiChoiceItems(_items, mSelection, this);
+  
+  builder.setOnDismissListener(new OnDismissListener() {
+	
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		// TODO Auto-generated method stub
+		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		try {
+			Claimant user=(Claimant) UserSingleton.getUserSingleton().getUser();
+			ClaimantClaimsListActivity activity = (ClaimantClaimsListActivity) getContext();
+			ArrayList<Claim> displayList = activity.getDisplayList();
+			ArrayAdapter<Claim> claimsAdapter = activity.getArrayAdapter();
+			List<String> tags = tagSpinner.getSelectedStrings();
+			
+			if(tags.size() == 0){
+				displayList.clear();
+				Collection<Claim> claims = user.getClaimList().getClaims();
+		  		displayList.addAll(claims);
+				claimsAdapter.notifyDataSetChanged();
+			} else {
+				displayList.clear();
+				Collection<Claim> claims = user.getClaimList().getClaims();
+		  		displayList.addAll(claims);
+				ArrayList<Claim> list = new ArrayList<Claim>();
+				for(Claim claim: displayList){
+					for(String tag: claim.getClaimTagNameList()) {
+						if(tags.contains(tag)){
+							list.add(claim);
+						}
+					}
+				}
+				displayList.clear();
+		  		displayList.addAll(list);
+				claimsAdapter.notifyDataSetChanged();
+			}
+		} catch(Exception e) {
+			
+		}
+	}
+  });
+  
   builder.show();  
   return true;  
  }  

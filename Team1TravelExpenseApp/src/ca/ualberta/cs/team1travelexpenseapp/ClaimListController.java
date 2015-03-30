@@ -309,6 +309,7 @@ public class ClaimListController {
 	 */
 	public void onRemoveClaimClick() {
 		
+
 		if(getCurrentClaim().isSubmittable()){
 			deleteClaim(currentClaim);
 		}
