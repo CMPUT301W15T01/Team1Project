@@ -231,7 +231,7 @@ public class TagListManager {
 	public void loadTags(){
 		//much simpler than equivalent for ClaimList, here we simply load the list from web if possible and use the local one
 		//otherwise
-		ArrayList<Tag> tags=loadTagsFromDisk();
+		ArrayList<Tag> tags=loadTagsFromWeb();
 		if(tags.isEmpty()){	
 			tags=loadTagsFromDisk();
 		}
