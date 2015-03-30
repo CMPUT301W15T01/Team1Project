@@ -14,10 +14,15 @@ limitations under the License.
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import java.io.File;
+
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -27,12 +32,14 @@ import android.widget.TextView;
 public class ApproverClaimInfo extends Activity {
 	TextView info;
 	private Claim currentClaim;
+	private Expense expense;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		currentClaim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
-		
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+
 		setContentView(R.layout.activity_approver_claim_info);
 		info = (TextView) findViewById(R.id.ApproverClaimInfoTextView);
 	}
@@ -46,6 +53,18 @@ public class ApproverClaimInfo extends Activity {
 
 	public void onStart() {
 		super.onStart();
-		info.setText(currentClaim.toString());
+		info.setText(currentClaim.toString() + "\n" + expense.toString());
+		
+		// Retrieved from http://stackoverflow.com/questions/4181774/show-image-view-from-file-path-in-android (March 29, 2015)
+		File imgFile = expense.getReceipt();
+		if(imgFile.exists()){
+
+		    Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+		    ImageView ReceiptImage = (ImageView) findViewById(R.id.imageViewApproverReceipt);
+
+		    ReceiptImage.setImageBitmap(ReceiptBMP);
+
+		}
 	}
 }

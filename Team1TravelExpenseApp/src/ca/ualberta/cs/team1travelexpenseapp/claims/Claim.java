@@ -388,7 +388,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	    	}
 	    	str += currency.getValue() + "-" + currency.getKey() + " ";
 	    }
-		if (getStatus() == SubmittedClaim.class) { str+= "Approvers: " + approverList.toString(); }
+		if (getStatus() == SubmittedClaim.class) { str+= "\nApprovers: " + approverList.toString(); }
 		
 		return str;
 		

@@ -29,11 +29,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Allows the approver to view the expenses contained in a clicked claim and provides the option
@@ -77,6 +79,13 @@ public class ApproverExpenseListActivity extends Activity {
 			findViewById(R.id.returnButton).setEnabled(false);
 			findViewById(R.id.approverComment).setEnabled(false);
 		}
+		expenseListView.setOnItemClickListener(new OnItemClickListener(){
+        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
+        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expenselistAdapter.getItem(position));
+    			Intent edit = new Intent(getBaseContext(), ApproverClaimInfo.class);
+    			startActivity(edit);
+        	}
+        });
 
 	}
 
