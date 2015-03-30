@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.location.Location;
+
 /**
  * Implements the model of an Expense item which is an individual part of a specific claim 
  * and contains a date, category, description, cost, currency, receipt photo and whether 
@@ -34,6 +36,8 @@ public class Expense {
 	protected boolean isFlagged;
 	protected boolean isComplete;
 	protected File receipt;
+	protected Location location;
+
 
 	/**
 	 * Create a new Expense with a given description, date, and category. If all these values are
@@ -173,7 +177,25 @@ public class Expense {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-
+	
+	/**
+	 * Get the Location of the destination.
+	 * @return
+	 * The Location
+	 */
+	public Location getLocation() {
+		return location;
+	}
+	
+	/**
+	 * Set the Location of the destination.
+	 * @param currency
+	 * The Location is from android.location
+	 */	
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	
 	/**
 	 * Get whether or not the expense has been flagged.
 	 * @return

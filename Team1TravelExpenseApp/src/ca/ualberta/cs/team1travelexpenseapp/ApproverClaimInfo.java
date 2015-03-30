@@ -60,9 +60,7 @@ public class ApproverClaimInfo extends Activity {
 		if(imgFile.exists()){
 
 		    Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
 		    ImageView ReceiptImage = (ImageView) findViewById(R.id.imageViewApproverReceipt);
-
 		    ReceiptImage.setImageBitmap(ReceiptBMP);
 
 		}
