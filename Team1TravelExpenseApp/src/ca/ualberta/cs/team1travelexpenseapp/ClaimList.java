@@ -64,6 +64,17 @@ public class ClaimList {
 		return claimList;
 	}
 	
+	public ArrayList<Claim> getSubmittedClaims() {
+		ArrayList<Claim> submittedList = new  ArrayList<Claim>();		
+		Collections.sort(claimList);
+		for (Claim submitted: claimList) {
+			if (submitted.isSubmittable()) {
+				submittedList.add(submitted);
+			}
+		}
+		return submittedList;
+	}
+	
 	/**
 	 * Add the passed claim to the underlying ArrayList of Claims.
 	 * @param claim The Claim to be added
