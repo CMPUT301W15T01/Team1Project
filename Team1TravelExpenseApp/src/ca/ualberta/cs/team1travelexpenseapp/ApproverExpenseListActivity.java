@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,6 +71,12 @@ public class ApproverExpenseListActivity extends Activity {
 		super.onStart();
 		TextView info = (TextView) findViewById(R.id.approverClaimInfoTextView);
 		info.setText(claim.toString());
+		
+		if (claim.getClaimantName().equals(user.getName())) {
+			findViewById(R.id.approveButton).setEnabled(false);
+			findViewById(R.id.returnButton).setEnabled(false);
+			findViewById(R.id.approverComment).setEnabled(false);
+		}
 
 	}
 
