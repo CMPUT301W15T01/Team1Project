@@ -121,7 +121,6 @@ public class TagListManager {
 					httpPost.setHeader("Accept","application/json");
 			
 					httpPost.setEntity(stringentity);
-					printRequest(httpPost);
 					HttpResponse response = null;
 					try {
 						response = httpclient.execute(httpPost);
@@ -270,29 +269,6 @@ public class TagListManager {
 	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-	
-	
-	//**Test method please remove
-	private void printRequest(HttpPost put){
-		org.apache.http.Header[] headers = put.getAllHeaders();
-		String content=null;
-		try {
-			content = EntityUtils.toString(put.getEntity());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		Log.d("onlineTest",put.getMethod()+" "+put.getURI()+" "+put.getProtocolVersion());
-		for (org.apache.http.Header header : headers) {
-			Log.d("onlineTest",header.getName() + ": " + header.getValue());
-		}
-		Log.d("onlineTest",content);
-		
 	}
 	
 	//Elastic search doesn't like saving arrayLists so I made this to save instead
