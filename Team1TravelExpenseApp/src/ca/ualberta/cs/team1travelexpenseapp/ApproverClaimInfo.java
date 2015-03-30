@@ -33,6 +33,7 @@ public class ApproverClaimInfo extends Activity {
 	TextView info;
 	private Claim currentClaim;
 	private Expense expense;
+	private ImageView receiptImage;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class ApproverClaimInfo extends Activity {
 
 		setContentView(R.layout.activity_approver_claim_info);
 		info = (TextView) findViewById(R.id.ApproverClaimInfoTextView);
+		receiptImage = (ImageView) findViewById(R.id.imageViewApproverReceipt);
 	}
 
 	@Override
@@ -60,8 +62,7 @@ public class ApproverClaimInfo extends Activity {
 		if(imgFile.exists()){
 
 		    Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-		    ImageView ReceiptImage = (ImageView) findViewById(R.id.imageViewApproverReceipt);
-		    ReceiptImage.setImageBitmap(ReceiptBMP);
+		    receiptImage.setImageBitmap(ReceiptBMP);
 
 		}
 	}
