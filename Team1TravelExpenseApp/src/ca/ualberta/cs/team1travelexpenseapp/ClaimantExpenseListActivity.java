@@ -148,6 +148,10 @@ public class ClaimantExpenseListActivity extends Activity {
 				       });
 					editExpenseDialogBuilder.setTitle("Edit/Delete Expense?");
 					editExpenseDialog=editExpenseDialogBuilder.create();
+					
+					if (!claim.isSubmittable()) {
+	                    editExpenseDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					}
 					editExpenseDialog.show();
 					return true;//not too sure on return value look into this
 	    		}
