@@ -22,6 +22,7 @@ public abstract class ClaimListManager {
 	abstract public void saveClaims();
 	abstract public void loadClaims();
 	abstract public void removeClaim(Claim claim);
+	abstract public void onConnect();
 
 	/**
 	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015

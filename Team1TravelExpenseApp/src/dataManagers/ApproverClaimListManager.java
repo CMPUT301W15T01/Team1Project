@@ -142,4 +142,8 @@ public class ApproverClaimListManager extends ClaimListManager{
 		claimList.setClaimList(loadClaimsFromWeb());
 		
 	}
+	
+	public void onConnect(){
+		loadClaims();
+	}
 }
