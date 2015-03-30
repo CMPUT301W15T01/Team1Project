@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import dataManagers.ApproverClaimListManager;
@@ -68,7 +69,7 @@ public class ClaimList {
 		ArrayList<Claim> submittedList = new  ArrayList<Claim>();		
 		Collections.sort(claimList);
 		for (Claim submitted: claimList) {
-			if (submitted.isSubmittable()) {
+			if (submitted.getStatus() ==  SubmittedClaim.class) {
 				submittedList.add(submitted);
 			}
 		}
