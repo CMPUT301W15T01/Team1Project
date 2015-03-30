@@ -1,19 +1,11 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
-import java.util.Date;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 
-public class ReturnedClaim extends AbstractClaim {
+public class ReturnedClaim extends ProgressClaim {
 
-	public ReturnedClaim() {
-		super();
-		status = "returned";
+	@Override
+	public Claim changeStatus(Class<?> claimStatusType) {
+		return new ClaimAdapter<ReturnedClaim>(this, claimStatusType);
 	}
-
-	public ReturnedClaim(String cName, Date sDate, Date eDate) {
-		super(cName, sDate, eDate);
-		status = "returned";
-		
-	}
-	
-
 }

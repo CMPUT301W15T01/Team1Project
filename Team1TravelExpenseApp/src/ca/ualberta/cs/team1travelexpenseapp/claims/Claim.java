@@ -5,21 +5,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import android.util.Log;
-
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
+import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-import ca.ualberta.cs.team1travelexpenseapp.User;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.RuntimeTypeAdapterFactory;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public abstract class AbstractClaim implements Comparable<AbstractClaim> {
+public class Claim implements ClaimStatus, Comparable<Claim> {
+	
+
 	protected ExpenseList expenseList;
 	protected String claimantName;
 	protected Date startDate;
@@ -30,39 +39,79 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	protected ArrayList<User> approverList;
 	protected Map<String, String> commentList;
 	protected ArrayList<Listener> listeners;
-	protected String status = null;
+	transient protected Class<?> status;
+	protected UUID uniqueId;
+	protected boolean synced;
 	
+	
+	/*//from http://stackoverflow.com/a/22081826 March 29 2015
+	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
+            RuntimeTypeAdapterFactory.of(Claim.class);
+
+    private static final HashSet<Class<?>> registeredClasses= new HashSet<Class<?>>();
+
+    static {
+        GsonUtils.registerType(adapter);
+    }
+    
+    private synchronized void registerClass() {
+        if (!this.registeredClasses.contains(this.getClass())) {
+            adapter.registerSubtype(this.getClass());
+        }
+    }*/
+	
+	
+	public UUID getUniqueId() {
+		return uniqueId;
+	}
+
+	public boolean isSynced() {
+		return synced;
+	}
+
+	public void setSynced(boolean synced) {
+		this.synced = synced;
+	}
+
 	
 	/** Initializes attributes to new instances **/
-	public AbstractClaim(){ 
+	public Claim() { 
+		//registerClass();
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
+		status                = Claim.class;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		synced                = false;
+		uniqueId              = UUID.randomUUID();
 	}
 
 	/** set claimant name, start and end date, all other attributes are initializes to new instances 
 	 * @param cName - a string
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
-	public AbstractClaim(String cName, Date sDate, Date eDate) {
+	public Claim(String cName, Date sDate, Date eDate) {
+		//registerClass();
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
 		
 		destinationReasonList = new HashMap<String, String>();
 		claimTagList          = new ArrayList<Tag>();
+		status                = Claim.class;
 		isComplete            = false;
 		approverList          = new ArrayList<User>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
+		synced                = false;
+		uniqueId              = UUID.randomUUID();
 	}
 	
 	
@@ -76,7 +125,24 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	}
 
 	
-
+	/** 
+	 * sets the claim's expense list object to a given expenseList
+	 * @param expenseList
+	 */
+	public void setExpenseList(ExpenseList expenseList) {
+		this.expenseList = expenseList;
+	}
+	
+	/**
+	 * adds a destination, with a reason to the claim 
+	 * if destination already exist, new reason will write over old reason 
+	else new destination will reason will be added to the Map 
+	 * @param destination - a string
+	 * @param reason - a string 
+	 */
+	public void addDestination(String destination, String reason) {
+			destinationReasonList.put(destination, reason);
+	}
 	
 	/**
 	 * 
@@ -111,6 +177,13 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return destinationReasonList.keySet();
 	}
 	
+	/**
+	 * Set the claimantName for the Claim.
+	 * @param name The name of the claimant for the Claim.
+	 */
+	public void setClaimantName(String name) {
+		claimantName = name;
+	}
 
 	/**
 	 * Get the claimantName for the Claim.
@@ -129,6 +202,20 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	}
 	
 	/**
+	 * Get a list of the names of all the tags attached to the claim
+	 * @return
+	 */
+	public ArrayList<String> getClaimTagNameList() {
+		ArrayList<String> tagNames = new ArrayList<String>();
+		ArrayList<Tag> tags = getClaimTagList();
+		for(Tag tag : tags) {
+			tagNames.add(tag.getName());
+		}
+		
+		return tagNames;
+	}
+	
+	/**
 	 * Get the number of tags in the claim.
 	 * @return int corresponding the number of tags set for the claim.
 	 */
@@ -136,7 +223,13 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return claimTagList.size();
 	}
 
-
+	/**
+	 * Set the TagList for the claim
+	 * @param claimTagList The TagList containing the new tags to be set for the claim.
+	 */
+	public void setClaimTagList(ArrayList<Tag> claimTagList) {
+		this.claimTagList = claimTagList;
+	}
 
 	/**
 	 * Return a boolean indicating whether the claim is "complete".
@@ -146,7 +239,13 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return isComplete;
 	}
 
-
+	/**
+	 * Set the completeness of the claim.
+	 * @param isComplete true or false, is the claim complete?
+	 */
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
+	}
 
 	/**
 	 * Get the list of approvers for the current Claim
@@ -156,7 +255,13 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return approverList;
 	}
 
-
+	/**
+	 * Set the list of approvers for the current Claim
+	 * @param approverList ArrayList of Users corresponding to the approvers who have returned or approved the claim
+	 */
+	public void setApproverList(ArrayList<User> approverList) {
+		this.approverList = approverList;
+	}
 
 	/**
 	 * Get a Map mapping approvers of the claim to any comments they may have left.
@@ -165,8 +270,14 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	public Map<String, String> getCommentList() {
 		return commentList;
 	}
-
 	
+	/**
+	 * Add a comment to the claim from the current User.
+	 * @param comment String to be added as comment.
+	 */
+	public void addComment(String comment) {
+		commentList.put(UserSingleton.getUserSingleton().getUser().getName(), comment);
+	}
 
 	/**
 	 * Return the startDate for the Claim.
@@ -176,7 +287,14 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return startDate;
 	}
 	
-
+	/**
+	 * Set the startDate of the Claim.
+	 * @param date startDate to be set for the current Claim.
+	 */
+	public void setStartDate(Date date) {
+		startDate = date;
+	}
+	
 	/**
 	 * Return the endDate for the Claim.
 	 * @return endDate (Date) of the Claim.
@@ -185,7 +303,13 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		return endDate;
 	}
 	
-
+	/**
+	 * Set the endDate of the Claim.
+	 * @param date endDate to be set for the current Claim.
+	 */
+	public void setEndDate(Date date) {
+		endDate = date;
+	}
 	
 	/**
 	 * Return a map from currency types (String) to amounts (BigDecimal) of the currency spent in the expenses of the Claim.
@@ -236,7 +360,7 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 		}
 		
 		//get status
-		str += "\nStatus: " + status.toString();
+		str += "\nStatus: " + getStatusString();
 		
 		//get tag list 
 		str += "\nTags:";
@@ -264,10 +388,18 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	    	}
 	    	str += currency.getValue() + "-" + currency.getKey() + " ";
 	    }
-		
+		if (getStatus() == SubmittedClaim.class) { str+= "\nApprovers: " + approverList.toString(); }
 		
 		return str;
 		
+	}
+
+	private String getStatusString() {
+		if ( getStatus() == ApprovedClaim.class )  { return "approved";   }
+		if ( getStatus() == ProgressClaim.class )  { return "inProgrees"; }
+		if ( getStatus() == SubmittedClaim.class)  { return "submitted";  }
+		if ( getStatus() == ReturnedClaim.class )  { return "returned";   }
+		return "";
 	}
 
 	//sorting
@@ -278,10 +410,43 @@ public abstract class AbstractClaim implements Comparable<AbstractClaim> {
 	 * use Collections.sort(ArrayList<Claim> Object); to sort Object. 
 	 */
 	@Override
-	public int compareTo( AbstractClaim claim ) {
-		if (ClaimListController.getUserType().equals("Claimant")) {
-			return claim.startDate.compareTo(this.startDate);
+	public int compareTo( Claim claim ) {
+		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
+			return claim.getStartDate().compareTo(this.startDate);
 		}
-		return this.startDate.compareTo(claim.startDate);
+		return this.startDate.compareTo(claim.getStartDate());
 	}
+
+	/**
+	 * Get the status (inProgress, submitted, approved, returned) for the claim.
+	 * @return Status for the claim.
+	 */
+	public Class<?> getStatus() {
+		return status;
+	}
+
+	/**
+	 * Set the status (inProgress, submitted, approved, returned) for the claim.
+	 * @param status enum Status to be set as claim status.
+	 */
+	public void setStatus(Class<?> status) {
+		if (status.getClass().isInstance(Claim.class)) {
+			this.status = status;
+		} else {
+			throw new RuntimeException("Not a claim type");
+		}
+	}
+
+	@Override
+	public Claim changeStatus(Class<?> claimStatusType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isSubmittable() {
+		// TODO Auto-generated method stub
+		return status != SubmittedClaim.class && 
+				status != ApprovedClaim.class;
+	}
+	
 }

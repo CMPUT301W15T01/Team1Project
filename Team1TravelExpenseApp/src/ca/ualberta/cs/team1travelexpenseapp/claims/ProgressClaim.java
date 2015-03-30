@@ -1,21 +1,38 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
+import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
+import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class ProgressClaim extends AbstractClaim {
-
-	public ProgressClaim() {
+public class ProgressClaim extends Claim {
+	/** Initializes attributes to new instances **/
+	public ProgressClaim() { 
 		super();
-		status = "inProgress";
+		setStatus(ProgressClaim.class);
 	}
 
+	/** set claimant name, start and end date, all other attributes are initializes to new instances 
+	 * @param cName - a string
+	 * @param sDate - a Date
+	 * @param eDate - a Date **/
 	public ProgressClaim(String cName, Date sDate, Date eDate) {
-		super(cName, sDate, eDate);
-		status = "inProgress";
+		super();
+		setStatus(ProgressClaim.class);
 	}
 	
 	/** 
@@ -44,7 +61,7 @@ public class ProgressClaim extends AbstractClaim {
 	public void setClaimantName(String name) {
 		claimantName = name;
 	}
-	
+
 	/**
 	 * Set the TagList for the claim
 	 * @param claimTagList The TagList containing the new tags to be set for the claim.
@@ -52,15 +69,7 @@ public class ProgressClaim extends AbstractClaim {
 	public void setClaimTagList(ArrayList<Tag> claimTagList) {
 		this.claimTagList = claimTagList;
 	}
-	
-	/**
-	 * Set the completeness of the claim.
-	 * @param isComplete true or false, is the claim complete?
-	 */
-	public void setComplete(boolean isComplete) {
-		this.isComplete = isComplete;
-	}
-	
+
 	/**
 	 * Set the startDate of the Claim.
 	 * @param date startDate to be set for the current Claim.
@@ -76,6 +85,12 @@ public class ProgressClaim extends AbstractClaim {
 	public void setEndDate(Date date) {
 		endDate = date;
 	}
+
+
 	
+	@Override
+	public Claim changeStatus(Class<?> claimStatusType) {
+		return new ClaimAdapter<ProgressClaim>(this, claimStatusType);
+	}
 
 }

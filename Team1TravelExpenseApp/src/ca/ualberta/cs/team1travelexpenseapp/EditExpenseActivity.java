@@ -24,18 +24,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -46,13 +51,22 @@ import android.widget.Spinner;
  */
 public class EditExpenseActivity extends Activity {
 	private ExpenseList expenseList;
+	private ExpenseListController expenseListController;
+	private Expense expense;
 	private Listener listener;
+	private Claim claim;
+	private ImageButton receiptButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_edit_expense);	
-		expenseList = ExpenseListController.getCurrentExpenseList();
+		setContentView(R.layout.activity_edit_expense);
+		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
+		expenseList = claim.getExpenseList();
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+		expenseListController=new ExpenseListController(expenseList);
+		expenseListController.setCurrentExpense(expense);
+		receiptButton = (ImageButton) findViewById(R.id.viewPhotoButton);
 		
 		listener=new Listener() {			
 			@Override
@@ -62,10 +76,10 @@ public class EditExpenseActivity extends Activity {
 		};
 		
 		expenseList.addListener(listener);
+		
 	}
 
 	private void updateValues(){
-		Expense expense = ExpenseListController.getCurrentExpense();
 		Spinner categorySpinner = (Spinner) this.findViewById(R.id.categorySelector);	
 		for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
 			if (String.valueOf(categorySpinner.getItemAtPosition(i)).equals(expense.getCategory())){
@@ -93,8 +107,8 @@ public class EditExpenseActivity extends Activity {
 			}
 		}
 		
-		if (ClaimListController.getCurrentClaim().status == Claim.Status.submitted || 
-				ClaimListController.getCurrentClaim().status == Claim.Status.approved){
+		if ( claim.getStatus() == SubmittedClaim.class || 
+				claim.getStatus() == ApprovedClaim.class ){
 			//Disable UI if the claim is not editable
 			descriptionView.setEnabled(false);
 			dateView.setEnabled(false);
@@ -106,7 +120,7 @@ public class EditExpenseActivity extends Activity {
 		
 		
 		//TEMPORARY code to show the photo in the image button
-		Log.d("Testing Add Photo", "File for updating? " + (ExpenseListController.getCurrentExpense().getReceipt() != null));
+		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceipt() != null));
 		if (expense.receipt != null){			
 			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceipt().getAbsolutePath()));
 			Log.d("Testing Add Photo", "Update thumbed");
@@ -125,7 +139,7 @@ public class EditExpenseActivity extends Activity {
 	public void onExpenseSaveClick(View v) {
 
 		//editing model happens in controller 
-		ExpenseListController.onExpenseSaveClick(this);
+		expenseListController.onExpenseSaveClick(this);
 	}
 		
 	@Override
@@ -175,15 +189,18 @@ public class EditExpenseActivity extends Activity {
 	Log.d("Testing Add Photo", "Creating File");
 	File photoFile = new  File(this.getFilesDir().getAbsolutePath() + 
 			"/" + filePath);
-	ExpenseListController.getCurrentExpense().setReceipt(photoFile);
-	Log.d("Testing Add Photo", "File Added to Expense? " + (ExpenseListController.getCurrentExpense().getReceipt() != null));
+	expense.setReceipt(photoFile);
+	Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceipt() != null));
+	
+	receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
+	//Hopefully this will show the Image in the image Button
 	}
 	
 	public void onDeletePhotoClick(View v){
-		if(ExpenseListController.getCurrentExpense().getReceipt() != null){
-			ExpenseListController.getCurrentExpense().getReceipt().delete();
+		if(expense.getReceipt() != null){
+			expense.getReceipt().delete();
 			thumbnailReceipt(null);
-			ExpenseListController.getCurrentExpense().setReceipt(null);
+			expense.setReceipt(null);
 		}
 	}
 	

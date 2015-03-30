@@ -37,8 +37,8 @@ import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
-import ca.ualberta.cs.team1travelexpenseapp.User;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 
 public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<ClaimantExpenseListActivity> {

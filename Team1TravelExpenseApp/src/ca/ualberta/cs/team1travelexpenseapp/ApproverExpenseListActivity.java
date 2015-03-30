@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Map;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,10 +29,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * Allows the approver to view the expenses contained in a clicked claim and provides the option
@@ -39,17 +44,22 @@ import android.widget.TextView;
  */
 public class ApproverExpenseListActivity extends Activity {
 
-	public Claim claim;
-	private ArrayAdapter<Expense> expenselistAdapter ;
+	private Claim claim;
+	private ClaimListController claimListController;
+	private ArrayAdapter<Expense> expenselistAdapter;
  	private ListView expenseListView ;
+ 	private User user;
  	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		user=UserSingleton.getUserSingleton().getUser();
+		claimListController=new ClaimListController(user.getClaimList());
 		setContentView(R.layout.approver_display_expenses);
 		
 		// display current claims expense items 
-		claim = ClaimListController.getCurrentClaim();
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
+		claimListController.setCurrentClaim(claim);
 		
 		expenseListView = (ListView) findViewById(R.id.approverExpensesList);
         expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
@@ -63,6 +73,19 @@ public class ApproverExpenseListActivity extends Activity {
 		super.onStart();
 		TextView info = (TextView) findViewById(R.id.approverClaimInfoTextView);
 		info.setText(claim.toString());
+		
+		if (claim.getClaimantName().equals(user.getName())) {
+			findViewById(R.id.approveButton).setEnabled(false);
+			findViewById(R.id.returnButton).setEnabled(false);
+			findViewById(R.id.approverComment).setEnabled(false);
+		}
+		expenseListView.setOnItemClickListener(new OnItemClickListener(){
+        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
+        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expenselistAdapter.getItem(position));
+    			Intent edit = new Intent(getBaseContext(), ApproverClaimInfo.class);
+    			startActivity(edit);
+        	}
+        });
 
 	}
 
@@ -90,7 +113,7 @@ public class ApproverExpenseListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onApproveClick(View v) {
-		ClaimListController.onApproveClick();
+		claimListController.onApproveClick();
 		finish();
 	}
 	
@@ -99,7 +122,7 @@ public class ApproverExpenseListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onReturnClick(View v) {
-		ClaimListController.onReturnClick();
+		claimListController.onReturnClick();
 		finish();
 	}
 	
@@ -133,7 +156,7 @@ public class ApproverExpenseListActivity extends Activity {
 		public void onClick(DialogInterface dialog, int whichButton) {
 		  String value = input.getText().toString();
 		  // save the comment
-		  ClaimListController.onCommentClick(value);
+		  claimListController.onCommentClick(value);
 		  }
 		});
 

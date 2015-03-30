@@ -16,6 +16,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import dataManagers.TagListManager;
 import android.content.Context;
 /**
  * Stores a list of tags (as an ArrayList) along with a set of listeners to be updated whenever the list is modified.
@@ -24,13 +25,12 @@ import android.content.Context;
  */
 public class TagList {
 	private ArrayList<Tag> tagList;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	private static TagListManager manager;
 	
-	TagList(){
+	public TagList(){
 		manager=new TagListManager(this);
 		tagList=new ArrayList<Tag>();
-		listeners=new ArrayList<Listener>();
 	}
 	
 	/**
@@ -38,6 +38,9 @@ public class TagList {
 	 * @param listener The listener to be added
 	 */
 	public void addListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.add(listener);
 	}
 	
@@ -46,6 +49,9 @@ public class TagList {
 	 * @param listener The listener to be removed
 	 */
 	public void removeListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	
@@ -53,6 +59,9 @@ public class TagList {
 	 * Call update method on all listeners (called on tagList changes).
 	 */
 	private void notifyListeners(){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}

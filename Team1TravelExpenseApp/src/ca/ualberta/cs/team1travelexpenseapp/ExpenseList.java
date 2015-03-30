@@ -23,14 +23,13 @@ import java.util.ArrayList;
 public class ExpenseList {
 
 	private ArrayList<Expense> expenseList;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	
 	/**
 	 * Create a new empty ExpenseList
 	 */
 	public ExpenseList(){
 		expenseList=new ArrayList<Expense>();
-		listeners=new ArrayList<Listener>();
 	}
 	
 	/**
@@ -39,6 +38,9 @@ public class ExpenseList {
 	 * a listener object
 	 */
 	public void addListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.add(listener);
 	}
 	
@@ -48,6 +50,9 @@ public class ExpenseList {
 	 * a listener object
 	 */
 	public void removeListener(Listener listener){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	
@@ -55,9 +60,14 @@ public class ExpenseList {
 	 * Call update method on all listeners (called on ExpenseList changes).
 	 */
 	private void notifyListeners(){
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}
+		//added for now so claimslist is saved whenever expenselist is modified, probably suboptimal
+		UserSingleton.getUserSingleton().getUser().getClaimList().saveClaims();
 	}
 
 	/**

@@ -16,6 +16,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -40,6 +41,7 @@ import android.widget.Toast;
  */
 public class TagManagerActivity extends Activity {
 	private TagList tagList;
+	private TagListController tagListController;
 	public AlertDialog newTagDialog;
 	public AlertDialog editTagDialog;
 	private Listener listener;
@@ -55,9 +57,12 @@ public class TagManagerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_manage_tags);
 		
+		
+		tagList=((Claimant)UserSingleton.getUserSingleton().getUser()).getTagList();
+		tagListController=new TagListController(tagList);
+		
 		//taken from https://github.com/abramhindle/student-picker and modified
 		final ListView tagsListView = (ListView) findViewById(R.id.tagsList);
-		tagList=TagListController.getTagList();
 		Collection<Tag> tags = tagList.getTags();
 		final ArrayList<Tag> tagsList = new ArrayList<Tag>(tags);
 		final ArrayAdapter<Tag> tagsAdapter = new ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tagsList);
@@ -67,7 +72,7 @@ public class TagManagerActivity extends Activity {
 			@Override
 			public void update() {
 				tagsList.clear();
-				Collection<Tag> tags = TagListController.getTagList().getTags();
+				Collection<Tag> tags = tagList.getTags();
 				tagsList.addAll(tags);
 				tagsAdapter.notifyDataSetChanged();
 			}
@@ -87,7 +92,7 @@ public class TagManagerActivity extends Activity {
 						 editTagDialogBuilder.setView(getLayoutInflater().inflate(R.layout.simple_edit_text, null));
 						 editTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   boolean tagChanged=TagListController.onSetTagClick(dialog, tag);
+					        	   boolean tagChanged=tagListController.onSetTagClick(dialog, tag);
 					        	   if(!tagChanged){
 					            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that "
 					            	   		+ "name exists (not modified)",Toast.LENGTH_LONG).show();
@@ -96,7 +101,7 @@ public class TagManagerActivity extends Activity {
 					       });
 						editTagDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {
-					        	   TagListController.onRemoveTagClick(dialog, tag);
+					        	   tagListController.onRemoveTagClick(dialog, tag);
 					           }
 					       });
 						editTagDialogBuilder.setNeutralButton("cancel", new DialogInterface.OnClickListener() {
@@ -120,7 +125,7 @@ public class TagManagerActivity extends Activity {
 		
 		newTagDialogBuilder.setPositiveButton("save", new DialogInterface.OnClickListener() {
 	           public void onClick(DialogInterface dialog, int id) {
-	               boolean tagAdded=TagListController.onAddTagClick(dialog);
+	               boolean tagAdded=tagListController.onAddTagClick(dialog);
 	               if(!tagAdded){
 	            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that name exists (not added)",
 	            			   Toast.LENGTH_LONG).show();

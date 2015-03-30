@@ -1,19 +1,12 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
-import java.util.Date;
+import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 
-public class ApprovedClaim extends SubmittedClaim {
+public class ApprovedClaim extends Claim {
 
-	public ApprovedClaim() {
-		super();
-		status = "approved";
+	@Override
+	public Claim changeStatus(Class<?> claimStatusType) {
+		return new ClaimAdapter<ApprovedClaim>(this, claimStatusType);
 	}
-
-	public ApprovedClaim(String cName, Date sDate, Date eDate) {
-		super(cName, sDate, eDate);
-		status = "approved";
-	}
-	
-	
 
 }

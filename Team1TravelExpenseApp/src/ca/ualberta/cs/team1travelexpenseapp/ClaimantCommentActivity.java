@@ -16,6 +16,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.Map;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -29,12 +31,14 @@ public class ClaimantCommentActivity extends Activity {
 	
 	Claim claim;
 	TextView comments;
+	User user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_claimant_comment);
-		claim = ClaimListController.getCurrentClaim();
+		user=UserSingleton.getUserSingleton().getUser();
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
 	}
 	
 	public void onStart() {

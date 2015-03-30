@@ -11,7 +11,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
-import ca.ualberta.cs.team1travelexpenseapp.User;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -48,14 +48,14 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
 		
 		//set user as claimant
-		User user=new User("user","jeff");
-		
-		//create some claims to populate and test our list
-		Claim claim1 = new Claim("name1",new Date(2000,11,11), new Date(2015,12,12));
-		Claim claim2 = new Claim("name2",new Date(1990,1,8), new Date(2000,12,12));
-		Claim claim3 = new Claim("name3",new Date(1999,9,8), new Date(2012,12,12));
-		Claim claim4 = new Claim("name4",new Date(2013,10,8), new Date(2012,12,12));
-		Claim claim5 = new Claim("name5",new Date(2001,10,6), new Date(2012,12,12));
+//		User user=new User("user","jeff");
+//		
+//		//create some claims to populate and test our list
+//		Claim claim1 = new Claim("name1",new Date(2000,11,11), new Date(2015,12,12));
+//		Claim claim2 = new Claim("name2",new Date(1990,1,8), new Date(2000,12,12));
+//		Claim claim3 = new Claim("name3",new Date(1999,9,8), new Date(2012,12,12));
+//		Claim claim4 = new Claim("name4",new Date(2013,10,8), new Date(2012,12,12));
+//		Claim claim5 = new Claim("name5",new Date(2001,10,6), new Date(2012,12,12));
 		
 	}
 
@@ -72,7 +72,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			//toString() method should be checked manually to verify it contains the correct info
 			String viewtext = claimInfo.getText().toString();
 
-			//get claim at position i of Claim list 
+			//get claim at position i of Claim list
 			Claim claim = ClaimListController.getCurrentClaim();
 			
 			String expectedText =claim.toString();

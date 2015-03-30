@@ -33,33 +33,42 @@ import android.widget.Spinner;
  * Controller for all ExpenseLists, The contained ExpenseList will be automatically linked when expenses are being accessed.
  */
 public class ExpenseListController {
-	protected static Expense currentExpense = null;
+	protected ExpenseList expenseList;
+	protected Expense currentExpense;
 	
-	/**
-	 * Returns the ExpenseList for the claim that is currently being accessed.
-	 * @return
-	 * The ExpenseList for the active claim.
-	 */
-	public static ExpenseList getCurrentExpenseList() { 
-		return ClaimListController.getCurrentClaim().getExpenseList();
+	
+	public ExpenseListController(ExpenseList expenseList) {
+		this.expenseList=expenseList;
 	}
+	
 	
 	/**
 	 * Sets the current Expense item that is to be controlled.
 	 * @param expense
 	 * An Expense.
 	 */
-	public static void setCurrentExpense(Expense expense){
+	public void setCurrentExpense(Expense expense){
 		currentExpense = expense; 
 	}
+	
 	
 	/**
 	 * Returns the current Expense item that is being controlled.
 	 * @return
 	 * An Expense.
 	 */
-	public static Expense getCurrentExpense(){
+	public Expense getCurrentExpense(){
 		return currentExpense;
+	}
+	
+	
+	/**
+	 * Returns the ExpenseList for the claim that is currently being accessed.
+	 * @return
+	 * The ExpenseList for the active claim.
+	 */
+	public ExpenseList getExpenseList() { 
+		return expenseList;
 	}
 
 	/**
@@ -67,13 +76,13 @@ public class ExpenseListController {
 	 * @param expense
 	 * An Expense.
 	 */
-	public static void addExpense(Expense expense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
+	public void addExpense(Expense expense){
+		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		expenseArray.add(expense);
 		setCurrentExpense(expense);
 		///setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
 		//display empty expense then show activity to edit empty claim otherwise an empty expense will not show after hitting back
-		getCurrentExpenseList().setExpenseList(expenseArray);
+		expenseList.setExpenseList(expenseArray);
 	}
 	
 	/**
@@ -81,10 +90,10 @@ public class ExpenseListController {
 	 * @param expense
 	 * An Expense.
 	 */
-	public static void removeExpense(Expense expense){
-		ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
+	public void removeExpense(Expense expense){
+		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		expenseArray.remove(expense);
-		getCurrentExpenseList().setExpenseList(expenseArray);
+		expenseList.setExpenseList(expenseArray);
 	}
 	
 	/**
@@ -94,17 +103,16 @@ public class ExpenseListController {
 	 * @param newExpense
 	 * The new Expense.
 	 */
-	public static void updateExpense(Expense expense, Expense newExpense){
-		if (ClaimListController.getCurrentClaim().status != Claim.Status.submitted && 
-				ClaimListController.getCurrentClaim().status != Claim.Status.approved){
+	public void updateExpense(Expense expense, Expense newExpense){
+		if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().isSubmittable()){
 			
 			if(newExpense.getAmount().floatValue() == 0){
 				newExpense.setCurrency("");
 			}
-			ArrayList<Expense> expenseArray=ExpenseListController.getCurrentExpenseList().getExpenses();
+			ArrayList<Expense> expenseArray=expenseList.getExpenses();
 			expenseArray.set(expenseArray.indexOf(expense), newExpense);
 			setCurrentExpense(newExpense);
-			getCurrentExpenseList().setExpenseList(expenseArray);
+			expenseList.setExpenseList(expenseArray);
 		}
 	}
 	
@@ -114,7 +122,7 @@ public class ExpenseListController {
 	 * @param activity
 	 * The EditExpenseActivity which contains the needed layouts.
 	 */
-	public static void onExpenseSaveClick(EditExpenseActivity activity) {
+	public void onExpenseSaveClick(EditExpenseActivity activity) {
 			
 		Spinner categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector);
 		String categoryText = String.valueOf(categorySpinner.getSelectedItem());
@@ -140,9 +148,10 @@ public class ExpenseListController {
 		if ( completeBox.isChecked() ) {
 			expense.setFlagged(true);
 		}
-		expense.setReceipt(ExpenseListController.getCurrentExpense().getReceipt());
+		expense.setReceipt(getCurrentExpense().getReceipt());
 		
 		updateExpense(getCurrentExpense(), expense);
+		
 		
 		activity.finish();	
 	}
@@ -153,8 +162,9 @@ public class ExpenseListController {
 	 * @param activity
 	 * The ClaimantExpenseListActivity which contains the needed layout.
 	 */
-	public static void onAddExpenseClick(ClaimantExpenseListActivity activity) {
-		ExpenseListController.addExpense(new Expense());
+	public void onAddExpenseClick(ClaimantExpenseListActivity activity) {
+		addExpense(new Expense());
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(currentExpense);
 		Intent intent = new Intent(activity, EditExpenseActivity.class);
 		activity.startActivity(intent);
 		
@@ -164,8 +174,8 @@ public class ExpenseListController {
 	 * Called from the dialog in the ClaimantExpenseListActivity.
 	 * Simply removes the expense that was selected. 
 	 */
-	public static void onRemoveExpenseClick() {
-		removeExpense(currentExpense);
+	public void onRemoveExpenseClick() {
+		removeExpense(getCurrentExpense());
 	}
 	
 }

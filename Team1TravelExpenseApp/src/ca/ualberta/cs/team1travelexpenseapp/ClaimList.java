@@ -19,6 +19,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import dataManagers.ApproverClaimListManager;
+import dataManagers.ClaimListManager;
+import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
 import android.view.View;
 
@@ -32,16 +39,21 @@ public class ClaimList {
 	private ArrayList<Claim> claimList;
 	private ArrayList<Tag> selectedTags;
 	private ClaimListManager manager;
-	private ArrayList<Listener> listeners;
+	private transient ArrayList<Listener> listeners;
 	
 	/**
 	 * Create the ClaimList with new ArrayLists of Claims, selectedTags, and listeners.
 	 */
-	public ClaimList(){
+	public ClaimList(Claimant claimant){
 		claimList = new ArrayList<Claim>();
 		selectedTags = new ArrayList<Tag>();
-		listeners = new ArrayList<Listener>();
-		manager=new ClaimListManager(this);
+		manager=new ClaimantClaimListManager(this);
+	}
+	
+	public ClaimList(Approver approver){
+		claimList = new ArrayList<Claim>();
+		selectedTags = new ArrayList<Tag>();
+		manager = new ApproverClaimListManager(this);
 	}
 	
 	/**
@@ -51,6 +63,17 @@ public class ClaimList {
 	public ArrayList<Claim> getClaims() {
 		Collections.sort(claimList);
 		return claimList;
+	}
+	
+	public ArrayList<Claim> getSubmittedClaims() {
+		ArrayList<Claim> submittedList = new  ArrayList<Claim>();		
+		Collections.sort(claimList);
+		for (Claim submitted: claimList) {
+			if (submitted.getStatus() ==  SubmittedClaim.class) {
+				submittedList.add(submitted);
+			}
+		}
+		return submittedList;
 	}
 	
 	/**
@@ -77,6 +100,8 @@ public class ClaimList {
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
 		currentClaim.setStatus(newClaim.getStatus());
+		//claim is modified and therefore no longer synced online
+		currentClaim.setSynced(false);
 		saveClaims();
 		notifyListeners();
 	}
@@ -117,6 +142,9 @@ public class ClaimList {
 	 * @param listener The listener to be added.
 	 */
 	public void addListener(Listener listener) {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		this.listeners.add(listener);
 	}
 	
@@ -124,6 +152,9 @@ public class ClaimList {
 	 * Call update method on all listeners (called on tagList changes).
 	 */
 	private void notifyListeners() {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		for(int i=0; i<listeners.size();i++){
 			listeners.get(i).update();
 		}
@@ -154,6 +185,9 @@ public class ClaimList {
 	 * @param listener The listener to be removed
 	 */
 	public void removeListener(Listener listener) {
+		if(listeners==null){
+			listeners=new ArrayList<Listener>();
+		}
 		listeners.remove(listener);
 	}
 	

@@ -20,7 +20,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -42,102 +47,63 @@ public class ClaimListController {
 	/**
 	 * The apps main list of claims
 	 */
-	protected static ClaimList claimsList = null;
+	protected ClaimList claimsList;
 	
-	/**
-	 * all claims in the system 
-	 */
-	protected static ClaimList allClaims = null;
 	/**
 	 * The list of claims that are to be displayed in a view
 	 */
-	protected static ClaimList displayedClaimList = null;
+	protected ClaimList displayedClaimList;
 	/**
 	 * The claim that is currently in use when the user selects a claim for viewing/modification
 	 */
-	protected static Claim currentClaim = null;
+	protected Claim currentClaim;
 	/**
 	 * The current user of the app
 	 */
-	protected static User user = null;
-	
-	public static AlertDialog submitWarningDialog;
-	
+	protected User user;
 	/**
 	 * Gets the current claims list
 	 * @return returns the current claims list
 	 */
-	public static ClaimList getClaimList() { 
-		if (claimsList == null) {
-			claimsList = new ClaimList();
-		}
-		
-		return claimsList;
+	
+	public ClaimListController(ClaimList claimList){
+		this.claimsList=claimList;
 	}
+	
+	public ClaimList getClaimList() { 
+		return this.claimsList;
+	}
+	
 	/**
-	 * Gets the all claims list
-	 * @return returns the all claims list
+	 * Updates the current claim to be updated
+	 * @param newClaim the claim to be updated
 	 */
-	public static ClaimList getAllClaimList() { 
-		if (allClaims == null) {
-			allClaims = new ClaimList();
+	public void updateCurrentClaim(Claim newClaim) {
+		if (currentClaim == null) {
+			throw new RuntimeException("no current claim");
 		}
-		
-		return allClaims;
+		claimsList.updateClaim(currentClaim, newClaim);
 	}
-	/**
-	 * Gets the displayed claims list
-	 * @return returns the displayed claims list
-	 */
-	public static ClaimList getDisplayedClaims() {
-		if (displayedClaimList == null) {
-			displayedClaimList = getClaimList();
-		}
-		
-		return displayedClaimList;
-	}
+	
 	/**
 	 * Sets the current claim's status to returned and add the users name to the list of approvers
 	 */
 	public void returnClaim() {
 		//As an approver, I want to return a submitted expense claim that was not approved, 
 		//denoting the claim status as returned and setting my name as the approver for the expense claim.
-		currentClaim.setStatus(Status.returned);
+		currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
-	/**
-	 * Sets the displayed claims list
-	 * @param claims The claims list to be displayed
-	 */
-	public static void setDisplayedClaims(ClaimList claims) {
-		displayedClaimList = claims;
-	}
-	/**
-	 * Updates the current claim to be updated
-	 * @param newClaim the claim to be updated
-	 */
-	public static void updateCurrentClaim(Claim newClaim) {
-		if (currentClaim == null) {
-			throw new RuntimeException("no current claim");
-		}
-		claimsList.updateClaim(currentClaim, newClaim);
-	}
-	/**
-	 * Sets the current claim that is selected by user
-	 * DOES NOT UPDATE CLAIMS LIST 
-	 * @param claim The claim that is selected
-	 */
-	public static void setCurrentClaim(Claim claim){
-		currentClaim=claim;
-	}
+	
 	/**
 	 * Deletes a claim
 	 * @param claim The claim to be deleted
 	 */
-	public static void deleteClaim(Claim claim){
+	public void deleteClaim(Claim claim){
 		ArrayList<Claim> claims=claimsList.getClaims();
 		claims.remove(claim);
+		claimsList.getManager().removeClaim(claim);
 		claimsList.setClaimList(claims);
 	}
 	
@@ -147,11 +113,14 @@ public class ClaimListController {
 	 * Redirects to the function within the ClaimListController
 	 * @param activity 
 	 */
-	public static void onSubmitClick (final ClaimantExpenseListActivity activity) {
+
+	public void onSubmitClick (final ClaimantExpenseListActivity activity) {
+	
+
 		
 		boolean expensesFlag = false;
 		boolean expensesComplete = true;
-		for(Expense expense: ClaimListController.getCurrentClaim().getExpenseList().getExpenses()){
+		for(Expense expense: getCurrentClaim().getExpenseList().getExpenses()){
 			//flag check 
 			if(expense.isFlagged() == true){
 				expensesFlag = true;
@@ -162,16 +131,16 @@ public class ClaimListController {
 			}
 		}
 		
-		if(ClaimListController.getCurrentClaim().isComplete() == false 
+		if(getCurrentClaim().isComplete() == false 
 				|| expensesFlag == true || expensesComplete == false){
 			
 			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(activity);
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		               //Do nothing
-		        	   Claim submittedClaim = ClaimListController.getCurrentClaim();
-						submittedClaim.setStatus(Status.submitted);
-						ClaimListController.updateCurrentClaim(submittedClaim);
+		        	   Claim submittedClaim = getCurrentClaim();
+						submittedClaim.setStatus(SubmittedClaim.class);
+						updateCurrentClaim(submittedClaim);
 		        	   
 		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 		        	   Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
@@ -192,17 +161,17 @@ public class ClaimListController {
 
 		}else{
 			
-			if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
+			if(getCurrentClaim().isSubmittable()){
 				
 				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-				Claim submittedClaim = ClaimListController.getCurrentClaim();
-				submittedClaim.setStatus(Status.submitted);
-				ClaimListController.updateCurrentClaim(submittedClaim);
+				//this should be a submitted Claim object? 
+				Claim submittedClaim = getCurrentClaim();
+				submittedClaim.setStatus(SubmittedClaim.class);
+				updateCurrentClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
 				//push online here
-				Intent intent = new Intent(activity, ClaimantClaimsListActivity.class);
-				activity.startActivity(intent);
+				activity.finish();
 			}
 			else{
 				Toast.makeText(activity.getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
@@ -219,10 +188,7 @@ public class ClaimListController {
 	 * The onClick method for the save button when editing/adding claims
 	 * @param activity The edit claim activity containing the views
 	 */
-	public static void onSaveClick(EditClaimActivity activity) {
-		TextView   nameView   = (TextView) activity.findViewById(R.id.claimNameBody);
-		String     nameText   = nameView.getText().toString();
-		
+	public void onSaveClick(EditClaimActivity activity) {
 		DatePicker fDateView  = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		Calendar   calendar   = Calendar.getInstance();
 		calendar.set(fDateView.getYear(), fDateView.getMonth(), fDateView.getDayOfMonth());
@@ -240,17 +206,18 @@ public class ClaimListController {
 		
 		//newClaim.setClaimTagList(claimTags);
 		
-		if(getCurrentClaim().getStatus()!=Status.submitted && getCurrentClaim().getStatus()!=Status.approved ){
+		if(getCurrentClaim().isSubmittable() ){
 		
-				Claim newClaim=new Claim(nameText, fromDate, endDate);
+				Claim newClaim=new Claim(UserSingleton.getUserSingleton().getUser().getName(), fromDate, endDate);
 				newClaim.setClaimTagList(claimTags);
-				ClaimListController.updateCurrentClaim(newClaim);
+				updateCurrentClaim(newClaim);
 				
 		
 		}else{
+			//shouldn't this be a SubmittedClaim object?
 			Claim newClaim = getCurrentClaim();
 			newClaim.setClaimTagList(claimTags);
-			ClaimListController.updateCurrentClaim(newClaim);
+			updateCurrentClaim(newClaim);
 			
 		}
 		
@@ -271,8 +238,10 @@ public class ClaimListController {
 	 * The onClick method for adding a claim
 	 * @param activity The activity which holds the add claim button
 	 */
-	public static void onAddClaimClick(ClaimantClaimsListActivity activity) {
-		ClaimListController.addClaim(new Claim());
+	public void onAddClaimClick(ClaimantClaimsListActivity activity) {
+		ProgressClaim claim = new ProgressClaim();
+		addClaim(claim);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim);
 		Intent intent = new Intent(activity, EditClaimActivity.class);
 		activity.startActivity(intent);
 		
@@ -281,10 +250,10 @@ public class ClaimListController {
 	 * The onClick method for adding a destination/reason pair to a claim
 	 * @param activity The activity containing the add destination/reason button
 	 */
-	public static void onAddDestinationClick(EditClaimActivity activity) {
+	public void onAddDestinationClick(EditClaimActivity activity) {
 		EditText destination = (EditText) activity.findViewById(R.id.claimDestinationBody);
 		EditText reason      = (EditText) activity.findViewById(R.id.claimReasonBody);
-		Claim claim = ClaimListController.getCurrentClaim();
+		Claim claim = getCurrentClaim();
 		Map<String, String> drlist = claim.getDestinationReasonList();
 		drlist.put(destination.getText().toString(), reason.getText().toString());
 		destination.setText("");
@@ -294,72 +263,56 @@ public class ClaimListController {
 	 * The getter for the currently selected claim
 	 * @return Returns the current claim selected
 	 */
-	public static Claim getCurrentClaim() {
+	public Claim getCurrentClaim() {
 		return currentClaim;
 	}
 	/**
 	 * Sets the current user 
 	 * @param theUser The user that is to be set as the current user
 	 */
-	public static void setUser(User theUser) {
+	public void setUser(User theUser) {
 		user = theUser; 
 	}
 	/**
 	 * Get the current user
 	 * @return The current user
 	 */
-	public static User getUser() {
+	public User getUser() {
 		return user; 
 	}
 	/**
 	 * Get the number of claims
 	 * @return The number of claims
 	 */
-	public static int getClaimCount() {
+	public int getClaimCount() {
 		return claimsList.getClaims().size();
 	}
 	/**
 	 * Allows a claim to be added to the claims list
 	 * @param claim The claim to be added
 	 */
-	public static void addClaim(Claim claim) {
+	public void addClaim(Claim claim) {
 		ArrayList<Claim> claimArray=getClaimList().getClaims();
 		setCurrentClaim(claim);
 		claimArray.add(claim);
-		getAllClaimList();
-		allClaims.addClaim(claim);
 		//displays an empty claim in claim list 
 		claimsList.setClaimList(claimArray);
 		
 	}
-	/**
-	 * Get the claims that are submitted
-	 * @return returns a list of the currently submitted claims
-	 */
-	public static ClaimList getSubmittedClaims() {
-		// TODO Auto-generated method stub
-		ClaimList submittedclaims = new ClaimList();
-		
-		for (Claim item: getAllClaimList().getClaims()) {
-			
-			if ((item.status.equals(Claim.Status.submitted))) {
-				submittedclaims.addClaim(item);
-			}
-		}
-		//claimsList.setClaimList(submittedclaims.getClaims());
-		return submittedclaims;
+	
+	public void setCurrentClaim(Claim claim) {
+		currentClaim=claim;	
 	}
+
+	
 	/**
 	 * The onClick method for deleting a claim
 	 */
-	public static void onRemoveClaimClick() {
+	public void onRemoveClaimClick() {
 		
-		if(ClaimListController.getCurrentClaim().getStatus()!= Status.submitted && ClaimListController.getCurrentClaim().getStatus() != Status.approved){
-		
-			ArrayList<Claim> claims = getClaimList().getClaims();
-			claims.remove(currentClaim);
-			allClaims.getClaims().remove(currentClaim);
-			claimsList.setClaimList(claims);
+
+		if(getCurrentClaim().isSubmittable()){
+			deleteClaim(currentClaim);
 		}
 		
 	}
@@ -367,16 +320,16 @@ public class ClaimListController {
 	 * The onClick method for the approve button
 	 * Sets the claims status to approved, and adds the user to the list of approvers
 	 */
-	public static void onApproveClick() {
+	public void onApproveClick() {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
-		Claim approvedClaim =getCurrentClaim();		
-		approvedClaim.setStatus(Status.approved);
+		Claim approvedClaim = getCurrentClaim();		
+		approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();
 		approverList.add(user);
 		approvedClaim.setApproverList(approverList);
-		ClaimListController.updateCurrentClaim(approvedClaim);
+		updateCurrentClaim(approvedClaim);
 		
 		
 	}
@@ -384,8 +337,8 @@ public class ClaimListController {
 	 * The onClick method for the return button
 	 * Sets the claim status as returned and adds user to approver list
 	 */
-	public static void onReturnClick() {
-		currentClaim.setStatus(Status.returned);
+	public void onReturnClick() {
+		currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
@@ -394,34 +347,16 @@ public class ClaimListController {
 	 * Adds a comment to a claim
 	 * @param comment The comment to be added
 	 */
-	public static void onCommentClick(String comment) {
+	public void onCommentClick(String comment) {
 		currentClaim.getCommentList().put(user.getName(), comment);
 	}
-	/**
-	 * Save the data to the elastic server
-	 */
-	public static void SaveToOnline() {
-		// TODO Auto-generated method stub
-		
-	}
-	/**
-	 * loads the data from the elastic server
-	 * @return
-	 */
-	public static ClaimList LoadFromOnline() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
     /**
      * Reset the claimList to a new claimList removing all it's old contents.
      */
-    public static void clearClaimList(){
-    	claimsList=new ClaimList();
+    public void clearClaimList(){
+    	claimsList.getClaims().clear();
     }
-	public static String getUserType() {
-		// TODO Auto-generated method stub
-		return user.type();
-	}
 	
 }
