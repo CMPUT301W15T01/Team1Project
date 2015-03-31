@@ -113,8 +113,10 @@ public class ClaimListController {
 	 * Redirects to the function within the ClaimListController
 	 * @param activity 
 	 */
+
 	public void onSubmitClick (final ClaimantExpenseListActivity activity) {
 	
+
 		
 		boolean expensesFlag = false;
 		boolean expensesComplete = true;
@@ -162,6 +164,7 @@ public class ClaimListController {
 			if(getCurrentClaim().isSubmittable()){
 				
 				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
+				//this should be a submitted Claim object? 
 				Claim submittedClaim = getCurrentClaim();
 				submittedClaim.setStatus(SubmittedClaim.class);
 				updateCurrentClaim(submittedClaim);
@@ -177,12 +180,9 @@ public class ClaimListController {
 			
 		}
 		
-		
-		
-		
-		
-		
+			
 	}
+	
 	
 	/**
 	 * The onClick method for the save button when editing/adding claims
@@ -214,6 +214,7 @@ public class ClaimListController {
 				
 		
 		}else{
+			//shouldn't this be a SubmittedClaim object?
 			Claim newClaim = getCurrentClaim();
 			newClaim.setClaimTagList(claimTags);
 			updateCurrentClaim(newClaim);

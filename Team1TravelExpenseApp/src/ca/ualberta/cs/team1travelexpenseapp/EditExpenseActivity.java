@@ -33,12 +33,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -53,6 +55,7 @@ public class EditExpenseActivity extends Activity {
 	private Expense expense;
 	private Listener listener;
 	private Claim claim;
+	private ImageButton receiptButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class EditExpenseActivity extends Activity {
 		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
 		expenseListController=new ExpenseListController(expenseList);
 		expenseListController.setCurrentExpense(expense);
+		receiptButton = (ImageButton) findViewById(R.id.viewPhotoButton);
 		
 		listener=new Listener() {			
 			@Override
@@ -187,6 +191,9 @@ public class EditExpenseActivity extends Activity {
 			"/" + filePath);
 	expense.setReceipt(photoFile);
 	Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceipt() != null));
+	
+	receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
+	//Hopefully this will show the Image in the image Button
 	}
 	
 	public void onDeletePhotoClick(View v){
