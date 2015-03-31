@@ -19,6 +19,7 @@ public class SubmittedClaim extends Claim {
 	public SubmittedClaim(String cName, Date sDate, Date eDate) {
 		super(cName, sDate, eDate);
 		setStatus(SubmittedClaim.class);
+		//if we make it this way then a submitted claim never gets the destination list
 	}
 	
 	/**
