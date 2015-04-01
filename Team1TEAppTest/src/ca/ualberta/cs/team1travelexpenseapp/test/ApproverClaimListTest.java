@@ -13,6 +13,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
@@ -46,7 +47,7 @@ public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<Logi
 		claim.setStartDate(new Date(100));
 		claim.setEndDate(new Date(101));
 		claim.setStatus(Claim.Status.returned);
-		claim.getApproverList().add(new User("Approver","bobby"));
+		claim.getApproverList().add(new Approver("bobby"));
 		claim.setApproverList(claim.getApproverList());
 		return claim;
 	}
