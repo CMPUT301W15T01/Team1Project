@@ -47,6 +47,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	Activity activity;
 	ListView expenseListView;
 	Context context;
+	protected Claimant user;
 	
 	public ClaimantExpenseListTest() {
 		super(ClaimantExpenseListActivity.class);

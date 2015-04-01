@@ -36,6 +36,7 @@ import android.text.format.DateFormat;
 public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 	Activity activity;
 	ListView claimListView;
+	protected Claimant user;
 	
 	public ClaimantClaimsListTest() {
 		super(ClaimantClaimsListActivity.class);

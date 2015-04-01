@@ -12,6 +12,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimInfo;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ApproverExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
@@ -38,6 +39,7 @@ public class ApproverExpenseListTest extends ActivityInstrumentationTestCase2<Ap
 	
 		Activity activity;
 		ListView claimListView;
+		protected Claimant user;
 			
 		public ApproverExpenseListTest() {
 			super(ApproverExpenseListActivity.class);

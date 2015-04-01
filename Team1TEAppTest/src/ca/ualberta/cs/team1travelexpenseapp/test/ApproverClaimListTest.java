@@ -13,6 +13,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import junit.framework.TestCase;
 
 public class ApproverClaimListTest extends ActivityInstrumentationTestCase2<LoginActivity> {
+	protected Claimant user;
 	
 	
 	public ApproverClaimListTest() {

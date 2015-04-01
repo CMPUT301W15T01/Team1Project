@@ -132,10 +132,10 @@ public class TagListManager {
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
 					}
 			
-					String status = response.getStatusLine().toString();
-					Log.d("onlineTest", status);
-					//do something with this response if necessary
-					HttpEntity entity = response.getEntity();
+//					String status = response.getStatusLine().toString();
+//					Log.d("onlineTest", status);
+//					//do something with this response if necessary
+//					HttpEntity entity = response.getEntity();
 		        }
 			});
 			t.start();
