@@ -42,6 +42,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	transient protected Class<?> status;
 	protected UUID uniqueId;
 	protected boolean synced;
+	protected String statusString;
 	
 	
 	/*//from http://stackoverflow.com/a/22081826 March 29 2015

@@ -200,8 +200,10 @@ public class TagListManager {
 		    			ElasticSearchResponse<TagListWrapper> esResponse = gson.fromJson(json, elasticSearchResponseType);
 		    			//get the tags
 		    			loadedTags = esResponse.getSource();
-		    			for(Tag tag: loadedTags.tags){
-		    				tags.add(tag);
+		    			if(loadedTags!=null){
+			    			for(Tag tag: loadedTags.tags){
+			    				tags.add(tag);
+			    			}
 		    			}
 
 		    		} catch (ClientProtocolException e) {

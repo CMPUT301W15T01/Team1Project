@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
