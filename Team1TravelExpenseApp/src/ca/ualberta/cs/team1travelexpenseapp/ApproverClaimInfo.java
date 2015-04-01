@@ -52,7 +52,10 @@ public class ApproverClaimInfo extends Activity {
 		getMenuInflater().inflate(R.menu.approver_claim_info, menu);
 		return true;
 	}
-
+	/*
+	* Takes the current claim and expense, then displays
+	* their information onto the textview
+	*/
 	public void onStart() {
 		super.onStart();
 		info.setText(currentClaim.toString() + "\n" + expense.toString());
