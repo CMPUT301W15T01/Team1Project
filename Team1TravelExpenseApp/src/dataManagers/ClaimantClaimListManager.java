@@ -24,6 +24,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Context;
+import android.content.IntentFilter;
 import android.util.Log;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
@@ -36,6 +38,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class ClaimantClaimListManager extends ClaimListManager {
 	private String claimantName;
+	private ConnectionChangeReceiver reciever;
 	
 	/**
 	 * Initialize with the claimList to be managed.
@@ -44,6 +47,8 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	public ClaimantClaimListManager(ClaimList claimList){
 		this.claimList=claimList;
 		this.claimantName="Guest";
+		this.reciever=new ConnectionChangeReceiver(this);
+		
 	}
 	
 	/**
@@ -51,7 +56,13 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 */
 	public void saveClaims(){
 		ArrayList<Claim> claims=claimList.getClaims();
-		saveClaimsToWeb(claims);	
+		ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
+		for(Claim claim: claimList.getClaims()){
+			if(!claim.isSynced()){
+				unsyncedClaims.add(claim);
+			}
+		}
+		saveClaimsToWeb(unsyncedClaims);	
 		saveClaimsToDisk(claims);
 	}
 	
@@ -77,15 +88,21 @@ public class ClaimantClaimListManager extends ClaimListManager {
 					HttpResponse response = null;
 					try {
 						response = httpclient.execute(httpPost);
-						claim.setSynced(true);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+						return;
 					}
-			
+					int statusCode=response.getStatusLine().getStatusCode();
+					
+					if(statusCode==200){
+						//claim is synced if it is successfully saved to web
+						claim.setSynced(true);
+					}
 					String status = response.getStatusLine().toString();
 					Log.d("onlineTest", status);
 					//do something with this response if necessary
@@ -266,6 +283,24 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	
 	public void setClaimantName(String claimantName) {
 		this.claimantName = claimantName;
+	}
+	
+	public void onConnect(){
+		ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
+		for(Claim claim: claimList.getClaims()){
+			if(!claim.isSynced()){
+				unsyncedClaims.add(claim);
+			}
+		}
+		saveClaimsToWeb(unsyncedClaims);
+		loadClaims();
+	}
+	
+	@Override
+	public void setContext(Context context){
+		super.setContext(context);
+		IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+		context.registerReceiver(reciever, intentFilter);
 	}
 	
 }
