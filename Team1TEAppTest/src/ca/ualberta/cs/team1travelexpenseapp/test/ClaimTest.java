@@ -13,9 +13,11 @@ import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import android.app.Activity;
 import android.app.AlertDialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
@@ -40,6 +42,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		Claimant user = new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
 		instrumentation = getInstrumentation();
 	}
 	

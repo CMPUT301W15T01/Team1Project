@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import junit.framework.Assert;
-
 import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
@@ -18,11 +17,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 
 
 // @------------!!!NOTE!!!-------------@
@@ -40,6 +41,8 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 	protected void setUp() throws Exception {
 		super.setUp();
 		setActivityInitialTouchMode(true);
+		Claimant user = new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
 		activity = getActivity();
 	}
 	
@@ -85,8 +88,6 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		//find addClaimButton
 		final Button saveClaimButton =
 				(Button) activity.findViewById(R.id.saveClaimButton);
-		//find name 
-		final EditText   name     = (EditText) activity.findViewById(R.id.claimNameBody);
 		final EditText   dest     = (EditText) activity.findViewById(R.id.claimDestinationBody);
 		final EditText   reason   = (EditText) activity.findViewById(R.id.claimReasonBody);
 		final Button     addDest  = (Button)   activity.findViewById(R.id.addDestinationButton);
@@ -95,18 +96,6 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		final DatePicker endDate  = 
 				(DatePicker) activity.findViewById(R.id.claimEndDate);
 		
-		// Send name
-		getInstrumentation().runOnMainSync(new Runnable() {
-		    @Override
-		    public void run() {
-		        name.requestFocus();
-		    }
-		});
-
-		getInstrumentation().waitForIdleSync();
-		getInstrumentation().sendStringSync("Cool Guy");
-		getInstrumentation().waitForIdleSync();
-		assertTrue("name text not set" , name.getText().toString().equals("Cool Guy"));
 		
 		// Send destination
 		getInstrumentation().runOnMainSync(new Runnable() {
@@ -193,7 +182,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		ViewAsserts.assertOnScreen(newReceiverActivity.getWindow().getDecorView(),newReceiverActivity.findViewById(R.id.claimsList) );
 
 
-		Claim uiClaim = ClaimListController.getClaimList().get(0);
+		Claim uiClaim = UserSingleton.getUserSingleton().getUser().getClaimList().getClaims().get(0);
 		Claim claim = new Claim("Cool Guy", sDate, eDate);
 		claim.addDestination("Cool dest","Cool reason");
 		assertTrue(claim.toString().equals(uiClaim.toString()) );

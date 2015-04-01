@@ -1,9 +1,13 @@
 
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.util.ArrayList;
+
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
 import ca.ualberta.cs.team1travelexpenseapp.TagManagerActivity;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerActivity> {
 	TagManagerActivity activity;
 	ListView tagListView;
+	Claimant user;
 	
 	public TagsEditTest() {
 		super(TagManagerActivity.class);
@@ -24,7 +29,8 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		TagListController.clearTagList();
+		user = new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
 		Intent intent = new Intent();
 		setActivityIntent(intent);
 		activity = getActivity();
@@ -44,9 +50,10 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				TagListController.addTag(tag1);
-				TagListController.addTag(tag2);
-				TagListController.addTag(tag3);
+				ArrayList<Tag> tags = user.getTagList().getTags();
+				tags.add(tag1);
+				tags.add(tag2);
+				tags.add(tag3);
 			}
 		});
 		getInstrumentation().waitForIdleSync();
@@ -119,7 +126,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 	
 	//this function checks if the info in the tagListView match the given string array
 	private boolean checkTags(String[] strings){
-		int tagCount=TagListController.getTagList().getTags().size();
+		int tagCount=user.getTagList().getTags().size();
 		//assertTrue(Integer.toString(tagCount),tagCount==strings.length);
 		if(tagCount!=strings.length) return false;
 		

@@ -16,17 +16,20 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.R;
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import junit.framework.TestCase;
 
 public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<EditClaimActivity> {
 	Activity activity;
+	protected Claimant user;
 	
 	public EditClaimActivityTest() {
 		super(EditClaimActivity.class);
@@ -36,9 +39,11 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		Claimant user= new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-		ClaimListController.addClaim(claim1);	
-		ClaimListController.setCurrentClaim(claim1);
+		user.getClaimList().getClaims().add(claim1);	
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim1);
 		
 		Intent intent = new Intent();
 		intent.putExtra("Index", 0);

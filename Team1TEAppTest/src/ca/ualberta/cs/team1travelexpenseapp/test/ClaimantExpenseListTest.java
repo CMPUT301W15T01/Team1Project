@@ -27,7 +27,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import junit.framework.TestCase;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
@@ -37,7 +36,10 @@ import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
-import ca.ualberta.cs.team1travelexpenseapp.Claim.Status;
+import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 
@@ -68,11 +70,14 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	protected void setUp() throws Exception {
 		super.setUp();
 		
+		Claimant user = new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
+		
 		//add a claim to test on
 
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		//ClaimListController.addClaim(claim1);	
-		ClaimListController.setCurrentClaim(claim1);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim1);
 		
 		Intent intent = new Intent();
 		intent.putExtra("Index", 0);

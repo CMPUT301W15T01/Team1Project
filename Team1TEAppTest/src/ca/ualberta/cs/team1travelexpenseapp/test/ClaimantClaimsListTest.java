@@ -11,6 +11,8 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -43,6 +45,8 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	protected void setUp() throws Exception {
 		super.setUp();
 		Intent intent = new Intent();
+		Claimant user = new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
 		setActivityIntent(intent);
 		activity = getActivity();
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
