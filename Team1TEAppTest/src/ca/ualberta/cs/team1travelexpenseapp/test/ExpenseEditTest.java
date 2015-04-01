@@ -34,9 +34,11 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 
@@ -62,6 +64,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	protected File photoFile;
 	
 	protected Expense expense;
+	protected Claimant user;
 	protected Claim claim;
 	
 	public ExpenseEditTest() throws Exception {
@@ -75,9 +78,9 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		Claimant user= new Claimant("CoolGuy");
+		UserSingleton.getUserSingleton().setUser(user);
 		ClaimListController.clearClaimList();
-		
-		ClaimListController.setUser(new User("claimant", "test"));
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
 		getExpenseListactivity();
