@@ -35,6 +35,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 
 	protected Instrumentation instrumentation;
 	protected ClaimantClaimsListActivity activity = null;
+	protected Claimant user;
 
 	public ClaimTest() {
 		super(ClaimantClaimsListActivity.class);

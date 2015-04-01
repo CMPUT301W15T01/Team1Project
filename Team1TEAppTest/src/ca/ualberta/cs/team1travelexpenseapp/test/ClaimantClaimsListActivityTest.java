@@ -32,6 +32,7 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 
 	Activity activity;
+	protected Claimant user;
 	
 	public ClaimantClaimsListActivityTest() {
 		super(ClaimantClaimsListActivity.class);
