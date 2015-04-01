@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * 
@@ -72,17 +73,21 @@ public class LoginActivity extends Activity {
 		String currentUserName=userNameField.getText().toString();
 		if(currentUserName.equals("")) currentUserName="Guest";
 		
-		
-		Approver currentUser=new Approver(currentUserName);
-		UserSingleton.getUserSingleton().setUser(currentUser);
-		
-		
-		ClaimList claimList=currentUser.getClaimList();
-		claimList.getManager().setContext(getApplicationContext());
-		ApproverClaimListManager approverClaimListManager = (ApproverClaimListManager) currentUser.getClaimList().getManager();
-		approverClaimListManager.setContext(getApplicationContext());
-		claimList.loadClaims();
-		startActivity(intent);
+		if(currentUserName.contains(" ")){
+			Toast.makeText(getApplicationContext(),"Sorry, usernames may not contain spaces.",Toast.LENGTH_LONG).show();
+		}
+		else{
+			Approver currentUser=new Approver(currentUserName);
+			UserSingleton.getUserSingleton().setUser(currentUser);
+			
+			
+			ClaimList claimList=currentUser.getClaimList();
+			claimList.getManager().setContext(getApplicationContext());
+			ApproverClaimListManager approverClaimListManager = (ApproverClaimListManager) currentUser.getClaimList().getManager();
+			approverClaimListManager.setContext(getApplicationContext());
+			claimList.loadClaims();
+			startActivity(intent);
+		}
 	}
 	
 	/**
@@ -95,23 +100,27 @@ public class LoginActivity extends Activity {
 		String currentUserName=userNameField.getText().toString();
 		if(currentUserName.equals("")) currentUserName="Guest";
 		
-		
-		Claimant currentUser=new Claimant(currentUserName);
-		UserSingleton.getUserSingleton().setUser(currentUser);
-		
-		
-		TagListManager tagListManager=currentUser.getTagList().getManager();
-		tagListManager.setContext(getApplicationContext());
-		tagListManager.setClaimantName(currentUserName);
-		currentUser.getTagList().loadTags();
-		
-		
-		ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) currentUser.getClaimList().getManager();
-		claimantClaimListManager.setContext(getApplicationContext());
-		claimantClaimListManager.setClaimantName(currentUserName);
-		currentUser.getClaimList().loadClaims();
-		
-		
-		startActivity(intent);
+		if(currentUserName.contains(" ")){
+			Toast.makeText(getApplicationContext(),"Sorry, usernames may not contain spaces.",Toast.LENGTH_LONG).show();
+		}
+		else{
+			Claimant currentUser=new Claimant(currentUserName);
+			UserSingleton.getUserSingleton().setUser(currentUser);
+			
+			
+			TagListManager tagListManager=currentUser.getTagList().getManager();
+			tagListManager.setContext(getApplicationContext());
+			tagListManager.setClaimantName(currentUserName);
+			currentUser.getTagList().loadTags();
+			
+			
+			ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) currentUser.getClaimList().getManager();
+			claimantClaimListManager.setContext(getApplicationContext());
+			claimantClaimListManager.setClaimantName(currentUserName);
+			currentUser.getClaimList().loadClaims();
+			
+			
+			startActivity(intent);
+		}
 	}
 }

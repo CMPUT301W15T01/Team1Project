@@ -94,7 +94,7 @@ public class TagManagerActivity extends Activity {
 					           public void onClick(DialogInterface dialog, int id) {
 					        	   boolean tagChanged=tagListController.onSetTagClick(dialog, tag);
 					        	   if(!tagChanged){
-					            	   Toast.makeText(getApplicationContext(),"Sorry a tag by that "
+					            	   Toast.makeText(getApplicationContext(),"Sorry, a tag by that "
 					            	   		+ "name exists (not modified)",Toast.LENGTH_LONG).show();
 					               }
 					           }
