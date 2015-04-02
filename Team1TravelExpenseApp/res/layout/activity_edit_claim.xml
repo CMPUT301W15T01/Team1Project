@@ -131,11 +131,20 @@
                  android:id="@+id/addDestinationButton"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_above="@+id/claimDestinationList"
+                 android:layout_above="@+id/claimReasonHeader"
                  android:layout_alignParentRight="true"
                  android:layout_below="@+id/claimDestinationHeader"
                  android:onClick="onAddDestinationClick"
                  android:text="(+)" />
+
+             <Button
+                 android:id="@+id/DestinationLocationPicker"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignBottom="@+id/claimReasonBody"
+                 android:layout_toRightOf="@+id/claimReasonBody"
+                 android:text="Location"
+                 android:textSize="10sp" />
 
         </RelativeLayout>
         
