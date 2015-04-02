@@ -160,13 +160,12 @@ public class EditClaimActivity extends Activity {
 	 */
 	public void updateDestinationText(){
 		String destString = "";
-		HashMap<String, String> destReasons = (HashMap<String, String>) claim.getDestinationReasonList();
-		Iterator<String> destinations = claim.getDestinations().iterator();
-		String dest;
+		Iterator<Destination> destinations = claim.getDestinationList().iterator();
+		Destination dest;
 		while(destinations.hasNext()){
 			dest=destinations.next();
-			destString+=dest;
-			destString += ": "+destReasons.get(dest);
+			destString+=dest.getName();
+			destString += ": "+dest.getReason();
 			destString+="\n";
 		}
 		destList.setText(destString);	
