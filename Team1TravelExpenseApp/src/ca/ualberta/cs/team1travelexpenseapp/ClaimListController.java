@@ -91,7 +91,7 @@ public class ClaimListController {
 	public void returnClaim() {
 		//As an approver, I want to return a submitted expense claim that was not approved, 
 		//denoting the claim status as returned and setting my name as the approver for the expense claim.
-		currentClaim.setStatus(ReturnedClaim.class);
+		//currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
@@ -139,7 +139,7 @@ public class ClaimListController {
 		           public void onClick(DialogInterface dialog, int id) {
 		               //Do nothing
 		        	   Claim submittedClaim = getCurrentClaim();
-						submittedClaim.setStatus(SubmittedClaim.class);
+						//submittedClaim.setStatus(SubmittedClaim.class);
 						updateCurrentClaim(submittedClaim);
 		        	   
 		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
@@ -166,7 +166,7 @@ public class ClaimListController {
 				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 				//this should be a submitted Claim object? 
 				Claim submittedClaim = getCurrentClaim();
-				submittedClaim.setStatus(SubmittedClaim.class);
+				//submittedClaim.setStatus(SubmittedClaim.class);
 				updateCurrentClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
@@ -324,7 +324,7 @@ public class ClaimListController {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
 		Claim approvedClaim = getCurrentClaim();		
-		approvedClaim.setStatus(ApprovedClaim.class);
+		//approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();
 		approverList.add(user);
@@ -338,7 +338,7 @@ public class ClaimListController {
 	 * Sets the claim status as returned and adds user to approver list
 	 */
 	public void onReturnClick() {
-		currentClaim.setStatus(ReturnedClaim.class);
+		//currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
