@@ -14,26 +14,21 @@ limitations under the License.
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
-import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
-import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
-import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -43,6 +38,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 
 /**
  * View for adding/editing an Expense item.
@@ -78,7 +76,11 @@ public class EditExpenseActivity extends Activity {
 		expenseList.addListener(listener);
 		
 	}
-
+	
+	public void GeolocationSelect(View v) {
+		Intent intent = new Intent(this,OSMDroidMapActivity.class);
+		startActivity(intent);
+	}
 	private void updateValues(){
 		Spinner categorySpinner = (Spinner) this.findViewById(R.id.categorySelector);	
 		for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
