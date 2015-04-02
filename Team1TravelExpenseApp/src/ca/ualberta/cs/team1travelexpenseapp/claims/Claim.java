@@ -58,6 +58,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
     private synchronized void registerClass() {
         if (!this.registeredClasses.contains(this.getClass())) {
             adapter.registerSubtype(this.getClass());
+            registeredClasses.add(this.getClass());
         }
     }*/
 	

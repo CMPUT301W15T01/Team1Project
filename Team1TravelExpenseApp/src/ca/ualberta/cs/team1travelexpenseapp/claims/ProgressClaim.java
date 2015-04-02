@@ -20,6 +20,7 @@ import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class ProgressClaim extends Claim {
+	
 	/** Initializes attributes to new instances **/
 	public ProgressClaim() { 
 		super();

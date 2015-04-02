@@ -13,7 +13,7 @@ public class SubmittedClaim extends Claim {
 
 	public SubmittedClaim() {
 		super();
-		setStatus(SubmittedClaim.class);;
+		setStatus(SubmittedClaim.class);
 	}
 
 	public SubmittedClaim(String cName, Date sDate, Date eDate) {
