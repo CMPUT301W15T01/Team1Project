@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
@@ -57,23 +58,13 @@ public class SubmittedClaim extends Claim {
 	}
 
 	@Override
-	public void addDestination(String destination, String reason) {
-		throw new RuntimeException("Submitted Claims can not add destinations!!!");
+	public void addDestination(Destination destination) {
+		claim.addDestination(destination);
 	}
 
 	@Override
-	public String getReason(String destination) {
-		return claim.getReason(destination);
-	}
-
-	@Override
-	public HashMap<String, String> getDestinationReasonList() {
-		return claim.getDestinationReasonList();
-	}
-
-	@Override
-	public Set<String> getDestinations() {
-		return claim.getDestinations();
+	public ArrayList<Destination> getDestinationList() {
+		return claim.getDestinationList();
 	}
 
 	@Override

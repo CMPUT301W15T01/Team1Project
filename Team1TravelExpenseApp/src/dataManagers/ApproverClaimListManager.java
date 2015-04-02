@@ -26,6 +26,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

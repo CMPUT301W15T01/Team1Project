@@ -31,6 +31,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.location.Location;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -221,10 +222,9 @@ public class ClaimListController {
 			
 		}
 		
-		HashMap<String,String> daMAP = new HashMap<String, String>();
 		
 		
-		if(!getCurrentClaim().getClaimantName().equals("")  && !getCurrentClaim().getDestinationReasonList().equals(daMAP)
+		if(!getCurrentClaim().getClaimantName().equals("")  && !getCurrentClaim().getDestinationList().isEmpty()
 				&& !getCurrentClaim().getCurrencyTotals().equals("")){
 			
 			getCurrentClaim().setComplete(true);
@@ -254,8 +254,9 @@ public class ClaimListController {
 		EditText destination = (EditText) activity.findViewById(R.id.claimDestinationBody);
 		EditText reason      = (EditText) activity.findViewById(R.id.claimReasonBody);
 		Claim claim = getCurrentClaim();
-		Map<String, String> drlist = claim.getDestinationReasonList();
-		drlist.put(destination.getText().toString(), reason.getText().toString());
+		ArrayList<Destination> drlist = claim.getDestinationList();
+		//To do add geolocation to destination
+		drlist.add(new Destination(destination.getText().toString(), reason.getText().toString(),new Location("")));
 		destination.setText("");
 		reason.setText("");
 	}

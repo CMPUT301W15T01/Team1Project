@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -47,26 +48,14 @@ public interface ClaimInfo {
 	 * @param destination - a string
 	 * @param reason - a string 
 	 */
-	public void addDestination(String destination, String reason);
-	
-	/**
-	 * 
-	 * @param destination - a string 
-	 * @return
-	 */
-	public String getReason(String destination);
+	public void addDestination(Destination destination);
 	
 	/**
 	 * Returns a HashMap with destinations as keys and reasons as values.
 	 * @return HashMap of destinations (String) mapped to reasons (String).
 	 */
-	public HashMap<String, String> getDestinationReasonList();
+	public ArrayList<Destination> getDestinationList();
 	
-	/**
-	 * Return the set of destinations for the Claim.
-	 * @return Set of destinations (Strings) in claim
-	 */
-	public Set<String>  getDestinations();
 	
 	/**
 	 * Set the claimantName for the Claim.

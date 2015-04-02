@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
@@ -27,7 +28,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	private String claimantName;
 	private Date startDate;
 	private Date endDate;
-	private HashMap<String, String> destinationReasonList;
+	private ArrayList<Destination> destinationList;
 	private ArrayList<Tag> claimTagList;
 	private boolean isComplete;
 	private ArrayList<User> approverList;
@@ -50,6 +51,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
     private synchronized void registerClass() {
         if (!this.registeredClasses.contains(this.getClass())) {
             adapter.registerSubtype(this.getClass());
+            registeredClasses.add(this.getClass());
         }
     }*/
 	
@@ -73,7 +75,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
-		destinationReasonList = new HashMap<String, String>();
+		destinationList = new ArrayList<Destination>();
 		claimTagList          = new ArrayList<Tag>();
 		status                = Claim.class;
 		isComplete            = false;
@@ -95,7 +97,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		startDate = sDate;
 		endDate = eDate;
 		
-		destinationReasonList = new HashMap<String, String>();
+		destinationList = new ArrayList<Destination>();
 		claimTagList          = new ArrayList<Tag>();
 		status                = Claim.class;
 		isComplete            = false;
@@ -133,25 +135,17 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * @param destination - a string
 	 * @param reason - a string 
 	 */
-	public void addDestination(String destination, String reason) {
-			destinationReasonList.put(destination, reason);
+	public void addDestination(Destination destination) {
+			destinationList.add(destination);
 	}
 	
-	/**
-	 * 
-	 * @param destination - a string 
-	 * @return
-	 */
-	public String getReason(String destination) {
-		return destinationReasonList.get(destination);
-	}
 	
 	/**
 	 * Returns a HashMap with destinations as keys and reasons as values.
 	 * @return HashMap of destinations (String) mapped to reasons (String).
 	 */
-	public HashMap<String, String> getDestinationReasonList() {
-		return destinationReasonList;
+	public ArrayList<Destination> getDestinationList(){
+		return this.destinationList;
 	}
 	
 	/**
@@ -159,15 +153,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * @return int corresponding to number of destinations in Claim.
 	 */
 	private int getDestinationCount() {
-		return destinationReasonList.size();
-	}
-	
-	/**
-	 * Return the set of destinations for the Claim.
-	 * @return Set of destinations (Strings) in claim
-	 */
-	public Set<String>  getDestinations() {
-		return destinationReasonList.keySet();
+		return destinationList.size();
 	}
 	
 	/**
@@ -337,18 +323,18 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		str += "Starting Date of travel: " + dateformat.format(getStartDate()) + "\n";
 		str += "End Date: " + dateformat.format(getEndDate()) + "\n";
-		Iterator<String> destinations = getDestinations().iterator();
+		Iterator<Destination> destinations = getDestinationList().iterator();
 		str += "Destinations:";
 		while (destinations.hasNext()) {
-			String tempDest = destinations.next();
+			Destination tempDest = destinations.next();
 			//if has next iterator or only has one destination
 			if (destinations.hasNext() || (getDestinationCount() == 1) ) {
-				str += " " + tempDest;
+				str += " " + tempDest.getName();
 				if (getDestinationCount() != 1) {
 					str += ",";
 				}
 			} else {
-				str += " and " + tempDest;
+				str += " and " + tempDest.getName();
 			}
 		}
 		
