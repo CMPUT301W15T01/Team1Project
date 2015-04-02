@@ -70,7 +70,10 @@
             android:name="ca.ualberta.cs.team1travelexpenseapp.ApproverClaimInfo"
             android:label="@string/title_activity_approver_claim_info" >
         </activity>
-
+        <activity
+            android:name="ca.ualberta.cs.team1travelexpenseapp.OSMDroidMapActivity"
+            android:label="Please Select your geolocation" >
+        </activity>
  
     </application>
 
