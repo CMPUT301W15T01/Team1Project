@@ -1,7 +1,6 @@
 #Team 1 App
-#Description
 
-This application allows users to
+When you're traveling everywhere and anywhere, keeping track of your expenses can be a hassle. But it doesn't need to be. Thanks to this expense claim tracking app, you can now stay on top of your finances as you go along.
 
 #License
 Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
