@@ -1,12 +1,11 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
-import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
-
 public class ApprovedClaim extends Claim {
+	
+	private Claim claim = null;
 
-	@Override
-	public Claim changeStatus(Class<?> claimStatusType) {
-		return new ClaimAdapter<ApprovedClaim>(this, claimStatusType);
+	public ApprovedClaim(Claim claim) {
+		this.claim = claim;
 	}
-
+	
 }

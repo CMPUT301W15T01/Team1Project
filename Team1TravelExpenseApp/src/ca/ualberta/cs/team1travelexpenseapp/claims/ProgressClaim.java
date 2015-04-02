@@ -1,29 +1,29 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
-import android.util.Log;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
-import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
-import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class ProgressClaim extends Claim {
+	
+	private Claim claim = null;
+	
 	/** Initializes attributes to new instances **/
 	public ProgressClaim() { 
-		super();
-		setStatus(ProgressClaim.class);
+		claim = new Claim();
+	}
+	
+	public ProgressClaim(Claim claim){
+		this.claim = claim;
 	}
 
 	/** set claimant name, start and end date, all other attributes are initializes to new instances 
@@ -31,66 +31,159 @@ public class ProgressClaim extends Claim {
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
 	public ProgressClaim(String cName, Date sDate, Date eDate) {
-		super();
-		setStatus(ProgressClaim.class);
+		claim = new Claim(cName, sDate, eDate);
 	}
-	
-	/** 
-	 * sets the claim's expense list object to a given expenseList
-	 * @param expenseList
-	 */
+
+	@Override
+	public UUID getUniqueId() {
+		return claim.getUniqueId();
+	}
+
+	@Override
+	public boolean isSynced() {
+		return claim.isSynced();
+	}
+
+	@Override
+	public void setSynced(boolean synced) {
+		claim.setSynced(synced);
+	}
+
+	@Override
+	public ExpenseList getExpenseList() {
+		return claim.getExpenseList();
+	}
+
+	@Override
 	public void setExpenseList(ExpenseList expenseList) {
-		this.expenseList = expenseList;
+		claim.setExpenseList(expenseList);
 	}
-	
-	/**
-	 * adds a destination, with a reason to the claim 
-	 * if destination already exist, new reason will write over old reason 
-	else new destination will reason will be added to the Map 
-	 * @param destination - a string
-	 * @param reason - a string 
-	 */
+
+	@Override
 	public void addDestination(String destination, String reason) {
-			destinationReasonList.put(destination, reason);
+		claim.addDestination(destination, reason);
 	}
-	
-	/**
-	 * Set the claimantName for the Claim.
-	 * @param name The name of the claimant for the Claim.
-	 */
+
+	@Override
+	public String getReason(String destination) {
+		return claim.getReason(destination);
+	}
+
+	@Override
+	public HashMap<String, String> getDestinationReasonList() {
+		return claim.getDestinationReasonList();
+	}
+
+	@Override
+	public Set<String> getDestinations() {
+		return claim.getDestinations();
+	}
+
+	@Override
 	public void setClaimantName(String name) {
-		claimantName = name;
+		claim.setClaimantName(name);
 	}
 
-	/**
-	 * Set the TagList for the claim
-	 * @param claimTagList The TagList containing the new tags to be set for the claim.
-	 */
+	@Override
+	public String getClaimantName() {
+		return claim.getClaimantName();
+	}
+
+	@Override
+	public ArrayList<Tag> getClaimTagList() {
+		return claim.getClaimTagList();
+	}
+
+	@Override
+	public ArrayList<String> getClaimTagNameList() {
+		return claim.getClaimTagNameList();
+	}
+
+	@Override
 	public void setClaimTagList(ArrayList<Tag> claimTagList) {
-		this.claimTagList = claimTagList;
+		claim.setClaimTagList(claimTagList);
 	}
 
-	/**
-	 * Set the startDate of the Claim.
-	 * @param date startDate to be set for the current Claim.
-	 */
-	public void setStartDate(Date date) {
-		startDate = date;
-	}
-	
-	/**
-	 * Set the endDate of the Claim.
-	 * @param date endDate to be set for the current Claim.
-	 */
-	public void setEndDate(Date date) {
-		endDate = date;
+	@Override
+	public boolean isComplete() {
+		return claim.isComplete();
 	}
 
+	@Override
+	public void setComplete(boolean isComplete) {
+		claim.setComplete(isComplete);
+	}
 
+	@Override
+	public ArrayList<User> getApproverList() {
+		return claim.getApproverList();
+	}
 	
 	@Override
+	public Date getStartDate() {
+		return claim.getStartDate();
+	}
+
+	@Override
+	public void setStartDate(Date date) {
+		claim.setStartDate(date);
+	}
+
+	@Override
+	public Date getEndDate() {
+		return claim.getEndDate();
+	}
+
+	@Override
+	public void setEndDate(Date date) {
+		claim.setEndDate(date);
+	}
+
+	@Override
+	public void setApproverList(ArrayList<User> approverList) {
+		throw new RuntimeException("Unable to set approver list for inprogress claims!!!");
+	}
+
+	@Override
+	public Map<String, String> getCommentList() {
+		return claim.getCommentList();
+	}
+
+	@Override
+	public void addComment(String comment) {
+		throw new RuntimeException("Unable to add comments for inprogress claims!!!");
+	}
+
+	@Override
+	public int compareTo( Claim claim ) {
+		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
+			return claim.getStartDate().compareTo(this.claim.getStartDate());
+		}
+		return this.claim.getStartDate().compareTo(claim.getStartDate());
+	}
+	
+	@Override
+	public Class<?> getStatus() {
+		return ProgressClaim.class;
+	}
+	
+	@Override
+	public String getStatusString(){
+		return "inProgress";
+	}
+
+	@Override
 	public Claim changeStatus(Class<?> claimStatusType) {
-		return new ClaimAdapter<ProgressClaim>(this, claimStatusType);
+		if (claimStatusType == SubmittedClaim.class) {
+			return new SubmittedClaim(claim);
+		} else { 
+			throw new RuntimeException("In progress claims can only change status to submitted!!!");
+		}
+	}
+
+	@Override
+	public boolean isSubmittable() {
+		return true;
 	}
 
 }

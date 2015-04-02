@@ -99,7 +99,7 @@ public class ClaimList {
 		currentClaim.setEndDate(newClaim.getEndDate());
 		//currentClaim.setExpenses(newClaim.getExpenses());
 		currentClaim.setStartDate(newClaim.getStartDate());
-		currentClaim.setStatus(newClaim.getStatus());
+		//currentClaim.setStatus(newClaim.getStatus());
 		//claim is modified and therefore no longer synced online
 		currentClaim.setSynced(false);
 		saveClaims();

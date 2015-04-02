@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -13,37 +12,30 @@ import java.util.Set;
 import java.util.UUID;
 
 import android.util.Log;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
-import ca.ualberta.cs.team1travelexpenseapp.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
-import ca.ualberta.cs.team1travelexpenseapp.adapter.ClaimAdapter;
-import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
-import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.RuntimeTypeAdapterFactory;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class Claim implements ClaimStatus, Comparable<Claim> {
+public class Claim implements ClaimInfo, Comparable<Claim> {
 	
 
-	protected ExpenseList expenseList;
-	protected String claimantName;
-	protected Date startDate;
-	protected Date endDate;
-	protected HashMap<String, String> destinationReasonList;
-	protected ArrayList<Tag> claimTagList;
-	protected boolean isComplete;
-	protected ArrayList<User> approverList;
-	protected Map<String, String> commentList;
-	protected ArrayList<Listener> listeners;
-	transient protected Class<?> status;
-	protected UUID uniqueId;
-	protected boolean synced;
-	protected String statusString;
-	
+	private ExpenseList expenseList;
+	private String claimantName;
+	private Date startDate;
+	private Date endDate;
+	private HashMap<String, String> destinationReasonList;
+	private ArrayList<Tag> claimTagList;
+	private boolean isComplete;
+	private ArrayList<User> approverList;
+	private Map<String, String> commentList;
+	private ArrayList<Listener> listeners;
+	transient private Class<?> status;
+	private UUID uniqueId;
+	private boolean synced;
 	
 	/*//from http://stackoverflow.com/a/22081826 March 29 2015
 	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
@@ -395,11 +387,7 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 		
 	}
 
-	private String getStatusString() {
-		if ( getStatus() == ApprovedClaim.class )  { return "approved";   }
-		if ( getStatus() == ProgressClaim.class )  { return "inProgrees"; }
-		if ( getStatus() == SubmittedClaim.class)  { return "submitted";  }
-		if ( getStatus() == ReturnedClaim.class )  { return "returned";   }
+	public String getStatusString() {
 		return "";
 	}
 
@@ -424,18 +412,6 @@ public class Claim implements ClaimStatus, Comparable<Claim> {
 	 */
 	public Class<?> getStatus() {
 		return status;
-	}
-
-	/**
-	 * Set the status (inProgress, submitted, approved, returned) for the claim.
-	 * @param status enum Status to be set as claim status.
-	 */
-	public void setStatus(Class<?> status) {
-		if (status.getClass().isInstance(Claim.class)) {
-			this.status = status;
-		} else {
-			throw new RuntimeException("Not a claim type");
-		}
 	}
 
 	@Override
