@@ -27,12 +27,14 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -55,6 +57,7 @@ import android.widget.Toast;
  */
 public class ClaimantClaimsListActivity extends Activity {
 	
+	private static final int PICK_GEOLOCATION_REQUEST = 1;
 	private ClaimList claimList;
  	private ListView mainListView;
  	public  AlertDialog editClaimDialog;
@@ -239,6 +242,31 @@ public class ClaimantClaimsListActivity extends Activity {
 		claimList.removeListener(listener);
 	}
 
+	public void HomeGeolocationSelect(View v) {
+		Intent intent = new Intent(this,OSMDroidMapActivity.class);
+		startActivityForResult(intent, PICK_GEOLOCATION_REQUEST);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // Check which request we're responding to
+	    if (requestCode == PICK_GEOLOCATION_REQUEST ) {
+	        // Make sure the request was successful
+	        if (resultCode == RESULT_OK) {
+	            // The user picked a contact.
+	            // The Intent's data Uri identifies which contact was selected.
+	        	Double lon = data.getExtras().getDouble("longitude");
+	        	Double lat = data.getExtras().getDouble("latitude");
+	        	Location location = new Location("");
+	        	location.setLongitude(lon);
+	        	location.setLatitude(lat);
+	        	user.setLocation(location);
+	        	//Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
+	        
+	            // Do something with the contact here (bigger example below)
+	        }
+	    }
+	}	
 
 	public ArrayAdapter<Claim> getArrayAdapter() {
 		// TODO Auto-generated method stub

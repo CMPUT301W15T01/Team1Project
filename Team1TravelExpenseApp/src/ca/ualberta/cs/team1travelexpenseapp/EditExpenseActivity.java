@@ -99,7 +99,7 @@ public class EditExpenseActivity extends Activity {
 	        	location.setLongitude(lon);
 	        	location.setLatitude(lat);
 	        	expense.setLocation(location);
-	        	Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
+	        	//Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
 	        
 	            // Do something with the contact here (bigger example below)
 	        }
