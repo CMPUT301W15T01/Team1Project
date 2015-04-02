@@ -162,7 +162,15 @@
 		       android:layout_toRightOf="@+id/deletePhotoButton"
 		       android:onClick="takePhoto"
 		       android:text="(+)" />
-
+		   <Button
+		       android:id="@+id/GeolocationButtonExpense"
+		       style="?android:attr/buttonStyleSmall"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:layout_alignParentBottom="true"
+		       android:layout_toRightOf="@+id/addPhotoButton"
+		       android:onClick="GeolocationSelect"
+		       android:text="Geolocation" />
         </RelativeLayout>
         
     </ScrollView>
