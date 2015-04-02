@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -38,6 +39,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
@@ -54,6 +56,7 @@ public class EditExpenseActivity extends Activity {
 	private Listener listener;
 	private Claim claim;
 	private ImageButton receiptButton;
+	private int PICK_GEOLOCATION_REQUEST = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +82,29 @@ public class EditExpenseActivity extends Activity {
 	
 	public void GeolocationSelect(View v) {
 		Intent intent = new Intent(this,OSMDroidMapActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, PICK_GEOLOCATION_REQUEST);
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // Check which request we're responding to
+	    if (requestCode == PICK_GEOLOCATION_REQUEST ) {
+	        // Make sure the request was successful
+	        if (resultCode == RESULT_OK) {
+	            // The user picked a contact.
+	            // The Intent's data Uri identifies which contact was selected.
+	        	Double lon = data.getExtras().getDouble("longitude");
+	        	Double lat = data.getExtras().getDouble("latitude");
+	        	Location location = new Location("");
+	        	location.setLongitude(lon);
+	        	location.setLatitude(lat);
+	        	expense.setLocation(location);
+	        	Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
+	        
+	            // Do something with the contact here (bigger example below)
+	        }
+	    }
+	}	
 	private void updateValues(){
 		Spinner categorySpinner = (Spinner) this.findViewById(R.id.categorySelector);	
 		for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
