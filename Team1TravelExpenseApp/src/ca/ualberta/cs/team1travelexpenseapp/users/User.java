@@ -14,6 +14,7 @@ limitations under the License.
 
 package ca.ualberta.cs.team1travelexpenseapp.users;
 
+import android.location.Location;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 
 /**
@@ -23,7 +24,19 @@ public abstract class User {
 	
 	protected String name;
 	protected ClaimList claimList;
+	private Location location;
+	
+	public Location getLocation() {
+		if (location == null) {
+			location = new Location("");
+		}
+		return location;
+	}
 
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 	public ClaimList getClaimList() {
 		return claimList;
 	}

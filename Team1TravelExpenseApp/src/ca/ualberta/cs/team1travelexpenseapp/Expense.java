@@ -184,6 +184,9 @@ public class Expense {
 	 * The Location
 	 */
 	public Location getLocation() {
+		if (location == null) {
+			location = new Location("");
+		}
 		return location;
 	}
 	

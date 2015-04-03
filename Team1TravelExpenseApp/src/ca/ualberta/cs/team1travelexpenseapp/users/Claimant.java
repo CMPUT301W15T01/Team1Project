@@ -13,16 +13,7 @@ import dataManagers.TagListManager;
 
 public class Claimant extends User {
 	private TagList tagList;
-	private Location location;
-	
-	public Location getLocation() {
-		return location;
-	}
 
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
 
 
 	public Claimant(String name){
