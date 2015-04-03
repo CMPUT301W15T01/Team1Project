@@ -104,10 +104,6 @@ public class ClaimantClaimListManager extends ClaimListManager {
 						//claim is synced if it is successfully saved to web
 						claim.setSynced(true);
 					}
-					String status = response.getStatusLine().toString();
-					Log.d("onlineTest", status);
-					//do something with this response if necessary
-					HttpEntity entity = response.getEntity();
 		        }
 			});
 			t.start();

@@ -48,7 +48,7 @@ public class ApproverClaimListManager extends ClaimListManager{
 					Gson gson= GsonUtils.getGson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
-						stringentity = new StringEntity(gson.toJson(claim));
+						stringentity = new StringEntity(gson.toJson(claim,Claim.class));
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -97,7 +97,7 @@ public class ApproverClaimListManager extends ClaimListManager{
 		        	Gson gson= GsonUtils.getGson();
 		        	HttpClient httpclient = new DefaultHttpClient();
 					try {
-						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=status:submitted");
+						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=type:SubmittedClaim");
 						searchRequest.setHeader("Accept","application/json");
 						HttpResponse response = httpclient.execute(searchRequest);
 						String json = getEntityContent(response);
