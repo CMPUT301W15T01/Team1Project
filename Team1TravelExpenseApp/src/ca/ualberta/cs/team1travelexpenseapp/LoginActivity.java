@@ -82,11 +82,9 @@ public class LoginActivity extends Activity {
 			UserSingleton.getUserSingleton().setUser(currentUser);
 			
 			
-			ClaimList claimList=currentUser.getClaimList();
-			claimList.getManager().setContext(getApplicationContext());
-			ApproverClaimListManager approverClaimListManager = (ApproverClaimListManager) currentUser.getClaimList().getManager();
-			approverClaimListManager.setContext(getApplicationContext());
-			claimList.loadClaims();
+			currentUser.initManagers(getApplicationContext());
+			currentUser.loadData();
+			
 			startActivity(intent);
 		}
 	}
@@ -108,18 +106,8 @@ public class LoginActivity extends Activity {
 			Claimant currentUser=new Claimant(currentUserName);
 			UserSingleton.getUserSingleton().setUser(currentUser);
 			
-			
-			TagListManager tagListManager=currentUser.getTagList().getManager();
-			tagListManager.setContext(getApplicationContext());
-			tagListManager.setClaimantName(currentUserName);
-			currentUser.getTagList().loadTags();
-			
-			
-			ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) currentUser.getClaimList().getManager();
-			claimantClaimListManager.setContext(getApplicationContext());
-			claimantClaimListManager.setClaimantName(currentUserName);
-			currentUser.getClaimList().loadClaims();
-			
+			currentUser.initManagers(getApplicationContext());
+			currentUser.loadData();
 			
 			startActivity(intent);
 		}

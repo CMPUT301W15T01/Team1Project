@@ -190,9 +190,12 @@ public class EditClaimActivity extends Activity {
 			StatusAlert.show();
 		}
 		
+		user.getClaimList().syncTags(user.getTagList());
 		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
 		tagSpinner.setItems(user.getTagList().getTags());
 		ArrayList<Tag> claimTags=claim.getClaimTagList();
+		Log.d("syncTest", claimTags.toString());
+		Log.d("syncTest", Boolean.toString(user.getTagList().getTags().containsAll(claimTags)));
 		tagSpinner.setSelection(claimTags);
 		
 		destList = (ListView) findViewById(R.id.claimDestinationList);

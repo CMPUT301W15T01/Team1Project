@@ -49,5 +49,7 @@ public abstract class User {
 	public String getName(){
 		return this.name;
 	}
+	
+	abstract public void loadData();
 
 }

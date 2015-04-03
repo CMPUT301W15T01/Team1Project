@@ -27,6 +27,7 @@ import dataManagers.ApproverClaimListManager;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -218,6 +219,32 @@ public class ClaimList {
 
 	public ClaimListManager getManager() {
 		return this.manager;
+	}
+
+	/**
+	 * Match tags of the same name in claims to tags in the passed tagList.
+	 * This is needed to fix saved tags which do not correspond to the same object once saved and loaded
+	 * @param tagList to be matched
+	 */
+	public void syncTags(TagList tagList) {
+		for(Claim claim: getClaims()){
+			ArrayList<Tag> oldTags = new ArrayList<Tag>();
+			ArrayList<Tag> newTags = new ArrayList<Tag>();
+			ArrayList<Tag> claimTagList =  claim.getClaimTagList();
+			for(Tag claimTag: claimTagList){
+				for(Tag tag: tagList.getTags()){
+					if(claimTag.getName().equals(tag.getName())){
+						oldTags.add(claimTag);
+						newTags.add(tag);
+					}
+				}
+			}
+			Log.d("syncTest",oldTags.toString()+newTags.toString());
+			claimTagList.addAll(newTags);
+			claimTagList.removeAll(oldTags);
+			claim.setClaimTagList(claimTagList);
+		}
+		
 	}
 	
 }

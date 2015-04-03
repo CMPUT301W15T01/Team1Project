@@ -107,6 +107,12 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		        }
 			});
 			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -230,6 +236,12 @@ public class ClaimantClaimListManager extends ClaimListManager {
 				}
 			});
 			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
