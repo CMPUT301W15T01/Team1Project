@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.Currency;
 
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import android.app.Activity;
 import android.app.AlertDialog;

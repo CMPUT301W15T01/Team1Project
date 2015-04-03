@@ -24,6 +24,8 @@ import java.util.Map;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;

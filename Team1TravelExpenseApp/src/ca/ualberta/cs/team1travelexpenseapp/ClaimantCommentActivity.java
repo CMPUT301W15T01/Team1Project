@@ -17,6 +17,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.Map;
 
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.os.Bundle;
 import android.app.Activity;

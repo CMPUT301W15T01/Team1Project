@@ -43,6 +43,7 @@ import android.widget.Toast;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 
 /**
  * View for adding/editing an Expense item.

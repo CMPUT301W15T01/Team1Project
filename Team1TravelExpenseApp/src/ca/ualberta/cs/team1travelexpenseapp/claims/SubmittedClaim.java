@@ -11,7 +11,7 @@ import java.util.UUID;
 import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
@@ -59,7 +59,7 @@ public class SubmittedClaim extends Claim {
 
 	@Override
 	public void addDestination(Destination destination) {
-		claim.addDestination(destination);
+		throw new RuntimeException("Submitted Claims can not add destinations!!!");
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class SubmittedClaim extends Claim {
 
 	@Override
 	public int compareTo( Claim claim ) {
-		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
+		if (UserSingleton.getUserSingleton().getUserType().equals("Claimant")) {
 			return claim.getStartDate().compareTo(this.claim.getStartDate());
 		}
 		return this.claim.getStartDate().compareTo(claim.getStartDate());

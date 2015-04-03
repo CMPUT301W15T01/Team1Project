@@ -23,9 +23,10 @@ import java.util.HashSet;
 import java.util.LinkedList;  
 import java.util.List;  
   
-import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
-import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import android.app.Activity;
 import android.app.AlertDialog;  
 import android.content.Context;  
