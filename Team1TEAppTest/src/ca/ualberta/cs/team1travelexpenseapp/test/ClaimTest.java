@@ -4,6 +4,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.util.ArrayList;
 import java.util.Date;
 
+import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
@@ -11,7 +12,6 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
-import ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import android.app.Activity;
 import android.app.AlertDialog;

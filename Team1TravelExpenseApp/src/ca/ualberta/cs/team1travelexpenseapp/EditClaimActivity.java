@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
@@ -174,8 +175,6 @@ public class EditClaimActivity extends Activity {
 			
 			ListView destinationList = (ListView) findViewById(R.id.claimDestinationList);
 			destinationList.setFocusable(false);
-			EditText reasonET = (EditText) findViewById(R.id.claimReasonBody);
-			reasonET.setFocusable(false);
 			DatePicker dateStartPick = (DatePicker) findViewById(R.id.claimFromDate);
 			dateStartPick.setFocusable(false);
 			dateStartPick.setClickable(false);

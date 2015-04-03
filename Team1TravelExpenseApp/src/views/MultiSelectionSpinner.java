@@ -14,7 +14,7 @@ limitations under the License.
 
 
 //taken and modified from http://v4all123.blogspot.in/2013/09/spinner-with-multiple-selection-in.html (March 14 2015), used with permission of author
-package ca.ualberta.cs.team1travelexpenseapp;  
+package views;  
   
 import java.util.ArrayList;
 import java.util.Arrays;  
@@ -24,6 +24,10 @@ import java.util.LinkedList;
 import java.util.List;  
   
 
+
+import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.R.id;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;

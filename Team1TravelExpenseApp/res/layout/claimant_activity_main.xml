@@ -47,7 +47,7 @@
         android:text="Manage\nTags"
         android:textSize="10dp" />
 
-    <ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner
+    <views.MultiSelectionSpinner
         android:id="@+id/claimFilterSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
