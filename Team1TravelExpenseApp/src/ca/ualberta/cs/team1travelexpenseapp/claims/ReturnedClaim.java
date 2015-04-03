@@ -8,4 +8,12 @@ public class ReturnedClaim extends ProgressClaim {
 		this.claim = claim;
 	}
 	
+	public void setClaim(Claim newClaim) {
+		this.claim = newClaim;
+	}
+	
+	public Claim getClaim() {
+		return this.claim;
+	}
+	
 }

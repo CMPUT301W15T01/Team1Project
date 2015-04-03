@@ -26,6 +26,8 @@ public class ProgressClaim extends Claim {
 	public ProgressClaim(Claim claim){
 		this.claim = claim;
 	}
+	
+	
 
 	/** set claimant name, start and end date, all other attributes are initializes to new instances 
 	 * @param cName - a string
@@ -33,6 +35,14 @@ public class ProgressClaim extends Claim {
 	 * @param eDate - a Date **/
 	public ProgressClaim(String cName, Date sDate, Date eDate) {
 		claim = new Claim(cName, sDate, eDate);
+	}
+	
+	public void setClaim(Claim newClaim) {
+		this.claim = newClaim;
+	}
+	
+	public Claim getClaim() {
+		return this.claim;
 	}
 
 	@Override

@@ -22,7 +22,6 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class Claim implements ClaimInfo, Comparable<Claim> {
-	
 
 	private ExpenseList expenseList;
 	private String claimantName;
@@ -54,6 +53,14 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
             registeredClasses.add(this.getClass());
         }
     }*/
+	
+	public void setClaim(Claim newClaim) {
+		throw new RuntimeException("CAN NOT SET CLAIM");
+	}
+	
+	public Claim getClaim() {
+		throw new RuntimeException("ALREADY HAVE CLAIM");
+	}
 	
 	
 	public UUID getUniqueId() {
