@@ -27,6 +27,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 	public GeoPoint startPoint = new GeoPoint(53.5488917, -113.4915883, 14);
 	private MyLocationOverlay myLocationOverlay;
 	private Marker startMarker;
+	private MapView map;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -38,16 +39,16 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		Location location = lm
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (location != null) {
-			// Button tv = (Button) findViewById(R.id.gps);
-			// tv.setText("Lat: " + location.getLatitude() + "\nLong: "
-			// + location.getLongitude());
+
 			startPoint = new GeoPoint(location);
 
 		}
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
 				listener);
 
-		//Retrieved from http://stackoverflow.com/questions/22804650/how-to-handle-long-press-on-a-map-using-osmdroid-osmbonuspack-in-android (April 2, 2015)
+		// Retrieved from
+		// http://stackoverflow.com/questions/22804650/how-to-handle-long-press-on-a-map-using-osmdroid-osmbonuspack-in-android
+		// (April 2, 2015)
 		map = (MapView) findViewById(R.id.map);
 		map.setTileSource(TileSourceFactory.MAPNIK);
 		map.setBuiltInZoomControls(true);
@@ -60,8 +61,14 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		myLocationOverlay = new MyLocationOverlay(getApplicationContext(), map);
 		map.getOverlays().add(myLocationOverlay);
 		myLocationOverlay.enableCompass();
-		myLocationOverlay.enableMyLocation();
-		myLocationOverlay.enableFollowLocation();
+
+		//Retrieved from http://android-coding.blogspot.ca/2012/07/osmdroid-mapview-to-follow-user.html (April 3, 2015)
+		myLocationOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				map.getController()
+						.animateTo(myLocationOverlay.getMyLocation());
+			}
+		});
 
 		startMarker = new Marker(map);
 		startMarker.setPosition(startPoint);
@@ -75,18 +82,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 
 	private final LocationListener listener = new LocationListener() {
 		public void onLocationChanged(Location location) {
-			// Button tv = (Button) findViewById(R.id.gps);
-			// if (location != null) {
-			// double lat = location.getLatitude();
-			// double lng = location.getLongitude();
-			// Date date = new Date(location.getTime());
-			//
-			// tv.setText("The location is: \nLatitude: " + lat
-			// + "\nLongitude: " + lng + "\n at time: "
-			// + date.toString());
-			// } else {
-			// tv.setText("Cannot get the location");
-			// }
+
 		}
 
 		public void onProviderDisabled(String provider) {
@@ -101,7 +97,22 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 
 		}
 	};
-	private MapView map;
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		myLocationOverlay.enableMyLocation();
+		myLocationOverlay.enableFollowLocation();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		myLocationOverlay.disableMyLocation();
+		myLocationOverlay.disableFollowLocation();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
