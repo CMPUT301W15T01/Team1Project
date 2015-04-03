@@ -242,6 +242,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 * @return Loaded claim list
 	 */
 	public void loadClaims(){
+		//no loading from disk for now it breaks things, also loading from online is not working atm working on this
 		ArrayList<Claim> localClaims = new ArrayList<Claim>();//loadClaimsFromDisk();
 		ArrayList<Claim> webClaims = loadClaimsFromWeb();
 		

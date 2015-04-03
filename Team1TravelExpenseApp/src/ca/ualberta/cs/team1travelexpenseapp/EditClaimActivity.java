@@ -152,7 +152,7 @@ public class EditClaimActivity extends Activity {
 			        	   location = null;
 			           }
 			       });
-				newDestDialogBuilder.setTitle("Destination Info:");
+				newDestDialogBuilder.setTitle("Enter Destination Info:");
 				newDestDialog=newDestDialogBuilder.create();
 		
 	}
@@ -242,6 +242,11 @@ public class EditClaimActivity extends Activity {
 	 */
 	public void onAddDestinationClick(View v) {
 		newDestDialog.show();
+		EditText nameText = (EditText) newDestDialog.findViewById(R.id.destinationNameBody);
+        EditText reasonText = (EditText) newDestDialog.findViewById(R.id.destinationReasonBody);
+        nameText.setText("");
+        reasonText.setText("");
+        
 	}
 	
 	public void onAddDestinationLocationClick(View v) {

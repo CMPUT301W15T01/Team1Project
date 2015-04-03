@@ -42,7 +42,7 @@ public class Destination {
 		string+="\nReason: "+reason;
 		if(location!=null){
 			string+="\nLat: "+location.getLatitude();
-			string+="\nLon: "+location.getLatitude();
+			string+="\nLon: "+location.getLongitude();
 		}
 		return string;
 	}

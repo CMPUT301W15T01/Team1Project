@@ -259,6 +259,7 @@ public class ClaimListController {
         String name=nameText.getText().toString();
         String reason = reasonText.getText().toString();
         currentClaim.addDestination(new Destination(name, reason, location));
+        claimsList.setClaimList(claimsList.getClaims());
     }
 	
 	public void onSetDestinationClick(DialogInterface dialog, Destination dest, Location location){
@@ -269,10 +270,12 @@ public class ClaimListController {
         dest.setName(name);
         dest.setReason(reason);
         dest.setLocation(location);
+        claimsList.setClaimList(claimsList.getClaims());
 	}
 	
     public void onRemoveDestinationClick(DialogInterface dialog, Destination dest) {
     	currentClaim.getDestinationList().remove(dest);
+    	claimsList.setClaimList(claimsList.getClaims());
     }
 
 	/**
