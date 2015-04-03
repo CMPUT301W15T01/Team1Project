@@ -1,0 +1,46 @@
+package ca.ualberta.cs.team1travelexpenseapp;
+
+import java.util.ArrayList;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
+
+public class ExpenseArrayAdapter extends ArrayAdapter<Expense> {
+
+	public ExpenseArrayAdapter(Context context, int textViewResourceId) {
+		super(context, textViewResourceId);
+	}
+
+	public ExpenseArrayAdapter(Context context, int resource,
+			ArrayList<Expense> items) {
+		super(context, resource, items);
+	}
+
+	//Retrieved from http://stackoverflow.com/questions/340209/generate-colors-between-red-and-green-for-a-power-meter (April 3,2015)
+	//Returns Traffic light colors based on distance
+	public int getDistanceColor(double value) {
+		if (value >= 10000000) {
+			value = 0;
+		} else {
+			value = 1 - value / 10000000;
+		}
+		return android.graphics.Color.HSVToColor(new float[] {
+				(float) value * 120f, 1f, 1f });
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		convertView = super.getView(position, convertView, parent);
+		// Get the data item for this position
+		Expense expense = getItem(position);
+		User user=UserSingleton.getUserSingleton().getUser();
+		float distance = expense.getLocation().distanceTo(user.getLocation());
+		int color = getDistanceColor(distance);
+		convertView.setBackgroundColor(color);
+		return convertView;
+	}
+}
