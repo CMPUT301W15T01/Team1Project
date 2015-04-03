@@ -21,8 +21,8 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
-import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 
 

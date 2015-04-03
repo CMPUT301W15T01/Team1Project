@@ -16,6 +16,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
+
 /**
  * Stores a list of Expenses along with a set of listeners to be updated whenever the list is modified.
  *

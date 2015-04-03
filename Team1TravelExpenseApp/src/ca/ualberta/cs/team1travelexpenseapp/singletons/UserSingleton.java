@@ -1,11 +1,13 @@
-package ca.ualberta.cs.team1travelexpenseapp;
+package ca.ualberta.cs.team1travelexpenseapp.singletons;
 
+import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class UserSingleton {
 	private static UserSingleton userSingleton=null;
 	private User user;
-	private Class<?> userType;
+	private String userType;
 	
 	private UserSingleton(){
 		
@@ -24,10 +26,12 @@ public class UserSingleton {
 	
 	public void setUser(User user){
 		this.user=user;
-		this.userType = user.getClass();
+		this.userType = "user";
+	    if (user.getClass() == Claimant.class) { this.userType = "Claimant"; }
+	    if (user.getClass() == Approver.class) { this.userType = "Approver"; }
 	}
 	
-	public Class<?> getUserType() {
+	public String getUserType() {
 		return userType;
 	}
 }

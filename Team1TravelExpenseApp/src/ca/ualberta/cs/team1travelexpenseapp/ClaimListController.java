@@ -25,6 +25,8 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
