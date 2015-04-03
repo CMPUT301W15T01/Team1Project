@@ -25,7 +25,6 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class Claim implements ClaimInfo, Comparable<Claim> {
-	
 
 	private ExpenseList expenseList;
 	private String claimantName;
@@ -40,6 +39,32 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	transient private Class<?> status;
 	private UUID uniqueId;
 	private boolean synced;
+	
+	
+	/*//from http://stackoverflow.com/a/22081826 March 29 2015
+	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
+            RuntimeTypeAdapterFactory.of(Claim.class);
+
+    private static final HashSet<Class<?>> registeredClasses= new HashSet<Class<?>>();
+
+    static {
+        GsonUtils.registerType(adapter);
+    }
+    
+    private synchronized void registerClass() {
+        if (!this.registeredClasses.contains(this.getClass())) {
+            adapter.registerSubtype(this.getClass());
+            registeredClasses.add(this.getClass());
+        }
+    }*/
+	
+	public void setClaim(Claim newClaim) {
+		throw new RuntimeException("CAN NOT SET CLAIM");
+	}
+	
+	public Claim getClaim() {
+		throw new RuntimeException("ALREADY HAVE CLAIM");
+	}
 	
 	public UUID getUniqueId() {
 		return uniqueId;

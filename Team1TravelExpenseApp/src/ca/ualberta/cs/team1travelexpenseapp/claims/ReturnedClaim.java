@@ -9,4 +9,12 @@ public class ReturnedClaim extends Claim {
 		this.claim = claim;
 	}
 	
+	public void setClaim(Claim newClaim) {
+		this.claim = newClaim;
+	}
+	
+	public Claim getClaim() {
+		return this.claim;
+	}
+	
 }

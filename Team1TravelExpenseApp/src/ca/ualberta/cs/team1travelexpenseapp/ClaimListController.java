@@ -89,6 +89,12 @@ public class ClaimListController {
 		claimsList.updateClaim(currentClaim, newClaim);
 	}
 	
+	public void changeClaim(Claim newClaim){
+		deleteClaim(currentClaim);
+		setCurrentClaim(newClaim);
+		addClaim(newClaim);
+	}
+	
 	/**
 	 * Sets the current claim's status to returned and add the users name to the list of approvers
 	 */
@@ -142,9 +148,9 @@ public class ClaimListController {
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		               //Do nothing
-		        	   Claim submittedClaim = getCurrentClaim();
-						//submittedClaim.setStatus(SubmittedClaim.class);
-						updateCurrentClaim(submittedClaim);
+		        	   //submittedClaim.setStatus(SubmittedClaim.class);
+		        	   SubmittedClaim submittedClaim = new SubmittedClaim(getCurrentClaim().getClaim());
+		        	   changeClaim(submittedClaim);
 		        	   
 		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 		        	   Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
