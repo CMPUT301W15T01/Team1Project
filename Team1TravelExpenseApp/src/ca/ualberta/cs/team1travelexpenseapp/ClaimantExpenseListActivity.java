@@ -80,6 +80,10 @@ public class ClaimantExpenseListActivity extends Activity {
 			submitBT.setClickable(false);
 			submitBT.setFocusable(false);
 			submitBT.setEnabled(false);
+			Button expenseBT = (Button) findViewById(R.id.addExpenseButton);
+			expenseBT.setClickable(false);
+			expenseBT.setFocusable(false);
+			expenseBT.setEnabled(false);
 			
 			
 		}

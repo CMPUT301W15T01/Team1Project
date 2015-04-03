@@ -17,28 +17,20 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import views.MultiSelectionSpinner;
-import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
-import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.location.Location;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -147,11 +139,11 @@ public class ClaimListController {
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 
-		        	   SubmittedClaim submittedClaim = new SubmittedClaim(getCurrentClaim().getClaim());
+		        	   SubmittedClaim submittedClaim = (SubmittedClaim) getCurrentClaim().changeStatus(SubmittedClaim.class);
 		        	   changeClaim(submittedClaim);
 		        	   
 		        	   Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-		        	   
+		        	   activity.finish();
 		           }
 		    });
 			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
@@ -169,7 +161,7 @@ public class ClaimListController {
 			
 			try{
 				
-	        	SubmittedClaim submittedClaim = new SubmittedClaim(getCurrentClaim().getClaim());
+				SubmittedClaim submittedClaim = (SubmittedClaim) getCurrentClaim().changeStatus(SubmittedClaim.class);
 	        	changeClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
@@ -314,7 +306,6 @@ public class ClaimListController {
 		claimArray.add(claim);
 		//displays an empty claim in claim list 
 		claimsList.setClaimList(claimArray);
-		
 	}
 	
 	public void setCurrentClaim(Claim claim) {
