@@ -78,7 +78,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 					Gson gson= GsonUtils.getGson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
-						stringentity = new StringEntity(gson.toJson(claim));
+						stringentity = new StringEntity(gson.toJson(claim,Claim.class));
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -119,7 +119,8 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			gson.toJson(claims,osw);
+			Type typeOfT = new TypeToken<ArrayList<Claim>>(){}.getType();
+			gson.toJson(claims, typeOfT, osw);
 			osw.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
@@ -147,7 +148,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		        	Gson gson= GsonUtils.getGson();
 		        	HttpClient httpclient = new DefaultHttpClient();
 					try {
-						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:claim."+claimantName);
+						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claim.claimantName:"+claimantName);
 						searchRequest.setHeader("Accept","application/json");
 						HttpResponse response = httpclient.execute(searchRequest);
 						String json = getEntityContent(response);
@@ -243,7 +244,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 */
 	public void loadClaims(){
 		//no loading from disk for now it breaks things, also loading from online is not working atm working on this
-		ArrayList<Claim> localClaims = new ArrayList<Claim>();//loadClaimsFromDisk();
+		ArrayList<Claim> localClaims = loadClaimsFromDisk();
 		ArrayList<Claim> webClaims = loadClaimsFromWeb();
 		
 		
