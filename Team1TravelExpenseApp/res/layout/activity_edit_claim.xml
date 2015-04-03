@@ -25,55 +25,18 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/saveClaimButton" >
 
-        <RelativeLayout
+       <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/claimDestinationBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/claimDestinationHeader"
-                android:layout_toLeftOf="@+id/addDestinationButton"
-                android:inputType="textAutoCorrect" />
-
-            <TextView
-                android:id="@+id/claimDestinationList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/claimReasonBody"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            
             <TextView
                 android:id="@+id/claimDestinationHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:text="Add Destination:"
+                android:text="Destinations:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/claimReasonHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/claimDestinationBody"
-                android:text="Add Reason:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/claimReasonBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/claimReasonHeader"
-                android:layout_toLeftOf="@+id/addDestinationButton"
-                android:inputType="textAutoCorrect" />
 
             <DatePicker
                 android:id="@+id/claimFromDate"
@@ -121,30 +84,27 @@
                 android:layout_below="@+id/claimEndDate"
                 />
             
-             <ca.ualberta.cs.team1travelexpenseapp.MultiSelectionSpinner  
+             <views.MultiSelectionSpinner  
         		android:id="@+id/claimTagSpinner"  
        		    android:layout_width="match_parent"  
         		android:layout_height="wrap_content" 
-        		android:layout_below="@+id/claimTagHeader" />  
+        		android:layout_below="@+id/claimTagHeader" />
+
+             <views.ExpandedListView
+                 android:id="@+id/claimDestinationList"
+                 android:layout_width="fill_parent"
+                 android:layout_height="0dp"
+                 android:layout_alignParentLeft="true"
+                 android:layout_below="@+id/addDestinationButton"/>
 
              <Button
                  android:id="@+id/addDestinationButton"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_above="@+id/claimReasonHeader"
                  android:layout_alignParentRight="true"
-                 android:layout_below="@+id/claimDestinationHeader"
+                 android:layout_alignParentTop="true"
                  android:onClick="onAddDestinationClick"
                  android:text="(+)" />
-
-             <Button
-                 android:id="@+id/DestinationLocationPicker"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignBottom="@+id/claimReasonBody"
-                 android:layout_toRightOf="@+id/claimReasonBody"
-                 android:text="Location"
-                 android:textSize="10sp" />
 
         </RelativeLayout>
         

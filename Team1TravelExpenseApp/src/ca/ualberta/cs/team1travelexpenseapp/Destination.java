@@ -37,4 +37,14 @@ public class Destination {
 		this.location = location;
 	}
 	
+	public String toString(){
+		String string = new String(name);
+		string+="\nReason: "+reason;
+		if(location!=null){
+			string+="\nLat: "+location.getLatitude();
+			string+="\nLon: "+location.getLongitude();
+		}
+		return string;
+	}
+	
 }

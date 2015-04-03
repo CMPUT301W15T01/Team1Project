@@ -20,6 +20,7 @@ public class ProgressClaim extends Claim {
 	
 	/** Initializes attributes to new instances **/
 	public ProgressClaim() { 
+		super();
 		claim = new Claim();
 	}
 	

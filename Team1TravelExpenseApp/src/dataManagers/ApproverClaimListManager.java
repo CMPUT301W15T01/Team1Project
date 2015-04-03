@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 public class ApproverClaimListManager extends ClaimListManager{
 	
 	public ApproverClaimListManager(ClaimList claimList){
+		super();
 		this.claimList=claimList;
 	}
 	
@@ -44,7 +45,7 @@ public class ApproverClaimListManager extends ClaimListManager{
 		        public void run() {
 					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
 					StringEntity stringentity = null;
-					Gson gson= new Gson();
+					Gson gson= GsonUtils.getGson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
 						stringentity = new StringEntity(gson.toJson(claim));
@@ -93,7 +94,7 @@ public class ApproverClaimListManager extends ClaimListManager{
 		if(NetworkAvailable()){
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
-		        	Gson gson= new Gson();
+		        	Gson gson= GsonUtils.getGson();
 		        	HttpClient httpclient = new DefaultHttpClient();
 					try {
 						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=status:submitted");

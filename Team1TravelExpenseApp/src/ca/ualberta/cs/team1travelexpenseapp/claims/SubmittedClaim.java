@@ -20,6 +20,7 @@ public class SubmittedClaim extends Claim {
 	Claim claim = null;
 
 	public SubmittedClaim() {
+		super();
 		claim = new Claim();
 	}
 

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 
+import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
