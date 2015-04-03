@@ -128,6 +128,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		};
         
         claimList.addListener(listener);
+        //if claims have tags they may need to update when the tagList changes also
+        user.getTagList().addListener(listener);
         
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){

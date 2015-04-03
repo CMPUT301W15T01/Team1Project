@@ -220,6 +220,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 					
 					HttpResponse response=null;
 					try {
+						//do something with this response if nessesary
 						response = httpclient.execute(httpDelete);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
@@ -228,11 +229,6 @@ public class ClaimantClaimListManager extends ClaimListManager {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
 					}
-			
-					String status = response.getStatusLine().toString();
-					Log.d("onlineTest", status);
-			
-					HttpEntity entity = response.getEntity();
 				}
 			});
 			t.start();

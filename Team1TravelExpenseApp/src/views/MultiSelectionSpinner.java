@@ -94,7 +94,7 @@ public class MultiSelectionSpinner extends Spinner implements
   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());  
   builder.setMultiChoiceItems(_items, mSelection, this);
   
-  builder.setOnDismissListener(new OnDismissListener() {
+  /*builder.setOnDismissListener(new OnDismissListener() {
 	
 	@Override
 	public void onDismiss(DialogInterface dialog) {
@@ -132,7 +132,7 @@ public class MultiSelectionSpinner extends Spinner implements
 			
 		}
 	}
-  });
+  });*/
   
   builder.show();  
   return true;  

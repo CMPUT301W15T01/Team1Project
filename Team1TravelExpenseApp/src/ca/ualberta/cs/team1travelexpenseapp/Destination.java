@@ -39,7 +39,9 @@ public class Destination {
 	
 	public String toString(){
 		String string = new String(name);
-		string+="\nReason: "+reason;
+		if(!reason.equals("")){
+			string+="\nReason: "+reason;
+		}
 		if(location!=null){
 			string+="\nLat: "+location.getLatitude();
 			string+="\nLon: "+location.getLongitude();
