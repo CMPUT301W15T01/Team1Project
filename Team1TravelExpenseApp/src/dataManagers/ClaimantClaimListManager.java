@@ -45,6 +45,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 * @param claimList The ClaimList to saved from and loaded to
 	 */
 	public ClaimantClaimListManager(ClaimList claimList){
+		super();
 		this.claimList=claimList;
 		this.claimantName="Guest";
 		this.reciever=new ConnectionChangeReceiver(this);
@@ -74,7 +75,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		        public void run() {
 					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
 					StringEntity stringentity = null;
-					Gson gson= new Gson();
+					Gson gson= GsonUtils.getGson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
 						stringentity = new StringEntity(gson.toJson(claim));
@@ -114,7 +115,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	private void saveClaimsToDisk(ArrayList<Claim> claims){
-		Gson gson= new Gson();
+		Gson gson= GsonUtils.getGson();
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -143,10 +144,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		if(NetworkAvailable()){
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
-		        	Gson gson= new Gson();
+		        	Gson gson= GsonUtils.getGson();
 		        	HttpClient httpclient = new DefaultHttpClient();
 					try {
-						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:"+claimantName);
+						HttpGet searchRequest = new HttpGet(SEARCH_URL+"?q=claimantName:claim."+claimantName);
 						searchRequest.setHeader("Accept","application/json");
 						HttpResponse response = httpclient.execute(searchRequest);
 						String json = getEntityContent(response);
@@ -179,7 +180,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	
 	
 	private ArrayList<Claim> loadClaimsFromDisk(){
-		Gson gson= new Gson();
+		Gson gson= GsonUtils.getGson();
 		ArrayList<Claim> claims = null;
 		try {
 			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
@@ -241,7 +242,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 * @return Loaded claim list
 	 */
 	public void loadClaims(){
-		ArrayList<Claim> localClaims = loadClaimsFromDisk();
+		ArrayList<Claim> localClaims = new ArrayList<Claim>();//loadClaimsFromDisk();
 		ArrayList<Claim> webClaims = loadClaimsFromWeb();
 		
 		

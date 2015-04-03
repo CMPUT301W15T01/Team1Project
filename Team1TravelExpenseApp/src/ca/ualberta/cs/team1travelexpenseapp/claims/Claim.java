@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -18,6 +19,8 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
+import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.RuntimeTypeAdapterFactory;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
@@ -38,24 +41,6 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	private UUID uniqueId;
 	private boolean synced;
 	
-	/*//from http://stackoverflow.com/a/22081826 March 29 2015
-	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
-            RuntimeTypeAdapterFactory.of(Claim.class);
-
-    private static final HashSet<Class<?>> registeredClasses= new HashSet<Class<?>>();
-
-    static {
-        GsonUtils.registerType(adapter);
-    }
-    
-    private synchronized void registerClass() {
-        if (!this.registeredClasses.contains(this.getClass())) {
-            adapter.registerSubtype(this.getClass());
-            registeredClasses.add(this.getClass());
-        }
-    }*/
-	
-	
 	public UUID getUniqueId() {
 		return uniqueId;
 	}
@@ -71,11 +56,10 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	
 	/** Initializes attributes to new instances **/
 	public Claim() { 
-		//registerClass();
 		claimantName          = "";
 		startDate             = new Date();
 		endDate               = new Date();
-		destinationList = new ArrayList<Destination>();
+		destinationList       = new ArrayList<Destination>();
 		claimTagList          = new ArrayList<Tag>();
 		status                = Claim.class;
 		isComplete            = false;
@@ -92,12 +76,10 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * @param sDate - a Date
 	 * @param eDate - a Date **/
 	public Claim(String cName, Date sDate, Date eDate) {
-		//registerClass();
 		claimantName = cName;
 		startDate = sDate;
 		endDate = eDate;
-		
-		destinationList = new ArrayList<Destination>();
+		destinationList       = new ArrayList<Destination>();
 		claimTagList          = new ArrayList<Tag>();
 		status                = Claim.class;
 		isComplete            = false;
