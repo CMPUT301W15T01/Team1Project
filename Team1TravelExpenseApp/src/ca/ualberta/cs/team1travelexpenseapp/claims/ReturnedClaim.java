@@ -7,10 +7,12 @@ public class ReturnedClaim extends Claim {
 	public ReturnedClaim(Claim claim) {
 		super();
 		this.claim = claim;
+		setSynced(false);
 	}
 	
 	public void setClaim(Claim newClaim) {
 		this.claim = newClaim;
+		setSynced(false);
 	}
 	
 	public Claim getClaim() {

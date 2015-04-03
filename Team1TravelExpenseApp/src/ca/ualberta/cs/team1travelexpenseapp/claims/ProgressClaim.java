@@ -26,6 +26,7 @@ public class ProgressClaim extends Claim {
 	
 	public ProgressClaim(Claim claim){
 		this.claim = claim;
+		setSynced(false);
 	}
 	
 	
@@ -40,6 +41,7 @@ public class ProgressClaim extends Claim {
 	
 	public void setClaim(Claim newClaim) {
 		this.claim = newClaim;
+		setSynced(false);
 	}
 	
 	public Claim getClaim() {
