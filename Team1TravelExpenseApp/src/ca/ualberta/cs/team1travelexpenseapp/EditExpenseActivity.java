@@ -29,7 +29,10 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -39,6 +42,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
@@ -57,7 +61,9 @@ public class EditExpenseActivity extends Activity {
 	private Listener listener;
 	private Claim claim;
 	private ImageButton receiptButton;
-	private int PICK_GEOLOCATION_REQUEST = 1;
+	File photoFile = null;
+	private static final int PICK_GEOLOCATION_REQUEST = 1;
+	private static final int CAMERA_CAPTURE_REQUEST = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +111,33 @@ public class EditExpenseActivity extends Activity {
 	            // Do something with the contact here (bigger example below)
 	        }
 	    }
-	}	
+		// Code for capturing the photo influenced/copied from https://github.com/dfserrano/BogoPicLab Arptil 2015
+	    // Handle the results from CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE
+	    else if (requestCode == CAMERA_CAPTURE_REQUEST) {
+	    	Log.d("Testing Add Photo", "onActivityResult Started");
+			if (resultCode == RESULT_OK) {
+				//tv.setText("Result is OK!");
+				//button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
+				Log.d("Testing Add Photo", "Creating File: " + photoFile.getName());	
+
+				expense.setReceipt(photoFile);
+				Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceipt() != null) + "has size: " + String.valueOf(photoFile.length()));
+				
+				thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceipt().getAbsolutePath()));
+				//receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
+				//Hopefully this will show the Image in the image Button
+			}
+				
+				
+				
+	    } else if (resultCode == RESULT_CANCELED) {
+	    	Log.d("Testing Add Photo", "result is canceled");
+	    } else {
+	    	Log.d("Testing Add Photo", "Result is neither canceled or okay");
+				
+	    }
+	}
+
 	private void updateValues(){
 		Spinner categorySpinner = (Spinner) this.findViewById(R.id.categorySelector);	
 		for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
@@ -189,39 +221,77 @@ public class EditExpenseActivity extends Activity {
 	 * 
 	 */
 	//Currently adds a test photo to the receipt and code that adds the photo should be moved to ExpenseListController
+	
+	
+	// Code for taking a photo Heavily influenced/copied from https://developer.android.com/training/camera/photobasics.html April 2015
+	// and https://github.com/dfserrano/BogoPicLab
 	public void takePhoto(View v){
 	//WARNING: TEMPORARY code to add a test photo as the receipt, needs to be replaced with actually taking a photo
-	Log.d("Testing Add Photo", "TakePhoto Stated");
-	String filePath = String.valueOf(new Date().getTime()) + ".jpg";//ClaimListController.getUser().getName() + "/Receipts/" + (new Date().getTime()) + ".jpg";
-	try{
-		Bitmap bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.test_photo);
-		FileOutputStream fos = this.openFileOutput(filePath, Context.MODE_PRIVATE); //ClaimListController.getUser().getName() + "/Receipts/" + /*new Date().getTime() +*/ ".jpg", Context.MODE_PRIVATE);
-		bm.compress(CompressFormat.JPEG, 100, fos);
-		fos.flush();
-		fos.close();
-		//adding the tumbnail, should be moved away from this temporary code
-		thumbnailReceipt(bm);
-		
-		
-	} catch (FileNotFoundException e) {
-		Log.d("Testing Add Photo", "FileNotFound");
-		e.printStackTrace();
-		
-	} catch (IOException e) {
-		Log.d("Testing Add Photo", "IO Exception");
-		e.printStackTrace();
-		
+	Log.d("Testing Add Photo", "TakePhoto Started");
+	//ClaimListController.getUser().getName() + "/Receipts/" + (new Date().getTime()) + ".jpg";
+	
+//	try{
+//		Bitmap bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.test_photo);
+//		FileOutputStream fos = this.openFileOutput(filePath, Context.MODE_PRIVATE); //ClaimListController.getUser().getName() + "/Receipts/" + /*new Date().getTime() +*/ ".jpg", Context.MODE_PRIVATE);
+//		bm.compress(CompressFormat.JPEG, 100, fos);
+//		fos.flush();
+//		fos.close();
+//		//adding the tumbnail, should be moved away from this temporary code
+//		thumbnailReceipt(bm);
+//		
+//		
+//	} catch (FileNotFoundException e) {
+//		Log.d("Testing Add Photo", "FileNotFound");
+//		e.printStackTrace();
+//		
+//	} catch (IOException e) {
+//		Log.d("Testing Add Photo", "IO Exception");
+//		e.printStackTrace();
+//		
+//	}
+//	
+	
+	Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	//if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+	//	startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+	//}
+	
+//	String filePath = String.valueOf(new Date().getTime()) + ".jpg";
+//	//File photoFile = new  File(this.getFilesDir().getAbsolutePath() + 
+//		//	"/" + filePath);
+//	File dir = new File(this.getFilesDir().getAbsolutePath());
+//	try {
+//		photoFile = File.createTempFile(String.valueOf(new Date().getTime()), ".jpg", dir);
+//	} catch (IOException e) {
+//		// What to do when the file fails to be created. 
+//		e.printStackTrace();
+//	}
+	
+	// Create a folder to store pictures
+	String folder = Environment.getExternalStorageDirectory()
+			.getAbsolutePath() + "/tmp";
+	File folderF = new File(folder);
+	if (!folderF.exists()) {
+		folderF.mkdir();
 	}
 	
-	Log.d("Testing Add Photo", "Creating File");
-	File photoFile = new  File(this.getFilesDir().getAbsolutePath() + 
-			"/" + filePath);
-	expense.setReceipt(photoFile);
-	Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceipt() != null));
+	// Create an URI for the picture file
+	String imageFilePath = folder + "/"
+			+ String.valueOf(System.currentTimeMillis()) + ".jpg";
+	photoFile = new File(imageFilePath);
+	Uri imageFileUri = Uri.fromFile(photoFile);
 	
-	receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
-	//Hopefully this will show the Image in the image Button
+	
+	Log.d("Testing Add Photo", "File created at:" + photoFile.toString() + " has size: " + String.valueOf(photoFile.length()));
+	
+	//Intent takePictureIntent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	if (photoFile != null) {
+		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+				Uri.fromFile(photoFile));
+		startActivityForResult(takePictureIntent, CAMERA_CAPTURE_REQUEST);
 	}
+	}
+		
 	
 	public void onDeletePhotoClick(View v){
 		if(expense.getReceipt() != null){
@@ -240,6 +310,14 @@ public class EditExpenseActivity extends Activity {
 	//Places a photo into the button, currently places the entire photo, should maybe use a thumbnail
 	protected void thumbnailReceipt(Bitmap bm){
 		ImageView viewReciept = (ImageView) this.findViewById( R.id.viewPhotoButton);
-		viewReciept.setImageBitmap(bm);
+		viewReciept.setImageBitmap(bm); 
+		
+		//show the size of the current photo
+		if(bm != null){
+			TextView receiptText = (TextView) this.findViewById(R.id.recieptHeader);
+			receiptText.setText(receiptText.getText() + " File Size: " + String.valueOf(photoFile.length()) + "Bytes");
+			}
 	}
+	
+	
 }
