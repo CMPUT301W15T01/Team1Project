@@ -17,9 +17,12 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import views.MultiSelectionSpinner;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
@@ -331,7 +334,7 @@ public class ClaimListController {
 	public void onApproveClick() {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
-		Claim approvedClaim = getCurrentClaim();		
+		ApprovedClaim approvedClaim = (ApprovedClaim) getCurrentClaim().changeStatus(ApprovedClaim.class);		
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();
@@ -346,9 +349,9 @@ public class ClaimListController {
 	 * Sets the claim status as returned and adds user to approver list
 	 */
 	public void onReturnClick() {
-		//currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
+		changeClaim(currentClaim.changeStatus(ReturnedClaim.class));
 	}
 	/**
 	 * The onClick method for the comment button
