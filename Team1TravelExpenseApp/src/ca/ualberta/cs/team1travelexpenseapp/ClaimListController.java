@@ -44,7 +44,6 @@ import android.widget.Toast;
 /**
  * The controller allowing modifications from the ui to change the claims and claims lists
  * Allows general functionality like adding/deleting claims
- *
  */
 
 public class ClaimListController {
@@ -74,7 +73,7 @@ public class ClaimListController {
 		this.claimsList=claimList;
 	}
 	
-	public ClaimList getClaimList() { 
+	public ClaimList getClaimList(){ 
 		return this.claimsList;
 	}
 	
@@ -82,7 +81,7 @@ public class ClaimListController {
 	 * Updates the current claim to be updated
 	 * @param newClaim the claim to be updated
 	 */
-	public void updateCurrentClaim(Claim newClaim) {
+	public void updateCurrentClaim(Claim newClaim){
 		if (currentClaim == null) {
 			throw new RuntimeException("no current claim");
 		}
@@ -147,21 +146,18 @@ public class ClaimListController {
 			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(activity);
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-		               //Do nothing
-		        	   //submittedClaim.setStatus(SubmittedClaim.class);
+
 		        	   SubmittedClaim submittedClaim = new SubmittedClaim(getCurrentClaim().getClaim());
 		        	   changeClaim(submittedClaim);
 		        	   
-		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 		        	   Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-		        	   //push online here
+		        	   
 		           }
 		    });
 			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
 					Toast.makeText(activity.getApplicationContext(), "Claim was not Submitted", Toast.LENGTH_SHORT).show();
 				}
 			});
@@ -171,21 +167,17 @@ public class ClaimListController {
 
 		}else{
 			
-			if(getCurrentClaim().isSubmittable()){
+			try{
 				
-				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-				//this should be a submitted Claim object? 
-				Claim submittedClaim = getCurrentClaim();
-				//submittedClaim.setStatus(SubmittedClaim.class);
-				updateCurrentClaim(submittedClaim);
+	        	SubmittedClaim submittedClaim = new SubmittedClaim(getCurrentClaim().getClaim());
+	        	changeClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
 				//push online here
 				activity.finish();
 			}
-			else{
+			catch (Throwable RuntimeException){
 				Toast.makeText(activity.getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
-
 			}
 			
 		}

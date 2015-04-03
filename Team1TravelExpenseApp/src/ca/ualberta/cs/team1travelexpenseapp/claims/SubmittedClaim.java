@@ -184,7 +184,7 @@ public class SubmittedClaim extends Claim {
 
 	@Override
 	public boolean isSubmittable() {
-		return true;
+		return false;
 	}
 
 }
