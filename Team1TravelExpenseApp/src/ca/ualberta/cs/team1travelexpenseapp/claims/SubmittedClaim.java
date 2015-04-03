@@ -22,6 +22,7 @@ public class SubmittedClaim extends Claim {
 	public SubmittedClaim() {
 		super();
 		claim = new Claim();
+		setSynced(false);
 	}
 
 	public SubmittedClaim(String cName, Date sDate, Date eDate) {
@@ -31,10 +32,12 @@ public class SubmittedClaim extends Claim {
 	
 	public SubmittedClaim(Claim claim) {
 		this.claim = claim;
+		setSynced(false);
 	}
 	
 	public void setClaim(Claim newClaim) {
 		this.claim = newClaim;
+		setSynced(false);
 	}
 	
 	public Claim getClaim() {

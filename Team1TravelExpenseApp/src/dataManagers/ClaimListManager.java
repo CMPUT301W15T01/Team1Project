@@ -38,12 +38,12 @@ public abstract class ClaimListManager {
 	    
     public ClaimListManager(){
     	if(!registered){
-    		GsonUtils.registerType(adapter);
     		adapter.registerSubtype(Claim.class);
             adapter.registerSubtype(ApprovedClaim.class);
             adapter.registerSubtype(ProgressClaim.class);
             adapter.registerSubtype(ReturnedClaim.class);
             adapter.registerSubtype(SubmittedClaim.class);
+            GsonUtils.registerType(adapter);
             registered=true;
     	}
     }
