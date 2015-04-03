@@ -17,4 +17,9 @@ public class ApprovedClaim extends Claim {
 		return this.claim;
 	}
 	
+	@Override
+	public boolean isSubmittable() {
+		return false;
+	}
+	
 }

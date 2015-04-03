@@ -17,8 +17,6 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
@@ -29,22 +27,18 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.location.Location;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * The controller allowing modifications from the ui to change the claims and claims lists
  * Allows general functionality like adding/deleting claims
- *
  */
 
 public class ClaimListController {
@@ -74,7 +68,7 @@ public class ClaimListController {
 		this.claimsList=claimList;
 	}
 	
-	public ClaimList getClaimList() { 
+	public ClaimList getClaimList(){ 
 		return this.claimsList;
 	}
 	
@@ -82,7 +76,7 @@ public class ClaimListController {
 	 * Updates the current claim to be updated
 	 * @param newClaim the claim to be updated
 	 */
-	public void updateCurrentClaim(Claim newClaim) {
+	public void updateCurrentClaim(Claim newClaim){
 		if (currentClaim == null) {
 			throw new RuntimeException("no current claim");
 		}
@@ -147,21 +141,18 @@ public class ClaimListController {
 			AlertDialog.Builder submitBuilder = new AlertDialog.Builder(activity);
 			submitBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-		               //Do nothing
-		        	   //submittedClaim.setStatus(SubmittedClaim.class);
-		        	   SubmittedClaim submittedClaim = new SubmittedClaim(getCurrentClaim().getClaim());
+
+		        	   SubmittedClaim submittedClaim = (SubmittedClaim) getCurrentClaim().changeStatus(SubmittedClaim.class);
 		        	   changeClaim(submittedClaim);
 		        	   
-		        	  // ClaimListController.getCurrentClaim().setStatus(Status.submitted);
 		        	   Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-		        	   //push online here
+		        	   activity.finish();
 		           }
 		    });
 			submitBuilder.setNegativeButton("Cancel", new OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
 					Toast.makeText(activity.getApplicationContext(), "Claim was not Submitted", Toast.LENGTH_SHORT).show();
 				}
 			});
@@ -171,21 +162,17 @@ public class ClaimListController {
 
 		}else{
 			
-			if(getCurrentClaim().isSubmittable()){
+			try{
 				
-				//ClaimListController.getCurrentClaim().setStatus(Status.submitted);
-				//this should be a submitted Claim object? 
-				Claim submittedClaim = getCurrentClaim();
-				//submittedClaim.setStatus(SubmittedClaim.class);
-				updateCurrentClaim(submittedClaim);
+				SubmittedClaim submittedClaim = (SubmittedClaim) getCurrentClaim().changeStatus(SubmittedClaim.class);
+	        	changeClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
 				//push online here
 				activity.finish();
 			}
-			else{
+			catch (Throwable RuntimeException){
 				Toast.makeText(activity.getApplicationContext(),"Claim can not be submitted", Toast.LENGTH_SHORT).show();
-
 			}
 			
 		}
@@ -322,7 +309,6 @@ public class ClaimListController {
 		claimArray.add(claim);
 		//displays an empty claim in claim list 
 		claimsList.setClaimList(claimArray);
-		
 	}
 	
 	public void setCurrentClaim(Claim claim) {
@@ -348,7 +334,7 @@ public class ClaimListController {
 	public void onApproveClick() {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
-		Claim approvedClaim = getCurrentClaim();		
+		ApprovedClaim approvedClaim = (ApprovedClaim) getCurrentClaim().changeStatus(ApprovedClaim.class);		
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();
@@ -363,9 +349,9 @@ public class ClaimListController {
 	 * Sets the claim status as returned and adds user to approver list
 	 */
 	public void onReturnClick() {
-		//currentClaim.setStatus(ReturnedClaim.class);
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
+		changeClaim(currentClaim.changeStatus(ReturnedClaim.class));
 	}
 	/**
 	 * The onClick method for the comment button
