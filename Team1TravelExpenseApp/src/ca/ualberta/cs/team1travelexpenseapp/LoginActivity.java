@@ -15,6 +15,7 @@ limitations under the License.
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import dataManagers.ApproverClaimListManager;

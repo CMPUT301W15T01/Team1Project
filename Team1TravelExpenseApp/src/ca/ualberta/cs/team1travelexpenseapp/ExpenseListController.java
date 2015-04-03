@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import android.content.Intent;
 import android.widget.CheckBox;
 import android.widget.DatePicker;

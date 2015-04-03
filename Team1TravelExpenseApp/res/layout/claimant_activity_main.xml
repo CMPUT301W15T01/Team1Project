@@ -52,7 +52,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/claimsList"
-        android:layout_below="@+id/travelClaims"
-        android:layout_toLeftOf="@+id/addClaimButton" />
+        android:layout_below="@+id/HomeLocationButton"
+        android:layout_toLeftOf="@+id/manageTagsButton" />
+
+    <Button
+        android:id="@+id/HomeLocationButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="HomeGeolocationSelect"
+        android:text="Home\nLocation" />
 
 </RelativeLayout>

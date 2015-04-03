@@ -18,9 +18,9 @@ import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Listener;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
-import ca.ualberta.cs.team1travelexpenseapp.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
 import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.RuntimeTypeAdapterFactory;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
@@ -368,7 +368,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 */
 	@Override
 	public int compareTo( Claim claim ) {
-		if (UserSingleton.getUserSingleton().getUserType().isInstance(Claimant.class)) {
+		if (UserSingleton.getUserSingleton().getUserType().equals("Claimant")) {
 			return claim.getStartDate().compareTo(this.startDate);
 		}
 		return this.startDate.compareTo(claim.getStartDate());

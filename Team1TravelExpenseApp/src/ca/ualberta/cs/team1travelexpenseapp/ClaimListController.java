@@ -25,6 +25,8 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -250,16 +252,28 @@ public class ClaimListController {
 	 * The onClick method for adding a destination/reason pair to a claim
 	 * @param activity The activity containing the add destination/reason button
 	 */
-	public void onAddDestinationClick(EditClaimActivity activity) {
-		EditText destination = (EditText) activity.findViewById(R.id.claimDestinationBody);
-		EditText reason      = (EditText) activity.findViewById(R.id.claimReasonBody);
-		Claim claim = getCurrentClaim();
-		ArrayList<Destination> drlist = claim.getDestinationList();
-		//To do add geolocation to destination
-		drlist.add(new Destination(destination.getText().toString(), reason.getText().toString(),new Location("")));
-		destination.setText("");
-		reason.setText("");
+	public void onAddDestinationClick(EditClaimActivity activity, DialogInterface dialog, Location location) {
+        EditText nameText = ((EditText) ((AlertDialog) dialog).findViewById(R.id.destinationNameBody));
+        EditText reasonText = ((EditText) ((AlertDialog) dialog).findViewById(R.id.destinationReasonBody));
+        String name=nameText.getText().toString();
+        String reason = reasonText.getText().toString();
+        currentClaim.addDestination(new Destination(name, reason, location));
+    }
+	
+	public void onSetDestinationClick(DialogInterface dialog, Destination dest, Location location){
+		EditText nameText = ((EditText) ((AlertDialog) dialog).findViewById(R.id.destinationNameBody));
+        EditText reasonText = ((EditText) ((AlertDialog) dialog).findViewById(R.id.destinationReasonBody));
+        String name=nameText.getText().toString();
+        String reason = reasonText.getText().toString();
+        dest.setName(name);
+        dest.setReason(reason);
+        dest.setLocation(location);
 	}
+	
+    public void onRemoveDestinationClick(DialogInterface dialog, Destination dest) {
+    	currentClaim.getDestinationList().remove(dest);
+    }
+
 	/**
 	 * The getter for the currently selected claim
 	 * @return Returns the current claim selected

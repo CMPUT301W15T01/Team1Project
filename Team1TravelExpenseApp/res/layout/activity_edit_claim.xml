@@ -28,25 +28,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/claimDestinationBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/claimDestinationHeader"
-                android:layout_toLeftOf="@+id/addDestinationButton"
-                android:inputType="textAutoCorrect" />
-
-            <TextView
-                android:id="@+id/claimDestinationList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/claimReasonBody"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
+            
             <TextView
                 android:id="@+id/claimDestinationHeader"
                 android:layout_width="wrap_content"
@@ -56,24 +38,14 @@
                 android:text="Add Destination:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/claimReasonHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/claimDestinationBody"
-                android:text="Add Reason:"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/claimReasonBody"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/claimReasonHeader"
-                android:layout_toLeftOf="@+id/addDestinationButton"
-                android:inputType="textAutoCorrect" />
+             <ListView
+		        android:id="@+id/claimDestinationList"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentBottom="true"
+		        android:layout_below="@+id/claimDestinationHeader"
+		        android:scrollbars="vertical" >
+   			 </ListView>
 
             <DatePicker
                 android:id="@+id/claimFromDate"
@@ -131,11 +103,20 @@
                  android:id="@+id/addDestinationButton"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_above="@+id/claimDestinationList"
+                 android:layout_above="@+id/claimReasonHeader"
                  android:layout_alignParentRight="true"
                  android:layout_below="@+id/claimDestinationHeader"
                  android:onClick="onAddDestinationClick"
                  android:text="(+)" />
+
+             <Button
+                 android:id="@+id/DestinationLocationPicker"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignBottom="@+id/claimReasonBody"
+                 android:layout_toRightOf="@+id/claimReasonBody"
+                 android:text="Location"
+                 android:textSize="10sp" />
 
         </RelativeLayout>
         

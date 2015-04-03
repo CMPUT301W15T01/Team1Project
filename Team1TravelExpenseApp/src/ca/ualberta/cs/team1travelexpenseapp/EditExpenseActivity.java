@@ -43,6 +43,7 @@ import android.widget.Toast;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 
 /**
  * View for adding/editing an Expense item.
@@ -99,7 +100,7 @@ public class EditExpenseActivity extends Activity {
 	        	location.setLongitude(lon);
 	        	location.setLatitude(lat);
 	        	expense.setLocation(location);
-	        	Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
+	        	//Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
 	        
 	            // Do something with the contact here (bigger example below)
 	        }
