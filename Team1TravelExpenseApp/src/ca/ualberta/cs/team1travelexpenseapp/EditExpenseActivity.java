@@ -62,6 +62,7 @@ public class EditExpenseActivity extends Activity {
 	private Claim claim;
 	private ImageButton receiptButton;
 	File photoFile = null;
+	Uri photoUri = null;
 	private static final int PICK_GEOLOCATION_REQUEST = 1;
 	private static final int CAMERA_CAPTURE_REQUEST = 2;
 
@@ -120,10 +121,13 @@ public class EditExpenseActivity extends Activity {
 				//button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
 				Log.d("Testing Add Photo", "Creating File: " + photoFile.getName());	
 
-				expense.setReceipt(photoFile);
-				Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceipt() != null) + "has size: " + String.valueOf(photoFile.length()));
+				//Should be moved to a controller
+				attachReceipt(photoUri, photoFile);
+				//expense.setReceiptUri(photoUri);
+				//expense.setReceiptFile(photoFile);
+				Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
 				
-				thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceipt().getAbsolutePath()));
+				thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getPath()));
 				//receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
 				//Hopefully this will show the Image in the image Button
 			}
@@ -179,9 +183,9 @@ public class EditExpenseActivity extends Activity {
 		
 		
 		//TEMPORARY code to show the photo in the image button
-		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceipt() != null));
-		if (expense.receipt != null){			
-			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceipt().getAbsolutePath()));
+		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceiptFile() != null));
+		if (expense.getReceiptFile() != null){			
+			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getPath()));
 			Log.d("Testing Add Photo", "Update thumbed");
 		}
 	} 
@@ -269,7 +273,7 @@ public class EditExpenseActivity extends Activity {
 	
 	// Create a folder to store pictures
 	String folder = Environment.getExternalStorageDirectory()
-			.getAbsolutePath() + "/tmp";
+			.getAbsolutePath() + "/Receipts";
 	File folderF = new File(folder);
 	if (!folderF.exists()) {
 		folderF.mkdir();
@@ -279,7 +283,7 @@ public class EditExpenseActivity extends Activity {
 	String imageFilePath = folder + "/"
 			+ String.valueOf(System.currentTimeMillis()) + ".jpg";
 	photoFile = new File(imageFilePath);
-	Uri imageFileUri = Uri.fromFile(photoFile);
+	photoUri = Uri.fromFile(photoFile);
 	
 	
 	Log.d("Testing Add Photo", "File created at:" + photoFile.toString() + " has size: " + String.valueOf(photoFile.length()));
@@ -292,12 +296,14 @@ public class EditExpenseActivity extends Activity {
 	}
 	}
 		
-	
+	// Should Be moved to a controller
 	public void onDeletePhotoClick(View v){
-		if(expense.getReceipt() != null){
-			expense.getReceipt().delete();
+		if(expense.getReceiptFile() != null){
+			File file = new File(expense.getReceiptFile().getPath());
+			file.delete();
 			thumbnailReceipt(null);
-			expense.setReceipt(null);
+			expense.setReceiptFile(null);
+			expense.setReceiptUri(null);
 		}
 	}
 	
@@ -313,11 +319,17 @@ public class EditExpenseActivity extends Activity {
 		viewReciept.setImageBitmap(bm); 
 		
 		//show the size of the current photo
-		if(bm != null){
+		if(bm != null && expense.getReceiptFile() != null){
 			TextView receiptText = (TextView) this.findViewById(R.id.recieptHeader);
-			receiptText.setText(receiptText.getText() + " File Size: " + String.valueOf(photoFile.length()) + "Bytes");
+			receiptText.setText(receiptText.getText() + " File Size: " + String.valueOf(expense.getReceiptFile().length()) + "Bytes");
 			}
 	}
 	
+	// Should Be moved to a controller
+	protected void attachReceipt(Uri photoUri, File photoFile){
+		expense.setReceiptFile(photoFile);
+		expense.setReceiptUri(photoUri);
+		
+	}
 	
 }

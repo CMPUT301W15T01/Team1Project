@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.location.Location;
+import android.net.Uri;
 
 /**
  * Implements the model of an Expense item which is an individual part of a specific claim 
@@ -35,7 +36,16 @@ public class Expense {
 	protected String currency;
 	protected boolean isFlagged;
 	protected boolean isComplete;
-	protected File receipt;
+	protected File receiptFile;
+	protected Uri receiptUri;
+	
+	public Uri getReceiptUri() {
+		return receiptUri;
+	}
+	public void setReceiptUri(Uri receiptUri) {
+		this.receiptUri = receiptUri;
+	}
+
 	protected Location location;
 
 
@@ -63,7 +73,7 @@ public class Expense {
 		this.currency = currency;
 		
 		isFlagged = false;
-		receipt = null;
+		receiptFile = null;
 		
 		if(description.equals("") || currency.equals("") || amount.floatValue() == 0 || category.equals("none") 
 				|| date.equals(null) ){
@@ -83,7 +93,7 @@ public class Expense {
 		amount = new BigDecimal(0.0); 
 		currency = "";
 		isFlagged = false;
-		receipt = null;
+		receiptFile = null;
 		isComplete = false;
 	}
 	
@@ -219,9 +229,9 @@ public class Expense {
 	 * @return
 	 * A File
 	 */
-	public File getReceipt() {
+	public File getReceiptFile() {
 		//Stub
-		return this.receipt;
+		return this.receiptFile;
 	}
 	
 	/**
@@ -229,8 +239,8 @@ public class Expense {
 	 * @param receipt
 	 * The file object for the stored image.
 	 */
-	public void setReceipt(File receipt) {
-		this.receipt = receipt;
+	public void setReceiptFile(File receipt) {
+		this.receiptFile = receipt;
 	}
 	
 	/**
@@ -269,7 +279,7 @@ public class Expense {
 		if (getAmount().floatValue() != 0){
 			str += "\n" + getAmount() + getCurrency();
 		}
-		if ( receipt != null) {
+		if ( receiptFile != null) {
 			str += "\nPhoto: Yes";
 		} else {
 			str += "\nPhoto: No";

@@ -416,8 +416,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		// An editable expense is currently being edited or added
 		
 		// A test photo is added to simulate an actual photo being taken
-		expense.setReceipt(photoFile);
-		assertNotNull("Photofile not added to expence", expense.getReceipt());
+		expense.setReceiptFile(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		
 		claim.setStatus(Claim.Status.submitted);
 		instrumentation.runOnMainSync(new Runnable(){
@@ -456,7 +456,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		// A photo is attached to the expense
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image File should be set", expense.getReceipt() != null);
+		assertTrue("Image File should be set", expense.getReceiptFile() != null);
 		
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -483,7 +483,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();	
-		expense.setReceipt(null);
+		expense.setReceiptFile(null);
 		
 	}
 	
@@ -501,8 +501,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		
-		expense.setReceipt(photoFile);
-		assertNotNull("Photofile not added to expence", expense.getReceipt());
+		expense.setReceiptFile(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -518,7 +518,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		assertTrue("Image should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image File should be set", expense.getReceipt() != null);
+		assertTrue("Image File should be set", expense.getReceiptFile() != null);
 		
 		// A user can see the thumbnail of the photo 
 	}
@@ -531,8 +531,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		activity = getEditExpenseActivity();
 		photoFile = createTestPhotoFile();
 		
-		expense.setReceipt(photoFile);
-		assertNotNull("Photofile not added to expence", expense.getReceipt());
+		expense.setReceiptFile(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -547,7 +547,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 
 		
 		assertTrue("Image set so should be set in button", imageButton.getDrawable() != null);
-		assertTrue("Image set so file should be set", expense.getReceipt() != null);
+		assertTrue("Image set so file should be set", expense.getReceiptFile() != null);
 		
 		//click delete photo 
 		activity.findViewById(R.id.deletePhotoButton).performClick();	
@@ -557,7 +557,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		//The editable expense no longer has a photo attached to it
 		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
-		assertTrue("Image deleted so file should not be set", expense.getReceipt() == null);
+		assertTrue("Image deleted so file should not be set", expense.getReceiptFile() == null);
 		
 	}
 	
@@ -570,16 +570,16 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		photoFile = createTestPhotoFile();
 		// An editable expense is currently being edited or added and the claimant has taken a photo that is greater than 65536 bytes 
 		
-		expense.setReceipt(photoFile);
-		assertNotNull("Photofile not added to expence", expense.getReceipt());
+		expense.setReceiptFile(photoFile);
+		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
 		Expense.compressPhoto(activity, photoFile);
-		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getReceipt().length() < 65536);	
+		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getReceiptFile().length() < 65536);	
 		
 		// A photo that is less than 65536 bytes in size is attached to the expense
-		expense.setReceipt(photoFile);
-		assertTrue("Compressed photo file too large (" + expense.getReceipt().length() + ")", expense.getReceipt().length() < 65536);
+		expense.setReceiptFile(photoFile);
+		assertTrue("Compressed photo file too large (" + expense.getReceiptFile().length() + ")", expense.getReceiptFile().length() < 65536);
 		
 	}
 	private ClaimantExpenseListActivity getExpenseListactivity(){
