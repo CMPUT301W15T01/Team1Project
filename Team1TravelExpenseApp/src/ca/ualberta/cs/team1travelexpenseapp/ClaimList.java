@@ -220,5 +220,18 @@ public class ClaimList {
 	public ClaimListManager getManager() {
 		return this.manager;
 	}
+
+	/**
+	 * Remove the passed tag from all claims in the list, used to ensure that deleted tags are removed from all claims.
+	 * @param tag to be cleared from all claims in list
+	 */
+	public void clearTag(Tag tag) {
+		for(Claim claim: claimList){
+			if(claim.getClaimTagList().contains(tag)){
+				claim.getClaimTagList().remove(tag);
+				claim.setSynced(false);
+			}
+		}
+	}
 	
 }
