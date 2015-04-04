@@ -16,6 +16,8 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 
 /**
@@ -26,7 +28,16 @@ public class ExpenseList {
 
 	private ArrayList<Expense> expenseList;
 	private transient ArrayList<Listener> listeners;
+	private transient Claim claim;
 	
+	public Claim getClaim() {
+		return claim;
+	}
+
+	public void setClaim(Claim claim) {
+		this.claim = claim;
+	}
+
 	/**
 	 * Create a new empty ExpenseList
 	 */
@@ -69,6 +80,7 @@ public class ExpenseList {
 			listeners.get(i).update();
 		}
 		//added for now so claimslist is saved whenever expenselist is modified, probably suboptimal
+		claim.setSynced(false);
 		UserSingleton.getUserSingleton().getUser().getClaimList().saveClaims();
 	}
 

@@ -24,6 +24,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
+import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.content.Intent;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
