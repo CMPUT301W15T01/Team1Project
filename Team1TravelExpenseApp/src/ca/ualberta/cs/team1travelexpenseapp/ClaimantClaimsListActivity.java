@@ -67,7 +67,7 @@ public class ClaimantClaimsListActivity extends Activity {
  	public  AlertDialog editClaimDialog;
  	private Listener listener;
  	private ArrayList<Claim> displayList;
- 	private ArrayAdapter<Claim> claimsAdapter;
+ 	private ClaimArrayAdapter claimsAdapter;
  	private Claimant user;
  	private ClaimListController claimListController;
 
@@ -95,7 +95,7 @@ public class ClaimantClaimsListActivity extends Activity {
   		Collection<Claim> claims = claimList.getClaims();
   		displayList = new ArrayList<Claim>(claims);
   		
-  		claimsAdapter = new ArrayAdapter<Claim>(this, android.R.layout.simple_list_item_1, displayList);
+  		claimsAdapter = new ClaimArrayAdapter(this, android.R.layout.simple_list_item_1, displayList);
 
   		mainListView.setAdapter(claimsAdapter);
   		
@@ -274,12 +274,12 @@ public class ClaimantClaimsListActivity extends Activity {
 	    }
 	}	
 
-	public ArrayAdapter<Claim> getArrayAdapter() {
+	public ClaimArrayAdapter getArrayAdapter() {
 		// TODO Auto-generated method stub
 		return claimsAdapter;
 	}
 	
-	public void setAdapter(ArrayAdapter<Claim> a) {
+	public void setAdapter(ClaimArrayAdapter a) {
 		this.claimsAdapter = a;
 	}
 	

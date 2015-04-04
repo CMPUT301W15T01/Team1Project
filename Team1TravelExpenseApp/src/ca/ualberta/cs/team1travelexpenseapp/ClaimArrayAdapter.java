@@ -2,23 +2,26 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import org.osmdroid.util.GeoPoint;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
-public class ExpenseArrayAdapter extends ArrayAdapter<Expense> {
+public class ClaimArrayAdapter extends ArrayAdapter<Claim> {
 
-	public ExpenseArrayAdapter(Context context, int textViewResourceId) {
+	public ClaimArrayAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
 	}
 
-	public ExpenseArrayAdapter(Context context, int resource,
-			ArrayList<Expense> items) {
-		super(context, resource, items);
+	public ClaimArrayAdapter(Context context, int resource,
+			ArrayList<Claim> displayList) {
+		super(context, resource, displayList);
 	}
 
 	//Retrieved from http://stackoverflow.com/questions/340209/generate-colors-between-red-and-green-for-a-power-meter (April 3,2015)
@@ -26,21 +29,26 @@ public class ExpenseArrayAdapter extends ArrayAdapter<Expense> {
 	public int getDistanceColor(double value) {
 		if (value >= 20000000) {
 			value = 20000000;
+		} else {
+			value = 1 - value / 20000000;
 		}
-			value=value / 20000000;
 		return android.graphics.Color.HSVToColor(new float[] {
-				(float) (1-value) * 120f, 1f, 1f });
+				(float) value * 120f, 1f, 1f });
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = super.getView(position, convertView, parent);
 		// Get the data item for this position
-		Expense expense = getItem(position);
+		Claim claim = getItem(position);
 		User user=UserSingleton.getUserSingleton().getUser();
-		float distance = expense.getLocation().distanceTo(user.getLocation());
-		Log.d("distanceTest", expense.getLocation().toString());
-		Log.d("distanceTest", user.getLocation().toString());
+		ArrayList<Destination> dest = claim.getDestinationList();
+		if (dest.size() == 0 || dest.get(0).getLocation()==null) {
+			return convertView;
+		}
+		GeoPoint start = new GeoPoint(user.getLocation());
+		GeoPoint end = new GeoPoint(dest.get(0).getLocation());
+		int distance = start.distanceTo(end);
 		int color = getDistanceColor(distance);
 		convertView.setBackgroundColor(color);
 		return convertView;
