@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,8 +36,10 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
+import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -67,6 +70,10 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	protected Claimant user;
 	protected Claim claim;
 	
+	protected ExpenseListController ExpenseListController;
+	protected ClaimListController ClaimListController;
+	
+	
 	public ExpenseEditTest() throws Exception {
 		super(ClaimantClaimsListActivity.class);
 	}
@@ -78,9 +85,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		Log.d("EditExpenseTest", "Setup Started");
 		Claimant user= new Claimant("CoolGuy");
+		Log.d("EditExpenseTest", "User Created");
 		UserSingleton.getUserSingleton().setUser(user);
-		ClaimListController.clearClaimList();
+		//user.getClaimList().getClaims().clear();
+		Log.d("EditExpenseTest", "User Singleton set");
+		ClaimListController = new ClaimListController(user.getClaimList());
+		
+		user.getClaimList().getManager().setContext(getActivity().getApplicationContext());
+		
+		Log.d("EditExpenseTest", "ClaimList has a manager? " + String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
 		getExpenseListactivity();
@@ -98,7 +113,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
-				if (ExpenseListController.getCurrentExpenseList().getExpenses().contains(expense)){
+				if (ExpenseListController.getExpenseList().getExpenses().contains(expense)){
 					ExpenseListController.removeExpense(expense);
 			    }
 				if(ClaimListController.getClaimList().getClaims().contains(claim)){
@@ -117,8 +132,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	public void testAddExpenseItem() {
 		// precondition
 		activity = getAddExpenseActivity();	
-		User user = new User("Claimant", "EditExpenseTest");
-		assertEquals("User is claimant", "Claimant", user.type());
+		//User user = new User("Claimant", "EditExpenseTest");
+		//assertEquals("User is claimant", "Claimant", user.type());
 		
 		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
@@ -289,7 +304,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();	
-		claim.setStatus(Claim.Status.submitted);
+		//claim.setStatus(Claim.Status.submitted); -------------------------------------------------------------------
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -300,8 +315,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		assertNotSame("Desc edited while submitted", descText.getText().toString(), "Test Edit");
 	
-		claim.setStatus(Claim.Status.inProgress);		
-		claim.setStatus(Claim.Status.submitted);
+		//claim.setStatus(Claim.Status.inProgress);		---------------------------------------------------------------
+		//claim.setStatus(Claim.Status.submitted); --------------------------------------------------------------------
 		
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -419,7 +434,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		expense.setReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		
-		claim.setStatus(Claim.Status.submitted);
+		//claim.setStatus(Claim.Status.submitted); -----------------------------------------------------------------------------
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -445,7 +460,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		setUiElements();
 		//activity = getAddExpenseActivity();
 		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
-		claim.setStatus(Claim.Status.inProgress);
+		//claim.setStatus(Claim.Status.inProgress); ------------------------------------------------------------------------------
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -553,7 +568,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		activity.findViewById(R.id.deletePhotoButton).performClick();	
 		//click yes
 		//activity.findViewById(R.id.yesdeletePhotoButton).performClick();
-		assertSame(ClaimListController.getCurrentClaim().getStatus(),Claim.Status.submitted);
+		//assertSame(ClaimListController.getCurrentClaim().getStatus(),Claim.Status.submitted); -------------------------------------------------------
 		
 		//The editable expense no longer has a photo attached to it
 		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
@@ -593,6 +608,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 					claim = new Claim();
 					ClaimListController.addClaim(claim); 
 					ClaimListController.updateCurrentClaim(claim); 
+					
+					ExpenseListController = new ExpenseListController(claim.getExpenseList());
 			    }
 		});
 		instrumentation.waitForIdleSync();
