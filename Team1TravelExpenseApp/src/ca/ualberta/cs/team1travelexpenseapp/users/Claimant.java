@@ -35,7 +35,8 @@ public class Claimant extends User {
 	public void loadData(){
 		claimList.loadClaims();
 		tagList.loadTags();
-		syncTags();
+		//this is failing badly at the moment, not sure why
+		//syncTags();
 	}
 	
 	public void initManagers(Context context){
@@ -54,7 +55,7 @@ public class Claimant extends User {
 	 * This is needed to fix saved tags of the same name which do not correspond to the same object once saved and loaded
 	 * @param tagList to be matched with
 	 */
-	private void syncTags() {
+	/*private void syncTags() {
 		ArrayList<Tag> personalTags = tagList.getTags();
 		for(Claim claim: claimList.getClaims()){
 			ArrayList<Tag> oldTags = new ArrayList<Tag>();
@@ -78,6 +79,6 @@ public class Claimant extends User {
 			claim.setClaimTagList(claimTagList);
 		}
 		
-	}
+	}*/
 	
 }

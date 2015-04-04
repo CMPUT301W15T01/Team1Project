@@ -157,7 +157,14 @@ public class ClaimantClaimListManager extends ClaimListManager {
 						Log.d("onlineTest", json);
 						Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>(){}.getType();
 						ElasticSearchSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
-						Collection <ElasticSearchResponse<Claim>> esResponseList = esResponse.getHits();
+						Collection <ElasticSearchResponse<Claim>> esResponseList;
+						if(esResponse!=null){
+							esResponseList = esResponse.getHits();
+						}
+						else{
+							//if response is null just exit thread and return the empty claimsList
+							return;
+						}
 						for(ElasticSearchResponse<Claim> result: esResponseList){
 							Log.d("onlineTest", "in web load function:"+result.getSource().toString());
 							claims.add(result.getSource());

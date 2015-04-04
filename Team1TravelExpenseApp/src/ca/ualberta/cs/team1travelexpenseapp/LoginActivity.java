@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
 			Approver currentUser=new Approver(currentUserName);
 			UserSingleton.getUserSingleton().setUser(currentUser);
 			
-			
+			Toast.makeText(this, "Loading User Data...", Toast.LENGTH_LONG).show();
 			currentUser.initManagers(getApplicationContext());
 			currentUser.loadData();
 			
@@ -105,7 +105,7 @@ public class LoginActivity extends Activity {
 		else{
 			Claimant currentUser=new Claimant(currentUserName);
 			UserSingleton.getUserSingleton().setUser(currentUser);
-			
+			Toast.makeText(this, "Loading User Data...", Toast.LENGTH_LONG).show();
 			currentUser.initManagers(getApplicationContext());
 			currentUser.loadData();
 			
