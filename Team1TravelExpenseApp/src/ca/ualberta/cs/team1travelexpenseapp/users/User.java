@@ -24,7 +24,7 @@ public abstract class User {
 	
 	protected String name;
 	protected ClaimList claimList;
-	private Location location;
+	protected Location location;
 	
 	public Location getLocation() {
 		if (location == null) {

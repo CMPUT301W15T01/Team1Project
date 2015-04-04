@@ -12,7 +12,7 @@ import dataManagers.ClaimantClaimListManager;
 import dataManagers.TagListManager;
 
 public class Claimant extends User {
-	private TagList tagList;
+	public TagList tagList;
 
 
 
