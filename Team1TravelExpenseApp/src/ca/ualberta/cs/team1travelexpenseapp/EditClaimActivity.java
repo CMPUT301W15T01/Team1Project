@@ -190,7 +190,7 @@ public class EditClaimActivity extends Activity {
 			StatusAlert.show();
 		}
 		
-		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
+		MultiSelectionSpinner<Tag> tagSpinner= (MultiSelectionSpinner<Tag>) findViewById(R.id.claimTagSpinner);
 		tagSpinner.setItems(user.getTagList().getTags());
 		ArrayList<Tag> claimTags=claim.getClaimTagList();
 		Log.d("syncTest", claimTags.toString());

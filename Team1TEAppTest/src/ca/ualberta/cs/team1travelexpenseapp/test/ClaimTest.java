@@ -4,7 +4,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.util.ArrayList;
 import java.util.Date;
 
-import views.MultiSelectionSpinner;
+import views.MultiSelectionTagSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
@@ -267,7 +267,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  
 		  
 		final Button saveClaimButton = (Button) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveClaimButton);
-	 	final MultiSelectionSpinner tagSpinner = (MultiSelectionSpinner) 
+	 	final MultiSelectionTagSpinner tagSpinner = (MultiSelectionTagSpinner) 
 	 			nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimTagSpinner);
 	 	
 	 	nextActivity.runOnUiThread(new Runnable() {

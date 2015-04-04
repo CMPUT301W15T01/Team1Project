@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,13 +24,12 @@ public class ExpenseArrayAdapter extends ArrayAdapter<Expense> {
 	//Retrieved from http://stackoverflow.com/questions/340209/generate-colors-between-red-and-green-for-a-power-meter (April 3,2015)
 	//Returns Traffic light colors based on distance
 	public int getDistanceColor(double value) {
-		if (value >= 10000000) {
-			value = 0;
-		} else {
-			value = 1 - value / 10000000;
+		if (value >= 20000000) {
+			value = 20000000;
 		}
+			value=value / 20000000;
 		return android.graphics.Color.HSVToColor(new float[] {
-				(float) value * 120f, 1f, 1f });
+				(float) (1-value) * 120f, 1f, 1f });
 	}
 
 	@Override
@@ -39,6 +39,8 @@ public class ExpenseArrayAdapter extends ArrayAdapter<Expense> {
 		Expense expense = getItem(position);
 		User user=UserSingleton.getUserSingleton().getUser();
 		float distance = expense.getLocation().distanceTo(user.getLocation());
+		Log.d("distanceTest", expense.getLocation().toString());
+		Log.d("distanceTest", user.getLocation().toString());
 		int color = getDistanceColor(distance);
 		convertView.setBackgroundColor(color);
 		return convertView;

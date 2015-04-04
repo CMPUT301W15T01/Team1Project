@@ -35,7 +35,7 @@ public class Claimant extends User {
 	public void loadData(){
 		claimList.loadClaims();
 		tagList.loadTags();
-		//syncTags();
+		syncTags();
 	}
 	
 	public void initManagers(Context context){
