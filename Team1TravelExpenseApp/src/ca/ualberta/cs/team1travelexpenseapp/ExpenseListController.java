@@ -149,7 +149,7 @@ public class ExpenseListController {
 		if ( completeBox.isChecked() ) {
 			expense.setFlagged(true);
 		}
-		expense.setReceipt(getCurrentExpense().getReceipt());
+		expense.setReceiptFile(getCurrentExpense().getReceiptFile());
 		
 		updateExpense(getCurrentExpense(), expense);
 		

@@ -62,7 +62,7 @@ public class ApproverClaimInfo extends Activity {
 		info.setText(currentClaim.toString() + "\n" + expense.toString());
 		
 		// Retrieved from http://stackoverflow.com/questions/4181774/show-image-view-from-file-path-in-android (March 29, 2015)
-		File imgFile = expense.getReceipt();
+		File imgFile = expense.getReceiptFile();
 		if(imgFile.exists()){
 
 		    Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
