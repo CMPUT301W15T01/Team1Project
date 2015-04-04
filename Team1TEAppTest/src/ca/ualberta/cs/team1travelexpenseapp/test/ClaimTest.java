@@ -4,8 +4,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.util.ArrayList;
 import java.util.Date;
 
-import views.MultiSelectionTagSpinner;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
+import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
