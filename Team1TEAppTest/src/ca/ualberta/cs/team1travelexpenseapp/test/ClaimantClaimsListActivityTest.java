@@ -7,6 +7,7 @@ import java.util.Date;
 import testObjects.MockClaimant;
 import junit.framework.Assert;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
@@ -90,13 +91,22 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		//find addClaimButton
 		final Button saveClaimButton =
 				(Button) activity.findViewById(R.id.saveClaimButton);
-		final EditText   dest     = (EditText) activity.findViewById(R.id.claimDestinationBody);
-		final EditText   reason   = (EditText) activity.findViewById(R.id.claimReasonBody);
 		final Button     addDest  = (Button)   activity.findViewById(R.id.addDestinationButton);
 		final DatePicker fromDate = 
 				(DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDate  = 
 				(DatePicker) activity.findViewById(R.id.claimEndDate);
+		
+		getInstrumentation().runOnMainSync(new Runnable() {
+		    @Override
+		    public void run() {
+		        addDest.requestFocus();
+		    }
+		});
+		getInstrumentation().waitForIdleSync();
+		TouchUtils.clickView(this,addDest);
+		
+		AlertDialog dialog=activity.editDestDialog;
 		
 		
 		// Send destination
