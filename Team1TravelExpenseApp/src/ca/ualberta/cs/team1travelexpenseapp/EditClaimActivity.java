@@ -190,9 +190,11 @@ public class EditClaimActivity extends Activity {
 			StatusAlert.show();
 		}
 		
-		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimTagSpinner);
+		MultiSelectionSpinner<Tag> tagSpinner= (MultiSelectionSpinner<Tag>) findViewById(R.id.claimTagSpinner);
 		tagSpinner.setItems(user.getTagList().getTags());
 		ArrayList<Tag> claimTags=claim.getClaimTagList();
+		Log.d("syncTest", claimTags.toString());
+		Log.d("syncTest", Boolean.toString(user.getTagList().getTags().containsAll(claimTags)));
 		tagSpinner.setSelection(claimTags);
 		
 		destList = (ListView) findViewById(R.id.claimDestinationList);
@@ -227,7 +229,7 @@ public class EditClaimActivity extends Activity {
 	}
 	
 	/**
-	 * The onClick method for the save button, allowing the user to save the data they hav entered
+	 * The onClick method for the save button, allowing the user to save the data they have entered
 	 * @param v The view passed when the save button is clicked
 	 */
 	public void onSaveClick(View v) {

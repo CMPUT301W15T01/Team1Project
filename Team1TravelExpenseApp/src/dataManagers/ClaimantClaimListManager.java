@@ -107,6 +107,12 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		        }
 			});
 			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -151,7 +157,14 @@ public class ClaimantClaimListManager extends ClaimListManager {
 						Log.d("onlineTest", json);
 						Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>(){}.getType();
 						ElasticSearchSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchSearchResponseType);
-						Collection <ElasticSearchResponse<Claim>> esResponseList = esResponse.getHits();
+						Collection <ElasticSearchResponse<Claim>> esResponseList;
+						if(esResponse!=null){
+							esResponseList = esResponse.getHits();
+						}
+						else{
+							//if response is null just exit thread and return the empty claimsList
+							return;
+						}
 						for(ElasticSearchResponse<Claim> result: esResponseList){
 							Log.d("onlineTest", "in web load function:"+result.getSource().toString());
 							claims.add(result.getSource());
@@ -214,6 +227,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 					
 					HttpResponse response=null;
 					try {
+						//do something with this response if nessesary
 						response = httpclient.execute(httpDelete);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
@@ -222,14 +236,15 @@ public class ClaimantClaimListManager extends ClaimListManager {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
 					}
-			
-					String status = response.getStatusLine().toString();
-					Log.d("onlineTest", status);
-			
-					HttpEntity entity = response.getEntity();
 				}
 			});
 			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	

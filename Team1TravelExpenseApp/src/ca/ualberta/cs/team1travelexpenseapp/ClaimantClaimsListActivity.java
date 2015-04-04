@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import views.MultiSelectionSpinner;
+import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
@@ -80,7 +81,7 @@ public class ClaimantClaimsListActivity extends Activity {
 		//user.toString();
 		claimListController= new ClaimListController(user.getClaimList());
 		
-		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		final MultiSelectionSpinner<Tag> tagSpinner= (MultiSelectionSpinner<Tag>) findViewById(R.id.claimFilterSpinner);
 		tagSpinner.setItems(user.getTagList().getTags());	
 		//As an approver, I want to view a list of all the expense claims that were submitted 
 		//for approval, which have their claim status as submitted, showing for each claim:
@@ -128,6 +129,8 @@ public class ClaimantClaimsListActivity extends Activity {
 		};
         
         claimList.addListener(listener);
+        //if claims have tags they may need to update when the tagList changes also
+        user.getTagList().addListener(listener);
         
         
         mainListView.setOnItemClickListener(new OnItemClickListener(){
@@ -196,7 +199,7 @@ public class ClaimantClaimsListActivity extends Activity {
 		super.onStart();
 		
 		//set up the tag filter spinner
-		final MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		final MultiSelectionSpinner<Tag> tagSpinner= (MultiSelectionSpinner<Tag>) findViewById(R.id.claimFilterSpinner);
 		tagSpinner.setItems(user.getTagList().getTags());		
 	}
 	

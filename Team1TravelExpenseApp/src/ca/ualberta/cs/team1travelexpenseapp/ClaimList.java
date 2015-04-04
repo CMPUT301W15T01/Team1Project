@@ -27,6 +27,7 @@ import dataManagers.ApproverClaimListManager;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 /**

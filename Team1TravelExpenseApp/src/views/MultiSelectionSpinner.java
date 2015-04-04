@@ -1,6 +1,5 @@
 /*
 Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -25,6 +24,7 @@ import java.util.List;
   
 
 
+
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.R.id;
@@ -37,6 +37,7 @@ import android.content.Context;
 import android.content.DialogInterface;  
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;  
+import android.nfc.Tag;
 import android.util.AttributeSet;  
 import android.util.Log;
 import android.widget.ArrayAdapter;  
@@ -50,11 +51,11 @@ import android.widget.SpinnerAdapter;
  * It can store an arrayList of arbitrary objects in order to recover the selected objects directly.
  *
  */
-public class MultiSelectionSpinner extends Spinner implements  
+public class MultiSelectionSpinner<T> extends Spinner implements  
   OnMultiChoiceClickListener {  
  String[] _items = null;  
  boolean[] mSelection = null;
- ArrayList<?> itemsList  = null;
+ ArrayList<T> itemsList  = null;
  Context context;
   
  ArrayAdapter<String> simple_adapter;
@@ -99,7 +100,7 @@ public class MultiSelectionSpinner extends Spinner implements
 	@Override
 	public void onDismiss(DialogInterface dialog) {
 		// TODO Auto-generated method stub
-		MultiSelectionSpinner tagSpinner= (MultiSelectionSpinner) findViewById(R.id.claimFilterSpinner);
+		MultiSelectionSpinner<Tag> tagSpinner= (MultiSelectionSpinner<Tag>) findViewById(R.id.claimFilterSpinner);
 		try {
 			Claimant user=(Claimant) UserSingleton.getUserSingleton().getUser();
 			ClaimantClaimsListActivity activity = (ClaimantClaimsListActivity) getContext();
@@ -158,7 +159,7 @@ public class MultiSelectionSpinner extends Spinner implements
   Arrays.fill(mSelection, false);  
  }  
   
- public void setItems(ArrayList items) { 
+ public void setItems(ArrayList<T> items) { 
 	 itemsList=items;
 	 ArrayList<String> stringList = new ArrayList<String>();
 	  for(Object i : items){
@@ -195,7 +196,7 @@ public class MultiSelectionSpinner extends Spinner implements
   simple_adapter.add(buildSelectedItemString());  
  }  
  
- public void setSelection(ArrayList selection) {  
+ public void setSelection(ArrayList<T> selection) {  
 	  for (int i = 0; i < mSelection.length; i++) {  
 	   mSelection[i] = false;  
 	  }  
@@ -250,8 +251,8 @@ public class MultiSelectionSpinner extends Spinner implements
   return selection;  
  }
  
- public ArrayList getSelectedItems() {  
-	 	ArrayList selectedItems = new ArrayList();
+ public ArrayList<T> getSelectedItems() {  
+	 	ArrayList<T> selectedItems = new ArrayList<T>();
 	 	for(int i = 0; i < mSelection.length; i++){
 	 		if(mSelection[i]){
 	 			selectedItems.add(itemsList.get(i));

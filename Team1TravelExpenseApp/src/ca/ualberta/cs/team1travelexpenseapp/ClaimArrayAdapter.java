@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.osmdroid.util.GeoPoint;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -26,10 +27,10 @@ public class ClaimArrayAdapter extends ArrayAdapter<Claim> {
 	//Retrieved from http://stackoverflow.com/questions/340209/generate-colors-between-red-and-green-for-a-power-meter (April 3,2015)
 	//Returns Traffic light colors based on distance
 	public int getDistanceColor(double value) {
-		if (value >= 10000000) {
-			value = 0;
+		if (value >= 20000000) {
+			value = 20000000;
 		} else {
-			value = 1 - value / 10000000;
+			value = 1 - value / 20000000;
 		}
 		return android.graphics.Color.HSVToColor(new float[] {
 				(float) value * 120f, 1f, 1f });
@@ -42,7 +43,7 @@ public class ClaimArrayAdapter extends ArrayAdapter<Claim> {
 		Claim claim = getItem(position);
 		User user=UserSingleton.getUserSingleton().getUser();
 		ArrayList<Destination> dest = claim.getDestinationList();
-		if (dest.size() == 0) {
+		if (dest.size() == 0 || dest.get(0).getLocation()==null) {
 			return convertView;
 		}
 		GeoPoint start = new GeoPoint(user.getLocation());

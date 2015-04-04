@@ -62,7 +62,7 @@ public class TagListController {
 	 */
 	public void updateTag(Tag tag, String newName){
 		ArrayList<Tag> tagArray=tagList.getTags();
-		tagArray.set(tagArray.indexOf(tag), new Tag(newName));
+		tag.setName(newName);
 		tagList.setTagList(tagArray);
 	}
 	
@@ -92,7 +92,7 @@ public class TagListController {
     public boolean onSetTagClick(DialogInterface dialog, Tag tag) {
  	   	EditText nameField=((EditText) ((AlertDialog) dialog).findViewById(R.id.simpleEditText));
         String name=nameField.getText().toString();
-        if(tagList.hasTagNamed(name)){
+        if(tagList.hasTagNamed(name) && !tag.getName().equals(name)){
         	return false;
         }
         else{

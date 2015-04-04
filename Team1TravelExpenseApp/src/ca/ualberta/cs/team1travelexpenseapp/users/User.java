@@ -24,7 +24,7 @@ public abstract class User {
 	
 	protected String name;
 	protected ClaimList claimList;
-	private Location location;
+	protected Location location;
 	
 	public Location getLocation() {
 		if (location == null) {
@@ -62,5 +62,7 @@ public abstract class User {
 	public String getName(){
 		return this.name;
 	}
+	
+	abstract public void loadData();
 
 }
