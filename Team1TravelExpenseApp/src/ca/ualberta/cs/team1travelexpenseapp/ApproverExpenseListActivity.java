@@ -168,7 +168,6 @@ public class ApproverExpenseListActivity extends Activity {
 		  }
 		});
 
-		alert.create();
 		alert.show();
 	}
 	
