@@ -269,10 +269,6 @@ public class EditClaimActivity extends Activity {
 	        	location = new Location("");
 	        	location.setLongitude(lon);
 	        	location.setLatitude(lat);
-	        	// TODO add destination to location
-	        	//Toast.makeText(getApplicationContext(), location.toString(), Toast.LENGTH_LONG).show();
-	        
-	            // Do something with the contact here (bigger example below)
 	        }
 	    }
 	}	

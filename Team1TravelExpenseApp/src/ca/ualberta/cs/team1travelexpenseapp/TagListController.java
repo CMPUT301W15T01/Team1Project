@@ -16,6 +16,7 @@ package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.util.ArrayList;
 
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.EditText;
@@ -53,6 +54,10 @@ public class TagListController {
 		ArrayList<Tag> tagArray=tagList.getTags();
 		tagArray.remove(tag);
 		tagList.setTagList(tagArray);
+		ClaimList claimList = UserSingleton.getUserSingleton().getUser().getClaimList();
+		claimList.clearTag(tag);
+		//make sure updated claimList is saved
+		claimList.setClaimList(claimList.getClaims());
 	}
 	
 	/**
