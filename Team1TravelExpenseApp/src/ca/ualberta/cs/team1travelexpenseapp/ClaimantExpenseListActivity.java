@@ -46,7 +46,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 public class ClaimantExpenseListActivity extends Activity {
 
 	private Claim claim;
-	private ExpenseArrayAdapter expenselistAdapter ;
+	private ArrayAdapter<Expense> expenselistAdapter ;
  	private ListView expenseListView ;
  	private Listener listener;
  	private ExpenseList expenseList;
@@ -91,7 +91,7 @@ public class ClaimantExpenseListActivity extends Activity {
 
         Collection<Expense> expenses = claim.getExpenseList().getExpenses();
         final ArrayList<Expense> expensesList = new ArrayList<Expense>(expenses);
-        expenselistAdapter = new ExpenseArrayAdapter(this, android.R.layout.simple_list_item_1, 
+        expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
         		expensesList);
         expenseListView.setAdapter(expenselistAdapter);
         
