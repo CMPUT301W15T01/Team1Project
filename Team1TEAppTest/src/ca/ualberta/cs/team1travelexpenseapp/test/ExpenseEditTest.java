@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import testObjects.MockClaimant;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
@@ -86,7 +87,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	protected void setUp() throws Exception {
 		super.setUp();
 		Log.d("EditExpenseTest", "Setup Started");
-		Claimant user= new Claimant("CoolGuy");
+		Claimant user= new MockClaimant("CoolGuy");
 		Log.d("EditExpenseTest", "User Created");
 		UserSingleton.getUserSingleton().setUser(user);
 		//user.getClaimList().getClaims().clear();

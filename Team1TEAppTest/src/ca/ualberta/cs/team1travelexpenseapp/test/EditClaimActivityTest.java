@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
+import testObjects.MockClaimant;
 import android.app.Activity;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
@@ -39,7 +40,7 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		Claimant user= new Claimant("CoolGuy");
+		Claimant user= new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		user.getClaimList().getClaims().add(claim1);	

@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.util.ArrayList;
 
+import testObjects.MockClaimant;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
 import ca.ualberta.cs.team1travelexpenseapp.TagManagerActivity;
@@ -29,7 +30,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		user = new Claimant("CoolGuy");
+		user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		Intent intent = new Intent();
 		setActivityIntent(intent);

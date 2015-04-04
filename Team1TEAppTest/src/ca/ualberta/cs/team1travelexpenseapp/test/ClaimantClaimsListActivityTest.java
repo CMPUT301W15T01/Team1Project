@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import testObjects.MockClaimant;
 import junit.framework.Assert;
 import android.app.Activity;
 import android.app.Instrumentation.ActivityMonitor;
@@ -42,7 +43,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 	protected void setUp() throws Exception {
 		super.setUp();
 		setActivityInitialTouchMode(true);
-		Claimant user = new Claimant("CoolGuy");
+		Claimant user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		activity = getActivity();
 	}
