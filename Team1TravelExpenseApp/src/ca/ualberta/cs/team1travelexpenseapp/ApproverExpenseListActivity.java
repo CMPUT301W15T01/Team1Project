@@ -158,7 +158,7 @@ public class ApproverExpenseListActivity extends Activity {
 		public void onClick(DialogInterface dialog, int whichButton) {
 		  String value = input.getText().toString();
 		  // save the comment
-		  claimListController.onCommentClick(value);
+		  claimListController.onCommentClick(user,value);
 		  }
 		});
 
