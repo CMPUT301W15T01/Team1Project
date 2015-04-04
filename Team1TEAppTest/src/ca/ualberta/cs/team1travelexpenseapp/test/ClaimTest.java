@@ -4,6 +4,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.util.ArrayList;
 import java.util.Date;
 
+import testObjects.MockClaimant;
 import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
@@ -42,7 +43,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		Claimant user = new Claimant("CoolGuy");
+		Claimant user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		instrumentation = getInstrumentation();
 	}

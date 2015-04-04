@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
+import testObjects.MockClaimant;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
@@ -71,7 +72,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		Claimant user = new Claimant("CoolGuy");
+		Claimant user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		
 		//add a claim to test on

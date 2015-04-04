@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.util.Log;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
@@ -185,6 +186,9 @@ public class ClaimantClaimListManager extends ClaimListManager {
 				e.printStackTrace();
 			}
 		}
+		for(Claim claim: claims){
+			claim.setSynced(true);
+		}
 		return claims;
 	}
 	
@@ -292,6 +296,11 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 		//after loading from both sources attempt to saveClaims in order to sync online with local
 		saveClaims();
+		
+		//claim of expense list is transient to avoid circular reference, set it again on load
+		for(Claim claim: claimList.getClaims()){
+			claim.getExpenseList().setClaim(claim);
+		}
 		
 	}
 	

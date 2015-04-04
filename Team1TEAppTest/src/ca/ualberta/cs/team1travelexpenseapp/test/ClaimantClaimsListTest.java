@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import testObjects.MockClaimant;
 import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
@@ -46,7 +47,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	protected void setUp() throws Exception {
 		super.setUp();
 		Intent intent = new Intent();
-		Claimant user = new Claimant("CoolGuy");
+		Claimant user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		setActivityIntent(intent);
 		activity = getActivity();
