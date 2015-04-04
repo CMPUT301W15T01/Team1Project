@@ -358,8 +358,8 @@ public class ClaimListController {
 	 * Adds a comment to a claim
 	 * @param comment The comment to be added
 	 */
-	public void onCommentClick(String comment) {
-		currentClaim.getCommentList().put(user.getName(), comment);
+	public void onCommentClick(User approver ,String comment) {
+		currentClaim.getCommentList().put(approver.getName(), comment);
 	}
 
 	
