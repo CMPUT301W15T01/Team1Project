@@ -9,6 +9,8 @@ import junit.framework.Assert;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation.ActivityMonitor;
+import android.content.DialogInterface;
+import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.ViewAsserts;
@@ -21,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
@@ -106,7 +109,10 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		getInstrumentation().waitForIdleSync();
 		TouchUtils.clickView(this,addDest);
 		
-		AlertDialog dialog=activity.editDestDialog;
+		AlertDialog dialog=((EditClaimActivity) activity).newDestDialog;
+		final EditText dest = (EditText) dialog.findViewById(R.id.destinationNameBody);
+		final EditText reason = (EditText) dialog.findViewById(R.id.destinationReasonBody);
+		final Button setDestButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
 		
 		
 		// Send destination
@@ -134,11 +140,14 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		getInstrumentation().waitForIdleSync();
 		assertTrue("reason text not set" , reason.getText().toString().equals("Cool reason"));
 		
-		
-		// @------------!!!NOTE!!!-------------@
-		// @!!! ensure emulator is unlocked !!!@
-		// @------------!!!NOTE!!!-------------@
-		TouchUtils.clickView(this, addDest); 
+		getInstrumentation().runOnMainSync(new Runnable() {
+		    @Override
+		    public void run() {
+		        setDestButton.requestFocus();
+		    }
+		});
+		//not 100% sure this will work but we'll see
+		TouchUtils.clickView(this, setDestButton);
 		
 		Calendar beforeUIcalF = Calendar.getInstance();
 		beforeUIcalF.set(fromDate.getYear(), fromDate.getMonth(), 
@@ -196,7 +205,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 
 		Claim uiClaim = UserSingleton.getUserSingleton().getUser().getClaimList().getClaims().get(0);
 		Claim claim = new Claim("Cool Guy", sDate, eDate);
-		claim.addDestination("Cool dest","Cool reason");
+		claim.addDestination(new Destination("Cool dest", "Cool reason",new Location("")));
 		assertTrue(claim.toString().equals(uiClaim.toString()) );
 		
 		// Remove the ActivityMonitor
