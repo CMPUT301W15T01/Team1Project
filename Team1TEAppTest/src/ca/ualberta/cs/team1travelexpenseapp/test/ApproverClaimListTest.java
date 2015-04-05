@@ -43,7 +43,7 @@ public class ApproverClaimListTest extends
 	protected Instrumentation instrumentation;
 	protected ApproverExpenseListActivity activity = null;
 	protected ApproverClaimInfo claimInfoActivity = null;
-	protected ApproverExpenseListActivity listActivity = null;
+	protected ApproverClaimsListActivity listActivity = null;
 	protected ApproverClaimsListActivity claimlistActivity = null;
 	protected LoginActivity login = null;
 	// protected ActivityMonitor activityMonitor;
@@ -79,7 +79,6 @@ public class ApproverClaimListTest extends
 		instrumentation = getInstrumentation();
 		login = getActivity();
 		//user.initManagers(activity.getApplicationContext());
-		getApproverExpenseListactivity();
 
 	}
 
@@ -91,21 +90,14 @@ public class ApproverClaimListTest extends
 		if (listActivity != null) {
 			listActivity.finish();
 		}
+		if (login != null) {
+			login.finish();
+		}
+		if (claimlistActivity != null) {
+			claimlistActivity.finish();
+		}
 
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				if (ExpenseListController.getExpenseList().getExpenses()
-						.contains(expense)) {
-					ExpenseListController.removeExpense(expense);
-				}
-				if (ClaimListController.getClaimList().getClaims()
-						.contains(claim)) {
-					ClaimListController.deleteClaim(claim);
-				}
-			}
-		});
-		instrumentation.waitForIdleSync();
+		
 
 	}
 
@@ -115,12 +107,12 @@ public class ApproverClaimListTest extends
 
 	}
 
-	private ApproverExpenseListActivity getApproverExpenseListactivity() {
+	private ApproverClaimsListActivity getApproverClaimListactivity() {
 
 		ActivityMonitor activityMonitor = instrumentation.addMonitor(
-				ApproverExpenseListActivity.class.getName(), null, false);
-		final ListView listOfClaims = (ListView) claimlistActivity
-				.findViewById(R.id.approverclaimList);
+				ApproverClaimsListActivity.class.getName(), null, false);
+		final Button approverlogin = (Button) login
+				.findViewById(R.id.approverButton);
 		// claimlistActivity.runOnUiThread(new Runnable() {
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
@@ -138,13 +130,11 @@ public class ApproverClaimListTest extends
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				listOfClaims.performItemClick(listOfClaims.getAdapter()
-						.getView(0, null, null), 0, listOfClaims.getAdapter()
-						.getItemId(0));
+				approverlogin.performClick();
 			}
 		});
 		instrumentation.waitForIdleSync();
-		listActivity = (ApproverExpenseListActivity) instrumentation
+		listActivity = (ApproverClaimsListActivity) instrumentation
 				.waitForMonitorWithTimeout(activityMonitor, 10000);
 		assertNotNull(listActivity);
 		return listActivity;
@@ -193,11 +183,10 @@ public class ApproverClaimListTest extends
 	 */
 	public void testApproverSortedClaims() {
 
-		Claim claim = new Claim();
-		ClaimListController.setCurrentClaim(claim);
+		getApproverClaimListactivity();
 
 		// claims loaded onStart of nextActivity
-		ListView claimlistView = (ListView) getActivity().findViewById(
+		ListView claimlistView = (ListView) listActivity.findViewById(
 				R.id.approverclaimList);
 		ViewAsserts.assertOnScreen(getActivity().getWindow().getDecorView(),
 				claimlistView);
