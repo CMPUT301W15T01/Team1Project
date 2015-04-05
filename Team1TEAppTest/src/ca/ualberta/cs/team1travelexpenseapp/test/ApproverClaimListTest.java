@@ -78,6 +78,7 @@ public class ApproverClaimListTest extends
 						+ String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
 		login = getActivity();
+		user.initManagers(activity.getApplicationContext());
 		getApproverExpenseListactivity();
 
 	}

@@ -59,6 +59,7 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		intent.putExtra("Index", 0);
 		setActivityIntent(intent);
 		activity = getActivity();
+		user.initManagers(activity.getApplicationContext());
 
 	}
 	

@@ -40,24 +40,6 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	private UUID uniqueId;
 	private boolean synced;
 	
-	
-	/*//from http://stackoverflow.com/a/22081826 March 29 2015
-	private static final RuntimeTypeAdapterFactory<Claim> adapter = 
-            RuntimeTypeAdapterFactory.of(Claim.class);
-
-    private static final HashSet<Class<?>> registeredClasses= new HashSet<Class<?>>();
-
-    static {
-        GsonUtils.registerType(adapter);
-    }
-    
-    private synchronized void registerClass() {
-        if (!this.registeredClasses.contains(this.getClass())) {
-            adapter.registerSubtype(this.getClass());
-            registeredClasses.add(this.getClass());
-        }
-    }*/
-	
 	public void setClaim(Claim newClaim) {
 		throw new RuntimeException("CAN NOT SET CLAIM");
 	}
@@ -324,7 +306,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 */
 	public String toString(){
 		
-		String str = claimantName + "\n";
+		String str = getClaimantName() + "\n";
 		
 		//date format, has year month day 
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -374,7 +356,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	    	}
 	    	str += currency.getValue() + "-" + currency.getKey() + " ";
 	    }
-		if (getStatus() == SubmittedClaim.class) { str+= "\nApprovers: " + approverList.toString(); }
+		if (getStatus() == SubmittedClaim.class) { str+= "\nApprovers: " + getApproverList().toString(); }
 		
 		return str;
 		

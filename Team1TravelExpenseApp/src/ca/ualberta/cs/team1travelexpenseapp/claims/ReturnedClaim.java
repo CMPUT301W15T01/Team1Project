@@ -3,7 +3,6 @@ package ca.ualberta.cs.team1travelexpenseapp.claims;
 public class ReturnedClaim extends ProgressClaim {
 	
 	public ReturnedClaim(Claim claim) {
-		super();
 		super.setClaim(claim);
 		setSynced(false);
 	}
