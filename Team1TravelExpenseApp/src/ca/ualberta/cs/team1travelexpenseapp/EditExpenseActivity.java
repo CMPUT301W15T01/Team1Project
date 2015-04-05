@@ -122,12 +122,12 @@ public class EditExpenseActivity extends Activity {
 				Log.d("Testing Add Photo", "Creating File: " + photoFile.getName());	
 
 				//Should be moved to a controller
-				attachReceipt(photoUri, photoFile);
-				//expense.setReceiptUri(photoUri);
-				//expense.setReceiptFile(photoFile);
+				//attachReceipt(photoUri, photoFile);
+				expense.setReceiptUri(photoUri);
+				expense.setReceiptFile(photoFile);
 				Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
 				
-				thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getPath()));
+				thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));
 				//receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
 				//Hopefully this will show the Image in the image Button
 			}
@@ -185,7 +185,7 @@ public class EditExpenseActivity extends Activity {
 		//TEMPORARY code to show the photo in the image button
 		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceiptFile() != null));
 		if (expense.getReceiptFile() != null){			
-			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getPath()));
+			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));
 			Log.d("Testing Add Photo", "Update thumbed");
 		}
 	} 
@@ -319,10 +319,13 @@ public class EditExpenseActivity extends Activity {
 		viewReciept.setImageBitmap(bm); 
 		
 		//show the size of the current photo
-		if(bm != null && expense.getReceiptFile() != null){
-			TextView receiptText = (TextView) this.findViewById(R.id.recieptHeader);
-			receiptText.setText(receiptText.getText() + " File Size: " + String.valueOf(expense.getReceiptFile().length()) + "Bytes");
-			}
+		TextView receiptText = (TextView) this.findViewById(R.id.recieptHeader);
+		if(bm != null && expense.getReceiptFile() != null){		
+			receiptText.setText("Receipt Image " + " File Size: " + String.valueOf(expense.getReceiptFile().length()) + "Bytes");
+		} else{
+			receiptText.setText("Receipt Image");
+		}
+		
 	}
 	
 	// Should Be moved to a controller
