@@ -6,6 +6,7 @@ import java.util.Date;
 
 import testObjects.MockClaimant;
 import views.MultiSelectionSpinner;
+import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
@@ -48,11 +49,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		Claimant user = new MockClaimant("CoolGuy");
+		user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
-		activity=getActivity();
-		//user.initManagers(activity.getApplicationContext());
-		activity.finish();
 		instrumentation = getInstrumentation();
 	}
 	
@@ -70,7 +68,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run() {
-				ClaimListController.clearClaimList();
+				((MockClaimant) user).clearData();
 			}
 		});
 		instrumentation.waitForIdleSync();
@@ -95,16 +93,13 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		Date endDate=new Date();
 		endDate.setTime(startDate.getTime()+8*10^8);
 		claim.setEndDate(endDate);
-		claim.setClaimantName("Jimmy");
 		ArrayList <Tag> tagsList= new ArrayList <Tag>();
 		tagsList.add(new Tag("rad"));
 		tagsList.add(new Tag("hip"));
 		claim.setClaimTagList(tagsList);
 		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
 		claim.addDestination(new Destination("dest 2", "reason 2",new Location("")));
-		ClaimListController.addClaim(claim);
-		
-		
+		user.getClaimList().addClaim(claim);
 		
 		//get activity
 		activity = getActivity();
@@ -112,6 +107,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		 // get list view 
  		final ListView view = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
  		TextView claimInfo1= (TextView) view.getChildAt(0);
+ 		assertNotNull("Added claim did not show up in claim list view.", claimInfo1);
  		assertTrue("Claim info in claim list does not match expected claim info", claim.toString().equals(claimInfo1.getText().toString()));
 		// click the claim
 		  activity.runOnUiThread(new Runnable() {
@@ -248,10 +244,12 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
  		activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
-		    	ClaimListController.addClaim(claim);
-		    	TagListController.addTag(tag1);
-		    	TagListController.addTag(tag2);
-		    	TagListController.addTag(tag3);
+		    	user.getClaimList().addClaim(claim);
+		    	ArrayList<Tag> tags=new ArrayList<Tag>();
+		    	tags.add(tag1);
+		    	tags.add(tag2);
+		    	tags.add(tag3);
+		    	user.getTagList().setTagList(tags);
 		    }
  		});
  		getInstrumentation().waitForIdleSync();
