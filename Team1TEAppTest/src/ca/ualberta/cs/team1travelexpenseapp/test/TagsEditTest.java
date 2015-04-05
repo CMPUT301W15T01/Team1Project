@@ -142,7 +142,6 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 			
 			String expectedText =strings[i];
 			if(!viewText.equals(expectedText)){
-				//assertTrue(viewText+"!="+expectedText, false);
 				return false;
 			}
 		}
