@@ -66,6 +66,12 @@ public class ApprovedClaim extends Claim {
 	}
 	
 	@Override
+	public void setApproverList(ArrayList<User> approverList) {
+		claim.setApproverList(approverList);
+		setSynced(false);
+	}
+	
+	@Override
 	public ArrayList<Destination> getDestinationList() {
 		return claim.getDestinationList();
 	}

@@ -334,23 +334,30 @@ public class ClaimListController {
 	public void onApproveClick() {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
+		User currentUser = UserSingleton.getUserSingleton().getUser();
 		ApprovedClaim approvedClaim = (ApprovedClaim) getCurrentClaim().changeStatus(ApprovedClaim.class);		
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();
-		approverList.add(user);
+		approverList.add(currentUser);
 		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
+		//sync with server then update the local list to reflect the returned claim
+		//claimsList.saveClaims();
+		//claimsList.loadClaims();
 	}
 	/**
 	 * The onClick method for the return button
 	 * Sets the claim status as returned and adds user to approver list
 	 */
 	public void onReturnClick() {
-		currentClaim.getApproverList().add(user);
+		User currentUser = UserSingleton.getUserSingleton().getUser();
+		currentClaim.getApproverList().add(currentUser);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 		changeClaim((ReturnedClaim)currentClaim.changeStatus(ReturnedClaim.class));
-		
+		//sync with server then update the local list to reflect the returned claim
+		//claimsList.saveClaims();
+		//claimsList.loadClaims();	
 	}
 	/**
 	 * The onClick method for the comment button
