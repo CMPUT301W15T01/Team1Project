@@ -25,11 +25,6 @@ public class ApprovedClaim extends Claim {
 	public Claim getClaim() {
 		return this.claim;
 	}
-	
-	@Override
-	public UUID getUniqueId() {
-		return claim.getUniqueId();
-	}
 
 	@Override
 	public boolean isSynced() {
