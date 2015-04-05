@@ -15,13 +15,22 @@ limitations under the License.
 package ca.ualberta.cs.team1travelexpenseapp;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Implements the model of an Expense item which is an individual part of a specific claim 
@@ -38,6 +47,8 @@ public class Expense {
 	protected boolean isComplete;
 	protected File receiptFile;
 	protected Uri receiptUri;
+	
+	private final int MAX_IMAGE_SIZE = 65536;
 	
 	public Uri getReceiptUri() {
 		return receiptUri;
@@ -243,6 +254,20 @@ public class Expense {
 	 * The file object for the stored image.
 	 */
 	public void setReceiptFile(File receipt) {
+		// Check if the file needs to be compressed first		
+		if(receipt != null){
+			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
+			if(receipt.length() >= MAX_IMAGE_SIZE){
+				if(this.compressPhoto(null, receipt)){
+					// Photo successfully compressed
+					this.receiptFile = receipt;
+				} 				
+				else{
+					// Photo failed to be compressed
+					return;
+				}
+			}
+		}
 		this.receiptFile = receipt;
 	}
 	
@@ -299,16 +324,54 @@ public class Expense {
 	}
 
 	/**
-	 * Compress the given image file to be less than 65536 bytes in size.
+	 * Compress the given image file to be less than 65536 bytes (65.536KB) in size.
 	 * @param activity
 	 * The currently running activity.
 	 * @param photoFile
 	 * The image file to be compressed
 	 */
-	public static void compressPhoto(EditExpenseActivity activity,
-			File photoFile) {
-		// TODO Compress photofile
+	private boolean compressPhoto(File photoFile) {
+		Log.d("Expense CompressingPhoto", "Attempting to compress photo with size: " + String.valueOf(photoFile.length()));
 		
+		Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 		
+		Log.d("Expense CompressingPhoto", "photo is " + photo.getWidth() + "x" + photo.getHeight());
+		
+		int maxLength = 750;
+		
+		//If the image is too large resize it to be smaller
+		if(photo.getHeight() > maxLength || photo.getWidth() > maxLength){
+			Double curWidth = Double.valueOf(photo.getWidth());
+			Double curHeight = Double.valueOf(photo.getHeight());
+			
+			Double newWidth = curWidth > curHeight ? maxLength : curWidth*(maxLength/curHeight);  
+			Double newHeight = curHeight > curWidth ? maxLength : curHeight*(maxLength/curWidth);
+			
+			Log.d("Expense CompressingPhoto", "Rescaling photo from: " + curWidth + "x" + curHeight + " to " + newWidth + "x" + newHeight);
+			photo = Bitmap.createScaledBitmap(photo, newWidth.intValue(), newHeight.intValue(), false);
+		}
+		
+		FileOutputStream fos = null;
+		try {
+			//fos = activity2.openFileOutput(photoFile.getAbsolutePath().toString(), Context.MODE_PRIVATE);
+			fos = new FileOutputStream(photoFile);
+			photo.compress(CompressFormat.JPEG, 60, fos);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (photoFile.length() < MAX_IMAGE_SIZE){
+			Log.d("Expense CompressingPhoto", "Successfully compressed photo to size: " + String.valueOf(photoFile.length()));
+			Log.d("Expense CompressingPhoto", "New photo is " + photo.getWidth() + "x" + photo.getHeight());
+			return true;
+		}
+		
+		return false;
 	}
 }
