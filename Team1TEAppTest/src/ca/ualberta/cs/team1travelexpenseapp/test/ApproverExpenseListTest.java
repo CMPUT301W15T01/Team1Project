@@ -37,7 +37,7 @@ public class ApproverExpenseListTest extends
 	protected Instrumentation instrumentation;
 	protected ApproverExpenseListActivity activity = null;
 	protected ApproverClaimInfo claimInfoActivity = null;
-	protected ApproverExpenseListActivity listActivity = null;
+	protected ApproverExpenseListActivity expenselistActivity = null;
 	protected ApproverClaimsListActivity claimlistActivity = null;
 	// protected ActivityMonitor activityMonitor;
 
@@ -70,8 +70,6 @@ public class ApproverExpenseListTest extends
 						+ String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
-		//user.initManagers(claimlistActivity.getApplicationContext());
-		getApproverExpenseListactivity();
 
 	}
 
@@ -80,8 +78,8 @@ public class ApproverExpenseListTest extends
 		if (activity != null) {
 			activity.finish();
 		}
-		if (listActivity != null) {
-			listActivity.finish();
+		if (expenselistActivity != null) {
+			expenselistActivity.finish();
 		}
 
 		instrumentation.runOnMainSync(new Runnable() {
@@ -102,7 +100,7 @@ public class ApproverExpenseListTest extends
 	}
 
 	protected void tearDown() throws Exception {
-		cleanUp();
+		//cleanUp();
 		super.tearDown();
 
 	}
@@ -123,23 +121,25 @@ public class ApproverExpenseListTest extends
 
 				ExpenseListController = new ExpenseListController(claim
 						.getExpenseList());
+				claim.getExpenseList().getExpenses().add(expense = new Expense());
 			}
 		});
+		
 		instrumentation.waitForIdleSync();
 
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				listOfClaims.performItemClick(listOfClaims.getAdapter()
-						.getView(0, null, null), 0, listOfClaims.getAdapter()
+				listOfClaims.performItemClick(listOfClaims.getChildAt(0), 0, listOfClaims.getAdapter()
 						.getItemId(0));
+				//listOfClaims.performItemClick(listOfClaims, 0, listOfClaims.getId());
 			}
 		});
 		instrumentation.waitForIdleSync();
-		listActivity = (ApproverExpenseListActivity) instrumentation
+		expenselistActivity = (ApproverExpenseListActivity) instrumentation
 				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(listActivity);
-		return listActivity;
+		assertNotNull(expenselistActivity);
+		return expenselistActivity;
 	}
 
 
@@ -154,25 +154,23 @@ public class ApproverExpenseListTest extends
 
 		ActivityMonitor activityMonitor = instrumentation.addMonitor(
 				ApproverClaimInfo.class.getName(), null, false);
-		final ListView listOfClaims = (ListView) claimlistActivity
+		final ListView listOfexpenses = (ListView) expenselistActivity
 				.findViewById(R.id.approverExpensesList);
 
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				listOfClaims.performItemClick(listOfClaims.getAdapter()
-						.getView(0, null, null), 0, listOfClaims.getAdapter()
+				listOfexpenses.performItemClick(listOfexpenses.getChildAt(0), 0, listOfexpenses.getAdapter()
 						.getItemId(0));
 			}
 		});
 		instrumentation.waitForIdleSync();
 		claimInfoActivity = (ApproverClaimInfo) instrumentation
 				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(listActivity);
+		assertNotNull(expenselistActivity);
 		TextView text = (TextView) claimInfoActivity
 				.findViewById(R.id.ApproverClaimInfoTextView);
-		assertEquals("Can View Info", ClaimListController.getCurrentClaim()
-				.toString(), text.getText());
+		assertEquals("Can View Info", expense.toString(), text.getText().toString());
 
 	}
 
@@ -195,9 +193,9 @@ public class ApproverExpenseListTest extends
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),
 				expenseListLV);
 
-		listActivity = (ApproverExpenseListActivity) instrumentation
+		expenselistActivity = (ApproverExpenseListActivity) instrumentation
 				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(listActivity);
+		assertNotNull(expenselistActivity);
 
 	}
 
@@ -231,7 +229,7 @@ public class ApproverExpenseListTest extends
 		instrumentation.waitForIdleSync();
 		claimInfoActivity = (ApproverClaimInfo) instrumentation
 				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(listActivity);
+		assertNotNull(expenselistActivity);
 		TextView text = (TextView) claimInfoActivity
 				.findViewById(R.id.ApproverClaimInfoTextView);
 		assertEquals("Can View Info", ClaimListController.getCurrentClaim()
