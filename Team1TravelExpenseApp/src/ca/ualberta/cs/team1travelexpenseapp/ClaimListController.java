@@ -341,7 +341,6 @@ public class ClaimListController {
 		approverList.add(user);
 		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
-		
 	}
 	/**
 	 * The onClick method for the return button
