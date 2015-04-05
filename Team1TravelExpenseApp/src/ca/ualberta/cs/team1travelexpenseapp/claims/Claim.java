@@ -392,7 +392,8 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	@Override
 	public Claim changeStatus(Class<?> claimStatusType) {
 		// TODO Auto-generated method stub
-		return null;
+		this.status = claimStatusType;
+		return this;
 	}
 
 	public boolean isSubmittable() {
