@@ -35,6 +35,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		Intent intent = new Intent();
 		setActivityIntent(intent);
 		activity = getActivity();
+		//user.initManagers(activity.getApplicationContext());
 		tagListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagsList));
 	}
 	
@@ -51,10 +52,12 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				ArrayList<Tag> tags = user.getTagList().getTags();
+				ArrayList<Tag> tags = new ArrayList<Tag>();
 				tags.add(tag1);
 				tags.add(tag2);
 				tags.add(tag3);
+				user.getTagList().setTagList(tags);
+				
 			}
 		});
 		getInstrumentation().waitForIdleSync();
@@ -128,6 +131,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 	//this function checks if the info in the tagListView match the given string array
 	private boolean checkTags(String[] strings){
 		int tagCount=user.getTagList().getTags().size();
+		Log.d("tests","tagCount:"+Integer.toString(tagCount));
 		//assertTrue(Integer.toString(tagCount),tagCount==strings.length);
 		if(tagCount!=strings.length) return false;
 		
