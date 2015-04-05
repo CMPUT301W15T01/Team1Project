@@ -41,21 +41,11 @@ public class ApproverExpenseListTest extends
 	protected ApproverClaimsListActivity claimlistActivity = null;
 	// protected ActivityMonitor activityMonitor;
 
-	protected EditText descText;
-	protected DatePicker datePicker;
-	protected EditText costText;
-	protected Spinner currencySpinner;
-	protected Spinner categorySpinner;
-	protected ImageButton imageButton;
-	protected Button saveButton;
-	protected File photoFile;
-
 	protected Expense expense;
 	protected Claim claim;
 
 	protected ExpenseListController ExpenseListController;
 	protected ClaimListController ClaimListController;
-	ListView claimListView;
 	protected Approver user;
 
 	public ApproverExpenseListTest() {
@@ -151,80 +141,7 @@ public class ApproverExpenseListTest extends
 		return listActivity;
 	}
 
-	// transitions from the ExpenseList to EditExpense by clicking add expense
-	private ApproverExpenseListActivity getAddExpenseActivity() {
 
-		ActivityMonitor activityMonitor = instrumentation.addMonitor(
-				EditExpenseActivity.class.getName(), null, false);
-
-		final Button addButton = (Button) listActivity
-				.findViewById(R.id.addExpenseButton);
-
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				// click button and open next activity.
-				addButton.performClick();
-			}
-		});
-		instrumentation.waitForIdleSync();
-		activity = (ApproverExpenseListActivity) instrumentation
-				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(activity);
-		setUiElements();
-
-		expense = ExpenseListController.getCurrentExpense();
-		return activity;
-	}
-
-	// transitions from the ExpenseList to EditExpense by clicking an existing
-	// expense
-	private ApproverExpenseListActivity getEditExpenseActivity() {
-
-		ActivityMonitor activityMonitor = instrumentation.addMonitor(
-				EditExpenseActivity.class.getName(), null, false);
-
-		final ListView listOfExpenses = (ListView) listActivity
-				.findViewById(R.id.claimantExpensesList);
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				expense = new Expense();
-				ExpenseListController.addExpense(expense);
-				// ExpenseListController.updateExpense(expense, expense);
-			}
-		});
-		instrumentation.waitForIdleSync();
-
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				// click an existing expense to open next activity.
-				listOfExpenses.performItemClick(listOfExpenses.getAdapter()
-						.getView(0, null, null), 0, 0);
-			}
-		});
-		instrumentation.waitForIdleSync();
-		activity = (ApproverExpenseListActivity) instrumentation
-				.waitForMonitorWithTimeout(activityMonitor, 10000);
-
-		assertNotNull(activity);
-		setUiElements();
-
-		return activity;
-	}
-
-	private void setUiElements() {
-		descText = (EditText) activity.findViewById(R.id.descriptionBody);
-		datePicker = (DatePicker) activity.findViewById(R.id.expenseDate);
-		costText = (EditText) activity.findViewById(R.id.currencyBody);
-		categorySpinner = (Spinner) activity
-				.findViewById(R.id.categorySelector);
-		currencySpinner = (Spinner) activity
-				.findViewById(R.id.currencySelector);
-		imageButton = (ImageButton) activity.findViewById(R.id.viewPhotoButton);
-		saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);
-	}
 
 	// US08.03.01
 	/*
