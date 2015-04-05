@@ -258,7 +258,7 @@ public class Expense {
 		if(receipt != null){
 			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
 			if(receipt.length() >= MAX_IMAGE_SIZE){
-				if(this.compressPhoto(null, receipt)){
+				if(this.compressPhoto(receipt)){
 					// Photo successfully compressed
 					this.receiptFile = receipt;
 				} 				
