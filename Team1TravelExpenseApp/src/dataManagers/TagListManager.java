@@ -37,6 +37,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
@@ -123,6 +126,7 @@ public class TagListManager {
 					httpPost.setEntity(stringentity);
 					HttpResponse response = null;
 					try {
+						Log.d("onlineTest", "Executing query");
 						response = httpclient.execute(httpPost);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
@@ -131,7 +135,7 @@ public class TagListManager {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
 					}
-			
+					Log.d("onlineTest", "TagList saved to web");
 //					String status = response.getStatusLine().toString();
 //					Log.d("onlineTest", status);
 //					//do something with this response if necessary

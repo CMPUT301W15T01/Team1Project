@@ -8,6 +8,8 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 public class MockClaimant extends Claimant {
 	 public MockClaimant(String name) {
 		super(name);
+		this.claimList=new MockClaimList(this);
+		this.tagList=new MockTagList();
 	}
 
 	@Override

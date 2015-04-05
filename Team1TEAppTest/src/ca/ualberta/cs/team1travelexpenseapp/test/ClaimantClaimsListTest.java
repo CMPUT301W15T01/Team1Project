@@ -52,6 +52,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		UserSingleton.getUserSingleton().setUser(user);
 		setActivityIntent(intent);
 		activity = getActivity();
+		//user.initManagers(activity.getApplicationContext());
 		claimListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
 		
 		//set user as claimant

@@ -168,7 +168,7 @@ public class ClaimListController {
 	        	changeClaim(submittedClaim);
 				
 				Toast.makeText(activity.getApplicationContext(),"Claim submitted", Toast.LENGTH_LONG).show();
-				//push online here
+				claimsList.setClaimList(claimsList.getClaims());
 				activity.finish();
 			}
 			catch (Throwable RuntimeException){
@@ -341,7 +341,6 @@ public class ClaimListController {
 		approverList.add(user);
 		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
-		
 		
 	}
 	/**

@@ -12,6 +12,11 @@ public class ApprovedClaim extends Claim {
 		setSynced(false);
 	}
 	
+	@Override
+	public UUID getUniqueId(){
+		return claim.getUniqueId();
+	}
+	
 	public void setClaim(Claim newClaim) {
 		this.claim = newClaim;
 		setSynced(false);
