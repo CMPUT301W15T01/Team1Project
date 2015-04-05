@@ -316,7 +316,6 @@ public class ClaimantClaimListManager extends ClaimListManager {
 			}
 		}
 		saveClaimsToWeb(unsyncedClaims);
-		loadClaims();
 	}
 	
 	@Override
