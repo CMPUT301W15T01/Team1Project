@@ -51,7 +51,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		Claimant user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		activity=getActivity();
-		user.initManagers(activity.getApplicationContext());
+		//user.initManagers(activity.getApplicationContext());
 		activity.finish();
 		instrumentation = getInstrumentation();
 	}

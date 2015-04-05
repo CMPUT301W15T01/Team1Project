@@ -70,7 +70,7 @@ public class ApproverExpenseListTest extends
 						+ String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
-		user.initManagers(claimlistActivity.getApplicationContext());
+		//user.initManagers(claimlistActivity.getApplicationContext());
 		getApproverExpenseListactivity();
 
 	}

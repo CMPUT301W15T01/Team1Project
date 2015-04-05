@@ -50,7 +50,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		Claimant user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		activity = getActivity();
-		user.initManagers(activity.getApplicationContext());
+		//user.initManagers(activity.getApplicationContext());
 	}
 	
 

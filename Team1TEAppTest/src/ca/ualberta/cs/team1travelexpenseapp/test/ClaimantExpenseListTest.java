@@ -91,7 +91,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		intent.putExtra("Index", 0);
 		setActivityIntent(intent);
 		activity = getActivity();
-		user.initManagers(activity.getApplicationContext());
+		//user.initManagers(activity.getApplicationContext());
 		expenseListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimantExpensesList));
 		
 		//add some expense to the claim to test on

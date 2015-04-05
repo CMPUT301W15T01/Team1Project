@@ -35,7 +35,7 @@ public class TagsEditTest extends ActivityInstrumentationTestCase2<TagManagerAct
 		Intent intent = new Intent();
 		setActivityIntent(intent);
 		activity = getActivity();
-		user.initManagers(activity.getApplicationContext());
+		//user.initManagers(activity.getApplicationContext());
 		tagListView = (ListView) (activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.tagsList));
 	}
 	

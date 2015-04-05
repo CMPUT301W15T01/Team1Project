@@ -101,7 +101,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		Log.d("EditExpenseTest", "ClaimList has a manager? " + String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
 		claimlistActivity = getActivity();
-		user.initManagers(activity.getApplicationContext());
+		//user.initManagers(activity.getApplicationContext());
 		getExpenseListactivity();
 	}
 	
