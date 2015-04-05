@@ -35,7 +35,6 @@ public class Claimant extends User {
 	public void loadData(){
 		claimList.loadClaims();
 		tagList.loadTags();
-		//this is failing badly at the moment, not sure why
 		syncTags();
 	}
 	
