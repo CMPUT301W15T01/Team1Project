@@ -1,5 +1,7 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
 
+import java.util.UUID;
+
 public class ApprovedClaim extends Claim {
 	
 
@@ -18,6 +20,22 @@ public class ApprovedClaim extends Claim {
 	public Claim getClaim() {
 		return this.claim;
 	}
+	
+	@Override
+	public UUID getUniqueId() {
+		return claim.getUniqueId();
+	}
+
+	@Override
+	public boolean isSynced() {
+		return claim.isSynced();
+	}
+
+	@Override
+	public void setSynced(boolean synced) {
+		claim.setSynced(synced);
+	}
+	
 	
 	@Override
 	public boolean isSubmittable() {

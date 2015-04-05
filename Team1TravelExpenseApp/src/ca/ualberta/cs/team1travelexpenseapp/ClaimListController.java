@@ -352,6 +352,7 @@ public class ClaimListController {
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
 		changeClaim((ReturnedClaim)currentClaim.changeStatus(ReturnedClaim.class));
+		
 	}
 	/**
 	 * The onClick method for the comment button
