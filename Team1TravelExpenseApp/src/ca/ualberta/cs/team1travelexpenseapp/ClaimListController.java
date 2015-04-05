@@ -340,7 +340,7 @@ public class ClaimListController {
 		ArrayList<User> approverList = approvedClaim.getApproverList();
 		approverList.add(user);
 		approvedClaim.setApproverList(approverList);
-		updateCurrentClaim(approvedClaim);
+		changeClaim(approvedClaim);
 		
 		
 	}
@@ -351,7 +351,7 @@ public class ClaimListController {
 	public void onReturnClick() {
 		currentClaim.getApproverList().add(user);
 		currentClaim.setApproverList(currentClaim.getApproverList());
-		changeClaim(currentClaim.changeStatus(ReturnedClaim.class));
+		changeClaim((ReturnedClaim)currentClaim.changeStatus(ReturnedClaim.class));
 	}
 	/**
 	 * The onClick method for the comment button

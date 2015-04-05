@@ -24,4 +24,8 @@ public class ApprovedClaim extends Claim {
 		return false;
 	}
 	
+	@Override
+	public String getStatusString(){
+		return "approved";
+	}
 }
