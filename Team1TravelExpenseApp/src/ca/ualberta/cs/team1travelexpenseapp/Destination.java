@@ -7,7 +7,7 @@ public class Destination {
 	private String reason;
 	private Location location;
 	
-	Destination(String name, String reason, Location location){
+	public Destination(String name, String reason, Location location){
 		this.name = name;
 		this.reason = reason;
 		this.location = location;

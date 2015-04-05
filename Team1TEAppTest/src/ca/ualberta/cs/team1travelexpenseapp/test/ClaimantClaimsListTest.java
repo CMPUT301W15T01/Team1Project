@@ -4,14 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import testObjects.MockClaimant;
-import ca.ualberta.cs.team1travelexpenseapp.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -37,7 +38,7 @@ import android.text.format.DateFormat;
 public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 	Activity activity;
 	ListView claimListView;
-	protected Claimant user;
+	protected MockClaimant user;
 	
 	public ClaimantClaimsListTest() {
 		super(ClaimantClaimsListActivity.class);
@@ -47,7 +48,7 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	protected void setUp() throws Exception {
 		super.setUp();
 		Intent intent = new Intent();
-		Claimant user = new MockClaimant("CoolGuy");
+		user = new MockClaimant("CoolGuy");
 		UserSingleton.getUserSingleton().setUser(user);
 		setActivityIntent(intent);
 		activity = getActivity();
@@ -57,12 +58,17 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 //		User user=new User("user","jeff");
 //		
 //		//create some claims to populate and test our list
-//		Claim claim1 = new Claim("name1",new Date(2000,11,11), new Date(2015,12,12));
-//		Claim claim2 = new Claim("name2",new Date(1990,1,8), new Date(2000,12,12));
-//		Claim claim3 = new Claim("name3",new Date(1999,9,8), new Date(2012,12,12));
-//		Claim claim4 = new Claim("name4",new Date(2013,10,8), new Date(2012,12,12));
-//		Claim claim5 = new Claim("name5",new Date(2001,10,6), new Date(2012,12,12));
-		
+		Claim claim1 = new Claim("name1",new Date(2000,11,11), new Date(2015,12,12));
+		Claim claim2 = new Claim("name2",new Date(1990,1,8), new Date(2000,12,12));
+		Claim claim3 = new Claim("name3",new Date(1999,9,8), new Date(2012,12,12));
+		Claim claim4 = new Claim("name4",new Date(2013,10,8), new Date(2012,12,12));
+		Claim claim5 = new Claim("name5",new Date(2001,10,6), new Date(2012,12,12));
+		ClaimList claimList=user.getClaimList();
+		claimList.addClaim(claim1);
+		claimList.addClaim(claim2);
+		claimList.addClaim(claim3);
+		claimList.addClaim(claim4);
+		claimList.addClaim(claim5);
 	}
 
 	
@@ -75,11 +81,13 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 			//get text info from a claim at position of i of claimListView 
 			TextView claimInfo = (TextView) claimListView.getItemAtPosition(i);
 			
+			ClaimList claimList=user.getClaimList();
+			
 			//toString() method should be checked manually to verify it contains the correct info
 			String viewtext = claimInfo.getText().toString();
 
 			//get claim at position i of Claim list
-			Claim claim = ClaimListController.getCurrentClaim();
+			Claim claim = claimList.get(i);
 			
 			String expectedText =claim.toString();
 			assertEquals("Claim summary at list item "+i+" does not match expected value",expectedText, viewtext);	
@@ -94,12 +102,13 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	//starting date of travel, in order from most recent to oldest, so that ongoing 
 	//or recent travel expenses are quickly accessible.
 	public void testSorted(){
-		int claimCount = ClaimListController.getClaimCount();
-		Date currDate = ClaimListController.getCurrentClaim().getStartDate();
+		ClaimList claimList=user.getClaimList();
+		int claimCount = claimList.getClaims().size();
+		Date currDate = claimList.get(0).getStartDate();
 		Date prevDate;
 		for(int i=1; i<claimCount; i++){
 			prevDate = currDate;
-			currDate=ClaimListController.getCurrentClaim().getStartDate();
+			currDate=claimList.get(0).getStartDate();
 			assertTrue("Claims are not sorted by start date",currDate.after(prevDate));
 		}
 		//Note:testListClaim() checks that claims in ClaimsListController show up in same order 
@@ -113,7 +122,6 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	public void testTagFilter(){		
 		//add a tag to two of our claims so we can test the tag filtering functionality
 		Claim claim = new Claim();
-		ClaimListController.setCurrentClaim(claim);
 		
 		
 		
@@ -130,8 +138,8 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 		
 		assertTrue("Incorrect items displayed by tag filter,claim2Info",claimListView.getCount()==2);
 		
-		//we want claims to show up if they have AT LEAST on of the selected filter tags
-		//so despite the addition of the extra tag the sam two claims should be displayed
+		//we want claims to show up if they have AT LEAST one of the selected filter tags
+		//so despite the addition of the extra tag the same two claims should be displayed
 		//claim2 and claim4, still in sorted oder so the following should hold
 		assertTrue("Incorrect items displayed by tag filter,claim2Info",claim2Info==viewText1);
 		
@@ -144,21 +152,14 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	
 	//US 09.01.01
 	public void testReadOnlineInfo(){
-		ClaimList list = ClaimListController.getClaimList();
-	
-		ClaimList claimListFromOnline;
+		//can't use Mock user in this case because we actually want to test online functionality
+		//just make a new user with a unique name to test this
+		Claimant claimant = new Claimant(UUID.randomUUID().toString());
+		UserSingleton.getUserSingleton().setUser(claimant);
+		
+		//TODO kenny: finish this test
 		
 		
-		assertTrue(isNetworkAvailable());
-		
-		
-		ClaimListController.SaveToOnline();
-		claimListFromOnline = ClaimListController.LoadFromOnline();
-		
-		
-		assertEquals("was ClaimList succefully written to db?",list.toString(), claimListFromOnline.toString());
-		//checks if it was written successfully
-		//toString because it is very unlikely we need to overridde equals() for ClaimList
 	}	
 	
 	private boolean isNetworkAvailable() {
@@ -170,14 +171,14 @@ public class ClaimantClaimsListTest extends ActivityInstrumentationTestCase2<Cla
 	//US04.08.01
 	public void testNav() {
 		
-		ClaimListController.clearClaimList();
+		user.clearData();
 		Calendar CalDate = Calendar.getInstance();
 		CalDate.set(2014,10,10,0,0,0);
 		Date startDate = CalDate.getTime();
 		CalDate.set(2015,12,11,0,0,0);
 		Date endDate = CalDate.getTime();
 		Claim testclaim = new Claim("test 1", startDate, endDate);
-		ClaimListController.addClaim(testclaim);
+		user.getClaimList().addClaim(testclaim);
 		
 		//calls on listeners 
 		int counter = 0;

@@ -9,6 +9,7 @@ import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
@@ -16,6 +17,7 @@ import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import android.app.Activity;
 import android.app.AlertDialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -23,6 +25,7 @@ import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.widget.Button;
@@ -36,7 +39,9 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	protected Instrumentation instrumentation;
 	protected ClaimantClaimsListActivity activity = null;
 	protected Claimant user;
-
+	protected ExpenseListController ExpenseListController;
+	protected ClaimListController ClaimListController;
+	protected TagListController TagListController;
 	public ClaimTest() {
 		super(ClaimantClaimsListActivity.class);
 	}
@@ -92,8 +97,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		tagsList.add(new Tag("rad"));
 		tagsList.add(new Tag("hip"));
 		claim.setClaimTagList(tagsList);
-		claim.addDestination("dest 1", "reason 1");
-		claim.addDestination("dest 2", "reason 2" );	
+		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
+		claim.addDestination(new Destination("dest 2", "reason 2",new Location("")));
 		ClaimListController.addClaim(claim);
 		
 		
@@ -136,8 +141,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		tagsList.add(new Tag("rad"));
 		tagsList.add(new Tag("hip"));
 		claim.setClaimTagList(tagsList);
-		claim.addDestination("dest 1", "reason 1");
-		claim.addDestination("dest 2", "reason 2" );	
+		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
+		claim.addDestination(new Destination("dest 2", "reason 2",new Location("")));
 		ClaimListController.addClaim(claim);
 		
 		
@@ -164,7 +169,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  
 		  Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		  assertNotNull("claim edit list for claim failed to open",nextActivity);
-		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimNameBody);
+		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
 		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo2);
 		  //assertTrue("Claim info on in expense list does not match expected claim info", claim.getClaimantName().equals(claimInfo2.getText().toString()));
 		  activity.finish();
@@ -209,7 +214,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		// Start the main activity of the application under test
 		Activity activity = getActivity();
 		// user has Created and fill the claim with values
-		ClaimListController list = new ClaimListController();
+		ClaimListController list = ClaimListController;
 		Claim claim = new Claim();
 		ClaimListController.setCurrentClaim(claim);
 	    // Stop the activity - The onDestroy() method should save the state of the claim
@@ -267,7 +272,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  
 		  
 		final Button saveClaimButton = (Button) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveClaimButton);
-	 	final MultiSelectionTagSpinner tagSpinner = (MultiSelectionTagSpinner) 
+	 	final MultiSelectionSpinner<Tag> tagSpinner = (MultiSelectionSpinner<Tag>) 
 	 			nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimTagSpinner);
 	 	
 	 	nextActivity.runOnUiThread(new Runnable() {

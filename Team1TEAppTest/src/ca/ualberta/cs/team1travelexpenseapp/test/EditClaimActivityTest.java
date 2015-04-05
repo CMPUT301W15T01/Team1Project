@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 import testObjects.MockClaimant;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.widget.Button;
@@ -19,10 +21,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ReturnedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
@@ -31,7 +39,8 @@ import junit.framework.TestCase;
 public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<EditClaimActivity> {
 	Activity activity;
 	protected Claimant user;
-	
+	protected ExpenseListController ExpenseListController;
+	protected ClaimListController ClaimListController;
 	public EditClaimActivityTest() {
 		super(EditClaimActivity.class);
 		// TODO Auto-generated constructor stub
@@ -61,9 +70,9 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		claim.setClaimantName("BILL");
 		claim.setStartDate(new Date(100));
 		claim.setEndDate(new Date(101));
-		claim.setStatus(Status.inProgress);
+		claim.changeStatus(ProgressClaim.class);
 		claim.setClaimantName("approver test");
-		claim.addDestination("test dest", null);
+		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
 		claim.setStartDate(startDate);
 		claim.setEndDate(endDate);
 		
@@ -75,12 +84,12 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 	public void testEditSubmittedClaim(){
 		
 		Claim claim = DummyClaim();
-		claim.setStatus(Status.submitted);
+		claim.changeStatus(SubmittedClaim.class);
 		ClaimListController.updateCurrentClaim(claim);
-		Set<String> dest = claim.getDestinations();
+		ArrayList<Destination> dest = claim.getDestinationList();
 		
 		final Button saveBT = (Button) activity.findViewById(R.id.saveClaimButton);
-		final EditText claimNameET  = (EditText) activity.findViewById(R.id.claimNameBody);
+		final EditText claimNameET  = (EditText) activity.findViewById(R.id.claimInfoHeader);
 		final DatePicker fromDate = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDate  = (DatePicker) activity.findViewById(R.id.claimEndDate);
 		activity.runOnUiThread(new Runnable() {
@@ -114,12 +123,12 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 	public void testReturned() {
 		// preconditions
 		Claim claim = DummyClaim();
-		claim.setStatus(Status.returned);
+		claim.changeStatus(ReturnedClaim.class);
 		ClaimListController.updateCurrentClaim(claim);
 	//	ClaimListController.addClaim(claim);
-		assertEquals("Claim status returned", Status.returned, ClaimListController.getCurrentClaim().getStatus());
+		assertEquals("Claim status returned", ReturnedClaim.class, ClaimListController.getCurrentClaim().getStatus());
 
-		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
+		final EditText editName = (EditText) activity.findViewById(R.id.claimInfoHeader);
 		final DatePicker startDatePick = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDatePick = (DatePicker) activity.findViewById(R.id.claimEndDate);
 		
@@ -159,11 +168,11 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 	public void testApproved(){
 		// precondition - claimant has an approved claim
 		Claim claim = DummyClaim();
-		claim.setStatus(Status.approved);
+		claim.changeStatus(ApprovedClaim.class);
 		ClaimListController.updateCurrentClaim(claim);
 		
 		
-		final EditText editName = (EditText) activity.findViewById(R.id.claimNameBody);
+		final EditText editName = (EditText) activity.findViewById(R.id.claimInfoHeader);
 		final DatePicker startDatePick = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDatePick = (DatePicker) activity.findViewById(R.id.claimEndDate);
 

@@ -18,8 +18,10 @@ import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.Color;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.util.Log;
@@ -90,7 +92,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		Claimant user= new MockClaimant("CoolGuy");
 		Log.d("EditExpenseTest", "User Created");
 		UserSingleton.getUserSingleton().setUser(user);
-		//user.getClaimList().getClaims().clear();
+		user.getClaimList().getClaims().clear();
 		Log.d("EditExpenseTest", "User Singleton set");
 		ClaimListController = new ClaimListController(user.getClaimList());
 		
@@ -586,16 +588,18 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		photoFile = createTestPhotoFile();
 		// An editable expense is currently being edited or added and the claimant has taken a photo that is greater than 65536 bytes 
 		
+		Log.d("TestMaxPhoto", "UnCompressedFile should be too big at size: " + String.valueOf(photoFile.length()));
+		
 		expense.setReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.
-		Expense.compressPhoto(activity, photoFile);
-		assertTrue("Compressed photo file too large (" + photoFile.length() + ")", expense.getReceiptFile().length() < 65536);	
-		
 		// A photo that is less than 65536 bytes in size is attached to the expense
-		expense.setReceiptFile(photoFile);
 		assertTrue("Compressed photo file too large (" + expense.getReceiptFile().length() + ")", expense.getReceiptFile().length() < 65536);
+		
+		assertTrue("Compressed photo file has size 0", expense.getReceiptFile().length() > 0);
+		
+		Log.d("TestMaxPhoto", "Compressed File is not too big at size: " + String.valueOf(expense.getReceiptFile().length()));
 		
 	}
 	private ClaimantExpenseListActivity getExpenseListactivity(){
@@ -609,7 +613,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 					claim = new Claim();
 					ClaimListController.addClaim(claim); 
 					ClaimListController.updateCurrentClaim(claim); 
-					
+					claim.getExpenseList().setClaim(claim);
 					ExpenseListController = new ExpenseListController(claim.getExpenseList());
 			    }
 		});
@@ -713,6 +717,31 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		File photoFile = new  File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
 		return photoFile;
 	}
+	
+//	private File createComplexTestPhotoFile(){
+//		try {		
+//			Bitmap bm = Bitmap.createBitmap(3000, 3000, Config.ARGB_8888);
+//			for (int x = 0; x < 3000; ++x){
+//				for (int y = 0; y < 3000; ++y){
+//					bm.setPixel(x, y, (int) (Color.argb(255, 
+//							Double.valueOf(Math.random()*255).intValue(),
+//							Double.valueOf(Math.random()*255).intValue(),
+//							Double.valueOf(Math.random()*255).intValue())));
+//				}
+//				
+//			}	
+//			FileOutputStream fos = activity.openFileOutput("testPhoto.jpg", Context.MODE_PRIVATE);
+//			bm.compress(CompressFormat.JPEG, 100, fos);
+//			fos.flush();
+//			fos.close();
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		File photoFile = new  File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
+//		return photoFile;
+//	}
 }
 
 
