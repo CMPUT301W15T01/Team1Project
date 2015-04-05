@@ -119,6 +119,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	
 	private void saveClaimsToDisk(ArrayList<Claim> claims){
 		Gson gson= GsonUtils.getGson();
+		if(context==null){
+			//we can't save to disk without context so if it isn't set just don't
+			return;
+		}
 		try {
 			FileOutputStream fos = context.openFileOutput(claimantName+"_claims.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -196,6 +200,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	private ArrayList<Claim> loadClaimsFromDisk(){
 		Gson gson= GsonUtils.getGson();
 		ArrayList<Claim> claims = null;
+		if(context==null){
+			//we can't load from disk without context so if it isn't set just don't
+			return claims;
+		}
 		try {
 			FileInputStream fis = context.openFileInput(claimantName+"_claims.sav");
 			InputStreamReader in =new InputStreamReader(fis);

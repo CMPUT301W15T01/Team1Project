@@ -14,6 +14,7 @@ public class MockClaimant extends Claimant {
 		public void loadData(){
 			//do nothing
 		}
+		
 	 
 	 public void clearData(){
 		 tagList = new TagList();
