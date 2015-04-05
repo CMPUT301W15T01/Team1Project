@@ -12,6 +12,7 @@ import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
@@ -33,11 +34,13 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantCommentActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
@@ -60,9 +63,9 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		//by default their status is submitted
 		claim.setStartDate(new Date(100));
 		claim.setEndDate(new Date(101));
-		claim.setStatus(Status.submitted);
+		claim.changeStatus(SubmittedClaim.class);
 		claim.setClaimantName("approver test");
-		claim.addDestination("test dest", null);
+		claim.addDestination(new Destination("test dest", "", new Location("")));
 		//claim.setTotal(100,"EUR");
 		
 		return claim;
