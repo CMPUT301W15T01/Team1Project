@@ -7,7 +7,12 @@ import android.widget.ListView;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-
+/**
+ * ExpandedListView is the base class for {@link MultiSelectionSpinner}
+ * which allow an application to expand the listview's components realized on
+ * various number of items or onto off-screen images.
+ * @since       1.0
+ */
 public class ExpandedListView extends ListView {
 
 	public ExpandedListView(Context context, AttributeSet attrs) {
