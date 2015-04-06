@@ -10,7 +10,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
@@ -27,20 +27,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Activity displaying a claim for an approver, approvers get this view instead of EditClaimActivity since they can't edit a claim
- * but may need to view all the info available in the EditClaimActivity.
+ * Activity displaying a claim for an approver, approvers get this view instead
+ * of EditClaimActivity since they can't edit a claim but may need to view all
+ * the info available in the EditClaimActivity.
  */
 public class ApproverClaimInfo extends Activity {
 	TextView info;
 	private Claim currentClaim;
 	private Expense expense;
 	private ImageView receiptImage;
-		
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		currentClaim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
-		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+		currentClaim = SelectedItemsSingleton.getSelectedItemsSingleton()
+				.getCurrentClaim();
+		expense = SelectedItemsSingleton.getSelectedItemsSingleton()
+				.getCurrentExpense();
 
 		setContentView(R.layout.activity_approver_claim_info);
 		info = (TextView) findViewById(R.id.ApproverClaimInfoTextView);
@@ -53,21 +56,27 @@ public class ApproverClaimInfo extends Activity {
 		getMenuInflater().inflate(R.menu.approver_claim_info, menu);
 		return true;
 	}
+
 	/*
-	* Takes the current claim and expense, then displays
-	* their information onto the textview
-	*/
+	 * Takes the current claim and expense, then displays their information onto
+	 * the textview
+	 */
 	public void onStart() {
 		super.onStart();
-		info.setText(expense.toString());
-		
-		// Retrieved from http://stackoverflow.com/questions/4181774/show-image-view-from-file-path-in-android (March 29, 2015)
-		File imgFile = expense.getReceiptFile();
-		if(imgFile != null){
+		if (currentClaim != null && expense != null) {
+			info.setText(expense.toString());
 
-		    Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-		    receiptImage.setImageBitmap(ReceiptBMP);
+			// Retrieved from
+			// http://stackoverflow.com/questions/4181774/show-image-view-from-file-path-in-android
+			// (March 29, 2015)
+			File imgFile = expense.getReceiptFile();
+			if (imgFile != null) {
 
+				Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile
+						.getAbsolutePath());
+				receiptImage.setImageBitmap(ReceiptBMP);
+
+			}
 		}
 	}
 }
