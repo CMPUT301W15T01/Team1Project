@@ -172,7 +172,7 @@ public class ApproverClaimListManager extends ClaimListManager {
 		return claims;
 	}
 
-	/*
+	/**
 	 * Automatically saves current claims to the elastic web server
 	 */
 	@Override
@@ -182,7 +182,7 @@ public class ApproverClaimListManager extends ClaimListManager {
 
 	}
 
-	/*
+	/**
 	 * Removes claim when approvers have permission to do so
 	 * 
 	 * @param claim The claim to be removed
@@ -191,7 +191,7 @@ public class ApproverClaimListManager extends ClaimListManager {
 		// do nothing approvers cannot remove claims at this time
 	}
 
-	/*
+	/**
 	 * Loads claims from the elastic web server
 	 */
 	@Override
@@ -200,7 +200,7 @@ public class ApproverClaimListManager extends ClaimListManager {
 
 	}
 
-	/*
+	/**
 	 * Loads claims when connectivity is established
 	 */
 	public void onConnect() {

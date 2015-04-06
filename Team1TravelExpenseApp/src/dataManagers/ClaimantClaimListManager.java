@@ -83,7 +83,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 	}
 	
-	/*Checks if the network is available and 
+	/**Checks if the network is available and 
 	 * Saves a claim the the web server
 	 * @param claim the claim to be saved
 	 */
@@ -146,7 +146,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 	}
 	
-	/*
+	/**
 	 * Saves individual claims to the web server
 	 * @param claims the arraylist of claims
 	 */
@@ -209,7 +209,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		return claims;
 	}
 	
-	/*
+	/**
 	 * Deserializes the claims from the disk and outputs the list of claims
 	 * @return arraylist of claims
 	 */
@@ -328,7 +328,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 		
 	}
-	/*
+	/**
 	 * Sets the current claimaint's name
 	 * @param claimantName name of the claimant
 	 */
@@ -336,7 +336,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		this.claimantName = claimantName;
 	}
 	
-	/*
+	/**
 	 * Saves the claimant's unsynced claims to the web server
 	 */
 	public void onConnect(){
