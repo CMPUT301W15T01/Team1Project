@@ -118,7 +118,7 @@ public class ProgressClaim extends Claim {
 	}
 
 	@Override
-	public ArrayList<User> getApproverList() {
+	public ArrayList<String> getApproverList() {
 		return claim.getApproverList();
 	}
 	
@@ -143,7 +143,7 @@ public class ProgressClaim extends Claim {
 	}
 
 	@Override
-	public void setApproverList(ArrayList<User> approverList) {
+	public void setApproverList(ArrayList<String> approverList) {
 		throw new RuntimeException("Unable to set approver list for inprogress claims!!!");
 	}
 

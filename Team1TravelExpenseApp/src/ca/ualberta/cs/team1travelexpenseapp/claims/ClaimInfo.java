@@ -103,13 +103,13 @@ public interface ClaimInfo {
 	 * Get the list of approvers for the current Claim
 	 * @return ArrayList of Users corresponding to the approvers who have returned or approved the claim
 	 */
-	public ArrayList<User> getApproverList();
+	public ArrayList<String> getApproverList();
 
 	/**
 	 * Set the list of approvers for the current Claim
 	 * @param approverList ArrayList of Users corresponding to the approvers who have returned or approved the claim
 	 */
-	public void setApproverList(ArrayList<User> approverList);
+	public void setApproverList(ArrayList<String> approverList);
 
 	/**
 	 * Get a Map mapping approvers of the claim to any comments they may have left.

@@ -61,8 +61,14 @@ public class ApprovedClaim extends Claim {
 	}
 	
 	@Override
-	public ArrayList<User> getApproverList() {
+	public ArrayList<String> getApproverList() {
 		return claim.getApproverList();
+	}
+	
+	@Override
+	public void setApproverList(ArrayList<String> approverList) {
+		claim.setApproverList(approverList);
+		setSynced(false);
 	}
 	
 	@Override
