@@ -340,9 +340,10 @@ public class ClaimListController {
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
 		//for some reason adding approvers causes error 400, have to fix this
-//		ArrayList<String> approverList = approvedClaim.getApproverList();
-//		approverList.add(currentUser.getName());
-//		approvedClaim.setApproverList(approverList);
+		//update: it worked last time I tried not sure what was different keep an eye on this
+		ArrayList<String> approverList = approvedClaim.getApproverList();
+		approverList.add(currentUser.getName());
+		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
 		Log.d("approvalTest",approvedClaim.getUniqueId().toString());
 		//sync with server then update the local list to reflect the returned claim
