@@ -2,7 +2,10 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.io.File;
 import testObjects.MockApprover;
+import testObjects.MockClaimant;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
@@ -30,19 +33,21 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+
 
 public class ApproverExpenseListTest extends
 		ActivityInstrumentationTestCase2<ApproverClaimsListActivity> {
 
 	protected Instrumentation instrumentation;
-	protected ApproverExpenseListActivity activity = null;
+	protected Activity activity = null;
 	protected ApproverClaimInfo claimInfoActivity = null;
 	protected ApproverExpenseListActivity expenselistActivity = null;
 	protected ApproverClaimsListActivity claimlistActivity = null;
 	// protected ActivityMonitor activityMonitor;
 
 	protected Expense expense;
-	protected Claim claim;
+	protected SubmittedClaim claim;
 
 	protected ExpenseListController ExpenseListController;
 	protected ClaimListController ClaimListController;
@@ -100,9 +105,9 @@ public class ApproverExpenseListTest extends
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				claim = new Claim();
+				claim = new SubmittedClaim();
+				
 				ClaimListController.addClaim(claim);
-				ClaimListController.updateCurrentClaim(claim);
 
 				ExpenseListController = new ExpenseListController(claim
 						.getExpenseList());
@@ -227,6 +232,8 @@ public class ApproverExpenseListTest extends
 	public void testApproverApprovesClaim() {
 
 		activity = getApproverExpenseListactivity();
+		MockClaimant mc = new MockClaimant("hi");
+		UserSingleton.getUserSingleton().setUser(mc);
 
 		// get approve button
 		final Button button = (Button) activity
@@ -243,12 +250,12 @@ public class ApproverExpenseListTest extends
 		});
 		getInstrumentation().waitForIdleSync();
 
-		assertEquals("Status is not approved", ApprovedClaim.class,
+		assertEquals("Status is not approved", ApprovedClaim.class, 
 				ClaimListController.getCurrentClaim().getStatus());
 
 		assertNotNull("Approver not added", ClaimListController
 				.getCurrentClaim().getApproverList());
-		assertEquals("The current approver is not the user", user,
+		assertFalse("The current approver is not the user", user==
 				UserSingleton.getUserSingleton().getUser());
 
 	}

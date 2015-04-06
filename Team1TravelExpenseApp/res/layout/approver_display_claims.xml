@@ -14,19 +14,12 @@
         android:text="Travel Claims"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/ApproverClaimInfoTextView" />
-
     <ListView
         android:id="@+id/approverclaimList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spinner1"
+        android:layout_below="@+id/ApproverClaimInfoTextView"
         android:scrollbars="vertical" >
     </ListView>
 

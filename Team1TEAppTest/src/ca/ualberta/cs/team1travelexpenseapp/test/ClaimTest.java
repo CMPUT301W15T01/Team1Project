@@ -284,8 +284,97 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	 			claim.getClaimTagList().contains(tag1) && claim.getClaimTagList().size()==2);
 	 	 
 	}
-//	
 	
+	// US03.03.01: As a claimant, I want to filter the list of expense claims by
+	// tags,
+	// to show only those claims that have at least one tag matching any of a
+	// given set
+	// of one or more filter tags.
+	public void testTagFilter() {
+		// added a tag to two of our claims so we can test the tag filtering
+		// functionality
+		activity= getActivity();
+		 // get list view 
+		final ListView claimListView = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		final Claim claim=new Claim();
+		final Tag tag1=new Tag("cool");
+		final Tag tag2=new Tag("hip");
+		final Tag tag3=new Tag("next level");
+		
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(EditClaimActivity.class.getName(), null, false);
+		
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		    	user.getClaimList().addClaim(claim);
+		    	ArrayList<Tag> tags=new ArrayList<Tag>();
+		    	tags.add(tag1);
+		    	tags.add(tag2);
+		    	tags.add(tag3);
+		    	user.getTagList().setTagList(tags);
+		    }
+		});
+		getInstrumentation().waitForIdleSync();
+		// open the edit claim dialog and click edit
+		activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // long click the claim
+	             claimListView.getChildAt(0).performLongClick();
+	             AlertDialog dialog = activity.editClaimDialog;
+	             //click the edit claim button
+	             Button editClaimButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE);
+				 editClaimButton.performClick();
+		    }
+		 });
+		  
+		EditClaimActivity nextActivity = (EditClaimActivity)
+				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		
+		assertNotNull("EditClaimAcivity did not open on click as expected", nextActivity);
+		  
+		  
+		final Button saveClaimButton = (Button) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.saveClaimButton);
+	 	final MultiSelectionSpinner<Tag> tagSpinner = (MultiSelectionSpinner<Tag>) 
+	 			nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimTagSpinner);
+	 	
+	 	nextActivity.runOnUiThread(new Runnable() {
+	 		 public void run() {
+	 			 tagSpinner.setSelection(new String[] {"cool","next level"});
+	 			 saveClaimButton.performClick();
+	 		 }	
+	 	});
+	 	getInstrumentation().waitForIdleSync();
+	 	
+	 	// test that there was a claim added
+	 	assertEquals("test1", claimListView.getCount(), 1);
+	 	// add a tag filter
+	 	final MultiSelectionSpinner<Tag> tagFilter = (MultiSelectionSpinner<Tag>) 
+	 			nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimFilterSpinner);
+	 	activity.runOnUiThread(new Runnable() {
 
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				tagSpinner.setSelection(new String[] {"cool"});
+			}
+	 		
+	 	});
+	 	getInstrumentation().waitForIdleSync();
+	 	assertEquals("test2", claimListView.getCount(), 1);
+	 	// add another tag filter
+	 	activity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stu
+				tagSpinner.setSelection(new String[] {"hip"});
+				
+			}
+	 		
+	 	});
+	 	getInstrumentation().waitForIdleSync();
+	 	assertEquals("test3", 0, 0);
+	}
 }
 

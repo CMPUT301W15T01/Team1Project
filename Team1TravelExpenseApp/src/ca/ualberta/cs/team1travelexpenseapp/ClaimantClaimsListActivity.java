@@ -94,6 +94,7 @@ public class ClaimantClaimsListActivity extends Activity {
   		claimList=user.getClaimList();
   		Collection<Claim> claims = claimList.getClaims();
   		displayList = new ArrayList<Claim>(claims);
+  		//Log.d("test", displayList.size()+"");
   		
   		claimsAdapter = new ClaimArrayAdapter(this, android.R.layout.simple_list_item_1, displayList);
 
