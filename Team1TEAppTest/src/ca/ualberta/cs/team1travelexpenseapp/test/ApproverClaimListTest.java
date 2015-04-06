@@ -42,7 +42,6 @@ public class ApproverClaimListTest extends
 		ActivityInstrumentationTestCase2<LoginActivity> {
 	protected Instrumentation instrumentation;
 	protected ApproverExpenseListActivity activity = null;
-	protected ApproverClaimInfo claimInfoActivity = null;
 	protected ApproverClaimsListActivity listActivity = null;
 	protected ApproverClaimsListActivity claimlistActivity = null;
 	protected LoginActivity login = null;
@@ -77,7 +76,6 @@ public class ApproverClaimListTest extends
 				"ClaimList has a manager? "
 						+ String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
-		login = getActivity();
 		//user.initManagers(activity.getApplicationContext());
 
 	}
@@ -96,7 +94,7 @@ public class ApproverClaimListTest extends
 		if (claimlistActivity != null) {
 			claimlistActivity.finish();
 		}
-
+		
 		
 
 	}
@@ -147,7 +145,6 @@ public class ApproverClaimListTest extends
 	 * claims
 	 */
 	public void testgetSubmittedClaims() {
-		
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(
 				ApproverClaimsListActivity.class.getName(), null, false);
 		LoginActivity userSelect = (LoginActivity) getActivity();
@@ -165,7 +162,7 @@ public class ApproverClaimListTest extends
 		});
 
 		ApproverClaimsListActivity nextActivity = (ApproverClaimsListActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(activityMonitor, 5000);
+				.waitForMonitorWithTimeout(activityMonitor, 1000);
 		assertNotNull(nextActivity);
 
 		ListView claimlistView = (ListView) nextActivity
@@ -174,6 +171,7 @@ public class ApproverClaimListTest extends
 				claimlistView);
 
 		nextActivity.finish();
+		userSelect.finish();
 	}
 
 	// //US08.02.01
@@ -182,7 +180,7 @@ public class ApproverClaimListTest extends
 	 * list of claims
 	 */
 	public void testApproverSortedClaims() {
-
+		login = getActivity();
 		getApproverClaimListactivity();
 
 		// claims loaded onStart of nextActivity
@@ -203,7 +201,8 @@ public class ApproverClaimListTest extends
 					.getStartDate().compareTo(claimCompared.getStartDate()) < 0);
 
 		}
-
+		listActivity.finish();
+		login.finish();
 	}
 
 	// US08.07.01
@@ -211,7 +210,6 @@ public class ApproverClaimListTest extends
 	 * tests if returned claims show up for claimants
 	 */
 	public void testReturnedVisible() {
-
 
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(
 				ApproverClaimsListActivity.class.getName(), null, false);
@@ -250,8 +248,9 @@ public class ApproverClaimListTest extends
 		}
 
 		assertTrue("Claim was returned?", statuscount == 0);
-		userSelect.finish();
 		nextActivity.finish();
+		userSelect.finish();
+
 	}
 
 }
