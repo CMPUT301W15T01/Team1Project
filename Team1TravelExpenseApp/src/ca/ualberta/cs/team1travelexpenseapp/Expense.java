@@ -256,12 +256,22 @@ public class Expense {
 		if(receipt != null && receipt.exists()){
 			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
 			if(receipt.length() >= MAX_IMAGE_SIZE){
-				if(!this.compressPhoto(receipt)){
-					// Photo failed to be compressed
-					return false;
+				if (!this.compressPhoto(receipt, 750, 50)){
+					if (!this.compressPhoto(receipt,500, 35)){
+						if (!this.compressPhoto(receipt, 350, 25)){
+							// Photo failed to be compressed
+							receipt.delete();
+							return false;
+						}
+					}
 				}
+			}	
+			if(receipt.exists() && receipt.length() >= 65536){
+				receipt.delete();
+				return false;
 			}
 		}
+		// Photo successfully compressed or is null
 		this.receiptFile = receipt;
 		return true;
 	}
@@ -325,14 +335,15 @@ public class Expense {
 	 * @param photoFile
 	 * The image file to be compressed
 	 */
-	private boolean compressPhoto(File photoFile) {
-		Log.d("Expense CompressingPhoto", "Attempting to compress photo with size: " + String.valueOf(photoFile.length()));
+	private boolean compressPhoto(File photoFile, int maxLength, int quality) {
+		Log.d("Expense CompressingPhoto", "Attempting to compress photo with size: " + String.valueOf(photoFile.length()
+				+ " to " + maxLength + "x" + maxLength));
 		
 		Bitmap photo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 		
 		Log.d("Expense CompressingPhoto", "photo is " + photo.getWidth() + "x" + photo.getHeight());
 		
-		int maxLength = 750;
+		//int maxLength = 750;
 		
 		//If the image is too large resize it to be smaller
 		if(photo.getHeight() > maxLength || photo.getWidth() > maxLength){
@@ -349,7 +360,7 @@ public class Expense {
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(photoFile);
-			photo.compress(CompressFormat.JPEG, 50, fos);
+			photo.compress(CompressFormat.JPEG, quality, fos);
 			fos.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {

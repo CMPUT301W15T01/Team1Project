@@ -1,11 +1,14 @@
 
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import testObjects.MockClaimant;
 import views.MultiSelectionSpinner;
+import ca.ualberta.cs.team1travelexpenseapp.ApproverClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
@@ -13,13 +16,17 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimantExpenseListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.EditExpenseActivity;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
+import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -28,6 +35,7 @@ import android.app.Instrumentation.ActivityMonitor;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
 import android.widget.Button;
@@ -206,22 +214,68 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	}
 	//US01.06.01
 	public void testSaveClaims() {
+		final String uniqueName = UUID.randomUUID().toString();
+		//need to test saving so can't use MockClaimant, create a new user with unique name instead
+		Claimant user = new Claimant(uniqueName);
 		// Start the main activity of the application under test
 		Activity activity = getActivity();
 		// user has Created and fill the claim with values
-		ClaimListController list = ClaimListController;
-		Claim claim = new Claim();
-		ClaimListController.setCurrentClaim(claim);
-	    // Stop the activity - The onDestroy() method should save the state of the claim
-		activity.finish();
-	    // Re-start the Activity - the onResume() method should restore the state of the Spinner
-		activity = getActivity();
-		// Get current claim from the controller
-		Claim claim2 = ClaimListController.getCurrentClaim();
-		final String actual = claim.getClaimantName();
-	    // Assert that the current claim is the same as the starting claim
-		assertEquals("same?", claim, claim2);
+		Claim claim = new ProgressClaim();
+		claim.setStartDate(new Date());
+		claim.setEndDate(new Date());
+		claim.setClaimantName(user.getName());
+		ArrayList<Expense> expenses = new ArrayList<Expense>();
+		Expense expense = new Expense("car trip", new Date(), "vehicle rental", new BigDecimal(10), "CAD");
+		expenses.add(expense);
+		ExpenseList expenseList = claim.getExpenseList();
+		expenseList.setExpenseList(expenses);
+		user.getClaimList().addClaim(claim);
 		
+	    // Stop the activity claim info should be saved
+		activity.finish();
+		
+	    // Create a new user with the same name and login as them in login screen, app should load the saved info
+		LoginActivity loginActivity = new LoginActivity();
+		Intent intent = new Intent(loginActivity, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		loginActivity.startActivity(intent);
+		
+		final EditText namefield = (EditText) loginActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.userNameField);
+		
+		
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		loginActivity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		    	namefield.setText(uniqueName);
+		    }
+ 		});
+		getInstrumentation().waitForIdleSync();
+		
+		ClaimantClaimsListActivity claimListActivity = (ClaimantClaimsListActivity)
+				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		
+		final ListView claimListView = (ListView) claimListActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		
+		TextView claimInfo = (TextView) claimListView.getChildAt(0);
+		
+		
+		assertNotNull("claim was not saved", claimInfo);
+		assertEquals("claim info was not saved as expected:\n"+claimInfo.getText().toString()+"\nv.s.\n"+claim.toString(), claimInfo.getText().toString(), claim.toString());
+		
+		activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
+		claimListActivity.runOnUiThread(new Runnable() {
+			public void run(){
+				claimListView.getChildAt(0).performLongClick();
+			}
+		});
+		ClaimantExpenseListActivity expenseListActivity = (ClaimantExpenseListActivity)
+				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		
+		final ListView expenseListView = (ListView) expenseListActivity.findViewById(
+				ca.ualberta.cs.team1travelexpenseapp.R.id.claimantExpensesList);
+			
 	}
 //	
 //	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 

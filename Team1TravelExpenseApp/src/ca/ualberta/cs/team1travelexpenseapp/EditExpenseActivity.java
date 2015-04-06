@@ -206,6 +206,11 @@ public class EditExpenseActivity extends Activity {
 		//editing model happens in controller 
 		expenseListController.onExpenseSaveClick(this);
 	}
+	
+	@Override
+	public void onBackPressed() {
+		onExpenseSaveClick(null);
+	}
 		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,7 +222,7 @@ public class EditExpenseActivity extends Activity {
 	protected void onDestroy(){
 		super.onDestroy();
 		expenseList.removeListener(listener);
-		//ExpenseListController.onExpenseSaveClick(this);
+
 	}
 
 
@@ -230,6 +235,11 @@ public class EditExpenseActivity extends Activity {
 	// and https://github.com/dfserrano/BogoPicLab
 	public void takePhoto(View v){
 	Log.d("Testing Add Photo", "TakePhoto Started");
+	
+	if(expense.getReceiptFile() != null){
+		Toast.makeText(getApplicationContext(), "There is already a receipt photo attached. Please delete it first", Toast.LENGTH_SHORT).show();
+		return;
+	}
 	
 	Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 

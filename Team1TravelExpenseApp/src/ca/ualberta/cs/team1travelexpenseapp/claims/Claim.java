@@ -73,7 +73,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		approverList          = new ArrayList<String>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
-		expenseList           = new ExpenseList();
+		expenseList           = new ExpenseList(this);
 		synced                = false;
 		uniqueId              = UUID.randomUUID();
 	}
@@ -93,7 +93,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		approverList          = new ArrayList<String>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
-		expenseList           = new ExpenseList();
+		expenseList           = new ExpenseList(this);
 		synced                = false;
 		uniqueId              = UUID.randomUUID();
 	}
@@ -392,7 +392,8 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	@Override
 	public Claim changeStatus(Class<?> claimStatusType) {
 		// TODO Auto-generated method stub
-		return null;
+		status = claimStatusType;
+		return this;
 	}
 
 	public boolean isSubmittable() {
