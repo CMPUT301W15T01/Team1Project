@@ -47,7 +47,6 @@ public class ApproverClaimListTest extends
 	protected LoginActivity login = null;
 	// protected ActivityMonitor activityMonitor;
 
-
 	protected Expense expense;
 	protected Claim claim;
 
@@ -76,7 +75,7 @@ public class ApproverClaimListTest extends
 				"ClaimList has a manager? "
 						+ String.valueOf(user.getClaimList().getManager() != null));
 		instrumentation = getInstrumentation();
-		//user.initManagers(activity.getApplicationContext());
+		// user.initManagers(activity.getApplicationContext());
 
 	}
 
@@ -94,8 +93,6 @@ public class ApproverClaimListTest extends
 		if (claimlistActivity != null) {
 			claimlistActivity.finish();
 		}
-		
-		
 
 	}
 
@@ -184,8 +181,8 @@ public class ApproverClaimListTest extends
 		getApproverClaimListactivity();
 
 		// claims loaded onStart of nextActivity
-		ListView claimlistView = (ListView) listActivity.findViewById(
-				R.id.approverclaimList);
+		ListView claimlistView = (ListView) listActivity
+				.findViewById(R.id.approverclaimList);
 		ViewAsserts.assertOnScreen(getActivity().getWindow().getDecorView(),
 				claimlistView);
 
@@ -252,5 +249,6 @@ public class ApproverClaimListTest extends
 		userSelect.finish();
 
 	}
+
 
 }
