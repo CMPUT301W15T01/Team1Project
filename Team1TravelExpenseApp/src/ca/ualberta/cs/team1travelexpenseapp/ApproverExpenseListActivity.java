@@ -115,7 +115,8 @@ public class ApproverExpenseListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onApproveClick(View v) {
-		if (!claim.getClaimantName().equals(user.getName())) {
+		User u = UserSingleton.getUserSingleton().getUser();
+		if (!claim.getClaimantName().equals(u.getName())) {
 			claimListController.onApproveClick();
 			finish();
 		}
