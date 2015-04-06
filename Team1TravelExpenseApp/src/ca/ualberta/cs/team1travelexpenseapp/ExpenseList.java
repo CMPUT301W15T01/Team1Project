@@ -41,7 +41,8 @@ public class ExpenseList {
 	/**
 	 * Create a new empty ExpenseList
 	 */
-	public ExpenseList(){
+	public ExpenseList(Claim claim){
+		this.claim = claim;
 		expenseList=new ArrayList<Expense>();
 	}
 	
