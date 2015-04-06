@@ -61,58 +61,57 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 */
 	public void saveClaims(){
 		Log.d("approvalTest", "Claimant saved");
-		ArrayList<Claim> claims=claimList.getClaims();
-		ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
+		final ArrayList<Claim> claims=claimList.getClaims();
+		final ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
 		for(Claim claim: claimList.getClaims()){
 			if(!claim.isSynced()){
 				unsyncedClaims.add(claim);
 			}
 		}
-		saveClaimsToWeb(unsyncedClaims);	
-		saveClaimsToDisk(claims);
+		Thread t=new Thread(new Runnable() {
+	        public void run() {
+				saveClaimsToWeb(unsyncedClaims);
+				saveClaimsToDisk(claims); 
+				}
+		});
+		t.start();
 	}
 	
 	
 	private void saveClaimToWeb(final Claim claim){
 		if(NetworkAvailable()){
+			HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
+			StringEntity stringentity = null;
+			Gson gson= GsonUtils.getGson();
+			HttpClient httpclient = new DefaultHttpClient();
+			try {
+				stringentity = new StringEntity(gson.toJson(claim,Claim.class));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			httpPost.setHeader("Accept","application/json");
+	
+			httpPost.setEntity(stringentity);
+			HttpResponse response = null;
+			try {
+				response = httpclient.execute(httpPost);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+				return;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+				return;
+			}
+			int statusCode=response.getStatusLine().getStatusCode();
 			
-			Thread t=new Thread(new Runnable() {
-		        public void run() {
-					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
-					StringEntity stringentity = null;
-					Gson gson= GsonUtils.getGson();
-					HttpClient httpclient = new DefaultHttpClient();
-					try {
-						stringentity = new StringEntity(gson.toJson(claim,Claim.class));
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					httpPost.setHeader("Accept","application/json");
-			
-					httpPost.setEntity(stringentity);
-					HttpResponse response = null;
-					try {
-						response = httpclient.execute(httpPost);
-					} catch (ClientProtocolException e) {
-						// TODO Auto-generated catch block
-						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
-						return;
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
-						return;
-					}
-					int statusCode=response.getStatusLine().getStatusCode();
-					
-					if(statusCode==200){
-						//claim is synced if it is successfully saved to web
-						claim.setSynced(true);
-					}
-		        }
-			});
-			t.start();
-		}
+			if(statusCode==200){
+				//claim is synced if it is successfully saved to web
+				claim.setSynced(true);
+			}
+        }
 	}
 	
 	private void saveClaimsToDisk(ArrayList<Claim> claims){
@@ -282,6 +281,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 			for(Claim claim: localClaims){
 				Log.d("onlineTest", "From Local:"+claim.toString());
 				if(!claim.isSynced()){
+					Log.d("approvalTest", "Claim not synced");
 					claims.add(claim);
 				}
 			}

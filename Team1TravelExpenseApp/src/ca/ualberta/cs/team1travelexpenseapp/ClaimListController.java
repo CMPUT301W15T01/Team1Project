@@ -339,16 +339,17 @@ public class ClaimListController {
 		Claim approvedClaim =  getCurrentClaim().changeStatus(ApprovedClaim.class);		
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
-		ArrayList<String> approverList = approvedClaim.getApproverList();
-		approverList.add(currentUser.getName());
-		approvedClaim.setApproverList(approverList);
+		//for some reason adding approvers causes error 400, have to fix this
+//		ArrayList<String> approverList = approvedClaim.getApproverList();
+//		approverList.add(currentUser.getName());
+//		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
 		Log.d("approvalTest",approvedClaim.getUniqueId().toString());
 		//sync with server then update the local list to reflect the returned claim
 		claimsList.saveClaims();
-		//ArrayList<Claim> claims=claimsList.getClaims();
-		//claims.remove(approvedClaim);
-		//claimsList.setClaimList(claims);
+		ArrayList<Claim> claims=claimsList.getClaims();
+		claims.remove(approvedClaim);
+		claimsList.setClaimList(claims);
 	}
 	/**
 	 * The onClick method for the return button
@@ -362,9 +363,9 @@ public class ClaimListController {
 		changeClaim(returnedClaim);
 		//sync with server then update the local list to reflect the returned claim
 		claimsList.saveClaims();
-		//ArrayList<Claim> claims=claimsList.getClaims();
-		//claims.remove(returnedClaim);
-		//claimsList.setClaimList(claims);
+		ArrayList<Claim> claims=claimsList.getClaims();
+		claims.remove(returnedClaim);
+		claimsList.setClaimList(claims);
 		
 	}
 	/**
