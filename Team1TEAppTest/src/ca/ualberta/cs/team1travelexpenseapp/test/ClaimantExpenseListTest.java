@@ -273,7 +273,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			
 		});
 		getInstrumentation().waitForIdleSync();
-
+		//
 		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);
