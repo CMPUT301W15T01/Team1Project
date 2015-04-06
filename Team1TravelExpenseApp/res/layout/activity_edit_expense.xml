@@ -142,7 +142,7 @@
 		       android:layout_width="fill_parent"
 		       android:layout_height="wrap_content"
 		       android:layout_below="@+id/recieptHeader"
-		       android:src="@android:drawable/btn_star" />
+		       android:src="@drawable/default_receipt" />
 
 		   <Button
 		       android:id="@+id/deletePhotoButton"

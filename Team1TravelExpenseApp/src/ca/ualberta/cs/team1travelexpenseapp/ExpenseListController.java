@@ -16,17 +16,12 @@ limitations under the License.
 package ca.ualberta.cs.team1travelexpenseapp;
 
 
-import java.io.File;
-import java.io.ObjectInputStream.GetField;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
-import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
-import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
-import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.content.Intent;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -52,6 +47,7 @@ public class ExpenseListController {
 	 * An Expense.
 	 */
 	public void setCurrentExpense(Expense expense){
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expense);
 		currentExpense = expense; 
 	}
 	
@@ -96,6 +92,10 @@ public class ExpenseListController {
 	 */
 	public void removeExpense(Expense expense){
 		ArrayList<Expense> expenseArray=expenseList.getExpenses();
+		// Delete any attached receipts
+		if (expense.getReceiptFile() != null){
+			expense.getReceiptFile().delete();
+		}
 		expenseArray.remove(expense);
 		expenseList.setExpenseList(expenseArray);
 	}
