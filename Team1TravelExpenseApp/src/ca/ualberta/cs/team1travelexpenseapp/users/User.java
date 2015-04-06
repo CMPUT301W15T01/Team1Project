@@ -23,7 +23,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 public abstract class User {
 	
 	protected String name;
-	protected ClaimList claimList;
+	transient protected ClaimList claimList;
 	protected Location location;
 	
 	public Location getLocation() {

@@ -343,8 +343,8 @@ public class ClaimListController {
 		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
 		//sync with server then update the local list to reflect the returned claim
-		//claimsList.saveClaims();
-		//claimsList.loadClaims();
+		claimsList.saveClaims();
+		claimsList.loadClaims();
 	}
 	/**
 	 * The onClick method for the return button
@@ -356,8 +356,8 @@ public class ClaimListController {
 		currentClaim.setApproverList(currentClaim.getApproverList());
 		changeClaim((ReturnedClaim)currentClaim.changeStatus(ReturnedClaim.class));
 		//sync with server then update the local list to reflect the returned claim
-		//claimsList.saveClaims();
-		//claimsList.loadClaims();	
+		claimsList.saveClaims();
+		claimsList.loadClaims();	
 	}
 	/**
 	 * The onClick method for the comment button

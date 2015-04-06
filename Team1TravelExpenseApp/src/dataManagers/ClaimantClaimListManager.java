@@ -60,6 +60,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	 * save Claims to disk (and if possible to web server). (not yet implemented)
 	 */
 	public void saveClaims(){
+		Log.d("approvalTest", "Claimant saved");
 		ArrayList<Claim> claims=claimList.getClaims();
 		ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
 		for(Claim claim: claimList.getClaims()){

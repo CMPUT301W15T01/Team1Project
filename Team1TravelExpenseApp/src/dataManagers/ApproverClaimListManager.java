@@ -82,6 +82,7 @@ public class ApproverClaimListManager extends ClaimListManager{
 	}
 	
 	private void saveClaimsToWeb(ArrayList<Claim> claims){
+		Log.d("approvalTest", "Approver saved");
 		for(Claim claim: claims){
 			saveClaimToWeb(claim);
 		}
