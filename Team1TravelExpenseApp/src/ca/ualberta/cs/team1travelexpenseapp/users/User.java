@@ -32,7 +32,10 @@ public abstract class User {
 		}
 		return location;
 	}
-
+	
+	public String toString() {
+		return name;
+	}
 
 	public void setLocation(Location location) {
 		this.location = location;

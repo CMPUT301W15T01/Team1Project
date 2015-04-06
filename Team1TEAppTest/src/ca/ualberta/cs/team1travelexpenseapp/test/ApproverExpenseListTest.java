@@ -74,18 +74,18 @@ public class ApproverExpenseListTest extends
 	}
 
 	protected void tearDown() throws Exception {
-		 if (activity != null) {
-		 activity.finish();
-		 }
-		 if (expenselistActivity != null) {
-		 expenselistActivity.finish();
-		 }
-		 if (claimlistActivity != null) {
-		 claimlistActivity.finish();
-		 }			 
-		 if (claimInfoActivity!= null) {
-			 claimInfoActivity.finish();
-		 }
+		if (activity != null) {
+			activity.finish();
+		}
+		if (expenselistActivity != null) {
+			expenselistActivity.finish();
+		}
+		if (claimlistActivity != null) {
+			claimlistActivity.finish();
+		}
+		if (claimInfoActivity != null) {
+			claimInfoActivity.finish();
+		}
 		super.tearDown();
 
 	}
@@ -133,7 +133,6 @@ public class ApproverExpenseListTest extends
 	/*
 	 * Testing if we can see all of the claim info for approvers
 	 */
-	@SuppressLint("NewApi")
 	public void testClaimInfo() {
 		activity = getApproverExpenseListactivity();
 		// init claim/expenses
@@ -157,7 +156,6 @@ public class ApproverExpenseListTest extends
 				.findViewById(R.id.ApproverClaimInfoTextView);
 		assertEquals("Can View Info", expense.toString(), text.getText()
 				.toString());
-
 
 	}
 
@@ -193,7 +191,7 @@ public class ApproverExpenseListTest extends
 
 		ActivityMonitor activityMonitor = instrumentation.addMonitor(
 				ApproverClaimInfo.class.getName(), null, false);
-		
+
 		final ListView expenseListLV = (ListView) activity
 				.findViewById(R.id.approverExpensesList);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),
@@ -255,4 +253,31 @@ public class ApproverExpenseListTest extends
 
 	}
 
+	/*
+	 * US08.09.01 added 2015-02-12 As an approver, I want to ensure I cannot
+	 * return or approve an expense claim for which I am the claimant.
+	 */
+	public void ApproverNotClaimant() {
+		getApproverExpenseListactivity();
+		claim.setClaimantName("CoolGuy");
+		final Button button = (Button) expenselistActivity
+				.findViewById(R.id.approveButton);
+		expenselistActivity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// click approve button
+				button.performClick();
+			}
+
+		});
+		getInstrumentation().waitForIdleSync();
+
+		assertTrue("Status is approved",
+				ApprovedClaim.class != ClaimListController.getCurrentClaim()
+						.getStatus());
+
+	
+
+	}
 }
