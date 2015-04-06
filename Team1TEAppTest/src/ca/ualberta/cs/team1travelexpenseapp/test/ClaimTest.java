@@ -214,9 +214,14 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	}
 	//US01.06.01
 	public void testSaveClaims() {
+		activity = getActivity();
 		final String uniqueName = UUID.randomUUID().toString();
 		//need to test saving so can't use MockClaimant, create a new user with unique name instead
-		Claimant user = new Claimant(uniqueName);
+		Claimant user = new Claimant("testUser");
+		
+		//initManager so we can save
+		user.initManagers(activity.getApplicationContext());
+		UserSingleton.getUserSingleton().setUser(user);
 		// Start the main activity of the application under test
 		Activity activity = getActivity();
 		// user has Created and fill the claim with values
@@ -231,27 +236,36 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		expenseList.setExpenseList(expenses);
 		user.getClaimList().addClaim(claim);
 		
-	    // Stop the activity claim info should be saved
+	    // Stop the activity and clear the logged in user, claim info should be saved
 		activity.finish();
+		UserSingleton.getUserSingleton().setUser(new Claimant(""));
 		
-	    // Create a new user with the same name and login as them in login screen, app should load the saved info
-		LoginActivity loginActivity = new LoginActivity();
-		Intent intent = new Intent(loginActivity, LoginActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		
-		loginActivity.startActivity(intent);
+	    //get a new login activity to test if the info is saved
+		Intent intent = new Intent(activity, LoginActivity.class);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(LoginActivity.class.getName(), null, false);
+		activity.startActivity(intent);
+		LoginActivity loginActivity = (LoginActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		
 		final EditText namefield = (EditText) loginActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.userNameField);
+		final Button userLogin = (Button) loginActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.userButton);
 		
-		
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
 		loginActivity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
 		    	namefield.setText(uniqueName);
+		    	userLogin.performClick();
+		    	
 		    }
  		});
 		getInstrumentation().waitForIdleSync();
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		ClaimantClaimsListActivity claimListActivity = (ClaimantClaimsListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
@@ -262,7 +276,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		
 		assertNotNull("claim was not saved", claimInfo);
-		assertEquals("claim info was not saved as expected:\n"+claimInfo.getText().toString()+"\nv.s.\n"+claim.toString(), claimInfo.getText().toString(), claim.toString());
+		assertEquals("claim info was not saved as expected:\n"+claimInfo.getText().toString()+"\nv.s.\n"+claim.toString(),
+				claimInfo.getText().toString(), claim.toString());
 		
 		activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
 		claimListActivity.runOnUiThread(new Runnable() {
@@ -275,7 +290,12 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		final ListView expenseListView = (ListView) expenseListActivity.findViewById(
 				ca.ualberta.cs.team1travelexpenseapp.R.id.claimantExpensesList);
-			
+		
+		TextView expenseInfo = (TextView) expenseListView.getChildAt(0);
+		
+		assertNotNull("expense was not saved", expenseInfo);
+		assertEquals("claim info was not saved as expected:\n"+expenseInfo.getText().toString()+"\nv.s.\n"+expense.toString(),
+				expenseInfo.getText().toString(), claim.toString());	
 	}
 //	
 //	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
