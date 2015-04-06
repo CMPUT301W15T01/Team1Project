@@ -43,7 +43,7 @@ public class ApproverClaimListManager extends ClaimListManager{
 	
 	private void saveClaimToWeb(final Claim claim){
 		if(NetworkAvailable()){
-			
+			Log.d("approvalTest", "network available");
 			Thread t=new Thread(new Runnable() {
 		        public void run() {
 					HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
@@ -62,28 +62,40 @@ public class ApproverClaimListManager extends ClaimListManager{
 					HttpResponse response = null;
 					try {
 						response = httpclient.execute(httpPost);
-						claim.setSynced(true);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+						return;
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+						return;
 					}
-			
-					String status = response.getStatusLine().toString();
-					Log.d("onlineTest", status);
-					//do something with this response if necessary
-					HttpEntity entity = response.getEntity();
+					int statusCode=response.getStatusLine().getStatusCode();
+					Log.d("approvalTest", Integer.toString(statusCode));
+					if(statusCode==200){
+						//claim is synced if it is successfully saved to web
+						claim.setSynced(true);
+						Log.d("approvalTest", "Claim saved!");
+						
+					}
 		        }
 			});
 			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	private void saveClaimsToWeb(ArrayList<Claim> claims){
 		Log.d("approvalTest", "Approver saved");
 		for(Claim claim: claims){
+			Log.d("approvalTest", claim.getUniqueId().toString());
+			Log.d("approvalTest", claim.toString());
 			saveClaimToWeb(claim);
 		}
 	}

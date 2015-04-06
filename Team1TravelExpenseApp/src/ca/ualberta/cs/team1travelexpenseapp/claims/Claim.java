@@ -33,7 +33,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	private ArrayList<Destination> destinationList;
 	private ArrayList<Tag> claimTagList;
 	private boolean isComplete;
-	private ArrayList<User> approverList;
+	private ArrayList<String> approverList;
 	private Map<String, String> commentList;
 	private ArrayList<Listener> listeners;
 	transient private Class<?> status;
@@ -70,7 +70,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		claimTagList          = new ArrayList<Tag>();
 		status                = Claim.class;
 		isComplete            = false;
-		approverList          = new ArrayList<User>();
+		approverList          = new ArrayList<String>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
@@ -90,7 +90,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 		claimTagList          = new ArrayList<Tag>();
 		status                = Claim.class;
 		isComplete            = false;
-		approverList          = new ArrayList<User>();
+		approverList          = new ArrayList<String>();
 		commentList           = new HashMap<String, String>();
 		listeners             = new ArrayList<Listener>();
 		expenseList           = new ExpenseList();
@@ -219,7 +219,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * Get the list of approvers for the current Claim
 	 * @return ArrayList of Users corresponding to the approvers who have returned or approved the claim
 	 */
-	public ArrayList<User> getApproverList() {
+	public ArrayList<String> getApproverList() {
 		return approverList;
 	}
 
@@ -227,7 +227,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * Set the list of approvers for the current Claim
 	 * @param approverList ArrayList of Users corresponding to the approvers who have returned or approved the claim
 	 */
-	public void setApproverList(ArrayList<User> approverList) {
+	public void setApproverList(ArrayList<String> approverList) {
 		this.approverList = approverList;
 	}
 

@@ -32,6 +32,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.location.Location;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -96,7 +97,7 @@ public class ClaimListController {
 		//As an approver, I want to return a submitted expense claim that was not approved, 
 		//denoting the claim status as returned and setting my name as the approver for the expense claim.
 		//currentClaim.setStatus(ReturnedClaim.class);
-		currentClaim.getApproverList().add(user);
+		currentClaim.getApproverList().add(user.getName());
 		currentClaim.setApproverList(currentClaim.getApproverList());
 	}
 	
@@ -338,13 +339,16 @@ public class ClaimListController {
 		Claim approvedClaim =  getCurrentClaim().changeStatus(ApprovedClaim.class);		
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
-		ArrayList<User> approverList = approvedClaim.getApproverList();
-		approverList.add(currentUser);
+		ArrayList<String> approverList = approvedClaim.getApproverList();
+		approverList.add(currentUser.getName());
 		approvedClaim.setApproverList(approverList);
 		changeClaim(approvedClaim);
+		Log.d("approvalTest",approvedClaim.getUniqueId().toString());
 		//sync with server then update the local list to reflect the returned claim
 		claimsList.saveClaims();
-		claimsList.loadClaims();
+		//ArrayList<Claim> claims=claimsList.getClaims();
+		//claims.remove(approvedClaim);
+		//claimsList.setClaimList(claims);
 	}
 	/**
 	 * The onClick method for the return button
@@ -352,12 +356,16 @@ public class ClaimListController {
 	 */
 	public void onReturnClick() {
 		User currentUser = UserSingleton.getUserSingleton().getUser();
-		currentClaim.getApproverList().add(currentUser);
+		currentClaim.getApproverList().add(currentUser.getName());
 		currentClaim.setApproverList(currentClaim.getApproverList());
-		changeClaim((ReturnedClaim)currentClaim.changeStatus(ReturnedClaim.class));
+		ReturnedClaim returnedClaim = (ReturnedClaim)currentClaim.changeStatus(ReturnedClaim.class);
+		changeClaim(returnedClaim);
 		//sync with server then update the local list to reflect the returned claim
 		claimsList.saveClaims();
-		claimsList.loadClaims();	
+		//ArrayList<Claim> claims=claimsList.getClaims();
+		//claims.remove(returnedClaim);
+		//claimsList.setClaimList(claims);
+		
 	}
 	/**
 	 * The onClick method for the comment button
