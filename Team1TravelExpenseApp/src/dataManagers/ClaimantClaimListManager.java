@@ -321,13 +321,24 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	public void onConnect(){
-		ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
+		final ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
 		for(Claim claim: claimList.getClaims()){
 			if(!claim.isSynced()){
 				unsyncedClaims.add(claim);
 			}
 		}
-		saveClaimsToWeb(unsyncedClaims);
+		Thread t=new Thread(new Runnable() {
+	        public void run() {
+				saveClaimsToWeb(unsyncedClaims);
+				}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
