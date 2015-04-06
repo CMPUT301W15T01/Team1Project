@@ -405,9 +405,9 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 			str += currency.getValue() + "-" + currency.getKey() + " ";
 		}
 		if (getStatus() == SubmittedClaim.class) {
-			str += "\nApprovers";
+			str += "\nApprovers: ";
 			for (User approverName: getApproverList()) {
-				str += approverName.toString();
+				str += approverName.toString()+" ";
 
 			}
 		}
