@@ -22,7 +22,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -37,6 +39,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -55,6 +58,7 @@ import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
  *
  */
 public class EditExpenseActivity extends Activity {
+	public AlertDialog deletePhotoDialog;
 	private ExpenseList expenseList;
 	private ExpenseListController expenseListController;
 	private Expense expense;
@@ -117,27 +121,18 @@ public class EditExpenseActivity extends Activity {
 	    else if (requestCode == CAMERA_CAPTURE_REQUEST) {
 	    	Log.d("Testing Add Photo", "onActivityResult Started");
 			if (resultCode == RESULT_OK) {
-				//tv.setText("Result is OK!");
-				//button.setImageDrawable(Drawable.createFromPath(imageFileUri.getPath()));
 				Log.d("Testing Add Photo", "Creating File: " + photoFile.getName());	
 
 				//Should be moved to a controller
-				//attachReceipt(photoUri, photoFile);
-				expense.setReceiptUri(photoUri);
-				expense.setReceiptFile(photoFile);
-				Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
-				
-				thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));
-				//receiptButton.setImageDrawable(Drawable.createFromPath(photoFile.getAbsolutePath()));
-				//Hopefully this will show the Image in the image Button
+				attachReceipt(photoUri, photoFile);
 			}
-				
-				
-				
+	
 	    } else if (resultCode == RESULT_CANCELED) {
 	    	Log.d("Testing Add Photo", "result is canceled");
+	    	Toast.makeText(getApplicationContext(), "Photo not taken", Toast.LENGTH_SHORT).show();
 	    } else {
 	    	Log.d("Testing Add Photo", "Result is neither canceled or okay");
+	    	Toast.makeText(getApplicationContext(), "An unexpected error has occured. Photo not taken", Toast.LENGTH_SHORT).show();
 				
 	    }
 	}
@@ -170,6 +165,10 @@ public class EditExpenseActivity extends Activity {
 			}
 		}
 		
+		CheckBox flaggedCheckBox = (CheckBox) this.findViewById(R.id.incompleteCheck);
+		flaggedCheckBox.setChecked(expense.isFlagged);
+
+		
 		if ( claim.getStatus() == SubmittedClaim.class || 
 				claim.getStatus() == ApprovedClaim.class ){
 			//Disable UI if the claim is not editable
@@ -179,14 +178,18 @@ public class EditExpenseActivity extends Activity {
 			
 			Button saveButton = (Button) this.findViewById(R.id.saveExpenseButton);
 			saveButton.setEnabled(false);
+			
+			Button deletePhotoButton = (Button) this.findViewById(R.id.deletePhotoButton);
+			deletePhotoButton.setEnabled(false);
+			
+			Button addPhotoButton = (Button) this.findViewById(R.id.addPhotoButton);
+			addPhotoButton.setEnabled(false);
 		}
-		
-		
-		//TEMPORARY code to show the photo in the image button
+
 		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceiptFile() != null));
 		if (expense.getReceiptFile() != null){			
 			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));
-			Log.d("Testing Add Photo", "Update thumbed");
+			Log.d("Testing Add Photo", "Update thumbed." + " has size: " + String.valueOf(expense.getReceiptFile().length()));
 		}
 	} 
 	
@@ -200,7 +203,6 @@ public class EditExpenseActivity extends Activity {
 	 * @param v
 	 */
 	public void onExpenseSaveClick(View v) {
-
 		//editing model happens in controller 
 		expenseListController.onExpenseSaveClick(this);
 	}
@@ -224,53 +226,13 @@ public class EditExpenseActivity extends Activity {
 	 * @param v
 	 * 
 	 */
-	//Currently adds a test photo to the receipt and code that adds the photo should be moved to ExpenseListController
-	
-	
 	// Code for taking a photo Heavily influenced/copied from https://developer.android.com/training/camera/photobasics.html April 2015
 	// and https://github.com/dfserrano/BogoPicLab
 	public void takePhoto(View v){
-	//WARNING: TEMPORARY code to add a test photo as the receipt, needs to be replaced with actually taking a photo
 	Log.d("Testing Add Photo", "TakePhoto Started");
-	//ClaimListController.getUser().getName() + "/Receipts/" + (new Date().getTime()) + ".jpg";
-	
-//	try{
-//		Bitmap bm = BitmapFactory.decodeResource(this.getResources(), R.drawable.test_photo);
-//		FileOutputStream fos = this.openFileOutput(filePath, Context.MODE_PRIVATE); //ClaimListController.getUser().getName() + "/Receipts/" + /*new Date().getTime() +*/ ".jpg", Context.MODE_PRIVATE);
-//		bm.compress(CompressFormat.JPEG, 100, fos);
-//		fos.flush();
-//		fos.close();
-//		//adding the tumbnail, should be moved away from this temporary code
-//		thumbnailReceipt(bm);
-//		
-//		
-//	} catch (FileNotFoundException e) {
-//		Log.d("Testing Add Photo", "FileNotFound");
-//		e.printStackTrace();
-//		
-//	} catch (IOException e) {
-//		Log.d("Testing Add Photo", "IO Exception");
-//		e.printStackTrace();
-//		
-//	}
-//	
 	
 	Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	//if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-	//	startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-	//}
-	
-//	String filePath = String.valueOf(new Date().getTime()) + ".jpg";
-//	//File photoFile = new  File(this.getFilesDir().getAbsolutePath() + 
-//		//	"/" + filePath);
-//	File dir = new File(this.getFilesDir().getAbsolutePath());
-//	try {
-//		photoFile = File.createTempFile(String.valueOf(new Date().getTime()), ".jpg", dir);
-//	} catch (IOException e) {
-//		// What to do when the file fails to be created. 
-//		e.printStackTrace();
-//	}
-	
+
 	// Create a folder to store pictures
 	String folder = Environment.getExternalStorageDirectory()
 			.getAbsolutePath() + "/Receipts";
@@ -288,7 +250,6 @@ public class EditExpenseActivity extends Activity {
 	
 	Log.d("Testing Add Photo", "File created at:" + photoFile.toString() + " has size: " + String.valueOf(photoFile.length()));
 	
-	//Intent takePictureIntent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	if (photoFile != null) {
 		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
 				Uri.fromFile(photoFile));
@@ -296,11 +257,40 @@ public class EditExpenseActivity extends Activity {
 	}
 	}
 		
+	public boolean onDeletePhotoClick(View v){
+		if(expense.getReceiptFile() == null){
+			Toast.makeText(getApplicationContext(), "There is no receipt photo to delete", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
+		//taken and modified from http://developer.android.com/guide/topics/ui/dialogs.html (April, 2015)
+		AlertDialog.Builder deletePhotoDialogBuilder = new AlertDialog.Builder(EditExpenseActivity.this);
+
+		deletePhotoDialogBuilder.setNegativeButton("delete", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				DeleteReceipt();
+			}
+		});
+		deletePhotoDialogBuilder.setPositiveButton("cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				//Do nothing
+			}
+		});
+		deletePhotoDialogBuilder.setTitle("Are you sure you want to delete the attached photo receipt?");
+		
+		deletePhotoDialog=deletePhotoDialogBuilder.create();
+
+		deletePhotoDialog.show();
+		return true;
+	}	
+    
 	// Should Be moved to a controller
-	public void onDeletePhotoClick(View v){
+	public void DeleteReceipt(){
+		
 		if(expense.getReceiptFile() != null){
-			File file = new File(expense.getReceiptFile().getPath());
-			file.delete();
+			if(expense.getReceiptFile().exists()){
+				expense.getReceiptFile().delete();
+			}
 			thumbnailReceipt(null);
 			expense.setReceiptFile(null);
 			expense.setReceiptUri(null);
@@ -316,21 +306,28 @@ public class EditExpenseActivity extends Activity {
 	//Places a photo into the button, currently places the entire photo, should maybe use a thumbnail
 	protected void thumbnailReceipt(Bitmap bm){
 		ImageView viewReciept = (ImageView) this.findViewById( R.id.viewPhotoButton);
-		viewReciept.setImageBitmap(bm); 
-		
-		//show the size of the current photo
+
 		TextView receiptText = (TextView) this.findViewById(R.id.recieptHeader);
 		if(bm != null && expense.getReceiptFile() != null){		
+			viewReciept.setImageBitmap(bm); 
 			receiptText.setText("Receipt Image " + " File Size: " + String.valueOf(expense.getReceiptFile().length()) + "Bytes");
 		} else{
 			receiptText.setText("Receipt Image");
+			viewReciept.setImageDrawable(getResources().getDrawable(R.drawable.default_receipt));
 		}
 		
 	}
 	
 	// Should Be moved to a controller
 	protected void attachReceipt(Uri photoUri, File photoFile){
-		expense.setReceiptFile(photoFile);
+		if (expense.setReceiptFile(photoFile)){
+			Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
+			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));		
+		}
+		else{
+			Toast.makeText(getApplicationContext(), "An error occured while attempting to compress the photo", Toast.LENGTH_SHORT).show();
+			Log.d("Testing Add Photo", "File failed to be compressed the Expense");
+		}
 		expense.setReceiptUri(photoUri);
 		
 	}

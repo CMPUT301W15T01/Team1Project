@@ -42,6 +42,8 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.LoginActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
@@ -80,11 +82,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	public ExpenseEditTest() throws Exception {
 		super(ClaimantClaimsListActivity.class);
 	}
-	protected void tearDown() throws Exception{
-		cleanUp();
-		super.tearDown();
-		
-	}
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -105,7 +102,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		getExpenseListactivity();
 	}
 	
-	protected void cleanUp(){
+	protected void tearDown() throws Exception{
 		instrumentation.waitForIdleSync();
 		if(activity != null){
 			activity.finish();
@@ -127,6 +124,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		});
 		instrumentation.waitForIdleSync();
 
+		super.tearDown();
+		
 	}
 	
 	// US04.01.01
@@ -136,9 +135,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	public void testAddExpenseItem() {
 		// precondition
 		activity = getAddExpenseActivity();	
-		//User user = new User("Claimant", "EditExpenseTest");
-		//assertEquals("User is claimant", "Claimant", user.type());
-		
+
 		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
@@ -152,15 +149,17 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		});
 		instrumentation.waitForIdleSync();
 		
-		expense = ExpenseListController.getCurrentExpense();
-		
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+		//assertNotNull(expense);
+
+		Log.d("AddExpenseTest", "Current expense: " + expense.toString());
 		// Ensure that the expense contains all of the set data
+		assertEquals("Description?", "Description", expense.getDescription());
 		Calendar   calendar   = Calendar.getInstance();
 		calendar.set(2005, 1, 8);
 		SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		assertEquals("Date?", dateformat.format(calendar.getTime()), dateformat.format(expense.getDate()));
 		assertEquals("Category?", categorySpinner.getItemAtPosition(5), expense.getCategory());
-		assertEquals("Description?", "Description", expense.getDescription());
 		assertEquals("Amount?", BigDecimal.valueOf(10.55), expense.getAmount());
 				assertEquals("Currency?", currencySpinner.getItemAtPosition(5), expense.getCurrency());
 
@@ -239,21 +238,28 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
-		      // click button and open next activity.
-		    	checkBox.performClick();
+		    	checkBox.setChecked(true);
+		    	saveButton.performClick();
 		    }
 		});
 		instrumentation.waitForIdleSync();	
-		assertTrue("Clicking check box does not flag expense", expense.isComplete());		
+		
+		RefreshEditExpenseActivity();
+		
+		assertTrue("Clicking check box does not flag expense", expense.isFlagged());	
+		
 		instrumentation.runOnMainSync(new Runnable(){
 		    @Override
 		    public void run() {
-		      // click button and open next activity.
-		    	checkBox.performClick();
+		    	checkBox.setChecked(false);
+		    	saveButton.performClick();
 		    }
 		});
 		instrumentation.waitForIdleSync();	
-		assertFalse("Clicking check box does not unflag expense", expense.isComplete());	
+		
+		RefreshEditExpenseActivity();
+
+		assertFalse("Clicking check box does not unflag expense", expense.isFlagged());	
 	}
 	
 	// US04.05.01
@@ -280,7 +286,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertEquals("Date not set right", datePicker.getYear(), 2005);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), datePicker);
 		
-		assertEquals("Amount not set right", costText.getText().toString(), "10.55");
+		assertEquals("Amount not set right", costText.getText().toString(), "5.55");
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), costText);
 		
 		assertEquals("category not set right", String.valueOf(categorySpinner.getSelectedItem()), String.valueOf(categorySpinner.getItemAtPosition(5)));
@@ -308,7 +314,11 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();	
-		//claim.setStatus(Claim.Status.submitted); -------------------------------------------------------------------
+		
+		//claim.setStatus(Claim.Status.submitted); --------------------------------------------------------
+		//claim.s
+		claim.changeStatus(SubmittedClaim.class);
+		
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -321,6 +331,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	
 		//claim.setStatus(Claim.Status.inProgress);		---------------------------------------------------------------
 		//claim.setStatus(Claim.Status.submitted); --------------------------------------------------------------------
+		claim.changeStatus(ProgressClaim.class);
 		
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -330,7 +341,9 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		});
 		instrumentation.waitForIdleSync();	
 		
-		assertEquals("Desc not saved after edit", descText.getText().toString(), "Test Edit");
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+		//assertEquals("Desc not saved after edit", descText.getText().toString(), "Test Edit");
+		assertEquals("Desc not saved after edit", expense.getDescription(), "Test Edit");
 	}
 
 	// US04.07.01
@@ -371,10 +384,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();
-		
-		//assertEquals("New expense not deleted", claim.getExpenseList().getExpenses().size(), 0);
-		
-		//listActivity.finish();
 
 		ArrayList <Expense> expectedExpenses=new ArrayList<Expense>();
 		expectedExpenses.add(expense1);
@@ -437,34 +446,26 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		// A test photo is added to simulate an actual photo being taken
 		expense.setReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
+
+		claim.changeStatus(SubmittedClaim.class);
 		
-		//claim.setStatus(Claim.Status.submitted); -----------------------------------------------------------------------------
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
 				saveButton.performClick();
 			}
 		});
-		instrumentation.waitForIdleSync();	
-		// restart the activity
-		//activity.finish();
-		ActivityMonitor activityMonitor = instrumentation.addMonitor(EditExpenseActivity.class.getName(), null, false);
-		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
-		 listActivity.runOnUiThread(new Runnable() {
-			    @Override
-			    public void run() {
-			      // click an existing expense to open next activity.
-			    	listOfExpenses.performItemClick(listOfExpenses.getAdapter().getView(0, null, null),0, 0);
-			    }
-		});
-		instrumentation.waitForIdleSync();	
-		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 	
+		
+		
+		RefreshEditExpenseActivity();
 		
 		assertNotNull(activity);
 		setUiElements();
-		//activity = getAddExpenseActivity();
-		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() == null);	
-		//claim.setStatus(Claim.Status.inProgress); ------------------------------------------------------------------------------
+
+		assertTrue("Submitted, Image should not be set in button", imageButton.getDrawable() != activity.getResources().getDrawable(R.drawable.test_photo));	
+		
+		claim.changeStatus(ProgressClaim.class);
+		
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
 			public void run(){
@@ -506,8 +507,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 	}
 	
-	
-	
 	// US06.02.01
 	// As a claimant, I want to view any attached photographic receipt for an expense 
 	
@@ -529,9 +528,8 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();	
-		activity.finish();
-		activity = getAddExpenseActivity();
-		
+		RefreshEditExpenseActivity();
+
 		// An expense is currently being edited or added and a photo is already attached to it
 		
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
@@ -560,24 +558,34 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		});
 		instrumentation.waitForIdleSync();	
 		// restart the activity
-		activity.finish();
-		activity = getAddExpenseActivity();
+		RefreshEditExpenseActivity();
 		//An editable expense is currently being edited or added and a photo is already attached to it 
-
 		
-		assertTrue("Image set so should be set in button", imageButton.getDrawable() != null);
+		assertTrue("Image set so should be set in button", imageButton.getDrawable()  != activity.getResources().getDrawable(R.drawable.default_receipt));
 		assertTrue("Image set so file should be set", expense.getReceiptFile() != null);
 		
-		//click delete photo 
-		activity.findViewById(R.id.deletePhotoButton).performClick();	
-		//click yes
-		//activity.findViewById(R.id.yesdeletePhotoButton).performClick();
-		//assertSame(ClaimListController.getCurrentClaim().getStatus(),Claim.Status.submitted); -------------------------------------------------------
 		
+		//click delete photo then click delete
+		final Button deletePhotoButton = (Button) activity.findViewById(R.id.deletePhotoButton);
+		instrumentation.runOnMainSync(new Runnable(){
+			@Override
+			public void run() {
+				//View item = listOfExpenses.getChildAt(1);
+				// click button, should produce dialog to choose edit or delete claim
+				//item.performLongClick();
+				deletePhotoButton.performClick();//.performClick();
+				AlertDialog dialog=activity.deletePhotoDialog;
+				
+				//this should click the delete button in the dialog
+				Button deleteButton=(Button)dialog.getButton(android.content.DialogInterface.BUTTON_NEGATIVE);
+			    deleteButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();
+
 		//The editable expense no longer has a photo attached to it
-		assertTrue("Image deleted so should be not be set in button", imageButton.getDrawable() == null);
 		assertTrue("Image deleted so file should not be set", expense.getReceiptFile() == null);
-		
+		assertFalse("Image file still exists after receipt is deleted", photoFile.exists());	
 	}
 	
 	// US06.04.01
@@ -654,7 +662,9 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertNotNull(activity);
 		setUiElements();
 		
-		expense = ExpenseListController.getCurrentExpense();
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+		assertNotNull(expense);
+		
 		return activity;
 	}
 	
@@ -692,14 +702,31 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		return activity;
 	}
 	
+	private void RefreshEditExpenseActivity(){
+		activity.finish();
+		instrumentation.waitForIdleSync();	
+		ActivityMonitor activityMonitor = instrumentation.addMonitor(EditExpenseActivity.class.getName(), null, false);
+		final ListView listOfExpenses = (ListView) listActivity.findViewById(R.id.claimantExpensesList);
+		 listActivity.runOnUiThread(new Runnable() {
+			    @Override
+			    public void run() {
+			      // click an existing expense to open next activity.
+			    	listOfExpenses.performItemClick(listOfExpenses.getAdapter().getView(0, null, null),0, 0);
+			    }
+		});
+		instrumentation.waitForIdleSync();	
+		activity = (EditExpenseActivity) instrumentation.waitForMonitorWithTimeout(activityMonitor, 10000); 
+		expense=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense();
+	}
+	
 	private void setUiElements(){
 		descText = (EditText) activity.findViewById(R.id.descriptionBody);
     	datePicker = (DatePicker) activity.findViewById( R.id.expenseDate);  
     	costText = (EditText) activity.findViewById( R.id.currencyBody);  
     	categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector); 
     	currencySpinner = (Spinner) activity.findViewById(R.id.currencySelector);  
-    	imageButton = (ImageButton) activity.findViewById(R.id.viewPhotoButton);
 		saveButton = (Button) activity.findViewById(R.id.saveExpenseButton);	
+    	imageButton = (ImageButton) activity.findViewById(R.id.viewPhotoButton);
 	}
 	
 	//Create a Photo file for testing to avoid creating a unique file each time these tests are run
@@ -718,31 +745,6 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		File photoFile = new  File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
 		return photoFile;
 	}
-	
-//	private File createComplexTestPhotoFile(){
-//		try {		
-//			Bitmap bm = Bitmap.createBitmap(3000, 3000, Config.ARGB_8888);
-//			for (int x = 0; x < 3000; ++x){
-//				for (int y = 0; y < 3000; ++y){
-//					bm.setPixel(x, y, (int) (Color.argb(255, 
-//							Double.valueOf(Math.random()*255).intValue(),
-//							Double.valueOf(Math.random()*255).intValue(),
-//							Double.valueOf(Math.random()*255).intValue())));
-//				}
-//				
-//			}	
-//			FileOutputStream fos = activity.openFileOutput("testPhoto.jpg", Context.MODE_PRIVATE);
-//			bm.compress(CompressFormat.JPEG, 100, fos);
-//			fos.flush();
-//			fos.close();
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		File photoFile = new  File(activity.getFilesDir().getAbsolutePath() + "/testPhoto.jpg");
-//		return photoFile;
-//	}
 }
 
 

@@ -23,8 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -253,22 +251,19 @@ public class Expense {
 	 * @param receipt
 	 * The file object for the stored image.
 	 */
-	public void setReceiptFile(File receipt) {
+	public boolean setReceiptFile(File receipt) {
 		// Check if the file needs to be compressed first		
-		if(receipt != null){
+		if(receipt != null && receipt.exists()){
 			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
 			if(receipt.length() >= MAX_IMAGE_SIZE){
-				if(this.compressPhoto(receipt)){
-					// Photo successfully compressed
-					this.receiptFile = receipt;
-				} 				
-				else{
+				if(!this.compressPhoto(receipt)){
 					// Photo failed to be compressed
-					return;
+					return false;
 				}
 			}
 		}
 		this.receiptFile = receipt;
+		return true;
 	}
 	
 	/**
@@ -353,17 +348,18 @@ public class Expense {
 		
 		FileOutputStream fos = null;
 		try {
-			//fos = activity2.openFileOutput(photoFile.getAbsolutePath().toString(), Context.MODE_PRIVATE);
 			fos = new FileOutputStream(photoFile);
-			photo.compress(CompressFormat.JPEG, 60, fos);
+			photo.compress(CompressFormat.JPEG, 50, fos);
 			fos.flush();
 			fos.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Log.e("Expense CompressingPhoto", "Photo File not found");
+			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Log.e("Expense CompressingPhoto", "IO Exception");
+			return false;
 		}
 		
 		if (photoFile.length() < MAX_IMAGE_SIZE){

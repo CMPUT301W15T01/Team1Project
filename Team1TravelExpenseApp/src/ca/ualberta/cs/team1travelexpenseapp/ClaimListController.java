@@ -335,7 +335,7 @@ public class ClaimListController {
 		// denote the claim status as approved and set approver
 		//name as the approver for the expense claim.
 		User currentUser = UserSingleton.getUserSingleton().getUser();
-		ApprovedClaim approvedClaim = (ApprovedClaim) getCurrentClaim().changeStatus(ApprovedClaim.class);		
+		Claim approvedClaim =  getCurrentClaim().changeStatus(ApprovedClaim.class);		
 		//approvedClaim.setStatus(ApprovedClaim.class);
 		
 		ArrayList<User> approverList = approvedClaim.getApproverList();

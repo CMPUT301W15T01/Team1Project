@@ -17,6 +17,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ExpenseListController;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
@@ -174,40 +175,35 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  activity.finish();
 		  nextActivity.finish();
 	}
-//	//US01.05.01
-//	public void testDeleteClaim() {
-//		// Creating a claim and adding test destination values
-//		Claim claim = new Claim();
-//		claim.addDestination("dest 1");
-//		claim.addDestination("dest 2");	
-//		ClaimListController list = new ClaimListController();
-//		list.add(claim);
-//		// Add the claim and assert it's not empty
-//		assertTrue("list is empty",list.length()==1);
-//		//get activity and assert user has logged in
-//		ClaimActivity Activity = getActivity();
-//		User.login("bob");
-//		assertTrue("not logged in",User.loggedin());
-//		
-//		 // get list view 
-// 		ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimlistview);
-//		// longclick the claim
-//		  Activity.runOnUiThread(new Runnable() {
-//		    @Override
-//		    public void run() {
-//		      // long click and remove claim.
-//	              view.getAdapter().getView(0, null, null).performLongClick();
-//	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
-//		    AlertDialog dialog = Activity.getLastDialog(); 
-//        		 performClick(dialog.getButton(DialogInterface.DELETE_BUTTON));
-//		    }
-//		  });
-//		// Create a claim and add it to the controller
-//		ClaimListController list = new ClaimListController();
-//		// Remove the claim and assert it's empty
-//		assertTrue("empty list",list.length()==0);
-//
-//	}
+	//US01.05.01
+	public void testDeleteClaim() {
+		// Creating a claim and adding test destination values
+		Claim claim = new Claim();
+		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
+		claim.addDestination(new Destination("dest 2", "reason 2",new Location("")));
+		ClaimListController list = new ClaimListController(new ClaimList(user));
+		list.addClaim(claim);
+
+		//get activity and assert user has logged in
+		final ClaimantClaimsListActivity Activity = getActivity();
+		
+		
+		 // get list view 
+ 		final ListView view = (ListView) Activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		// longclick the claim
+		  Activity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		      // long click and remove claim.
+	              view.getAdapter().getView(0, null, null).performLongClick();
+	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
+	              Activity.editClaimDialog.getButton(Dialog.BUTTON_NEUTRAL).performClick();
+		    }
+		  });
+		// Remove the claim and assert it's empty
+		assertTrue("empty list",list.getClaimCount()==0);
+
+	}
 	//US01.06.01
 	public void testSaveClaims() {
 		// Start the main activity of the application under test

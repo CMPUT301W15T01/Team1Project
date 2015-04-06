@@ -1,8 +1,8 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
 import java.io.File;
-
 import testObjects.MockApprover;
+import android.annotation.SuppressLint;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
 import android.test.ActivityInstrumentationTestCase2;
@@ -55,7 +55,7 @@ public class ApproverExpenseListTest extends
 	protected void setUp() throws Exception {
 		super.setUp();
 		Log.d("ApproverExpenseTest", "Setup Started");
-		Approver user = new MockApprover("CoolGuy");
+		user = new MockApprover("CoolGuy");
 		Log.d("ApproverExpenseTest", "User Created");
 		UserSingleton.getUserSingleton().setUser(user);
 		// user.getClaimList().getClaims().clear();
@@ -73,34 +73,19 @@ public class ApproverExpenseListTest extends
 
 	}
 
-	protected void cleanUp() {
-		instrumentation.waitForIdleSync();
+	protected void tearDown() throws Exception {
 		if (activity != null) {
 			activity.finish();
 		}
 		if (expenselistActivity != null) {
 			expenselistActivity.finish();
 		}
-
-		instrumentation.runOnMainSync(new Runnable() {
-			@Override
-			public void run() {
-				if (ExpenseListController.getExpenseList().getExpenses()
-						.contains(expense)) {
-					ExpenseListController.removeExpense(expense);
-				}
-				if (ClaimListController.getClaimList().getClaims()
-						.contains(claim)) {
-					ClaimListController.deleteClaim(claim);
-				}
-			}
-		});
-		instrumentation.waitForIdleSync();
-
-	}
-
-	protected void tearDown() throws Exception {
-		//cleanUp();
+		if (claimlistActivity != null) {
+			claimlistActivity.finish();
+		}
+		if (claimInfoActivity != null) {
+			claimInfoActivity.finish();
+		}
 		super.tearDown();
 
 	}
@@ -121,18 +106,20 @@ public class ApproverExpenseListTest extends
 
 				ExpenseListController = new ExpenseListController(claim
 						.getExpenseList());
-				claim.getExpenseList().getExpenses().add(expense = new Expense());
+				claim.getExpenseList().getExpenses()
+						.add(expense = new Expense());
 			}
 		});
-		
+
 		instrumentation.waitForIdleSync();
 
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				listOfClaims.performItemClick(listOfClaims.getChildAt(0), 0, listOfClaims.getAdapter()
-						.getItemId(0));
-				//listOfClaims.performItemClick(listOfClaims, 0, listOfClaims.getId());
+				listOfClaims.performItemClick(listOfClaims.getChildAt(0), 0,
+						listOfClaims.getAdapter().getItemId(0));
+				// listOfClaims.performItemClick(listOfClaims, 0,
+				// listOfClaims.getId());
 			}
 		});
 		instrumentation.waitForIdleSync();
@@ -142,8 +129,6 @@ public class ApproverExpenseListTest extends
 		return expenselistActivity;
 	}
 
-
-
 	// US08.03.01
 	/*
 	 * Testing if we can see all of the claim info for approvers
@@ -151,8 +136,7 @@ public class ApproverExpenseListTest extends
 	public void testClaimInfo() {
 		activity = getApproverExpenseListactivity();
 		// init claim/expenses
-
-		ActivityMonitor activityMonitor = instrumentation.addMonitor(
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(
 				ApproverClaimInfo.class.getName(), null, false);
 		final ListView listOfexpenses = (ListView) expenselistActivity
 				.findViewById(R.id.approverExpensesList);
@@ -160,17 +144,18 @@ public class ApproverExpenseListTest extends
 		instrumentation.runOnMainSync(new Runnable() {
 			@Override
 			public void run() {
-				listOfexpenses.performItemClick(listOfexpenses.getChildAt(0), 0, listOfexpenses.getAdapter()
-						.getItemId(0));
+				listOfexpenses.performItemClick(listOfexpenses.getChildAt(0),
+						0, listOfexpenses.getAdapter().getItemId(0));
 			}
 		});
 		instrumentation.waitForIdleSync();
 		claimInfoActivity = (ApproverClaimInfo) instrumentation
-				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(expenselistActivity);
+				.waitForMonitorWithTimeout(activityMonitor, 1000);
+		assertNotNull(claimInfoActivity);
 		TextView text = (TextView) claimInfoActivity
 				.findViewById(R.id.ApproverClaimInfoTextView);
-		assertEquals("Can View Info", expense.toString(), text.getText().toString());
+		assertEquals("Can View Info", expense.toString(), text.getText()
+				.toString());
 
 	}
 
@@ -183,19 +168,12 @@ public class ApproverExpenseListTest extends
 	public void testApproverClaimsVisible() {
 		activity = getApproverExpenseListactivity();
 
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(
-				ApproverExpenseListActivity.class.getName(), null, false);
-
 		assertNotNull(activity);
 
 		ListView expenseListLV = (ListView) activity
 				.findViewById(R.id.approverExpensesList);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),
 				expenseListLV);
-
-		expenselistActivity = (ApproverExpenseListActivity) instrumentation
-				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(expenselistActivity);
 
 	}
 
@@ -211,14 +189,14 @@ public class ApproverExpenseListTest extends
 
 		activity = getApproverExpenseListactivity();
 
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(
+		ActivityMonitor activityMonitor = instrumentation.addMonitor(
 				ApproverClaimInfo.class.getName(), null, false);
 
 		final ListView expenseListLV = (ListView) activity
 				.findViewById(R.id.approverExpensesList);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(),
 				expenseListLV);
-		instrumentation.runOnMainSync(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				expenseListLV.performItemClick(expenseListLV.getAdapter()
@@ -226,17 +204,16 @@ public class ApproverExpenseListTest extends
 						.getItemId(0));
 			}
 		});
-		instrumentation.waitForIdleSync();
+
 		claimInfoActivity = (ApproverClaimInfo) instrumentation
 				.waitForMonitorWithTimeout(activityMonitor, 10000);
-		assertNotNull(expenselistActivity);
+		assertNotNull(claimInfoActivity);
 		TextView text = (TextView) claimInfoActivity
 				.findViewById(R.id.ApproverClaimInfoTextView);
-		assertEquals("Can View Info", ClaimListController.getCurrentClaim()
-				.toString(), text.getText());
+		assertEquals("Can View Info", expense.toString(), text.getText()
+				.toString());
 		ImageView receipt = (ImageView) claimInfoActivity
 				.findViewById(R.id.imageViewApproverReceipt);
-
 		ViewAsserts.assertOnScreen(
 				claimInfoActivity.getWindow().getDecorView(), receipt);
 
@@ -244,13 +221,13 @@ public class ApproverExpenseListTest extends
 
 	// US08.08.01
 	/*
-	 * Tests if the Approver's name is attached to an approved claim and status is
-	 * approved
+	 * Tests if the Approver's name is attached to an approved claim and status
+	 * is approved
 	 */
 	public void testApproverApprovesClaim() {
-		
+
 		activity = getApproverExpenseListactivity();
-		
+
 		// get approve button
 		final Button button = (Button) activity
 				.findViewById(R.id.approveButton);
@@ -265,16 +242,42 @@ public class ApproverExpenseListTest extends
 
 		});
 		getInstrumentation().waitForIdleSync();
-		
-		assertEquals("Status is approved", ApprovedClaim.class,
+
+		assertEquals("Status is not approved", ApprovedClaim.class,
 				ClaimListController.getCurrentClaim().getStatus());
 
-		Approver approver = (Approver) ClaimListController.getCurrentClaim().getApproverList()
-				.get(0);
-		assertEquals("Approver does not match", approver.getName() , ClaimListController.getUser()
-				.getName());
-		assertEquals("The current approver is not the user", user, ClaimListController.getUser());
+		assertNotNull("Approver not added", ClaimListController
+				.getCurrentClaim().getApproverList());
+		assertEquals("The current approver is not the user", user,
+				UserSingleton.getUserSingleton().getUser());
 
 	}
 
+	/*
+	 * US08.09.01 added 2015-02-12 As an approver, I want to ensure I cannot
+	 * return or approve an expense claim for which I am the claimant.
+	 */
+	public void ApproverNotClaimant() {
+		getApproverExpenseListactivity();
+		claim.setClaimantName("CoolGuy");
+		final Button button = (Button) expenselistActivity
+				.findViewById(R.id.approveButton);
+		expenselistActivity.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// click approve button
+				button.performClick();
+			}
+
+		});
+		getInstrumentation().waitForIdleSync();
+
+		assertTrue("Status is approved",
+				ApprovedClaim.class != ClaimListController.getCurrentClaim()
+						.getStatus());
+
+	
+
+	}
 }

@@ -115,8 +115,11 @@ public class ApproverExpenseListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onApproveClick(View v) {
-		claimListController.onApproveClick();
-		finish();
+		if (!claim.getClaimantName().equals(user.getName())) {
+			claimListController.onApproveClick();
+			finish();
+		}
+
 	}
 	
 	/**
@@ -124,6 +127,7 @@ public class ApproverExpenseListActivity extends Activity {
 	 * @param v The button clicked by the user.
 	 */
 	public void onReturnClick(View v) {
+		
 		claimListController.onReturnClick();
 		finish();
 	}
