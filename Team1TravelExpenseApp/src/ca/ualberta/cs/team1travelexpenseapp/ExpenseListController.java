@@ -16,6 +16,7 @@ limitations under the License.
 package ca.ualberta.cs.team1travelexpenseapp;
 
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,10 +24,14 @@ import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 /**
  * Controller for all ExpenseLists, The contained ExpenseList will be automatically linked when expenses are being accessed.
@@ -180,6 +185,39 @@ public class ExpenseListController {
 	 */
 	public void onRemoveExpenseClick() {
 		removeExpense(getCurrentExpense());
+	}
+
+	/**
+	 * Called from EditExpenseActivity to delete the already attached 
+	 * photo receipt.
+	 */
+	public void DeleteReceipt(EditExpenseActivity editExpenseActivity){
+		
+		if(editExpenseActivity.expense.getReceiptFile() != null){
+			if(editExpenseActivity.expense.getReceiptFile().exists()){
+				editExpenseActivity.expense.getReceiptFile().delete();
+			}
+			editExpenseActivity.thumbnailReceipt(null);
+			editExpenseActivity.expense.setReceiptFile(null);
+			editExpenseActivity.expense.setReceiptUri(null);
+		}
+	}
+
+	/**
+	 * Called from EditExpenseActivity to attach a photo receipt to 
+	 * the expense.
+	 */
+	public void attachReceipt(EditExpenseActivity editExpenseActivity, Uri photoUri, File photoFile){
+		if (editExpenseActivity.expense.setReceiptFile(photoFile)){
+			Log.d("Testing Add Photo", "File Added to Expense? " + (editExpenseActivity.expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
+			editExpenseActivity.thumbnailReceipt(BitmapFactory.decodeFile(editExpenseActivity.expense.getReceiptFile().getAbsolutePath()));		
+		}
+		else{
+			Toast.makeText(editExpenseActivity.getApplicationContext(), "An error occured while attempting to compress the photo", Toast.LENGTH_SHORT).show();
+			Log.d("Testing Add Photo", "File failed to be compressed the Expense");
+		}
+		editExpenseActivity.expense.setReceiptUri(photoUri);
+		
 	}
 	
 }

@@ -61,7 +61,7 @@ public class EditExpenseActivity extends Activity {
 	public AlertDialog deletePhotoDialog;
 	private ExpenseList expenseList;
 	private ExpenseListController expenseListController;
-	private Expense expense;
+	Expense expense;
 	private Listener listener;
 	private Claim claim;
 	private ImageButton receiptButton;
@@ -124,7 +124,7 @@ public class EditExpenseActivity extends Activity {
 				Log.d("Testing Add Photo", "Creating File: " + photoFile.getName());	
 
 				//Should be moved to a controller
-				attachReceipt(photoUri, photoFile);
+				expenseListController.attachReceipt(this, photoUri, photoFile);
 			}
 	
 	    } else if (resultCode == RESULT_CANCELED) {
@@ -294,17 +294,8 @@ public class EditExpenseActivity extends Activity {
 		return true;
 	}	
     
-	// Should Be moved to a controller
 	public void DeleteReceipt(){
-		
-		if(expense.getReceiptFile() != null){
-			if(expense.getReceiptFile().exists()){
-				expense.getReceiptFile().delete();
-			}
-			thumbnailReceipt(null);
-			expense.setReceiptFile(null);
-			expense.setReceiptUri(null);
-		}
+		expenseListController.DeleteReceipt(this);
 	}
 	
 	/**
@@ -325,20 +316,6 @@ public class EditExpenseActivity extends Activity {
 			receiptText.setText("Receipt Image");
 			viewReciept.setImageDrawable(getResources().getDrawable(R.drawable.default_receipt));
 		}
-		
-	}
-	
-	// Should Be moved to a controller
-	protected void attachReceipt(Uri photoUri, File photoFile){
-		if (expense.setReceiptFile(photoFile)){
-			Log.d("Testing Add Photo", "File Added to Expense? " + (expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
-			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));		
-		}
-		else{
-			Toast.makeText(getApplicationContext(), "An error occured while attempting to compress the photo", Toast.LENGTH_SHORT).show();
-			Log.d("Testing Add Photo", "File failed to be compressed the Expense");
-		}
-		expense.setReceiptUri(photoUri);
 		
 	}
 	
