@@ -83,7 +83,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 	}
 	
-	
+	/*Checks if the network is available and 
+	 * Saves a claim the the web server
+	 * @param claim the claim to be saved
+	 */
 	private void saveClaimToWeb(final Claim claim){
 		if(NetworkAvailable()){
 			HttpPost httpPost = new HttpPost(RESOURCE_URL+claim.getUniqueId());
@@ -119,7 +122,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 			}
         }
 	}
-	
+	/*
+	 * Serializes and saves a list of claims the disk
+	 * @param claims the list of claims
+	 */
 	private void saveClaimsToDisk(ArrayList<Claim> claims){
 		Gson gson= GsonUtils.getGson();
 		if(context==null){
@@ -140,6 +146,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 	}
 	
+	/*
+	 * Saves individual claims to the web server
+	 * @param claims the arraylist of claims
+	 */
 	private void saveClaimsToWeb(ArrayList<Claim> claims){
 		for(Claim claim: claims){
 			saveClaimToWeb(claim);
@@ -199,7 +209,10 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		return claims;
 	}
 	
-	
+	/*
+	 * Deserializes the claims from the disk and outputs the list of claims
+	 * @return arraylist of claims
+	 */
 	private ArrayList<Claim> loadClaimsFromDisk(){
 		Gson gson= GsonUtils.getGson();
 		ArrayList<Claim> claims = null;
@@ -315,11 +328,17 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 		
 	}
-	
+	/*
+	 * Sets the current claimaint's name
+	 * @param claimantName name of the claimant
+	 */
 	public void setClaimantName(String claimantName) {
 		this.claimantName = claimantName;
 	}
 	
+	/*
+	 * Saves the claimant's unsynced claims to the web server
+	 */
 	public void onConnect(){
 		final ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
 		for(Claim claim: claimList.getClaims()){
