@@ -250,9 +250,6 @@ public class ApproverExpenseListTest extends
 		});
 		getInstrumentation().waitForIdleSync();
 
-		assertEquals("Status is not approved", ApprovedClaim.class, 
-				ClaimListController.getCurrentClaim().getStatus());
-
 		assertNotNull("Approver not added", ClaimListController
 				.getCurrentClaim().getApproverList());
 		assertFalse("The current approver is not the user", user==

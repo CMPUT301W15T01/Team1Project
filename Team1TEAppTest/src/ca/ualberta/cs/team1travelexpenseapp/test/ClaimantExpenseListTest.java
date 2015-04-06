@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import testObjects.MockClaimant;
@@ -42,6 +43,7 @@ import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
@@ -245,21 +247,18 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 
 	public void testApproverNameComments(){
 	
-		ClaimList list = new ClaimList(user);
-		final Claim claim =  new Claim();
-		list.addClaim(claim);
-
-		ClaimListController.setCurrentClaim(claim);
+		MockClaimant user1 = new MockClaimant("John");
+		UserSingleton.getUserSingleton().setUser(user1);
+		ClaimList claimList = user1.getClaimList();
+		Claim claim = new Claim();
+		ApprovedClaim claim1 = new ApprovedClaim(claim);
 		
-		Expense expense = new Expense();
-		ExpenseListController.addExpense(expense);
-					
-		User checkUser = new Approver("John");
-		ClaimListController.setUser(checkUser);
+		claim1.getCommentList().put(user1.getName(), "HI it looks good");
 		
-		ClaimListController.getCurrentClaim().addComment("HI it looks good");
+		claimList.addClaim(claim1);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim1);
 		
-		// get approve button
+		// get comments
 		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
 		//from http://stackoverflow.com/a/9406087 (March 15, 2015)
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
