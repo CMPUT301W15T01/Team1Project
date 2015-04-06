@@ -57,7 +57,7 @@ public class ApproverClaimInfo extends Activity {
 		return true;
 	}
 
-	/*
+	/**
 	 * Takes the current claim and expense, then displays their information onto
 	 * the textview
 	 */

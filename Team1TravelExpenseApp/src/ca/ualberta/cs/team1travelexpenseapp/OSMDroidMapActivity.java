@@ -8,12 +8,10 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MyLocationOverlay;
-import org.osmdroid.views.overlay.OverlayItem;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,6 +20,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * OSMDroidMapActivity is a class for allowing a user to select and set a
+ * location from OSMDroid's map. It creates a mapview and displays the user's
+ * current location by obtaining the gps location. Then allows users to touch
+ * the screen to select their desired location
+ *
+ */
+@SuppressWarnings("deprecation")
 public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 	public static final String MOCK_PROVIDER = "mockLocationProvider";
 	public GeoPoint startPoint = new GeoPoint(53.5488917, -113.4915883, 14);
@@ -29,7 +35,6 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 	private Marker startMarker;
 	private MapView map;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,7 +67,9 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		map.getOverlays().add(myLocationOverlay);
 		myLocationOverlay.enableCompass();
 
-		//Retrieved from http://android-coding.blogspot.ca/2012/07/osmdroid-mapview-to-follow-user.html (April 3, 2015)
+		// Retrieved from
+		// http://android-coding.blogspot.ca/2012/07/osmdroid-mapview-to-follow-user.html
+		// (April 3, 2015)
 		myLocationOverlay.runOnFirstFix(new Runnable() {
 			public void run() {
 				map.getController()
@@ -98,17 +105,17 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		}
 	};
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		myLocationOverlay.enableMyLocation();
 		myLocationOverlay.enableFollowLocation();
 	}
 
+	@SuppressWarnings({ "deprecation" })
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 		myLocationOverlay.disableMyLocation();
 		myLocationOverlay.disableFollowLocation();
@@ -133,6 +140,13 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * onClickGeo is the set location button for the user to press. It stores
+	 * the longitude and latitude in the intent and passes back the result_ok
+	 * 
+	 * @param v
+	 *            The current view
+	 */
 	public void onClickGeo(View v) {
 		Intent intent = new Intent();
 		intent.putExtra("longitude", startPoint.getLongitude());
@@ -143,16 +157,16 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 
 	@Override
 	public boolean longPressHelper(GeoPoint arg0) {
-		// TODO Auto-generated method stub
-		startPoint = arg0;
-		startMarker.setPosition(arg0);
-		map.invalidate();
-		return false;
+		return singleTapConfirmedHelper(arg0);
 	}
 
+	/**
+	 * SingleTapConfirmedHelper is an event handler that sets the marker
+	 * location onto where the user touched the screen and refreshe the map
+	 * 
+	 */
 	@Override
 	public boolean singleTapConfirmedHelper(GeoPoint arg0) {
-		// TODO Auto-generated method stub
 		startPoint = arg0;
 		startMarker.setPosition(arg0);
 		map.invalidate();
