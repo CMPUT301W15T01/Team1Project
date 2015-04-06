@@ -10,7 +10,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 
 package ca.ualberta.cs.team1travelexpenseapp;
 
@@ -40,8 +40,9 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 /**
- * Allows the approver to view the expenses contained in a clicked claim and provides the option
- * to approve, return or comment on the claim via buttons on the bottom.
+ * Allows the approver to view the expenses contained in a clicked claim and
+ * provides the option to approve, return or comment on the claim via buttons on
+ * the bottom.
  *
  */
 public class ApproverExpenseListActivity extends Activity {
@@ -49,45 +50,55 @@ public class ApproverExpenseListActivity extends Activity {
 	private Claim claim;
 	private ClaimListController claimListController;
 	private ArrayAdapter<Expense> expenselistAdapter;
- 	private ListView expenseListView ;
- 	private User user;
- 	
+	private ListView expenseListView;
+	private User user;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		user=UserSingleton.getUserSingleton().getUser();
-		claimListController=new ClaimListController(user.getClaimList());
+		// Gets claimlist of the current user
+		user = UserSingleton.getUserSingleton().getUser();
+		claimListController = new ClaimListController(user.getClaimList());
 		setContentView(R.layout.approver_display_expenses);
-		
-		// display current claims expense items 
-		claim = SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
+
+		// display current claims expense items
+		claim = SelectedItemsSingleton.getSelectedItemsSingleton()
+				.getCurrentClaim();
 		claimListController.setCurrentClaim(claim);
-		
+
+		// Set the adapter to the current claim list
 		expenseListView = (ListView) findViewById(R.id.approverExpensesList);
-        expenselistAdapter = new ArrayAdapter<Expense>(this, android.R.layout.simple_list_item_1, 
-        		claim.getExpenseList().getExpenses());
-        expenseListView.setAdapter(expenselistAdapter);
-		
+		expenselistAdapter = new ArrayAdapter<Expense>(this,
+				android.R.layout.simple_list_item_1, claim.getExpenseList()
+						.getExpenses());
+		expenseListView.setAdapter(expenselistAdapter);
+
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
 		TextView info = (TextView) findViewById(R.id.approverClaimInfoTextView);
 		info.setText(claim.toString());
-		
+
+		// Disable claim buttons when approvers view their own claims
 		if (claim.getClaimantName().equals(user.getName())) {
 			findViewById(R.id.approveButton).setEnabled(false);
 			findViewById(R.id.returnButton).setEnabled(false);
 			findViewById(R.id.approverComment).setEnabled(false);
 		}
-		expenseListView.setOnItemClickListener(new OnItemClickListener(){
-        	public void onItemClick( AdapterView<?> Parent, View v, int position, long id){
-        		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(expenselistAdapter.getItem(position));
-    			Intent edit = new Intent(getBaseContext(), ApproverClaimInfo.class);
-    			startActivity(edit);
-        	}
-        });
+		// Clicking an expense displays its information
+		expenseListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> Parent, View v,
+					int position, long id) {
+				SelectedItemsSingleton
+						.getSelectedItemsSingleton()
+						.setCurrentExpense(expenselistAdapter.getItem(position));
+				Intent edit = new Intent(getBaseContext(),
+						ApproverClaimInfo.class);
+				startActivity(edit);
+			}
+		});
 
 	}
 
@@ -109,10 +120,12 @@ public class ApproverExpenseListActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
 	 * Call the onApproveClick function in ClaimListController
-	 * @param v The button clicked by the user.
+	 * 
+	 * @param v
+	 *            The button clicked by the user.
 	 */
 	public void onApproveClick(View v) {
 		User u = UserSingleton.getUserSingleton().getUser();
@@ -122,61 +135,66 @@ public class ApproverExpenseListActivity extends Activity {
 		}
 
 	}
-	
+
 	/**
 	 * Call the onReturnClick function in ClaimListController.
-	 * @param v The button clicked by the user.
+	 * 
+	 * @param v
+	 *            The button clicked by the user.
 	 */
 	public void onReturnClick(View v) {
-		
+
 		claimListController.onReturnClick();
 		finish();
 	}
-	
+
 	/**
 	 * On info click open the ApproverClaimInfo Activity.
-	 * @param v The button clicked by the user.
+	 * 
+	 * @param v
+	 *            The button clicked by the user.
 	 */
 	public void onInfoClick(View v) {
-		Intent intent = new Intent(this,ApproverClaimInfo.class);
+		Intent intent = new Intent(this, ApproverClaimInfo.class);
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * On comment click show a dialog to allow the user to enter a comment.
-	 * @param v The button clicked by the user.
+	 * 
+	 * @param v
+	 *            The button clicked by the user.
 	 */
 	public void onCommentClick(View v) {
-		
-		//Retrieved from http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog (March 15, 2015)
+
+		// Retrieved from
+		// http://www.androidsnippets.com/prompt-user-input-with-an-alertdialog
+		// (March 15, 2015)
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("Comments");
 		alert.setMessage("Enter your comment.");
 
-		// Set an EditText view to get user input 
+		// Set an EditText view to get user input
 		final EditText input = new EditText(this);
 		alert.setView(input);
 
-		
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int whichButton) {
-		  String value = input.getText().toString();
-		  // save the comment
-		  claimListController.onCommentClick(user,value);
-		  }
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String value = input.getText().toString();
+				// save the comment
+				claimListController.onCommentClick(user, value);
+			}
 		});
 
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-		  public void onClick(DialogInterface dialog, int whichButton) {
-		    // Canceled.
-		  }
-		});
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Canceled.
+					}
+				});
 
 		alert.show();
 	}
-	
-	
-	
-}
 
+}
