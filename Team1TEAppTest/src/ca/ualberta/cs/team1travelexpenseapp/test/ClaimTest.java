@@ -27,6 +27,7 @@ import android.app.Dialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -187,11 +188,18 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	public void testDeleteClaim() {
 		// Creating a claim and adding test destination values
 		Claim claim = new Claim();
+		Date startDate=new Date();
+		claim.setStartDate(startDate);
+		Date endDate=new Date();
+		endDate.setTime(startDate.getTime()+8*10^8);
+		claim.setEndDate(endDate);
+		ArrayList <Tag> tagsList= new ArrayList <Tag>();
+		tagsList.add(new Tag("rad"));
+		tagsList.add(new Tag("hip"));
+		claim.setClaimTagList(tagsList);
 		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
 		claim.addDestination(new Destination("dest 2", "reason 2",new Location("")));
-		ClaimListController list = new ClaimListController(new ClaimList(user));
-		list.addClaim(claim);
-
+		user.getClaimList().addClaim(claim);
 		//get activity and assert user has logged in
 		final ClaimantClaimsListActivity Activity = getActivity();
 		
@@ -203,13 +211,13 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		    @Override
 		    public void run() {
 		      // long click and remove claim.
-	              view.getAdapter().getView(0, null, null).performLongClick();
+	              view.getChildAt(0).performLongClick();
 	              // I create getLastDialog method in claimactivity class. Its return last created AlertDialog
 	              Activity.editClaimDialog.getButton(Dialog.BUTTON_NEUTRAL).performClick();
 		    }
 		  });
 		// Remove the claim and assert it's empty
-		assertTrue("empty list",list.getClaimCount()==0);
+		assertFalse("empty list",!user.getClaimList().getClaims().contains(claim));
 
 	}
 	//US01.06.01
