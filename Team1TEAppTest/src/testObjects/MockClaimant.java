@@ -24,4 +24,9 @@ public class MockClaimant extends Claimant {
 		 location = new Location("");
 	 }
 	 
+	@Override
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	 
 }

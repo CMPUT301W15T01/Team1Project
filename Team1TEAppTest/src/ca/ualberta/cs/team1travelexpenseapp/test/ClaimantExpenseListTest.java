@@ -86,7 +86,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 		//add a claim to test on
 
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
-		//ClaimListController.addClaim(claim1);	
+		ClaimListController = new ClaimListController(user.getClaimList());
 		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim1);
 		
 		Intent intent = new Intent();

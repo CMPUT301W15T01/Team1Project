@@ -63,6 +63,7 @@ public class GeolocationTests extends
 		ClaimListController = new ClaimListController(user.getClaimList());
 
 		loginActivity = getActivity();
+		user.initManagers(loginActivity.getApplicationContext());
 		user.getClaimList().getManager()
 				.setContext(loginActivity.getApplicationContext());
 

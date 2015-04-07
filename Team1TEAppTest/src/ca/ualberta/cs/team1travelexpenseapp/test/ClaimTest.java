@@ -156,6 +156,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
 		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo2);
 		  assertTrue("Claim info on in expense list does not match expected claim info", claim.toString().equals(claimInfo2.getText().toString()));
+		  nextActivity.finish();
 		  activity.finish();
 
 	}
