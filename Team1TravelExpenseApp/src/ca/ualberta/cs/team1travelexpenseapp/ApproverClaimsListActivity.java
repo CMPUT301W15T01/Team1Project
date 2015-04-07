@@ -44,7 +44,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
  */
 public class ApproverClaimsListActivity extends Activity {
 
-	
 	private ClaimList claimList;
  	public  AlertDialog editClaimDialog;
  	private Listener listener;

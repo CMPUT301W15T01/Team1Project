@@ -166,10 +166,15 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	public void testSubmitWarning() {
 		
 		
-		Claim claim = new Claim();
+		MockClaimant user1 = new MockClaimant("John");
+		UserSingleton.getUserSingleton().setUser(user1);
+		ClaimList claimList = user1.getClaimList();
+		ProgressClaim claim = new ProgressClaim();
+		
 		claim.setComplete(false);
-		ClaimListController.clearClaimList();
-		ClaimListController.updateCurrentClaim(claim);
+		
+		claimList.addClaim(claim);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim);
 		
 
 		
@@ -185,28 +190,26 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 				
 			}
 		});
-//		getInstrumentation().waitForIdleSync();
-//		AlertDialog dia = ClaimListController.submitWarningDialog;
-//		assertTrue("Not null", dia != null);
-//
-//		assertTrue("Dialog shows1", dia.isShowing());
+		getInstrumentation().waitForIdleSync();
+
 		
 		claim.setComplete(true);
 		Expense expense = new Expense();
-		expense.setFlagged(true);
-		ExpenseListController.addExpense(expense);
+		expense.setFlagged(true);	
+		ExpenseListController controller = new ExpenseListController(claim.getExpenseList());
+		controller.addExpense(expense);
 		activity.runOnUiThread(new Runnable(){
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				submitButton.performClick();
+				AlertDialog dia = getActivity().submitWarningDialog;
+				assertTrue("Not null", dia != null);
 			}
 		});
 		getInstrumentation().waitForIdleSync();
 
-		//dia = ClaimListController.WarningDialog;
-		//assertTrue("Dialog shows2", dia.isShowing());
 	}
 
 

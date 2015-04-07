@@ -1,5 +1,9 @@
 package ca.ualberta.cs.team1travelexpenseapp.claims;
-
+/**
+ * A claim with the status of returned.
+ * See claim for function descriptions
+ *
+ */
 public class ReturnedClaim extends ProgressClaim {
 	
 	public ReturnedClaim(Claim claim) {

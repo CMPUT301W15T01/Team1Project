@@ -9,7 +9,11 @@ import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
-
+/**
+ * The approved claim is a claim with status of approved.
+ * See claim for function descriptions
+ *
+ */
 public class ApprovedClaim extends Claim {
 	
 

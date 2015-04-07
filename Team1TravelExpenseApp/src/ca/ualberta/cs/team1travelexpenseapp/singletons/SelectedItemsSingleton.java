@@ -3,7 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp.singletons;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 /**
- * 
+ * A singleton to pass the currently selected claim and expense between activities
  *
  */
 public class SelectedItemsSingleton {

@@ -1,3 +1,5 @@
+// from http://stackoverflow.com/a/22081826 (April 2, 2015)
+
 package ca.ualberta.cs.team1travelexpenseapp.gsonUtils;
 
 import com.google.gson.Gson;
