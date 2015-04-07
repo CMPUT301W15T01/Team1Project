@@ -31,9 +31,9 @@ import ca.ualberta.cs.team1travelexpenseapp.users.User;
  * <ul>
  * <li>The Expense List
  * <li>Claimant Name
- * <li>Start date
- * <li>End Date
- * <li>Destinations
+ * <li>Start date of travel
+ * <li>End Date of travel
+ * <li>Destinations visited
  * <li>Claim Tags
  * <li>Is complete flag
  * <li>Approvers
