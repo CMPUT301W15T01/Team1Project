@@ -13,7 +13,11 @@ import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
-
+/**
+ * A claim with the status of in progress.
+ * See claim for method descriptions
+ *
+ */
 public class ProgressClaim extends Claim {
 	
 	private Claim claim = null;

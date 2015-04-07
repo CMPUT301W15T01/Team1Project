@@ -159,7 +159,7 @@ public class ApproverClaimListTest extends
 		});
 
 		ApproverClaimsListActivity nextActivity = (ApproverClaimsListActivity) getInstrumentation()
-				.waitForMonitorWithTimeout(activityMonitor, 1000);
+				.waitForMonitorWithTimeout(activityMonitor, 10000);
 		assertNotNull(nextActivity);
 
 		ListView claimlistView = (ListView) nextActivity

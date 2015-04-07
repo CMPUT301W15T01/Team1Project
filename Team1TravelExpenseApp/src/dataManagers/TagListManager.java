@@ -10,7 +10,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 
 package dataManagers;
 
@@ -59,47 +59,43 @@ import android.preference.PreferenceActivity.Header;
 import android.util.Log;
 
 /**
- * Will provide an interface to save the associated TagList to the disk and when possible to the web server (not yet implemented).
+ * Will provide an interface to save the associated TagList to the disk and to
+ * the web server.
  *
  *
  */
 public class TagListManager {
-	private static final String BASE_URL="http://cmput301.softwareprocess.es:8080/cmput301w15t01/";
+	private static final String BASE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/";
 	private String RESOURCE_URL;
 	private TagList tagList;
 	private Context context;
 	private String claimantName;
-	
-	//Elastic search doesn't like saving arrayLists so I made this to save instead
-	private static class TagListWrapper{
-		public ArrayList<Tag> tags;
-		TagListWrapper(ArrayList<Tag> tags){
-			this.tags=tags;
-		}
-	}
-	
+
 	/**
 	 * Initialize with the tagList to be managed.
-	 * @param tagList The TagList to saved from and loaded to
+	 * 
+	 * @param tagList
+	 *            The TagList to saved from and loaded to
 	 */
-	public TagListManager(TagList tagList){
-		this.tagList=tagList;
-		this.claimantName="Guest";
-		this.RESOURCE_URL=BASE_URL+claimantName+"_tags/1";
+	public TagListManager(TagList tagList) {
+		this.tagList = tagList;
+		this.claimantName = "Guest";
+		this.RESOURCE_URL = BASE_URL + claimantName + "_tags/1";
 	}
 
 	public void setClaimantName(String claimantName) {
-		this.claimantName=claimantName;
-		this.RESOURCE_URL=BASE_URL+claimantName+"_tags/1";
+		this.claimantName = claimantName;
+		this.RESOURCE_URL = BASE_URL + claimantName + "_tags/1";
 	}
 
 	/**
-	 * save Tags to disk (and if possible to web server). (not yet implemented)
+	 * save Tags to disk (and if possible to web server).
 	 */
-	private void saveTagsToDisk(ArrayList<Tag> tags){
+	private void saveTagsToDisk(ArrayList<Tag> tags) {
 		Gson gson = new Gson();
 		try {
-			FileOutputStream fos = context.openFileOutput(claimantName+"_tags.sav", 0);
+			FileOutputStream fos = context.openFileOutput(claimantName
+					+ "_tags.sav", 0);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			gson.toJson(tags, osw);
 			osw.flush();
@@ -112,25 +108,26 @@ public class TagListManager {
 			e.printStackTrace();
 		}
 	}
-	
-	private void saveTagsToWeb(final ArrayList<Tag> tags){
-		if(NetworkAvailable()){
-			Thread t=new Thread(new Runnable() {
-		        public void run() {
-		        	Log.d("onlineTest", RESOURCE_URL);
+
+	private void saveTagsToWeb(final ArrayList<Tag> tags) {
+		if (NetworkAvailable()) {
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					Log.d("onlineTest", RESOURCE_URL);
 					HttpPost httpPost = new HttpPost(RESOURCE_URL);
 					StringEntity stringentity = null;
-					Gson gson= new Gson();
+					Gson gson = new Gson();
 					HttpClient httpclient = new DefaultHttpClient();
 					try {
-						TagListWrapper wrappedTags=new TagListWrapper(tags);
-						stringentity = new StringEntity(gson.toJson(wrappedTags));
+						TagListWrapper wrappedTags = new TagListWrapper(tags);
+						stringentity = new StringEntity(gson
+								.toJson(wrappedTags));
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					httpPost.setHeader("Accept","application/json");
-			
+					httpPost.setHeader("Accept", "application/json");
+
 					httpPost.setEntity(stringentity);
 					HttpResponse response = null;
 					try {
@@ -138,46 +135,51 @@ public class TagListManager {
 						response = httpclient.execute(httpPost);
 					} catch (ClientProtocolException e) {
 						// TODO Auto-generated catch block
-						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+						Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+						Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
 					}
 					Log.d("onlineTest", "TagList saved to web");
-//					String status = response.getStatusLine().toString();
-//					Log.d("onlineTest", status);
-//					//do something with this response if necessary
-//					HttpEntity entity = response.getEntity();
-		        }
+					// String status = response.getStatusLine().toString();
+					// Log.d("onlineTest", status);
+					// //do something with this response if necessary
+					// HttpEntity entity = response.getEntity();
+				}
 			});
 			t.start();
 		}
 	}
-	
-	public void saveTags(){
+
+	public void saveTags() {
 		saveTagsToDisk(tagList.getTags());
 		saveTagsToWeb(tagList.getTags());
 	}
-	
-	
-	
+
 	/**
-	 * load Tags from disk (and if possible sync tags with web server). (not yet implemented)
+	 * load Tags from disk (and if possible sync tags with web server). (not yet
+	 * implemented)
+	 * 
 	 * @return Loaded tag list
 	 */
-	private ArrayList<Tag> loadTagsFromDisk(){
+	private ArrayList<Tag> loadTagsFromDisk() {
 		Gson gson = new Gson();
-		ArrayList<Tag> tags=new ArrayList <Tag>();
+		ArrayList<Tag> tags = new ArrayList<Tag>();
 		try {
-			FileInputStream fis = context.openFileInput(claimantName+"_tags.sav");
-			InputStreamReader in =new InputStreamReader(fis);
-			//Taken from http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html on Jan 20 2015
-			Type typeOfT = new TypeToken<ArrayList<Tag>>(){}.getType();
+			FileInputStream fis = context.openFileInput(claimantName
+					+ "_tags.sav");
+			InputStreamReader in = new InputStreamReader(fis);
+			// Taken from
+			// http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/index.html
+			// on Jan 20 2015
+			Type typeOfT = new TypeToken<ArrayList<Tag>>() {
+			}.getType();
 			tags = gson.fromJson(in, typeOfT);
 			fis.close();
 
 		} catch (FileNotFoundException e) {
-			//if we can't find the save file create a new one and start the TagList fresh
+			// if we can't find the save file create a new one and start the
+			// TagList fresh
 			tagList.setTagList(new ArrayList<Tag>());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -185,80 +187,89 @@ public class TagListManager {
 		}
 		return tags;
 	}
-	
-	private ArrayList<Tag> loadTagsFromWeb(){
-		final ArrayList<Tag> tags=new ArrayList<Tag>();
-		if(NetworkAvailable()){
-			Thread t=new Thread(new Runnable() {
-		        public void run() {
-		        	HttpClient httpclient = new DefaultHttpClient();
-		        	try{
-		        		Gson gson = new Gson();
-		        		TagListWrapper loadedTags;;
-		    			HttpGet getRequest = new HttpGet(RESOURCE_URL);
 
-		    			getRequest.addHeader("Accept","application/json");
+	/*
+	 * Loads tags from the web server
+	 * 
+	 * @return ArrayList<Tag> from the web server
+	 */
+	private ArrayList<Tag> loadTagsFromWeb() {
+		final ArrayList<Tag> tags = new ArrayList<Tag>();
+		if (NetworkAvailable()) {
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					HttpClient httpclient = new DefaultHttpClient();
+					try {
+						Gson gson = new Gson();
+						TagListWrapper loadedTags;
+						;
+						HttpGet getRequest = new HttpGet(RESOURCE_URL);
 
-		    			HttpResponse response = httpclient.execute(getRequest);
+						getRequest.addHeader("Accept", "application/json");
 
-		    			String status = response.getStatusLine().toString();
-		    			System.out.println(status);
+						HttpResponse response = httpclient.execute(getRequest);
 
-		    			String json = getEntityContent(response);
+						String status = response.getStatusLine().toString();
+						System.out.println(status);
 
-		    			// We have to tell GSON what type we expect
-		    			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<TagListWrapper>>(){}.getType();
-		    			// Now we expect to get a tag response
-		    			ElasticSearchResponse<TagListWrapper> esResponse = gson.fromJson(json, elasticSearchResponseType);
-		    			//get the tags
-		    			loadedTags = esResponse.getSource();
-		    			if(loadedTags!=null){
-			    			for(Tag tag: loadedTags.tags){
-			    				tags.add(tag);
-			    			}
-		    			}
+						String json = getEntityContent(response);
 
-		    		} catch (ClientProtocolException e) {
+						// We have to tell GSON what type we expect
+						Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<TagListWrapper>>() {
+						}.getType();
+						// Now we expect to get a tag response
+						ElasticSearchResponse<TagListWrapper> esResponse = gson
+								.fromJson(json, elasticSearchResponseType);
+						// get the tags
+						loadedTags = esResponse.getSource();
+						if (loadedTags != null) {
+							for (Tag tag : loadedTags.tags) {
+								tags.add(tag);
+							}
+						}
 
-		    			Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					} catch (ClientProtocolException e) {
 
-		    		} catch (IOException e) {
+						Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
 
-		    			Log.d("onlineTest", e.getCause()+":"+e.getMessage());
-		    		}
-		        }
+					} catch (IOException e) {
+
+						Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+					}
+				}
 			});
 			t.start();
-			
+
 			try {
 				t.join();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+				Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
 			}
 		}
 		return tags;
 	}
-	
-	
-	public void loadTags(){
-		//much simpler than equivalent for ClaimList, here we simply load the list from web if possible and use the local one
-		//otherwise
-		ArrayList<Tag> tags=loadTagsFromWeb();
-		if(tags.isEmpty()){	
-			tags=loadTagsFromDisk();
+
+	/*
+	 * much simpler than equivalent for ClaimList, here we simply load the list
+	 * from web if possible and use the local oneotherwise
+	 */
+	public void loadTags() {
+
+		ArrayList<Tag> tags = loadTagsFromWeb();
+		if (tags.isEmpty()) {
+			tags = loadTagsFromDisk();
 		}
 		tagList.setTagList(tags);
 	}
-	
-	
+
 	/**
-	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015
-	 * get the http response and return json string
+	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015 get the http
+	 * response and return json string
 	 */
 	protected String getEntityContent(HttpResponse response) throws IOException {
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader((response.getEntity().getContent())));
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				(response.getEntity().getContent())));
 		String output;
 		System.err.println("Output from Server -> ");
 		String json = "";
@@ -266,22 +277,35 @@ public class TagListManager {
 			System.err.println(output);
 			json += output;
 		}
-		System.err.println("JSON:"+json);
+		System.err.println("JSON:" + json);
 		return json;
 	}
-	
+
 	/**
 	 * Context must be set to save/load from file
+	 * 
 	 * @param context
 	 */
-	public void setContext(Context context){
-		this.context=context;
+	public void setContext(Context context) {
+		this.context = context;
 	}
-	
+
 	private boolean NetworkAvailable() {
-	    ConnectivityManager connectivityManager 
-	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+		ConnectivityManager connectivityManager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager
+				.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+
+
+	// Elastic search doesn't like saving arrayLists so I made this to save
+	// instead
+	private static class TagListWrapper {
+		public ArrayList<Tag> tags;
+
+		TagListWrapper(ArrayList<Tag> tags) {
+			this.tags = tags;
+		}
 	}
 }

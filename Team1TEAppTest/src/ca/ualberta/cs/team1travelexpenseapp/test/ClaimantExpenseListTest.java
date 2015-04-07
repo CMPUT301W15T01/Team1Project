@@ -3,6 +3,7 @@ package ca.ualberta.cs.team1travelexpenseapp.test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import testObjects.MockClaimant;
@@ -42,6 +43,7 @@ import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
@@ -164,10 +166,15 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 	public void testSubmitWarning() {
 		
 		
-		Claim claim = new Claim();
+		MockClaimant user1 = new MockClaimant("John");
+		UserSingleton.getUserSingleton().setUser(user1);
+		ClaimList claimList = user1.getClaimList();
+		ProgressClaim claim = new ProgressClaim();
+		
 		claim.setComplete(false);
-		ClaimListController.clearClaimList();
-		ClaimListController.updateCurrentClaim(claim);
+		
+		claimList.addClaim(claim);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim);
 		
 
 		
@@ -183,28 +190,26 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 				
 			}
 		});
-//		getInstrumentation().waitForIdleSync();
-//		AlertDialog dia = ClaimListController.submitWarningDialog;
-//		assertTrue("Not null", dia != null);
-//
-//		assertTrue("Dialog shows1", dia.isShowing());
+		getInstrumentation().waitForIdleSync();
+
 		
 		claim.setComplete(true);
 		Expense expense = new Expense();
-		expense.setFlagged(true);
-		ExpenseListController.addExpense(expense);
+		expense.setFlagged(true);	
+		ExpenseListController controller = new ExpenseListController(claim.getExpenseList());
+		controller.addExpense(expense);
 		activity.runOnUiThread(new Runnable(){
 
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				submitButton.performClick();
+				AlertDialog dia = getActivity().submitWarningDialog;
+				assertTrue("Not null", dia != null);
 			}
 		});
 		getInstrumentation().waitForIdleSync();
 
-		//dia = ClaimListController.WarningDialog;
-		//assertTrue("Dialog shows2", dia.isShowing());
 	}
 
 
@@ -245,21 +250,18 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 
 	public void testApproverNameComments(){
 	
-		ClaimList list = new ClaimList(user);
-		final Claim claim =  new Claim();
-		list.addClaim(claim);
-
-		ClaimListController.setCurrentClaim(claim);
+		MockClaimant user1 = new MockClaimant("John");
+		UserSingleton.getUserSingleton().setUser(user1);
+		ClaimList claimList = user1.getClaimList();
+		Claim claim = new Claim();
+		ApprovedClaim claim1 = new ApprovedClaim(claim);
 		
-		Expense expense = new Expense();
-		ExpenseListController.addExpense(expense);
-					
-		User checkUser = new Approver("John");
-		ClaimListController.setUser(checkUser);
+		claim1.getCommentList().put(user1.getName(), "HI it looks good");
 		
-		ClaimListController.getCurrentClaim().addComment("HI it looks good");
+		claimList.addClaim(claim1);
+		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim1);
 		
-		// get approve button
+		// get comments
 		final Button button = (Button) activity.findViewById(R.id.viewCommentsButton);
 		//from http://stackoverflow.com/a/9406087 (March 15, 2015)
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantCommentActivity.class.getName(), null, false);
@@ -274,7 +276,7 @@ public class ClaimantExpenseListTest extends ActivityInstrumentationTestCase2<Cl
 			
 		});
 		getInstrumentation().waitForIdleSync();
-
+		//
 		Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		// next activity is opened and captured.
 		TextView text = (TextView) nextActivity.findViewById(R.id.claimantCommentString);

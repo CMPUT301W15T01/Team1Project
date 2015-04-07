@@ -27,28 +27,32 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="20sp"
         android:layout_marginTop="20dp"
-        android:text="Name" />
+        android:text="Name"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/userButton"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userNameField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="84dp"
+        android:background="#3399FF"
         android:onClick="claimantLogin"
-        android:text="User" />
+        android:text="User"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/approverButton"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
+        android:background="#00CC00"
         android:onClick="approverLogin"
-        android:text="Approver" />
+        android:text="Approver"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

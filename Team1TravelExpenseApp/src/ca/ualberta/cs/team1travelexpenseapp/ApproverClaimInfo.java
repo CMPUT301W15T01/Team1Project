@@ -40,6 +40,7 @@ public class ApproverClaimInfo extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// Get current expense and claim
 		currentClaim = SelectedItemsSingleton.getSelectedItemsSingleton()
 				.getCurrentClaim();
 		expense = SelectedItemsSingleton.getSelectedItemsSingleton()
@@ -57,12 +58,13 @@ public class ApproverClaimInfo extends Activity {
 		return true;
 	}
 
-	/*
+	/**
 	 * Takes the current claim and expense, then displays their information onto
 	 * the textview
 	 */
 	public void onStart() {
 		super.onStart();
+		//Displays expense information
 		if (currentClaim != null && expense != null) {
 			info.setText(expense.toString());
 
@@ -71,7 +73,7 @@ public class ApproverClaimInfo extends Activity {
 			// (March 29, 2015)
 			File imgFile = expense.getReceiptFile();
 			if (imgFile != null) {
-
+				// Displays receipt image
 				Bitmap ReceiptBMP = BitmapFactory.decodeFile(imgFile
 						.getAbsolutePath());
 				receiptImage.setImageBitmap(ReceiptBMP);

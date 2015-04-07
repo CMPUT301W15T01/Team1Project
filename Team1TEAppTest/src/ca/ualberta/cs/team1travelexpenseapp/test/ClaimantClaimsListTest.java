@@ -24,11 +24,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import testObjects.MockClaimant;
+import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.Expense;
 import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
+import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
@@ -37,11 +39,14 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
+import ca.ualberta.cs.team1travelexpenseapp.Tag;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -50,7 +55,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import junit.framework.TestCase;
-import android.nfc.Tag;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
@@ -69,19 +74,38 @@ public class ClaimantClaimsListTest extends
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		//Intent intent = new Intent();
+		Intent intent = new Intent();
 		user = new MockClaimant("CoolGuy");
-		//UserSingleton.getUserSingleton().setUser(user);
-		//setActivityIntent(intent);
-		//activity = getActivity();
-		//claimListView = (ListView) (activity
-		//		.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
+		UserSingleton.getUserSingleton().setUser(user);
+		setActivityIntent(intent);
+		activity = getActivity();
 
+		// user.initManagers(activity.getApplicationContext());
+		claimListView = (ListView) (activity
+				.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList));
+
+		String[] strings={"good","great","excellent"};
+		final Tag tag1=new Tag(strings[0]);
+		final Tag tag2=new Tag(strings[1]);
+		final Tag tag3=new Tag(strings[2]);
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ArrayList<Tag> tags = new ArrayList<Tag>();
+				tags.add(tag1);
+				tags.add(tag2);
+				tags.add(tag3);
+				user.getTagList().setTagList(tags);
+				
+			}
+		});
+		getInstrumentation().waitForIdleSync();
 		// set user as claimant
 		// User user=new User("user","jeff");
 		//
 		// //create some claims to populate and test our list
-		/*Claim claim1 = new Claim("name1", new Date(2000, 11, 11), new Date(
+		Claim claim1 = new Claim("name1", new Date(2000, 11, 11), new Date(
 				2015, 12, 12));
 		Claim claim2 = new Claim("name2", new Date(1990, 1, 8), new Date(2000,
 				12, 12));
@@ -91,12 +115,20 @@ public class ClaimantClaimsListTest extends
 				12, 12));
 		Claim claim5 = new Claim("name5", new Date(2001, 10, 6), new Date(2012,
 				12, 12));
+		ArrayList<Tag> tags = claim1.getClaimTagList();
+		tags.add(tag1);
+		tags.add(tag2);
+		claim1.setClaimTagList(tags);
+		ArrayList<Tag> tags2 = claim1.getClaimTagList();
+		tags2.add(tag3);
+		claim1.setClaimTagList(tags2);
+		
 		ClaimList claimList = user.getClaimList();
 		claimList.addClaim(claim1);
 		claimList.addClaim(claim2);
 		claimList.addClaim(claim3);
 		claimList.addClaim(claim4);
-		claimList.addClaim(claim5);*/
+		claimList.addClaim(claim5);
 	}
 
 	// US02.01.01: As a claimant, I want to list all my expense claims, showing
@@ -152,44 +184,7 @@ public class ClaimantClaimsListTest extends
 		// are sorted in the ClaimsListController
 	}
 
-	// US03.03.01: As a claimant, I want to filter the list of expense claims by
-	// tags,
-	// to show only those claims that have at least one tag matching any of a
-	// given set
-	// of one or more filter tags.
-	public void testTagFilter() {
-		// add a tag to two of our claims so we can test the tag filtering
-		// functionality
-		Claim claim = new Claim();
-
-		String claim2Info = claim.toString();
-
-		assertTrue("Incorrect items displayed by tag filter,claim2Info",
-				claimListView.getCount() == 2);
-		String viewText1 = claimListView.getItemAtPosition(0).toString();
-		String viewText2 = claimListView.getItemAtPosition(1).toString();
-
-		// if our filter works the only two items in the listview should be
-		// claim2 and claim4, still in sorted oder so the following should hold
-		assertTrue("Incorrect items displayed by tag filter,claim2Info",
-				claim2Info == viewText1);
-
-		assertTrue("Incorrect items displayed by tag filter,claim2Info",
-				claimListView.getCount() == 2);
-
-		// we want claims to show up if they have AT LEAST one of the selected
-		// filter tags
-		// so despite the addition of the extra tag the same two claims should
-		// be displayed
-		// claim2 and claim4, still in sorted oder so the following should hold
-		assertTrue("Incorrect items displayed by tag filter,claim2Info",
-				claim2Info == viewText1);
-
-		// now there should be no claims in the list since none have the single
-		// selected tag
-		assertTrue("Incorrect items displayed by tag filter,claim2Info",
-				claimListView.getCount() == 0);
-	}
+	
 
 	// US 09.01.01
 	public void testWorkOnline() {
