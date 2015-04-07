@@ -9,10 +9,12 @@ import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.TagList;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import dataManagers.ClaimantClaimListManager;
+import dataManagers.HomeLocationManager;
 import dataManagers.TagListManager;
 
 public class Claimant extends User {
 	protected TagList tagList;
+	protected HomeLocationManager locationManager;
 
 
 
@@ -20,6 +22,7 @@ public class Claimant extends User {
 		super(name);
 		this.claimList=new ClaimList(this);
 		this.tagList= new TagList();
+		this.locationManager = new HomeLocationManager(this.name);
 	}
 
 
@@ -32,9 +35,16 @@ public class Claimant extends User {
 		this.tagList = tagList;
 	}
 	
+	@Override
+	public void setLocation(Location location) {
+		this.location = location;
+		locationManager.saveLocation(location);
+	}
+	
 	public void loadData(){
 		claimList.loadClaims();
 		tagList.loadTags();
+		location = locationManager.loadLocation();
 		syncTags();
 	}
 	
@@ -47,6 +57,8 @@ public class Claimant extends User {
 		ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) getClaimList().getManager();
 		claimantClaimListManager.setContext(context);
 		claimantClaimListManager.setClaimantName(this.name);
+		
+		locationManager.setContext(context);
 	}
 	
 	/**

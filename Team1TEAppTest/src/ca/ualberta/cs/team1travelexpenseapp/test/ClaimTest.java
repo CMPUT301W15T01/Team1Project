@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import android.test.ViewAsserts;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -183,6 +184,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  activity.finish();
 		  nextActivity.finish();
 	}
+	
 	//US01.05.01
 	public void testDeleteClaim() {
 		// Creating a claim and adding test destination values
@@ -214,16 +216,16 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	}
 	//US01.06.01
 	public void testSaveClaims() {
-		activity = getActivity();
 		final String uniqueName = UUID.randomUUID().toString();
 		//need to test saving so can't use MockClaimant, create a new user with unique name instead
-		Claimant user = new Claimant("testUser");
+		final Claimant user = new Claimant(uniqueName);
+		UserSingleton.getUserSingleton().setUser(user);
+		
+		activity = getActivity();
 		
 		//initManager so we can save
 		user.initManagers(activity.getApplicationContext());
-		UserSingleton.getUserSingleton().setUser(user);
-		// Start the main activity of the application under test
-		Activity activity = getActivity();
+		
 		// user has Created and fill the claim with values
 		Claim claim = new ProgressClaim();
 		claim.setStartDate(new Date());
@@ -234,13 +236,24 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		expenses.add(expense);
 		ExpenseList expenseList = claim.getExpenseList();
 		expenseList.setExpenseList(expenses);
-		user.getClaimList().addClaim(claim);
+		final ArrayList<Claim> claims = user.getClaimList().getClaims();
+		claims.add(claim);
 		
-	    // Stop the activity and clear the logged in user, claim info should be saved
-		activity.finish();
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				user.getClaimList().setClaimList(claims);
+				
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+		
+		
+		
+	    // Clear the logged in user, claim info should be saved
 		UserSingleton.getUserSingleton().setUser(new Claimant(""));
 		
-	    //get a new login activity to test if the info is saved
+	    //get a new login activity and log in with the same name to test if the info is saved
 		Intent intent = new Intent(activity, LoginActivity.class);
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(LoginActivity.class.getName(), null, false);
 		activity.startActivity(intent);
@@ -260,15 +273,9 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
  		});
 		getInstrumentation().waitForIdleSync();
 		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		ClaimantClaimsListActivity claimListActivity = (ClaimantClaimsListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+
 		
 		final ListView claimListView = (ListView) claimListActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
 		
@@ -276,15 +283,16 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		
 		assertNotNull("claim was not saved", claimInfo);
-		assertEquals("claim info was not saved as expected:\n"+claimInfo.getText().toString()+"\nv.s.\n"+claim.toString(),
-				claimInfo.getText().toString(), claim.toString());
+		assertEquals("claim info was not saved as expected", claimInfo.getText().toString(), claim.toString());
 		
 		activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
 		claimListActivity.runOnUiThread(new Runnable() {
 			public void run(){
-				claimListView.getChildAt(0).performLongClick();
+				claimListView.performItemClick(claimListView, 0, 0);
 			}
 		});
+		getInstrumentation().waitForIdleSync();
+		
 		ClaimantExpenseListActivity expenseListActivity = (ClaimantExpenseListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		
@@ -295,8 +303,11 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		assertNotNull("expense was not saved", expenseInfo);
 		assertEquals("claim info was not saved as expected:\n"+expenseInfo.getText().toString()+"\nv.s.\n"+expense.toString(),
-				expenseInfo.getText().toString(), claim.toString());	
+				expenseInfo.getText().toString(), expense.toString());	
+		activity.finish();
 	}
+	
+	
 //	
 //	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
 //	//tags, so that claims can be organized by me into groups.
