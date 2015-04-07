@@ -101,6 +101,11 @@ public class SubmittedClaim extends Claim {
 	public ArrayList<Tag> getClaimTagList() {
 		return claim.getClaimTagList();
 	}
+	
+	@Override
+	protected int getTagCount() {
+		return claim.getTagCount();
+	}
 
 	@Override
 	public ArrayList<String> getClaimTagNameList() {
