@@ -156,6 +156,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
 		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo2);
 		  assertTrue("Claim info on in expense list does not match expected claim info", claim.toString().equals(claimInfo2.getText().toString()));
+		  activity.finish();
 
 	}
 //	
@@ -333,7 +334,10 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		assertNotNull("expense was not saved", expenseInfo);
 		assertEquals("claim info was not saved as expected:\n"+expenseInfo.getText().toString()+"\nv.s.\n"+expense.toString(),
-				expenseInfo.getText().toString(), expense.toString());	
+				expenseInfo.getText().toString(), expense.toString());
+		expenseListActivity.finish();
+		claimListActivity.finish();
+		loginActivity.finish();
 		activity.finish();
 	}
 	
@@ -414,6 +418,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		Expense onlineExpense = onlineClaim.getExpenseList().getExpenses().get(0);
 		assertNotNull("Expense was not synced to online", onlineExpense);
 		assertEquals("Online expense does not match local claim", onlineExpense.toString(), expense.toString());
+		
+		activity.finish();
 		
 	}
 
@@ -551,7 +557,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	// to show only those claims that have at least one tag matching any of a
 	// given set
 	// of one or more filter tags.
-	/*public void testTagFilter() {
+	public void testTagFilter() {
 		// added a tag to two of our claims so we can test the tag filtering
 		// functionality
 		activity= getActivity();
@@ -636,6 +642,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	 	});
 	 	getInstrumentation().waitForIdleSync();
 	 	assertEquals("test3", 0, 0);
-	}*/
+	}
 }
 
