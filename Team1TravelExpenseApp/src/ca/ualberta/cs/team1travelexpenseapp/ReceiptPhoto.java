@@ -23,6 +23,17 @@ public class ReceiptPhoto {
 	private final int MAX_IMAGE_SIZE = 65536;
 	
 	/**
+	 * The constructor for a ReceiptPhoto. Initializes
+	 * values. 
+	 * 
+	 */
+	public ReceiptPhoto(){
+		this.receiptFile = null;
+		this.uniquePhotoId = UUID.randomUUID();
+		this.photoSavedToWeb = false;
+	}
+	
+	/**
 	 * Returns the File object for the receipt File.
 	 * Attempts to load from the web if it does not exist
 	 * on disk.
@@ -33,7 +44,6 @@ public class ReceiptPhoto {
 			if (!this.receiptFile.exists()){
 				//Try to pull photo from the web if the file does not exits
 				ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
-				//photoManager.setContext();
 				photoManager.loadPhotoFromWeb(this);					
 			}
 		}
@@ -70,8 +80,6 @@ public class ReceiptPhoto {
 		// Photo successfully compressed or is null
 		this.receiptFile = receipt;
 		
-		uniquePhotoId = UUID.randomUUID();
-		
 		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
 		//photoManager.setContext(context);
 		photoManager.savePhotoToWeb(this);
@@ -94,6 +102,9 @@ public class ReceiptPhoto {
 	 */
 	public void setReceiptFile(File receiptFile){
 		this.receiptFile = receiptFile;
+		if(receiptFile == null){
+			this.setPhotoSavedToWeb(false);
+		}
 	}
 	
 	/**
