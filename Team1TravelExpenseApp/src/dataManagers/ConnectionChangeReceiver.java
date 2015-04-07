@@ -24,7 +24,7 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
 	}
 
 	/**
-	 * Connects to the web server when connectivity has been established
+	 * Calls the onConnect method of the claimListManager attribute when an internet connection is newly established
 	 * 
 	 * @param context
 	 *            of the application
