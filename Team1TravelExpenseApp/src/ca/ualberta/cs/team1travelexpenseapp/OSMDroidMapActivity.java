@@ -39,21 +39,25 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_geolocation);
-
+		
+		//Get the system's location manager
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		//Get the last known location
 		Location location = lm
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (location != null) {
-
+			//Default location is edmonton
 			startPoint = new GeoPoint(location);
 
 		}
+		//Listener for updating location
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
 				listener);
 
 		// Retrieved from
 		// http://stackoverflow.com/questions/22804650/how-to-handle-long-press-on-a-map-using-osmdroid-osmbonuspack-in-android
 		// (April 2, 2015)
+		// Builds a mapview on the current location
 		map = (MapView) findViewById(R.id.map);
 		map.setTileSource(TileSourceFactory.MAPNIK);
 		map.setBuiltInZoomControls(true);
@@ -63,6 +67,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		mapController.setZoom(9);
 		mapController.setCenter(startPoint);
 
+		//Allows for map animations
 		myLocationOverlay = new MyLocationOverlay(getApplicationContext(), map);
 		map.getOverlays().add(myLocationOverlay);
 		myLocationOverlay.enableCompass();
@@ -77,11 +82,13 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 			}
 		});
 
+		//A marker on the current location
 		startMarker = new Marker(map);
 		startMarker.setPosition(startPoint);
 		startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 		map.getOverlays().add(startMarker);
 
+		// Event listener for user touches
 		MapEventsOverlay evOverlay = new MapEventsOverlay(this, this);
 		map.getOverlays().add(evOverlay);
 		map.invalidate();
@@ -119,6 +126,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		super.onPause();
 		myLocationOverlay.disableMyLocation();
 		myLocationOverlay.disableFollowLocation();
+		map.getTileProvider().clearTileCache(); 
 	}
 
 	@Override
