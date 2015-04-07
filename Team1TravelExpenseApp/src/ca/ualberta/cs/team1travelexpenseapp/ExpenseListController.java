@@ -98,9 +98,8 @@ public class ExpenseListController {
 	public void removeExpense(Expense expense){
 		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		// Delete any attached receipts
-		if (expense.getReceiptFile() != null){
-			expense.getReceiptFile().delete();
-		}
+		expense.getReceiptPhoto().removeReceiptFile();
+		
 		expenseArray.remove(expense);
 		expenseList.setExpenseList(expenseArray);
 	}
@@ -157,10 +156,8 @@ public class ExpenseListController {
 		if ( completeBox.isChecked() ) {
 			expense.setFlagged(true);
 		}
-		expense.setReceiptFile(getCurrentExpense().getReceiptFile());
-		expense.setPhotoSaved(getCurrentExpense().isPhotoSaved());
-		expense.setUniquePhotoId(getCurrentExpense().getUniquePhotoId());
-		
+		expense.setReceiptPhoto(getCurrentExpense().getReceiptPhoto());
+
 		updateExpense(getCurrentExpense(), expense);
 		
 		
@@ -193,16 +190,11 @@ public class ExpenseListController {
 	 * Called from EditExpenseActivity to delete the already attached 
 	 * photo receipt.
 	 */
-	public void DeleteReceipt(EditExpenseActivity editExpenseActivity){
+	public void DeleteReceipt(EditExpenseActivity activity){
 		
-		if(editExpenseActivity.expense.getReceiptFile() != null){
-			if(editExpenseActivity.expense.getReceiptFile().exists()){
-				editExpenseActivity.expense.getReceiptFile().delete();
-			}
-			editExpenseActivity.thumbnailReceipt(null);
-			editExpenseActivity.expense.removeReceiptFile();
-			//editExpenseActivity.expense.setReceiptFile(null);
-			//editExpenseActivity.expense.setReceiptUri(null);
+		if(getCurrentExpense().getReceiptPhoto() != null){
+			activity.thumbnailReceipt(null);
+			getCurrentExpense().getReceiptPhoto().removeReceiptFile();
 		}
 	}
 
@@ -210,17 +202,14 @@ public class ExpenseListController {
 	 * Called from EditExpenseActivity to attach a photo receipt to 
 	 * the expense.
 	 */
-	public void attachReceipt(EditExpenseActivity editExpenseActivity, Uri photoUri, File photoFile){
-		if (editExpenseActivity.expense.createReceiptFile(photoFile)){
-			Log.d("Testing Add Photo", "File Added to Expense? " + (editExpenseActivity.expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
-			editExpenseActivity.thumbnailReceipt(BitmapFactory.decodeFile(editExpenseActivity.expense.getReceiptFile().getAbsolutePath()));		
+	public void attachReceipt(EditExpenseActivity editExpenseActivity, File photoFile){
+		if (getCurrentExpense().getReceiptPhoto().createReceiptFile(photoFile)){
+			Log.d("Testing Add Photo", "File Added to Expense? " + (getCurrentExpense().getReceiptPhoto() != null) + "has size: " + String.valueOf(photoFile.length()));
+			editExpenseActivity.thumbnailReceipt(BitmapFactory.decodeFile(getCurrentExpense().getReceiptPhoto().getReceiptFile().getAbsolutePath()));		
 		}
 		else{
 			Toast.makeText(editExpenseActivity.getApplicationContext(), "An error occured while attempting to compress the photo", Toast.LENGTH_SHORT).show();
 			Log.d("Testing Add Photo", "File failed to be compressed the Expense");
 		}
-		editExpenseActivity.expense.setReceiptUri(photoUri);
-		
 	}
-	
 }
