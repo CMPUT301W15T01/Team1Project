@@ -16,6 +16,7 @@ limitations under the License.
 package ca.ualberta.cs.team1travelexpenseapp;
 
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,10 +24,14 @@ import java.util.Date;
 
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 /**
  * Controller for all ExpenseLists, The contained ExpenseList will be automatically linked when expenses are being accessed.
@@ -77,12 +82,14 @@ public class ExpenseListController {
 	 * An Expense.
 	 */
 	public void addExpense(Expense expense){
+		Log.d("addExpense", "An Expense is being added");
 		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		expenseArray.add(expense);
 		setCurrentExpense(expense);
 		///setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
 		//display empty expense then show activity to edit empty claim otherwise an empty expense will not show after hitting back
 		expenseList.setExpenseList(expenseArray);
+		Log.d("addExpense", "Expense successfully added");
 	}
 	
 	/**
@@ -93,9 +100,8 @@ public class ExpenseListController {
 	public void removeExpense(Expense expense){
 		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		// Delete any attached receipts
-		if (expense.getReceiptFile() != null){
-			expense.getReceiptFile().delete();
-		}
+		expense.getReceiptPhoto().removeReceiptFile();
+		
 		expenseArray.remove(expense);
 		expenseList.setExpenseList(expenseArray);
 	}
@@ -108,6 +114,7 @@ public class ExpenseListController {
 	 * The new Expense.
 	 */
 	public void updateExpense(Expense expense, Expense newExpense){
+		Log.d("UpdateExpense", "Expense is trying to be updated");
 		if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().isSubmittable()){
 			
 			if(newExpense.getAmount().floatValue() == 0){
@@ -117,6 +124,7 @@ public class ExpenseListController {
 			expenseArray.set(expenseArray.indexOf(expense), newExpense);
 			setCurrentExpense(newExpense);
 			expenseList.setExpenseList(expenseArray);
+			Log.d("UpdateExpense", "Expense updated");
 		}
 	}
 	
@@ -127,7 +135,7 @@ public class ExpenseListController {
 	 * The EditExpenseActivity which contains the needed layouts.
 	 */
 	public void onExpenseSaveClick(EditExpenseActivity activity) {
-			
+		Log.d("SaveExpenseButton", "SaveExpenseButton has been clicked");	
 		Spinner categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector);
 		String categoryText = String.valueOf(categorySpinner.getSelectedItem());
 		
@@ -152,8 +160,8 @@ public class ExpenseListController {
 		if ( completeBox.isChecked() ) {
 			expense.setFlagged(true);
 		}
-		expense.setReceiptFile(getCurrentExpense().getReceiptFile());
-		
+		expense.setReceiptPhoto(getCurrentExpense().getReceiptPhoto());
+
 		updateExpense(getCurrentExpense(), expense);
 		
 		
@@ -167,6 +175,7 @@ public class ExpenseListController {
 	 * The ClaimantExpenseListActivity which contains the needed layout.
 	 */
 	public void onAddExpenseClick(ClaimantExpenseListActivity activity) {
+		Log.d("AddExpenseButton", "AddExpenseButton has been clicked");
 		addExpense(new Expense());
 		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(currentExpense);
 		Intent intent = new Intent(activity, EditExpenseActivity.class);
@@ -181,5 +190,31 @@ public class ExpenseListController {
 	public void onRemoveExpenseClick() {
 		removeExpense(getCurrentExpense());
 	}
-	
+
+	/**
+	 * Called from EditExpenseActivity to delete the already attached 
+	 * photo receipt.
+	 */
+	public void DeleteReceipt(EditExpenseActivity activity){
+		
+		if(getCurrentExpense().getReceiptPhoto() != null){
+			activity.thumbnailReceipt(null);
+			getCurrentExpense().getReceiptPhoto().removeReceiptFile();
+		}
+	}
+
+	/**
+	 * Called from EditExpenseActivity to attach a photo receipt to 
+	 * the expense.
+	 */
+	public void attachReceipt(EditExpenseActivity editExpenseActivity, File photoFile){
+		if (getCurrentExpense().getReceiptPhoto().createReceiptFile(photoFile)){
+			Log.d("Testing Add Photo", "File Added to Expense? " + (getCurrentExpense().getReceiptPhoto() != null) + "has size: " + String.valueOf(photoFile.length()));
+			editExpenseActivity.thumbnailReceipt(BitmapFactory.decodeFile(getCurrentExpense().getReceiptPhoto().getReceiptFile().getAbsolutePath()));		
+		}
+		else{
+			Toast.makeText(editExpenseActivity.getApplicationContext(), "An error occured while attempting to compress the photo", Toast.LENGTH_SHORT).show();
+			Log.d("Testing Add Photo", "File failed to be compressed the Expense");
+		}
+	}
 }

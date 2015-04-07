@@ -2,6 +2,7 @@ package ca.ualberta.cs.team1travelexpenseapp.users;
 
 import android.content.Context;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import dataManagers.ApproverClaimListManager;
 import dataManagers.ClaimListManager;
 
@@ -40,6 +41,7 @@ public class Approver extends User {
 		ApproverClaimListManager approverClaimListManager = (ApproverClaimListManager) getClaimList()
 				.getManager();
 		approverClaimListManager.setContext(context);
+		UserSingleton.getUserSingleton().setContext(context);
 	}
 
 }
