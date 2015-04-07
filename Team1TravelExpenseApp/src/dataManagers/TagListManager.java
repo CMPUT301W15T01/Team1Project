@@ -70,6 +70,14 @@ public class TagListManager {
 	private Context context;
 	private String claimantName;
 	
+	//Elastic search doesn't like saving arrayLists so I made this to save instead
+	private static class TagListWrapper{
+		public ArrayList<Tag> tags;
+		TagListWrapper(ArrayList<Tag> tags){
+			this.tags=tags;
+		}
+	}
+	
 	/**
 	 * Initialize with the tagList to be managed.
 	 * @param tagList The TagList to saved from and loaded to
@@ -275,13 +283,5 @@ public class TagListManager {
 	          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-	
-	//Elastic search doesn't like saving arrayLists so I made this to save instead
-	private static class TagListWrapper{
-		public ArrayList<Tag> tags;
-		TagListWrapper(ArrayList<Tag> tags){
-			this.tags=tags;
-		}
 	}
 }
