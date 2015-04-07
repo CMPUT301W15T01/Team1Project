@@ -4,6 +4,7 @@ import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.overlays.MapEventsOverlay;
 import org.osmdroid.bonuspack.overlays.MapEventsReceiver;
 import org.osmdroid.bonuspack.overlays.Marker;
+import org.osmdroid.tileprovider.MapTileProviderBase;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -39,18 +40,18 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_geolocation);
-		
-		//Get the system's location manager
+
+		// Get the system's location manager
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		//Get the last known location
+		// Get the last known location
 		Location location = lm
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (location != null) {
-			//Default location is edmonton
+			// Default location is edmonton
 			startPoint = new GeoPoint(location);
 
 		}
-		//Listener for updating location
+		// Listener for updating location
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1,
 				listener);
 
@@ -67,7 +68,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		mapController.setZoom(9);
 		mapController.setCenter(startPoint);
 
-		//Allows for map animations
+		// Allows for map animations
 		myLocationOverlay = new MyLocationOverlay(getApplicationContext(), map);
 		map.getOverlays().add(myLocationOverlay);
 		myLocationOverlay.enableCompass();
@@ -82,7 +83,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 			}
 		});
 
-		//A marker on the current location
+		// A marker on the current location
 		startMarker = new Marker(map);
 		startMarker.setPosition(startPoint);
 		startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -126,7 +127,13 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		super.onPause();
 		myLocationOverlay.disableMyLocation();
 		myLocationOverlay.disableFollowLocation();
-		map.getTileProvider().clearTileCache(); 
+		map.getTileProvider().clearTileCache();
+	}
+
+	protected void onDestroy() {
+		final MapTileProviderBase mapTileProvider = this.map.getTileProvider();
+		mapTileProvider.clearTileCache();
+		super.onDestroy();
 	}
 
 	@Override
