@@ -60,11 +60,13 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.ViewAsserts;
 import android.util.Log;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 
@@ -241,6 +243,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		assertFalse("empty list",!user.getClaimList().getClaims().contains(claim));
 
 	}
+
 	//US01.06.01
 	public void testSaveClaims() {
 		final String uniqueName = UUID.randomUUID().toString();
