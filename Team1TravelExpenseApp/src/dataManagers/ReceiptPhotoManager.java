@@ -52,28 +52,26 @@ import com.google.gson.reflect.TypeToken;
 
 public class ReceiptPhotoManager {
 	protected Context context = UserSingleton.getUserSingleton().getContext();
-	//private String claimantName;
-	//private ConnectionChangeReceiver reciever;
 
-	//protected static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/receipts/";
-	//protected static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/receipts/_search";
-	protected static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/receipt/";
-	protected static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/receipt/_search";
+	//private ConnectionChangeReceiver reciever;
+	protected static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/receipts/";
+	protected static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/receipts/_search";
 
 	/**
-	 * Initialize with the claimList to be managed.
+	 * Initialize the ReceiptPhotoManager.
 	 * 
-	 * @param claimList
-	 *            The ClaimList to saved from and loaded to
 	 */
 	public ReceiptPhotoManager() {
 		super();
-		//this.claimantName = "Guest";
-		// this.reciever=new ConnectionChangeReceiver(this);
 	}
+	
 	
 	// Code for taking a photo Heavily influenced/copied from https://developer.android.com/training/camera/photobasics.html April 2015
 	// and https://github.com/dfserrano/BogoPicLab
+	/**
+	 * Initializes a new photo file on the SD card
+	 * @return The File related to the created file
+	 */
 	public File initNewPhoto(){
 		// Create a folder to store pictures
 		String folder = Environment.getExternalStorageDirectory()
@@ -89,34 +87,6 @@ public class ReceiptPhotoManager {
 		return(new File(imageFilePath));
 	}
 
-	/**
-	 * save Photos to disk (and if possible to web server). (not yet
-	 * implemented)
-	 */
-	// public void savePhoto(){
-	// Log.d("WebPhotos", "Photo being saved");
-	// final ArrayList<Claim> Photos=claimList.getPhotos();
-	// final ArrayList<Claim> unsyncedPhotos=new ArrayList<Claim>();
-	// for(Claim claim: claimList.getPhotos()){
-	// if(!claim.isSynced()){
-	// unsyncedPhotos.add(claim);
-	// }
-	// }
-	// Thread t=new Thread(new Runnable() {
-	// public void run() {
-	// savePhotosToWeb(unsyncedPhotos);
-	// savePhotosToDisk(Photos);
-	// }
-	// });
-	// t.start();
-	// try {
-	// t.join();
-	// } catch (InterruptedException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	
 	//Adapted from https://gist.github.com/utkarsh2012/1276960 April 2015
 	private String encodeFileToBase64Binary(File file) throws IOException {
 
@@ -141,16 +111,15 @@ public class ReceiptPhotoManager {
 				&& (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
 			offset += numRead;
 		}
-
-		if (offset < bytes.length) {
-			throw new IOException("Could not completely read file "
-					+ file.getName());
-		}
-
 		is.close();
 		return bytes;
 	}
 
+	/**
+	 * Attempts to save the ReceiptPhoto's image file to the elastic search server.
+	 * @param receipt 
+	 * The ReceiptPhoto containing the photo to be pushed.
+	 */
 	public void savePhotoToWeb(final ReceiptPhoto receipt){
 		if(NetworkAvailable()){
 		Thread t=new Thread(new Runnable() {
@@ -164,7 +133,7 @@ public class ReceiptPhotoManager {
 				String encodedString = gson.toJson(encodeFileToBase64Binary(receipt.getReceiptFile()).toString()).toString();
 				
 				//stringentity = new StringEntity(gson.toJson(expense, Expense.class));
-				stringentity = new StringEntity(gson.toJson(new PhotoWrapper(encodedString), PhotoWrapper.class));//gson.toJson(encodedString, Base64.class));
+				stringentity = new StringEntity(gson.toJson(new PhotoWrapper(encodedString), PhotoWrapper.class));
 				Log.d("ReceiptPhotoManager", "PhotoToWeb String: " + encodedString);
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
@@ -193,7 +162,7 @@ public class ReceiptPhotoManager {
 			if(statusCode==200 || statusCode==201){
 				//claim is synced if it is successfully saved to web
 				//claim.setSynced(true);
-				receipt.setPhotoSaved(true);
+				receipt.setPhotoSavedToWeb(true);
 				Log.d("ReceiptPhotoManager", "Photo successfully saved to web");
 			}
 			Log.d("ReceiptPhotoManager", "PhotoToWeb Status: " + statusCode);
@@ -203,7 +172,11 @@ public class ReceiptPhotoManager {
 		}
 	}
 
-	
+	/**
+	 * Attempts to load the ReceiptPhoto's image file from the elastic search server.
+	 * @param receipt 
+	 * The ReceiptPhoto containing the photo to be loaded.
+	 */
 	public void loadPhotoFromWeb(final ReceiptPhoto receipt) {
 		final PhotoWrapper photoWrapper = new PhotoWrapper();
 
@@ -295,7 +268,7 @@ public class ReceiptPhotoManager {
 	
 
 	/**
-	 * Remove the passed expense's photo from the web server.
+	 * Remove the passed ReceiptPhoto's photo from the web server.
 	 */
 	public void removePhoto(final ReceiptPhoto receipt){
 		if(NetworkAvailable()){
@@ -329,10 +302,6 @@ public class ReceiptPhotoManager {
 		}
 	}
 	
-	/**
-	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015 get the http
-	 * response and return json string
-	 */
 	protected String getEntityContent(HttpResponse response) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				(response.getEntity().getContent())));
@@ -347,6 +316,9 @@ public class ReceiptPhotoManager {
 		return json;
 	}
 
+	/**
+	 * Sets the android application context to the given context.
+	 */
 	public void setContext(Context context) {
 		this.context = context;
 	}

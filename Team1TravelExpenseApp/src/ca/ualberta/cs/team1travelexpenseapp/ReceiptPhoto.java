@@ -102,25 +102,30 @@ public class ReceiptPhoto {
 		return true;
 	}
 	
+	/**
+	 * Retrieves the unique identifier for the ReceiptPhoto
+	 * 
+	 */
 	public UUID getUniquePhotoId() {
 		return uniquePhotoId;
 	}
 
+	/**
+	 * Should Return true if this photo has been successfully
+	 * saved to the web
+	 */
 	public boolean isPhotoSavedToWeb(){
 		return photoSaved;
 	}
 	
-	public void setPhotoSaved(boolean state){
+	/**
+	 * Sets boolean state of PhotoSavedToWeb  
+	 *
+	 */
+	public void setPhotoSavedToWeb(boolean state){
 		photoSaved = state;
 	}
 	
-	/**
-	 * Compress the given image file to be less than 65536 bytes (65.536KB) in size.
-	 * @param activity
-	 * The currently running activity.
-	 * @param photoFile
-	 * The image file to be compressed
-	 */
 	private boolean compressPhoto(File photoFile, int maxLength, int quality) {
 		Log.d("Expense CompressingPhoto", "Attempting to compress photo with size: " + String.valueOf(photoFile.length()
 				+ " to " + maxLength + "x" + maxLength));

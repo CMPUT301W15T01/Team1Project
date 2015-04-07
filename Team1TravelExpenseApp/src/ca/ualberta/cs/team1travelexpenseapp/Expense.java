@@ -247,10 +247,29 @@ public class Expense {
 	/**
 	 * Set whether the Expense is complete or not.
 	 * @param isComplete
-	 * Should be true if the expense
+	 * Should be true if the expense has all of its feilds filled
 	 */
 	public void setComplete(boolean isComplete) {
 		this.isComplete = isComplete;
+	}
+	
+	/**
+	 * Returns the ReceiptPhoto attached to the expense
+	 * @param isComplete
+	 * 
+	 */
+	public ReceiptPhoto getReceiptPhoto(){
+		return this.receiptPhoto;
+	}
+	
+	/**
+	 * Set the ReceiptPhoto attached to the expense
+	 * @param receipt
+	 * The ReceiptPhoto to be attached
+	 * 
+	 */
+	public void setReceiptPhoto(ReceiptPhoto receipt){
+		this.receiptPhoto = receipt;
 	}
 
 	/**
@@ -271,7 +290,7 @@ public class Expense {
 		if (getAmount().floatValue() != 0){
 			str += "\n" + getAmount() + getCurrency();
 		}
-		if ( receiptPhoto != null) {
+		if ( receiptPhoto.getReceiptFile() != null) {
 			str += "\nPhoto: Yes";
 		} else {
 			str += "\nPhoto: No";
@@ -285,13 +304,5 @@ public class Expense {
 
 
 		return str;
-	}
-	
-	public ReceiptPhoto getReceiptPhoto(){
-		return this.receiptPhoto;
-	}
-	
-	public void setReceiptPhoto(ReceiptPhoto receipt){
-		this.receiptPhoto = receipt;
 	}
 }
