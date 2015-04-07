@@ -200,8 +200,9 @@ public class ExpenseListController {
 				editExpenseActivity.expense.getReceiptFile().delete();
 			}
 			editExpenseActivity.thumbnailReceipt(null);
-			editExpenseActivity.expense.createReceiptFile(null);
-			editExpenseActivity.expense.setReceiptUri(null);
+			editExpenseActivity.expense.removeReceiptFile();
+			//editExpenseActivity.expense.setReceiptFile(null);
+			//editExpenseActivity.expense.setReceiptUri(null);
 		}
 	}
 

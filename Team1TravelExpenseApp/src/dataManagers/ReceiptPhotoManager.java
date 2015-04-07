@@ -545,7 +545,40 @@ public class ReceiptPhotoManager {
 	}
 	
 
-	
+	/**
+	 * Remove the passed expense's photo from the web server.
+	 */
+	public void removePhoto(final Expense expense){
+		if(NetworkAvailable()){
+			Thread t=new Thread(new Runnable() {
+		        public void run() {
+		        	HttpClient httpclient = new DefaultHttpClient();
+					HttpDelete httpDelete = new HttpDelete(RESOURCE_URL + expense.getUniquePhotoId());
+					Log.d("onlineTest", RESOURCE_URL + expense.getUniquePhotoId());
+					httpDelete.addHeader("Accept","application/json");
+					
+					HttpResponse response=null;
+					try {
+						//do something with this response if nessesary
+						response = httpclient.execute(httpDelete);
+					} catch (ClientProtocolException e) {
+						// TODO Auto-generated catch block
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+					}
+				}
+			});
+			t.start();
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	/**
 	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015 get the http

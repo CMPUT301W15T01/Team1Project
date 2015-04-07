@@ -321,6 +321,23 @@ public class Expense {
 	}
 	
 	/**
+	 * Removes the receipt photo from the expense,
+	 * deletes the local file, and attempts to delete the photo 
+	 * from the web as well.  
+	 * 
+	 */
+	public void removeReceiptFile(){
+		if(this.getReceiptFile() != null){
+			ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+			photoManager.removePhoto(this);
+			if(this.getReceiptFile().exists()){
+				this.getReceiptFile().delete();
+			}
+			this.setReceiptFile(null);
+		}
+	}
+	
+	/**
 	 * Set the file of the receipt photo.
 	 * @param receipt
 	 * The file object for the stored image.
