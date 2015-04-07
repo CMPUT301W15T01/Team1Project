@@ -126,6 +126,7 @@ public class OSMDroidMapActivity extends Activity implements MapEventsReceiver {
 		super.onPause();
 		myLocationOverlay.disableMyLocation();
 		myLocationOverlay.disableFollowLocation();
+		map.getTileProvider().clearTileCache(); 
 	}
 
 	@Override
