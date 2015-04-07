@@ -32,8 +32,8 @@ import android.view.View;
 
 /**
  * Implements a list of claims along along with a set of listeners to be updated whenever the list is modified.
- * Will eventually provide an interface to a ClaimListManager which will save the list to disk and the web when connected.
- * Also contains a list of selected Tags which will eventually allow for filter by tag functionality (not yet implemented).
+ * provides an interface to a ClaimListManager which will save the list to disk and the web when connected.
+ * Also contains a list of selected Tags which allows for filter by tag functionality.
  *
  */
 public class ClaimList {
