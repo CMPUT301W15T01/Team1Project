@@ -51,6 +51,7 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.ApprovedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 
 /**
  * View for adding/editing an Expense item.
@@ -253,7 +254,7 @@ public class EditExpenseActivity extends Activity {
 	
 	// Create an URI for the picture file
 	String imageFilePath = folder + "/"
-			+ String.valueOf(System.currentTimeMillis()) + ".jpg";
+			+ UserSingleton.getUserSingleton().getUser().getName() + String.valueOf(System.currentTimeMillis()) + ".jpg";
 	photoFile = new File(imageFilePath);
 	photoUri = Uri.fromFile(photoFile);
 	

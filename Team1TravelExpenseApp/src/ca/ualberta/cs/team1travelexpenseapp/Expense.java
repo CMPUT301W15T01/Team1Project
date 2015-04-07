@@ -22,7 +22,13 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
+import ca.ualberta.cs.team1travelexpenseapp.singletons.SelectedItemsSingleton;
+
+import dataManagers.ReceiptPhotoManager;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -237,46 +243,6 @@ public class Expense {
 	}
 
 	/**
-	 * Get the file of the receipt photo.
-	 * @return
-	 * A File
-	 */
-	public File getReceiptFile() {
-		//Stub
-		return this.receiptFile;
-	}
-	
-	/**
-	 * Set the file of the receipt photo.
-	 * @param receipt
-	 * The file object for the stored image.
-	 */
-	public boolean setReceiptFile(File receipt) {
-		// Check if the file needs to be compressed first		
-		if(receipt != null && receipt.exists()){
-			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
-			if(receipt.length() >= MAX_IMAGE_SIZE){
-				if (!this.compressPhoto(receipt, 750, 50)){
-					if (!this.compressPhoto(receipt,500, 35)){
-						if (!this.compressPhoto(receipt, 350, 25)){
-							// Photo failed to be compressed
-							receipt.delete();
-							return false;
-						}
-					}
-				}
-			}	
-			if(receipt.exists() && receipt.length() >= 65536){
-				receipt.delete();
-				return false;
-			}
-		}
-		// Photo successfully compressed or is null
-		this.receiptFile = receipt;
-		return true;
-	}
-	
-	/**
 	 * Get whether the Expense is complete or not.
 	 * @return
 	 * true of false
@@ -327,7 +293,72 @@ public class Expense {
 
 		return str;
 	}
+	
 
+	/**
+	 * Get the file of the receipt photo.
+	 * @return
+	 * A File
+	 */
+	public File getReceiptFile() {
+		//Stub
+		return this.receiptFile;
+	}
+	
+	/**
+	 * Set the file of the receipt photo.
+	 * @param receipt
+	 * The file object for the stored image.
+	 * @param context 
+	 */
+	public boolean setReceiptFile(File receipt, Context context) {
+		// Check if the file needs to be compressed first		
+		if(receipt != null && receipt.exists()){
+			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
+			if(receipt.length() >= MAX_IMAGE_SIZE){
+				if (!this.compressPhoto(receipt, 750, 50)){
+					if (!this.compressPhoto(receipt,500, 35)){
+						if (!this.compressPhoto(receipt, 350, 25)){
+							// Photo failed to be compressed
+							receipt.delete();
+							return false;
+						}
+					}
+				}
+			}	
+			if(receipt.exists() && receipt.length() >= 65536){
+				receipt.delete();
+				return false;
+			}
+		}
+		// Photo successfully compressed or is null
+		this.receiptFile = receipt;
+		
+		uniquePhotoId = UUID.randomUUID();
+		
+		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+		photoManager.setContext(context);
+		photoManager.savePhotoToWeb(this);
+		//photoManager.savePhotoToWeb(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense());
+		return true;
+	}
+	
+	public UUID getUniquePhotoId() {
+		return uniquePhotoId;
+	}
+	
+	private UUID uniquePhotoId;
+	
+	private boolean photoSaved;
+	
+	public boolean isPhotoSaved(){
+		return photoSaved;
+	}
+	
+	public void setPhotoSaved(boolean state){
+		photoSaved = state;
+	}
+	
 	/**
 	 * Compress the given image file to be less than 65536 bytes (65.536KB) in size.
 	 * @param activity

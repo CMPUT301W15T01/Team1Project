@@ -9,6 +9,7 @@ import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.TagList;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import dataManagers.ClaimantClaimListManager;
+import dataManagers.ReceiptPhotoManager;
 import dataManagers.TagListManager;
 
 public class Claimant extends User {
@@ -42,7 +43,6 @@ public class Claimant extends User {
 		TagListManager tagListManager=getTagList().getManager();
 		tagListManager.setContext(context);
 		tagListManager.setClaimantName(this.name);
-		
 		
 		ClaimantClaimListManager claimantClaimListManager= (ClaimantClaimListManager) getClaimList().getManager();
 		claimantClaimListManager.setContext(context);
