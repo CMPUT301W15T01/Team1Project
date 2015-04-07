@@ -336,7 +336,8 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	
 	
 	// US 09.01.01
-	public void testWorkOnline() {
+	//requires rooted device to be an effective test of offline editing, should test online syncing regardless however
+	public void testWorkOffline() {
 		final String uniqueName = UUID.randomUUID().toString();
 		//need to test saving so can't use MockClaimant, create a new user with unique name instead
 		final Claimant user = new Claimant(uniqueName);
@@ -348,30 +349,18 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		//init managers so we can save
 		user.initManagers(activity.getApplicationContext());
 		
-		
-		
+		//disable network
 		try {
-			setMobileDataEnabled(activity.getApplicationContext(), false);
-		} catch (ClassNotFoundException e) {
+			//from http://stackoverflow.com/a/28683889 april 6
+			Runtime.getRuntime().exec("svc data disabled");
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fail("Exception disabling network connection.");
 		}
 		
 
 		//add a claim and an expense
-		Claim claim = new ProgressClaim();
+		ProgressClaim claim = new ProgressClaim();
 		claim.setStartDate(new Date());
 		claim.setEndDate(new Date());
 		claim.setClaimantName(user.getName());
@@ -392,13 +381,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		});
 		getInstrumentation().waitForIdleSync();
 		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		final ListView claimListView = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
 		
 		TextView claimInfo = (TextView) claimListView.getChildAt(0);
@@ -406,6 +388,29 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		assertNotNull("claim did not appear in list", claimInfo);
 		assertEquals("claim info in list was not as expected", claimInfo.getText().toString(), claim.toString());
+		
+		//enable
+		try {
+			Runtime.getRuntime().exec("svc data enable");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			fail("Exception reenabling network connection.");
+		}
+		
+		//wait a second for claim to sync
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		ProgressClaim onlineClaim = (ProgressClaim) loadClaimByID(claim.getUniqueId());
+		assertNotNull("Claim was not synced to online", onlineClaim);
+		assertEquals("Online claim does not match local claim", onlineClaim.toString(), claim.toString());
+		
+		Expense onlineExpense = onlineClaim.getExpenseList().getExpenses().get(0);
+		assertNotNull("Expense was not synced to online", onlineExpense);
+		assertEquals("Online expense does not match local claim", onlineExpense.toString(), expense.toString());
 		
 	}
 
