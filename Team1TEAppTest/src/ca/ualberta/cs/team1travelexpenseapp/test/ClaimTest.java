@@ -1,10 +1,26 @@
 
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import testObjects.MockClaimant;
 import views.MultiSelectionSpinner;
@@ -25,6 +41,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
@@ -33,13 +50,16 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.ViewAsserts;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -312,6 +332,147 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		assertEquals("claim info was not saved as expected:\n"+expenseInfo.getText().toString()+"\nv.s.\n"+expense.toString(),
 				expenseInfo.getText().toString(), expense.toString());	
 		activity.finish();
+	}
+	
+	
+	// US 09.01.01
+	public void testWorkOnline() {
+		final String uniqueName = UUID.randomUUID().toString();
+		//need to test saving so can't use MockClaimant, create a new user with unique name instead
+		final Claimant user = new Claimant(uniqueName);
+		UserSingleton.getUserSingleton().setUser(user);
+		
+		
+		activity = getActivity();
+		
+		//init managers so we can save
+		user.initManagers(activity.getApplicationContext());
+		
+		
+		
+		try {
+			setMobileDataEnabled(activity.getApplicationContext(), false);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		//add a claim and an expense
+		Claim claim = new ProgressClaim();
+		claim.setStartDate(new Date());
+		claim.setEndDate(new Date());
+		claim.setClaimantName(user.getName());
+		ArrayList<Expense> expenses = new ArrayList<Expense>();
+		Expense expense = new Expense("car trip", new Date(), "vehicle rental", new BigDecimal(10), "CAD");
+		expenses.add(expense);
+		ExpenseList expenseList = claim.getExpenseList();
+		expenseList.setExpenseList(expenses);
+		final ArrayList<Claim> claims = user.getClaimList().getClaims();
+		claims.add(claim);
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				user.getClaimList().setClaimList(claims);
+				
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		final ListView claimListView = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		
+		TextView claimInfo = (TextView) claimListView.getChildAt(0);
+		
+		
+		assertNotNull("claim did not appear in list", claimInfo);
+		assertEquals("claim info in list was not as expected", claimInfo.getText().toString(), claim.toString());
+		
+	}
+
+	//http://stackoverflow.com/a/11555457
+	private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+	    final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    final Class conmanClass = Class.forName(conman.getClass().getName());
+	    final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+	    connectivityManagerField.setAccessible(true);
+	    final Object connectivityManager = connectivityManagerField.get(conman);
+	    final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
+	    final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+	    setMobileDataEnabledMethod.setAccessible(true);
+
+	    setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+	}
+	
+	/**
+	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015
+	 * get the http response and return json string
+	 */
+	protected String getEntityContent(HttpResponse response) throws IOException {
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader((response.getEntity().getContent())));
+		String output;
+		System.err.println("Output from Server -> ");
+		String json = "";
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
+			json += output;
+		}
+		System.err.println("JSON:"+json);
+		return json;
+	}
+	
+	//get claim at specified elastic search ID
+	private Claim loadClaimByID(final UUID claimID){
+		String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/";
+		Claim claim = null;
+    	HttpClient httpclient = new DefaultHttpClient();
+    	try{
+    		Gson gson = new Gson();
+			HttpGet getRequest = new HttpGet(RESOURCE_URL+claimID);
+
+			getRequest.addHeader("Accept","application/json");
+
+			HttpResponse response = httpclient.execute(getRequest);
+
+			String status = response.getStatusLine().toString();
+
+			String json = getEntityContent(response);
+
+			// We have to tell GSON what type we expect
+			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ProgressClaim>>(){}.getType();
+			// Now we expect to get a tag response
+			ElasticSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchResponseType);
+			//get the tags
+			claim = esResponse.getSource();
+		} catch (ClientProtocolException e) {
+
+			Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+
+		} catch (IOException e) {
+
+			Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+		}
+    	return claim;
 	}
 	
 	
