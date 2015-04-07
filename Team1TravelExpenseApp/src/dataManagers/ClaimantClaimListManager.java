@@ -72,6 +72,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	        public void run() {
 				saveClaimsToWeb(unsyncedClaims);
 				saveClaimsToDisk(claims); 
+				Log.d("approvalTest", "Claims saved to disk");
 				}
 		});
 		t.start();

@@ -82,12 +82,14 @@ public class ExpenseListController {
 	 * An Expense.
 	 */
 	public void addExpense(Expense expense){
+		Log.d("addExpense", "An Expense is being added");
 		ArrayList<Expense> expenseArray=expenseList.getExpenses();
 		expenseArray.add(expense);
 		setCurrentExpense(expense);
 		///setCurrentExpenseList(ClaimListController.getCurrentClaim().getExpenseList());
 		//display empty expense then show activity to edit empty claim otherwise an empty expense will not show after hitting back
 		expenseList.setExpenseList(expenseArray);
+		Log.d("addExpense", "Expense successfully added");
 	}
 	
 	/**
@@ -112,6 +114,7 @@ public class ExpenseListController {
 	 * The new Expense.
 	 */
 	public void updateExpense(Expense expense, Expense newExpense){
+		Log.d("UpdateExpense", "Expense is trying to be updated");
 		if (SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim().isSubmittable()){
 			
 			if(newExpense.getAmount().floatValue() == 0){
@@ -121,6 +124,7 @@ public class ExpenseListController {
 			expenseArray.set(expenseArray.indexOf(expense), newExpense);
 			setCurrentExpense(newExpense);
 			expenseList.setExpenseList(expenseArray);
+			Log.d("UpdateExpense", "Expense updated");
 		}
 	}
 	
@@ -131,7 +135,7 @@ public class ExpenseListController {
 	 * The EditExpenseActivity which contains the needed layouts.
 	 */
 	public void onExpenseSaveClick(EditExpenseActivity activity) {
-			
+		Log.d("SaveExpenseButton", "SaveExpenseButton has been clicked");	
 		Spinner categorySpinner = (Spinner) activity.findViewById(R.id.categorySelector);
 		String categoryText = String.valueOf(categorySpinner.getSelectedItem());
 		
@@ -171,6 +175,7 @@ public class ExpenseListController {
 	 * The ClaimantExpenseListActivity which contains the needed layout.
 	 */
 	public void onAddExpenseClick(ClaimantExpenseListActivity activity) {
+		Log.d("AddExpenseButton", "AddExpenseButton has been clicked");
 		addExpense(new Expense());
 		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentExpense(currentExpense);
 		Intent intent = new Intent(activity, EditExpenseActivity.class);

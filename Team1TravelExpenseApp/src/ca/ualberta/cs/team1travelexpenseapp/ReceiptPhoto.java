@@ -18,7 +18,7 @@ public class ReceiptPhoto {
 	private UUID uniquePhotoId;
 	private boolean photoSaved;
 	
-	private ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+	//private ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
 	
 	private final int MAX_IMAGE_SIZE = 65536;
 	
@@ -26,7 +26,7 @@ public class ReceiptPhoto {
 		if (this.receiptFile != null){ 
 			if (!this.receiptFile.exists()){
 				//Try to pull photo from the web if the file does not exits
-				//ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+				ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
 				//photoManager.setContext();
 				photoManager.loadPhotoFromWeb(this);					
 			}
@@ -43,7 +43,8 @@ public class ReceiptPhoto {
 	}
 	
 	public File initNewPhoto(){
-		return this.photoManager.initNewPhoto();
+		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+		return photoManager.initNewPhoto();
 	}
 	
 	/**
@@ -54,7 +55,7 @@ public class ReceiptPhoto {
 	 */
 	public void removeReceiptFile(){
 		if(this.getReceiptFile() != null){
-			//ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+			ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
 			photoManager.removePhoto(this);
 			if(this.getReceiptFile().exists()){
 				this.getReceiptFile().delete();
@@ -94,7 +95,7 @@ public class ReceiptPhoto {
 		
 		uniquePhotoId = UUID.randomUUID();
 		
-		//ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
 		//photoManager.setContext(context);
 		photoManager.savePhotoToWeb(this);
 		//photoManager.savePhotoToWeb(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense());

@@ -73,6 +73,7 @@ public class EditExpenseActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d("Testing Add Photo", "Starting onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_expense);
 		claim=SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentClaim();
@@ -90,6 +91,7 @@ public class EditExpenseActivity extends Activity {
 		};
 		
 		expenseList.addListener(listener);
+		Log.d("Testing Add Photo", "Finished onCreate");
 		
 	}
 	
@@ -139,6 +141,7 @@ public class EditExpenseActivity extends Activity {
 	}
 
 	private void updateValues(){
+		Log.d("Testing Add Photo", "Updating Values");
 		Spinner categorySpinner = (Spinner) this.findViewById(R.id.categorySelector);	
 		for (int i = 0; i < categorySpinner.getAdapter().getCount();++i){
 			if (String.valueOf(categorySpinner.getItemAtPosition(i)).equals(expense.getCategory())){
