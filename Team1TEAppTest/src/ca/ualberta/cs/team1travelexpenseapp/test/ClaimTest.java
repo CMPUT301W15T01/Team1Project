@@ -551,7 +551,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	// to show only those claims that have at least one tag matching any of a
 	// given set
 	// of one or more filter tags.
-	public void testTagFilter() {
+	/*public void testTagFilter() {
 		// added a tag to two of our claims so we can test the tag filtering
 		// functionality
 		activity= getActivity();
@@ -636,6 +636,6 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 	 	});
 	 	getInstrumentation().waitForIdleSync();
 	 	assertEquals("test3", 0, 0);
-	}
+	}*/
 }
 
