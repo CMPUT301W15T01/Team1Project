@@ -157,7 +157,9 @@ public class ExpenseListController {
 		if ( completeBox.isChecked() ) {
 			expense.setFlagged(true);
 		}
-		expense.setReceiptFile(getCurrentExpense().getReceiptFile(), activity.getApplicationContext());
+		expense.setReceiptFile(getCurrentExpense().getReceiptFile());
+		expense.setPhotoSaved(getCurrentExpense().isPhotoSaved());
+		expense.setUniquePhotoId(getCurrentExpense().getUniquePhotoId());
 		
 		updateExpense(getCurrentExpense(), expense);
 		
@@ -198,7 +200,7 @@ public class ExpenseListController {
 				editExpenseActivity.expense.getReceiptFile().delete();
 			}
 			editExpenseActivity.thumbnailReceipt(null);
-			editExpenseActivity.expense.setReceiptFile(null, null);
+			editExpenseActivity.expense.createReceiptFile(null);
 			editExpenseActivity.expense.setReceiptUri(null);
 		}
 	}
@@ -208,7 +210,7 @@ public class ExpenseListController {
 	 * the expense.
 	 */
 	public void attachReceipt(EditExpenseActivity editExpenseActivity, Uri photoUri, File photoFile){
-		if (editExpenseActivity.expense.setReceiptFile(photoFile, editExpenseActivity.getApplicationContext())){
+		if (editExpenseActivity.expense.createReceiptFile(photoFile)){
 			Log.d("Testing Add Photo", "File Added to Expense? " + (editExpenseActivity.expense.getReceiptFile() != null) + "has size: " + String.valueOf(photoFile.length()));
 			editExpenseActivity.thumbnailReceipt(BitmapFactory.decodeFile(editExpenseActivity.expense.getReceiptFile().getAbsolutePath()));		
 		}

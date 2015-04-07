@@ -1,5 +1,6 @@
 package dataManagers;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,12 +42,14 @@ import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.gsonUtils.GsonUtils;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+
 public class ReceiptPhotoManager {
-	protected Context context;
+	protected Context context = UserSingleton.getUserSingleton().getContext();
 	private String claimantName;
 	private ConnectionChangeReceiver reciever;
 
@@ -208,6 +211,7 @@ public class ReceiptPhotoManager {
 				
 				//stringentity = new StringEntity(gson.toJson(expense, Expense.class));
 				stringentity = new StringEntity(gson.toJson(new PhotoWrapper(encodedString), PhotoWrapper.class));//gson.toJson(encodedString, Base64.class));
+				Log.d("ReceiptPhotoManager", "PhotoToWeb String: " + encodedString);
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -235,6 +239,7 @@ public class ReceiptPhotoManager {
 			if(statusCode==200){
 				//claim is synced if it is successfully saved to web
 				//claim.setSynced(true);
+				expense.setPhotoSaved(true);
 				Log.d("ReceiptPhotoManager", "Photo successfully saved to web");
 			}
 			Log.d("ReceiptPhotoManager", "PhotoToWeb Status: " + statusCode);
@@ -343,6 +348,222 @@ public class ReceiptPhotoManager {
 //		}
 //		return Photos;
 //	}
+	
+//	private ArrayList<Claim> loadPhotosFromWeb() {
+//	final ArrayList<Claim> Photos = new ArrayList<Claim>();
+//	if (NetworkAvailable()) {
+//		Thread t = new Thread(new Runnable() {
+//			public void run() {
+//				Gson gson = GsonUtils.getGson();
+//				HttpClient httpclient = new DefaultHttpClient();
+//				try {
+//					HttpGet searchRequest = new HttpGet(SEARCH_URL
+//							+ "?q=claim.claimantName:" + claimantName);
+//					searchRequest.setHeader("Accept", "application/json");
+//					HttpResponse response = httpclient
+//							.execute(searchRequest);
+//					String json = getEntityContent(response);
+//					Log.d("onlineTest", json);
+//					Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>() {
+//					}.getType();
+//					ElasticSearchSearchResponse<Claim> esResponse = gson
+//							.fromJson(json, elasticSearchSearchResponseType);
+//					Collection<ElasticSearchResponse<Claim>> esResponseList;
+//					if (esResponse != null) {
+//						esResponseList = esResponse.getHits();
+//					} else {
+//						// if response is null just exit thread and return
+//						// the empty PhotosList
+//						return;
+//					}
+//					for (ElasticSearchResponse<Claim> result : esResponseList) {
+//						Log.d("onlineTest", "in web load function:"
+//								+ result.getSource().toString());
+//						Photos.add(result.getSource());
+//					}
+//				} catch (ClientProtocolException e) {
+//					Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+//				} catch (IOException e) {
+//					Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+//				}
+//			}
+//		});
+//		t.start();
+//
+//		try {
+//			t.join();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	for (Claim claim : Photos) {
+//		claim.setSynced(true);
+//	}
+//	return Photos;
+//}
+//	public void loadPhotoFromWeb(Expense expense) {
+//		File photoFile = expense.getReceiptFile();
+//	if (NetworkAvailable()) {
+//		Thread t = new Thread(new Runnable() {
+//			public void run() {
+//				Gson gson = GsonUtils.getGson();
+//				HttpClient httpclient = new DefaultHttpClient();
+//				try {
+//					HttpGet searchRequest = new HttpGet(SEARCH_URL
+//							+ "?q=claim.claimantName:" + claimantName);
+//					searchRequest.setHeader("Accept", "application/json");
+//					HttpResponse response = httpclient
+//							.execute(searchRequest);
+//					String json = getEntityContent(response);
+//					Log.d("onlineTest", json);
+//					Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<Claim>>() {
+//					}.getType();
+//					ElasticSearchSearchResponse<Claim> esResponse = gson
+//							.fromJson(json, elasticSearchSearchResponseType);
+//					Collection<ElasticSearchResponse<Claim>> esResponseList;
+//					if (esResponse != null) {
+//						esResponseList = esResponse.getHits();
+//					} else {
+//						// if response is null just exit thread and return
+//						// the empty PhotosList
+//						return;
+//					}
+//					for (ElasticSearchResponse<Claim> result : esResponseList) {
+//						Log.d("onlineTest", "in web load function:"
+//								+ result.getSource().toString());
+//						//Photos.add(result.getSource());
+//					}
+//				} catch (ClientProtocolException e) {
+//					Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+//				} catch (IOException e) {
+//					Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+//				}
+//			}
+//		});
+//		t.start();
+//
+//		try {
+//			t.join();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	//for (Claim claim : Photos) {
+//	//	claim.setSynced(true);
+//	}
+//	//return photo;
+	
+	public void loadPhotoFromWeb(final Expense expense) {
+		final PhotoWrapper photoWrapper = new PhotoWrapper();
+
+		if (NetworkAvailable()) {
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					HttpClient httpclient = new DefaultHttpClient();
+					try {
+						Log.d("ReceiptPhotoManager", "PhotoFromWeb Starting");
+						Gson gson = new Gson();
+						PhotoWrapper loadedPhoto;
+						
+						HttpGet getRequest = new HttpGet(RESOURCE_URL + expense.getUniquePhotoId());
+
+						getRequest.addHeader("Accept", "application/json");
+
+						HttpResponse response = httpclient.execute(getRequest);
+
+						String status = response.getStatusLine().toString();
+						System.out.println(status);
+
+						String json = getEntityContent(response);
+
+						// We have to tell GSON what type we expect
+						Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<PhotoWrapper>>() {
+						}.getType();
+						// Now we expect to get a tag response
+						ElasticSearchResponse<PhotoWrapper> esResponse = gson
+								.fromJson(json, elasticSearchResponseType);
+						// get the tags
+						loadedPhoto = esResponse.getSource();
+						if (loadedPhoto != null) {
+							//for (Tag tag : loadedTags.tags) {
+							//	tags.add(tag);
+							//}
+							Log.d("ReceiptPhotoManager", "PhotoFromWeb is not null");
+							//encodedPhoto = loadedPhoto.photoString;
+							photoWrapper.photoString = loadedPhoto.photoString;
+							Log.d("ReceiptPhotoManager", "PhotoFromWeb as a String: " + photoWrapper.photoString);
+							
+						}
+
+					} catch (ClientProtocolException e) {
+
+						Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+
+					} catch (IOException e) {
+
+						Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+					}
+				}
+			});
+			t.start();
+
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				Log.d("onlineTest", e.getCause() + ":" + e.getMessage());
+			}
+		}
+		
+		if(photoWrapper.photoString != null){
+			Log.d("ReceiptPhotoManager", "PhotoFromWeb String successfully pulled");
+			//public String loadPhotoFromWeb(final Expense expense) {
+			String encodedPhoto = photoWrapper.photoString;
+			byte[] photoBytes = Base64.decode(encodedPhoto, Base64.NO_WRAP);
+			
+			//save the photofile to disk
+			//File photoFile = new File(expense.getReceiptFile().getAbsolutePath());
+			Log.d("ReceiptPhotoManager", "PhotoFromWeb About to create FileOutPutStream");
+			FileOutputStream fos;
+			try {
+				fos = new FileOutputStream(expense.getReceiptFile());
+				fos.write(photoBytes);
+				Log.d("ReceiptPhotoManager", "PhotoFromWeb Written");
+				fos.flush();
+				fos.close();
+				Log.d("ReceiptPhotoManager", "PhotoFromWeb Saved");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+
+	
+	
+	/**
+	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015 get the http
+	 * response and return json string
+	 */
+	protected String getEntityContent(HttpResponse response) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+				(response.getEntity().getContent())));
+		String output;
+		System.err.println("Output from Server -> ");
+		String json = "";
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
+			json += output;
+		}
+		System.err.println("JSON:" + json);
+		return json;
+	}
 //
 //	/*
 //	 * Deserializes the Photos from the disk and outputs the list of Photos
@@ -538,6 +759,10 @@ public class ReceiptPhotoManager {
 
 		PhotoWrapper(String photoString) {
 			this.photoString = photoString;
+		}
+
+		public PhotoWrapper() {
+			// TODO Auto-generated constructor stub
 		}
 	}
 

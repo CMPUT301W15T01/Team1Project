@@ -441,7 +441,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		// An editable expense is currently being edited or added
 		
 		// A test photo is added to simulate an actual photo being taken
-		expense.setReceiptFile(photoFile);
+		expense.createReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 
 		claim.changeStatus(SubmittedClaim.class);
@@ -500,7 +500,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 			}
 		});
 		instrumentation.waitForIdleSync();	
-		expense.setReceiptFile(null);
+		expense.createReceiptFile(null);
 		
 	}
 	
@@ -516,7 +516,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		assertTrue("Image not visable?", imageButton.getVisibility() == View.VISIBLE);
 		ViewAsserts.assertOnScreen(activity.getWindow().getDecorView(), imageButton);
 		
-		expense.setReceiptFile(photoFile);
+		expense.createReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -545,7 +545,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		activity = getEditExpenseActivity();
 		photoFile = createTestPhotoFile();
 		
-		expense.setReceiptFile(photoFile);
+		expense.createReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		instrumentation.runOnMainSync(new Runnable(){
 			@Override
@@ -596,7 +596,7 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 		
 		Log.d("TestMaxPhoto", "UnCompressedFile should be too big at size: " + String.valueOf(photoFile.length()));
 		
-		expense.setReceiptFile(photoFile);
+		expense.createReceiptFile(photoFile);
 		assertNotNull("Photofile not added to expence", expense.getReceiptFile());
 		
 		// The program attempts to reduce the image to make it less than 65536 bytes in size.

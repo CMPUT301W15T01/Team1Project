@@ -188,7 +188,7 @@ public class EditExpenseActivity extends Activity {
 		}
 
 		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceiptFile() != null));
-		if (expense.getReceiptFile() != null){			
+		if (expense.loadReceiptFile() != null){			
 			thumbnailReceipt(BitmapFactory.decodeFile(expense.getReceiptFile().getAbsolutePath()));
 			Log.d("Testing Add Photo", "Update thumbed." + " has size: " + String.valueOf(expense.getReceiptFile().length()));
 		}

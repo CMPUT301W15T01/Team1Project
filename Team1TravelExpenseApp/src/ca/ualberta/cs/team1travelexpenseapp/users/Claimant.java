@@ -8,6 +8,7 @@ import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.TagList;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
 import dataManagers.ReceiptPhotoManager;
@@ -79,6 +80,7 @@ public class Claimant extends User {
 
 		claimantClaimListManager.setContext(context);
 		claimantClaimListManager.setClaimantName(this.name);
+		UserSingleton.getUserSingleton().setContext(context);
 	}
 
 	/**

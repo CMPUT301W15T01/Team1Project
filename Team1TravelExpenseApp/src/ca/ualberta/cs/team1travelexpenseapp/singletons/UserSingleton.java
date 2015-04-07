@@ -1,5 +1,6 @@
 package ca.ualberta.cs.team1travelexpenseapp.singletons;
 
+import android.content.Context;
 import ca.ualberta.cs.team1travelexpenseapp.users.Approver;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -8,6 +9,7 @@ public class UserSingleton {
 	private static UserSingleton userSingleton = null;
 	private User user;
 	private String userType;
+	private Context context;
 
 	private UserSingleton() {
 
@@ -45,4 +47,13 @@ public class UserSingleton {
 	public String getUserType() {
 		return userType;
 	}
+	
+	public void setContext(Context context){
+	this.context = context;
+	}
+	
+	public Context getContext(){
+		return this.context;
+	}
+	
 }

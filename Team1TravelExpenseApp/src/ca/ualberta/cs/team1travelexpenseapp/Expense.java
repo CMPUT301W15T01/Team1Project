@@ -300,9 +300,24 @@ public class Expense {
 	 * @return
 	 * A File
 	 */
-	public File getReceiptFile() {
-		//Stub
+	public File loadReceiptFile() {
+		if (this.receiptFile != null){ 
+			if (!this.receiptFile.exists()){
+				//Try to pull photo from the web if the file does not exits
+				ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+				//photoManager.setContext();
+				photoManager.loadPhotoFromWeb(this);					
+			}
+		}
 		return this.receiptFile;
+	}
+	
+	public File getReceiptFile() {
+		return this.receiptFile;
+	}
+	
+	public void setReceiptFile(File receiptFile){
+		this.receiptFile = receiptFile;
 	}
 	
 	/**
@@ -311,7 +326,7 @@ public class Expense {
 	 * The file object for the stored image.
 	 * @param context 
 	 */
-	public boolean setReceiptFile(File receipt, Context context) {
+	public boolean createReceiptFile(File receipt) {
 		// Check if the file needs to be compressed first		
 		if(receipt != null && receipt.exists()){
 			Log.d("Expense Setting ReceiptFile", "File has size: " + String.valueOf(receipt.length()));
@@ -337,7 +352,7 @@ public class Expense {
 		uniquePhotoId = UUID.randomUUID();
 		
 		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
-		photoManager.setContext(context);
+		//photoManager.setContext(context);
 		photoManager.savePhotoToWeb(this);
 		//photoManager.savePhotoToWeb(SelectedItemsSingleton.getSelectedItemsSingleton().getCurrentExpense());
 		return true;
@@ -345,6 +360,10 @@ public class Expense {
 	
 	public UUID getUniquePhotoId() {
 		return uniquePhotoId;
+	}
+	
+	public void setUniquePhotoId(UUID id){
+		this.uniquePhotoId = id;
 	}
 	
 	private UUID uniquePhotoId;
