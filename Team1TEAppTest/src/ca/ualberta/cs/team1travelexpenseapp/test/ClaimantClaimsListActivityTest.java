@@ -1,11 +1,9 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import testObjects.MockClaimant;
-import junit.framework.Assert;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Instrumentation.ActivityMonitor;
@@ -15,18 +13,15 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.test.ViewAsserts;
 import android.view.View;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.Destination;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 
@@ -140,16 +135,18 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		getInstrumentation().sendStringSync("Cool reason");
 		getInstrumentation().waitForIdleSync();
 		assertTrue("reason text not set" , reason.getText().toString().equals("Cool reason"));
-		
+
 		getInstrumentation().runOnMainSync(new Runnable() {
 		    @Override
 		    public void run() {
 		        setDestButton.requestFocus();
+				setDestButton.performClick();
 		    }
 		});
-		//not 100% sure this will work but we'll see
-		TouchUtils.clickView(this, setDestButton);
 		
+		//not 100% sure this will work but we'll see
+		//TouchUtils.clickView(this, setDestButton);
+
 		Calendar beforeUIcalF = Calendar.getInstance();
 		beforeUIcalF.set(fromDate.getYear(), fromDate.getMonth(), 
 						fromDate.getDayOfMonth());
@@ -160,8 +157,15 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 		// @------------!!!NOTE!!!-------------@
 		// @!!! ensure emulator is unlocked !!!@
 		// @------------!!!NOTE!!!-------------@
-		TouchUtils.dragViewToBottom(this, receiverActivity, fromDate, 5); 
-		TouchUtils.dragViewToBottom(this, receiverActivity, endDate, 5); 
+		//TouchUtils.dragViewToBottom(this, receiverActivity, fromDate, 5); 
+		//TouchUtils.dragViewToBottom(this, receiverActivity, endDate, 5); 
+		getInstrumentation().runOnMainSync(new Runnable() {
+		    @Override
+		    public void run() {
+				endDate.updateDate(1,2,3);
+				fromDate.updateDate(3,2,1);
+		    }
+		});
 		
 		//check that user can change date of from and end 
 		Calendar testDate = Calendar.getInstance();
@@ -182,15 +186,18 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 				getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(),
 						null, false);
 		 
-		
 		final View decorView = activity.getWindow().getDecorView();
 		ViewAsserts.assertOnScreen(decorView, saveClaimButton);
 		// @------------!!!NOTE!!!-------------@
 		// @!!! ensure emulator is unlocked !!!@
 		// @------------!!!NOTE!!!-------------@
-		TouchUtils.clickView(this, saveClaimButton); //check that ClaimantClaimsListActivity started
-
-
+		//TouchUtils.clickView(this, saveClaimButton); //check that ClaimantClaimsListActivity started
+		getInstrumentation().runOnMainSync(new Runnable() {
+		    @Override
+		    public void run() {
+				saveClaimButton.performClick();
+		    }
+		});
 		
 		ClaimantClaimsListActivity newReceiverActivity = (ClaimantClaimsListActivity) 
 		receiverActivityMonitor.waitForActivityWithTimeout(720); //time out in 12s
@@ -205,7 +212,7 @@ public class ClaimantClaimsListActivityTest extends ActivityInstrumentationTestC
 
 
 		Claim uiClaim = UserSingleton.getUserSingleton().getUser().getClaimList().getClaims().get(0);
-		Claim claim = new Claim("Cool Guy", sDate, eDate);
+		Claim claim = new ProgressClaim("CoolGuy", sDate, eDate);
 		claim.addDestination(new Destination("Cool dest", "Cool reason",new Location("")));
 		assertTrue(claim.toString().equals(uiClaim.toString()) );
 		

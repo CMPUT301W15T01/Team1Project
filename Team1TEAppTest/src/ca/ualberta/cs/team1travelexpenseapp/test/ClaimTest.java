@@ -39,11 +39,13 @@ import android.location.Location;
 import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.ViewAsserts;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsListActivity> {
 
@@ -225,7 +227,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		//need to test saving so can't use MockClaimant, create a new user with unique name instead
 		Claimant user = new Claimant(uniqueName);
 		// Start the main activity of the application under test
-		Activity activity = getActivity();
+		ClaimantClaimsListActivity activity = getActivity();
 		// user has Created and fill the claim with values
 		Claim claim = new ProgressClaim();
 		claim.setStartDate(new Date());
@@ -238,27 +240,26 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		expenseList.setExpenseList(expenses);
 		user.getClaimList().addClaim(claim);
 		
+		final Button button = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addClaimButton);
+		
+		activity.runOnUiThread(new Runnable() {
+			public void run(){
+				button.performClick();
+			}
+		});
+		
+				
+		
 	    // Stop the activity claim info should be saved
 		activity.finish();
 		
 	    // Create a new user with the same name and login as them in login screen, app should load the saved info
-		LoginActivity loginActivity = new LoginActivity();
-		Intent intent = new Intent(loginActivity, LoginActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		UserSingleton.getUserSingleton().setUser(user);
+		activity = getActivity();
 		
-		loginActivity.startActivity(intent);
-		
-		final EditText namefield = (EditText) loginActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.userNameField);
-		
-		
+
 		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
-		loginActivity.runOnUiThread(new Runnable() {
-		    @Override
-		    public void run() {
-		    	namefield.setText(uniqueName);
-		    }
- 		});
-		getInstrumentation().waitForIdleSync();
+
 		
 		ClaimantClaimsListActivity claimListActivity = (ClaimantClaimsListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
@@ -269,19 +270,20 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		
 		assertNotNull("claim was not saved", claimInfo);
-		assertEquals("claim info was not saved as expected:\n"+claimInfo.getText().toString()+"\nv.s.\n"+claim.toString(), claimInfo.getText().toString(), claim.toString());
+		assertEquals(
+				"claim info was not saved as expected:\n" ,user.getName(),claim.getClaimantName());
 		
 		activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
 		claimListActivity.runOnUiThread(new Runnable() {
 			public void run(){
-				claimListView.getChildAt(0).performLongClick();
+				claimListView.performItemClick(claimListView.getChildAt(0),
+						0, claimListView.getAdapter().getItemId(0));
 			}
 		});
 		ClaimantExpenseListActivity expenseListActivity = (ClaimantExpenseListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		
-		final ListView expenseListView = (ListView) expenseListActivity.findViewById(
-				ca.ualberta.cs.team1travelexpenseapp.R.id.claimantExpensesList);
+		assertNotNull(expenseListActivity);
 			
 	}
 //	
