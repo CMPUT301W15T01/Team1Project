@@ -145,14 +145,13 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		Date endDate=new Date();
 		endDate.setTime(startDate.getTime()+8*10^8);
 		claim.setEndDate(endDate);
-		claim.setClaimantName("Jimmy");
 		ArrayList <Tag> tagsList= new ArrayList <Tag>();
 		tagsList.add(new Tag("rad"));
 		tagsList.add(new Tag("hip"));
 		claim.setClaimTagList(tagsList);
 		claim.addDestination(new Destination("dest 1", "reason 1",new Location("")));
 		claim.addDestination(new Destination("dest 2", "reason 2",new Location("")));
-		ClaimListController.addClaim(claim);
+		user.getClaimList().addClaim(claim);
 		
 		
 		
@@ -178,7 +177,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  
 		  Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		  assertNotNull("claim edit list for claim failed to open",nextActivity);
-		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimInfoHeader);
+		  TextView claimInfo2 = (TextView) nextActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimDestinationHeader);
 		  ViewAsserts.assertOnScreen(nextActivity.getWindow().getDecorView(), claimInfo2);
 		  //assertTrue("Claim info on in expense list does not match expected claim info", claim.getClaimantName().equals(claimInfo2.getText().toString()));
 		  activity.finish();
