@@ -1,1 +1,8 @@
 ca.ualberta.cs.team1travelexpenseapp
+ca.ualberta.cs.team1travelexpenseapp.ESdata
+ca.ualberta.cs.team1travelexpenseapp.claims
+ca.ualberta.cs.team1travelexpenseapp.gsonUtils
+ca.ualberta.cs.team1travelexpenseapp.singletons
+ca.ualberta.cs.team1travelexpenseapp.users
+dataManagers
+views
