@@ -11,11 +11,8 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
-<<<<<<< HEAD
 import dataManagers.ReceiptPhotoManager;
-=======
 import dataManagers.HomeLocationManager;
->>>>>>> d050fe332d45e5006954afa4fc86e2c3a3c3951a
 import dataManagers.TagListManager;
 
 /**

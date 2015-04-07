@@ -16,12 +16,18 @@ public class ReceiptPhoto {
 
 	protected File receiptFile;
 	private UUID uniquePhotoId;
-	private boolean photoSaved;
+	private boolean photoSavedToWeb;
 	
 	//private ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
 	
 	private final int MAX_IMAGE_SIZE = 65536;
 	
+	/**
+	 * Returns the File object for the receipt File.
+	 * Attempts to load from the web if it does not exist
+	 * on disk.
+	 * 
+	 */
 	public File loadReceiptFile() {
 		if (this.receiptFile != null){ 
 			if (!this.receiptFile.exists()){
@@ -34,38 +40,9 @@ public class ReceiptPhoto {
 		return this.receiptFile;
 	}
 	
-	public File getReceiptFile() {
-		return this.receiptFile;
-	}
-	
-	public void setReceiptFile(File receiptFile){
-		this.receiptFile = receiptFile;
-	}
-	
-	public File initNewPhoto(){
-		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
-		return photoManager.initNewPhoto();
-	}
-	
 	/**
-	 * Removes the receipt photo from the expense,
-	 * deletes the local file, and attempts to delete the photo 
-	 * from the web as well.  
-	 * 
-	 */
-	public void removeReceiptFile(){
-		if(this.getReceiptFile() != null){
-			ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
-			photoManager.removePhoto(this);
-			if(this.getReceiptFile().exists()){
-				this.getReceiptFile().delete();
-			}
-			this.setReceiptFile(null);
-		}
-	}
-	
-	/**
-	 * Set the file of the receipt photo.
+	 * Sets the file of the receipt photo. Attempts to compress it 
+	 * to be less than 65536 and attempts to save it to the web.
 	 * @param receipt
 	 * The file object for the stored image.
 	 * @param context 
@@ -102,6 +79,49 @@ public class ReceiptPhoto {
 		return true;
 	}
 	
+	
+	/**
+	 * Just returns the File object for the receipt File.
+	 * 
+	 */
+	public File getReceiptFile() {
+		return this.receiptFile;
+	}
+	
+	/**
+	 * Just sets the File object for the receipt File to the given file.
+	 * 
+	 */
+	public void setReceiptFile(File receiptFile){
+		this.receiptFile = receiptFile;
+	}
+	
+	/**
+	 * Returns an initialized file to save a photo to.
+	 * 
+	 */
+	public File initNewPhoto(){
+		ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+		return photoManager.initNewPhoto();
+	}
+	
+	/**
+	 * Removes the receipt photo from the expense,
+	 * deletes the local file, and attempts to delete the photo 
+	 * from the web as well.  
+	 * 
+	 */
+	public void removeReceiptFile(){
+		if(this.getReceiptFile() != null){
+			ReceiptPhotoManager photoManager = new ReceiptPhotoManager();
+			photoManager.removePhoto(this);
+			if(this.getReceiptFile().exists()){
+				this.getReceiptFile().delete();
+			}
+			this.setReceiptFile(null);
+		}
+	}
+	
 	/**
 	 * Retrieves the unique identifier for the ReceiptPhoto
 	 * 
@@ -115,7 +135,7 @@ public class ReceiptPhoto {
 	 * saved to the web
 	 */
 	public boolean isPhotoSavedToWeb(){
-		return photoSaved;
+		return photoSavedToWeb;
 	}
 	
 	/**
@@ -123,7 +143,7 @@ public class ReceiptPhoto {
 	 *
 	 */
 	public void setPhotoSavedToWeb(boolean state){
-		photoSaved = state;
+		photoSavedToWeb = state;
 	}
 	
 	private boolean compressPhoto(File photoFile, int maxLength, int quality) {

@@ -179,7 +179,8 @@ public class EditExpenseActivity extends Activity {
 			descriptionView.setEnabled(false);
 			dateView.setEnabled(false);
 			amountView.setEnabled(false);
-			
+			currencySpinner.setEnabled(false);
+			categorySpinner.setEnabled(false);
 			Button saveButton = (Button) this.findViewById(R.id.saveExpenseButton);
 			saveButton.setEnabled(false);
 			
@@ -188,6 +189,9 @@ public class EditExpenseActivity extends Activity {
 			
 			Button addPhotoButton = (Button) this.findViewById(R.id.addPhotoButton);
 			addPhotoButton.setEnabled(false);
+			
+			//Button geoLocationButton = (Button) this.findViewById(R.id.GeolocationButtonExpense);
+			//geoLocationButton.setEnabled(false);
 		}
 
 		Log.d("Testing Add Photo", "File for updating? " + (expense.getReceiptPhoto().getReceiptFile() != null));
@@ -300,15 +304,13 @@ public class EditExpenseActivity extends Activity {
 	 */
 	//Places a photo into the button, currently places the entire photo, should maybe use a thumbnail
 	protected void thumbnailReceipt(Bitmap bm){
-		ImageView viewReciept = (ImageView) this.findViewById( R.id.viewPhotoButton);
-
 		TextView receiptText = (TextView) this.findViewById(R.id.recieptHeader);
 		if(bm != null && expense.getReceiptPhoto().getReceiptFile() != null){		
-			viewReciept.setImageBitmap(bm); 
+			receiptButton.setImageBitmap(bm); 
 			receiptText.setText("Receipt Image " + " File Size: " + String.valueOf(expense.getReceiptPhoto().getReceiptFile().length()) + "Bytes");
 		} else{
 			receiptText.setText("Receipt Image");
-			viewReciept.setImageDrawable(getResources().getDrawable(R.drawable.default_receipt));
+			receiptButton.setImageDrawable(getResources().getDrawable(R.drawable.default_receipt));
 		}
 		
 	}
