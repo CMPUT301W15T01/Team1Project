@@ -42,6 +42,12 @@ public class ProgressClaim extends Claim {
 		claim = new Claim(cName, sDate, eDate);
 	}
 	
+	
+	@Override
+	public int getDestinationCount() {
+		return claim.getDestinationCount();
+	}
+	
 	public void setClaim(Claim newClaim) {
 		this.claim = newClaim;
 		setSynced(false);
@@ -99,6 +105,11 @@ public class ProgressClaim extends Claim {
 	@Override
 	public ArrayList<Tag> getClaimTagList() {
 		return claim.getClaimTagList();
+	}
+	
+	@Override
+	protected int getTagCount() {
+		return claim.getTagCount();
 	}
 
 	@Override

@@ -173,7 +173,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * 
 	 * @return int corresponding to number of destinations in Claim.
 	 */
-	private int getDestinationCount() {
+	public int getDestinationCount() {
 		return destinationList.size();
 	}
 
@@ -225,7 +225,7 @@ public class Claim implements ClaimInfo, Comparable<Claim> {
 	 * 
 	 * @return int corresponding the number of tags set for the claim.
 	 */
-	private int getTagCount() {
+	protected int getTagCount() {
 		return claimTagList.size();
 	}
 

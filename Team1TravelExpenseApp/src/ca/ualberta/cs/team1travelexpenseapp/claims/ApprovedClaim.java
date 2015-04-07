@@ -45,6 +45,11 @@ public class ApprovedClaim extends Claim {
 	}
 	
 	@Override
+	protected int getTagCount() {
+		return claim.getTagCount();
+	}
+	
+	@Override
 	public Map<String, String> getCommentList() {
 		return claim.getCommentList();
 	}

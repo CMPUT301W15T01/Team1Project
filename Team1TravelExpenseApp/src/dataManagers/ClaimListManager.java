@@ -57,7 +57,7 @@ public abstract class ClaimListManager {
 			.of(Claim.class);
 
 	/**
-	 * Registers the classes to be saved to the gson adapter
+	 * Registers the subclasses to be recognized by the type adapter
 	 */
 	public ClaimListManager() {
 		if (!registered) {

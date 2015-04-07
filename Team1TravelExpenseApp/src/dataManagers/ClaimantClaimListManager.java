@@ -57,7 +57,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	/**
-	 * save Claims to disk (and if possible to web server). (not yet implemented)
+	 * save Claims to disk (and if possible to web server).
 	 */
 	public void saveClaims(){
 		Log.d("approvalTest", "Claimant saved");
@@ -85,7 +85,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	/**Checks if the network is available and 
-	 * Saves a claim the the web server
+	 * Saves a claim the the web server if so
 	 * @param claim the claim to be saved
 	 */
 	private void saveClaimToWeb(final Claim claim){
@@ -123,7 +123,9 @@ public class ClaimantClaimListManager extends ClaimListManager {
 			}
         }
 	}
-	/*
+	
+	
+	/**
 	 * Serializes and saves a list of claims the disk
 	 * @param claims the list of claims
 	 */
@@ -148,8 +150,8 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	/**
-	 * Saves individual claims to the web server
-	 * @param claims the arraylist of claims
+	 * Saves a set of claims to the web server
+	 * @param claims the arraylist of claims to be saved
 	 */
 	private void saveClaimsToWeb(ArrayList<Claim> claims){
 		for(Claim claim: claims){
@@ -244,6 +246,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	
 	/**
 	 * Remove the passed Claim from the web server.
+	 * @param claim The claim to be removed if present on the webserver
 	 */
 	public void removeClaim(final Claim claim){
 		if(NetworkAvailable()){
@@ -279,7 +282,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	
 	
 	/**
-	 * load Claims from disk (and if possible sync claims with web server). (not yet implemented)
+	 * load Claims from disk (and if possible sync claims with web server).
 	 * @return Loaded claim list
 	 */
 	public void loadClaims(){
@@ -329,6 +332,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 		}
 		
 	}
+	
 	/**
 	 * Sets the current claimaint's name
 	 * @param claimantName name of the claimant
@@ -338,7 +342,7 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	/**
-	 * Saves the claimant's unsynced claims to the web server
+	 * Saves the claimant's unsynced claims to the web server when connection is available
 	 */
 	public void onConnect(){
 		final ArrayList<Claim> unsyncedClaims=new ArrayList<Claim>();
@@ -362,8 +366,13 @@ public class ClaimantClaimListManager extends ClaimListManager {
 	}
 	
 	@Override
+	/**
+	 * Provide a context to this manager, nessesary for saving
+	 * @param context The context to be used for saving, generally provided by an Activity
+	 */
 	public void setContext(Context context){
 		super.setContext(context);
+		//with context we can save and safely set up the conectivity listener
 		IntentFilter intentFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
 		context.registerReceiver(reciever, intentFilter);
 	}

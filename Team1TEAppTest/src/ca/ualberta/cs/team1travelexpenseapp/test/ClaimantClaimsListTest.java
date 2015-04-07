@@ -1,20 +1,41 @@
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import testObjects.MockClaimant;
 import views.MultiSelectionSpinner;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimList;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimantClaimsListActivity;
 import ca.ualberta.cs.team1travelexpenseapp.ClaimListController;
+import ca.ualberta.cs.team1travelexpenseapp.Expense;
+import ca.ualberta.cs.team1travelexpenseapp.ExpenseList;
 import ca.ualberta.cs.team1travelexpenseapp.EditClaimActivity;
 import ca.ualberta.cs.team1travelexpenseapp.R;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
+import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
@@ -28,6 +49,7 @@ import android.app.FragmentManager;
 import android.app.Instrumentation.ActivityMonitor;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -107,7 +129,6 @@ public class ClaimantClaimsListTest extends
 		claimList.addClaim(claim3);
 		claimList.addClaim(claim4);
 		claimList.addClaim(claim5);
-		
 	}
 
 	// US02.01.01: As a claimant, I want to list all my expense claims, showing
@@ -165,22 +186,8 @@ public class ClaimantClaimsListTest extends
 
 	
 
-	// US 09.01.01
-	public void testReadOnlineInfo() {
-		// can't use Mock user in this case because we actually want to test
-		// online functionality
-		// just make a new user with a unique name to test this
-		Claimant claimant = new Claimant(UUID.randomUUID().toString());
-		UserSingleton.getUserSingleton().setUser(claimant);
 
-		// TODO kenny: finish this test
 
-	}
-
-	private boolean isNetworkAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	// US04.08.01
 	public void testNav() {

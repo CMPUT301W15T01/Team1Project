@@ -122,10 +122,9 @@ public class ApproverClaimListManager extends ClaimListManager {
 	}
 
 	/**
-	 * Load and return all claims corresponding to the claimantName for this
-	 * manager from the web server
+	 * Load and return all submitted claims from elastic search web server
 	 * 
-	 * @return ArrayList<Claim> containing all claims made by the claimant
+	 * @return ArrayList<Claim> containing all submitted claims
 	 */
 	private ArrayList<Claim> loadClaimsFromWeb() {
 		final ArrayList<Claim> claims = new ArrayList<Claim>();
@@ -183,7 +182,7 @@ public class ApproverClaimListManager extends ClaimListManager {
 	}
 
 	/**
-	 * Removes claim when approvers have permission to do so
+	 * Would remove a claims but approvers cannot currently do this
 	 * 
 	 * @param claim The claim to be removed
 	 */

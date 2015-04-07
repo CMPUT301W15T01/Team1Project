@@ -11,7 +11,11 @@ import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import dataManagers.ClaimListManager;
 import dataManagers.ClaimantClaimListManager;
+<<<<<<< HEAD
 import dataManagers.ReceiptPhotoManager;
+=======
+import dataManagers.HomeLocationManager;
+>>>>>>> d050fe332d45e5006954afa4fc86e2c3a3c3951a
 import dataManagers.TagListManager;
 
 /**
@@ -23,6 +27,7 @@ import dataManagers.TagListManager;
  */
 public class Claimant extends User {
 	protected TagList tagList;
+	protected HomeLocationManager locationManager;
 
 	/**
 	 * Initializes a claimant object
@@ -32,8 +37,9 @@ public class Claimant extends User {
 	 */
 	public Claimant(String name) {
 		super(name);
-		this.claimList = new ClaimList(this);
-		this.tagList = new TagList();
+		this.claimList=new ClaimList(this);
+		this.tagList= new TagList();
+		this.locationManager = new HomeLocationManager(this.name);
 	}
 
 	/**
@@ -54,13 +60,20 @@ public class Claimant extends User {
 	public void setTagList(TagList tagList) {
 		this.tagList = tagList;
 	}
-
+	
+	@Override
+	public void setLocation(Location location) {
+		this.location = location;
+		locationManager.saveLocation(location);
+	}
+	
 	/**
-	 * Loads the claims and tags data from the server and syncs them together
+	 * Loads the users claims, location and tags from the server
 	 */
-	public void loadData() {
+	public void loadData(){
 		claimList.loadClaims();
 		tagList.loadTags();
+		location = locationManager.loadLocation();
 		syncTags();
 	}
 
@@ -80,6 +93,7 @@ public class Claimant extends User {
 
 		claimantClaimListManager.setContext(context);
 		claimantClaimListManager.setClaimantName(this.name);
+		locationManager.setContext(context);
 		UserSingleton.getUserSingleton().setContext(context);
 	}
 

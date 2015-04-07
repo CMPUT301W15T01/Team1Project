@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -37,7 +38,7 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import junit.framework.TestCase;
 
 public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<EditClaimActivity> {
-	Activity activity;
+	protected EditClaimActivity activity;
 	protected Claimant user;
 	protected ExpenseListController ExpenseListController;
 	protected ClaimListController ClaimListController;
@@ -54,13 +55,9 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		Claim claim1 = new Claim("name",new Date(2000,11,11), new Date(2015,12,12));
 		user.getClaimList().getClaims().add(claim1);	
 		SelectedItemsSingleton.getSelectedItemsSingleton().setCurrentClaim(claim1);
-		
-		Intent intent = new Intent();
-		intent.putExtra("Index", 0);
-		setActivityIntent(intent);
+		ClaimListController = new ClaimListController(UserSingleton.getUserSingleton().getUser().getClaimList());
 		activity = getActivity();
 		//user.initManagers(activity.getApplicationContext());
-
 	}
 	
 	private Claim DummyClaim(){
@@ -86,11 +83,11 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		
 		Claim claim = DummyClaim();
 		claim.changeStatus(SubmittedClaim.class);
-		ClaimListController.updateCurrentClaim(claim);
+		ClaimListController.setCurrentClaim(claim);
+
 		ArrayList<Destination> dest = claim.getDestinationList();
 		
 		final Button saveBT = (Button) activity.findViewById(R.id.saveClaimButton);
-		final EditText claimNameET  = (EditText) activity.findViewById(R.id.claimInfoHeader);
 		final DatePicker fromDate = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDate  = (DatePicker) activity.findViewById(R.id.claimEndDate);
 		activity.runOnUiThread(new Runnable() {
@@ -98,7 +95,6 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				claimNameET.setText("JOE");
 				fromDate.updateDate(2015, 0, 3);
 				endDate.updateDate(2015, 0, 15);
 				saveBT.performClick();
@@ -125,38 +121,48 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		// preconditions
 		Claim claim = DummyClaim();
 		claim.changeStatus(ReturnedClaim.class);
-		ClaimListController.updateCurrentClaim(claim);
+		ClaimListController.setCurrentClaim(claim);
+
 	//	ClaimListController.addClaim(claim);
 		assertEquals("Claim status returned", ReturnedClaim.class, ClaimListController.getCurrentClaim().getStatus());
 
-		final EditText editName = (EditText) activity.findViewById(R.id.claimInfoHeader);
 		final DatePicker startDatePick = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDatePick = (DatePicker) activity.findViewById(R.id.claimEndDate);
+		
+		Calendar beforeUIcalF = Calendar.getInstance();
+		beforeUIcalF.set(startDatePick.getYear(), startDatePick.getMonth(), 
+				startDatePick.getDayOfMonth());
+		Calendar beforeUIcalE = Calendar.getInstance();
+		beforeUIcalE.set(endDatePick.getYear(), endDatePick.getMonth(), 
+				endDatePick.getDayOfMonth());
 		
 		final Button button = (Button) activity.findViewById(R.id.saveClaimButton);
 		activity.runOnUiThread(new Runnable() {
 		    @Override
 		    public void run() {
-		    editName.setText("Joe");
-		    startDatePick.updateDate(2015, 0, 10);
-		    endDatePick.updateDate(2015, 0, 21);
+		    startDatePick.updateDate(2015, 1, 10);
+		    endDatePick.updateDate(2015, 1, 21);
 		      // click button and open next activity.
 		      button.performClick();
 		    }
 		});
 		
 		getInstrumentation().waitForIdleSync();
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-		String startdate = format.format(new Date(2015-1900,0,10));
-		String enddate = format.format(new Date(2015-1900,0,21));
-		
-		String  startDateFromClaim = format.format(ClaimListController.getCurrentClaim().getStartDate());
-		String  endDateFromClaim = format.format(ClaimListController.getCurrentClaim().getEndDate());
+
 		
 		Log.d("help", ClaimListController.getCurrentClaim().getStartDate().toString());
-		assertEquals("Claim name editable", ClaimListController.getCurrentClaim().getClaimantName(), "Joe");
-		assertEquals("claim start date editable",startDateFromClaim, startdate);
-		assertEquals("claim end date editable",endDateFromClaim,enddate);
+		assertEquals("Claim name not editable", ClaimListController.getCurrentClaim().getClaimantName(), "approver test");
+		Calendar testDate = Calendar.getInstance();
+		testDate.set(startDatePick.getYear(), startDatePick.getMonth(), 
+				startDatePick.getDayOfMonth());
+		assertFalse("SAME" , beforeUIcalF.getTime().toString()
+				.equals(testDate.getTime().toString()));
+		Date sDate = testDate.getTime();
+		testDate.set(endDatePick.getYear(), endDatePick.getMonth(), 
+				endDatePick.getDayOfMonth());
+		assertFalse("SAME" , beforeUIcalE.getTime().toString()
+				.equals(testDate.getTime().toString()));
+		Date eDate = testDate.getTime();
 	}
 	
 	/*
@@ -170,10 +176,7 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		// precondition - claimant has an approved claim
 		Claim claim = DummyClaim();
 		claim.changeStatus(ApprovedClaim.class);
-		ClaimListController.updateCurrentClaim(claim);
-		
-		
-		final EditText editName = (EditText) activity.findViewById(R.id.claimInfoHeader);
+		ClaimListController.setCurrentClaim(claim);
 		final DatePicker startDatePick = (DatePicker) activity.findViewById(R.id.claimFromDate);
 		final DatePicker endDatePick = (DatePicker) activity.findViewById(R.id.claimEndDate);
 
@@ -189,7 +192,6 @@ public class EditClaimActivityTest extends ActivityInstrumentationTestCase2<Edit
 		      // click button and open next activity.
 		    startDatePick.updateDate(2015, 0, 10);
 			   endDatePick.updateDate(2015, 0, 21);
-		      editName.setText("Joe");
 		      button.performClick();
 		    }
 		});

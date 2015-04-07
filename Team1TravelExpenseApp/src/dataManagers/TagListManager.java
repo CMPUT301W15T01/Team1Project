@@ -59,7 +59,7 @@ import android.preference.PreferenceActivity.Header;
 import android.util.Log;
 
 /**
- * Will provide an interface to save the associated TagList to the disk and to
+ * Provides an interface to save the associated TagList to the disk and to
  * the web server.
  *
  *
@@ -90,6 +90,7 @@ public class TagListManager {
 
 	/**
 	 * save Tags to disk (and if possible to web server).
+	 * @param tags The Tags to be saved.
 	 */
 	private void saveTagsToDisk(ArrayList<Tag> tags) {
 		Gson gson = new Gson();
@@ -109,6 +110,11 @@ public class TagListManager {
 		}
 	}
 
+	
+	/**
+	 * Save the passed tags to the elastic search server.
+	 * @param tags ArrayList<Tag> to be saved to server.
+	 */
 	private void saveTagsToWeb(final ArrayList<Tag> tags) {
 		if (NetworkAvailable()) {
 			Thread t = new Thread(new Runnable() {
@@ -157,8 +163,7 @@ public class TagListManager {
 	}
 
 	/**
-	 * load Tags from disk (and if possible sync tags with web server). (not yet
-	 * implemented)
+	 * load Tags from disk (and if possible sync tags with web server).
 	 * 
 	 * @return Loaded tag list
 	 */
@@ -188,7 +193,7 @@ public class TagListManager {
 		return tags;
 	}
 
-	/*
+	/**
 	 * Loads tags from the web server
 	 * 
 	 * @return ArrayList<Tag> from the web server
@@ -297,6 +302,7 @@ public class TagListManager {
 				.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
+
 
 	// Elastic search doesn't like saving arrayLists so I made this to save
 	// instead
