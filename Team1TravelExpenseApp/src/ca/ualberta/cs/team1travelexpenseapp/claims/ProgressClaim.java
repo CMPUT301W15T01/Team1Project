@@ -42,6 +42,12 @@ public class ProgressClaim extends Claim {
 		claim = new Claim(cName, sDate, eDate);
 	}
 	
+	
+	@Override
+	public int getDestinationCount() {
+		return claim.getDestinationCount();
+	}
+	
 	public void setClaim(Claim newClaim) {
 		this.claim = newClaim;
 		setSynced(false);

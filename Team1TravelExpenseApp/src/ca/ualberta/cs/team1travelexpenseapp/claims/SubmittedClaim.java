@@ -81,6 +81,11 @@ public class SubmittedClaim extends Claim {
 	public ArrayList<Destination> getDestinationList() {
 		return claim.getDestinationList();
 	}
+	
+	@Override
+	public int getDestinationCount() {
+		return claim.getDestinationCount();
+	}
 
 	@Override
 	public void setClaimantName(String name) {

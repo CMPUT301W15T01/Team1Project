@@ -298,6 +298,7 @@ public class TagListManager {
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
+
 	// Elastic search doesn't like saving arrayLists so I made this to save
 	// instead
 	private static class TagListWrapper {

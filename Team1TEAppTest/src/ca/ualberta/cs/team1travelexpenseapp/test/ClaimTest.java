@@ -1,10 +1,26 @@
 
 package ca.ualberta.cs.team1travelexpenseapp.test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import testObjects.MockClaimant;
 import views.MultiSelectionSpinner;
@@ -25,6 +41,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import ca.ualberta.cs.team1travelexpenseapp.TagListController;
+import ca.ualberta.cs.team1travelexpenseapp.ESdata.ElasticSearchResponse;
 import ca.ualberta.cs.team1travelexpenseapp.claims.Claim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.ProgressClaim;
 import ca.ualberta.cs.team1travelexpenseapp.claims.SubmittedClaim;
@@ -33,12 +50,16 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 import android.app.Instrumentation;
 import android.app.Instrumentation.ActivityMonitor;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import android.test.ViewAsserts;
+import android.util.Log;
 import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -185,6 +206,7 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		  activity.finish();
 		  nextActivity.finish();
 	}
+	
 	//US01.05.01
 	public void testDeleteClaim() {
 		// Creating a claim and adding test destination values
@@ -221,13 +243,19 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		assertFalse("empty list",!user.getClaimList().getClaims().contains(claim));
 
 	}
+
 	//US01.06.01
 	public void testSaveClaims() {
 		final String uniqueName = UUID.randomUUID().toString();
 		//need to test saving so can't use MockClaimant, create a new user with unique name instead
-		Claimant user = new Claimant(uniqueName);
-		// Start the main activity of the application under test
-		ClaimantClaimsListActivity activity = getActivity();
+		final Claimant user = new Claimant(uniqueName);
+		UserSingleton.getUserSingleton().setUser(user);
+		
+		activity = getActivity();
+		
+		//initManager so we can save
+		user.initManagers(activity.getApplicationContext());
+		
 		// user has Created and fill the claim with values
 		Claim claim = new ProgressClaim();
 		claim.setStartDate(new Date());
@@ -238,31 +266,46 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		expenses.add(expense);
 		ExpenseList expenseList = claim.getExpenseList();
 		expenseList.setExpenseList(expenses);
-		user.getClaimList().addClaim(claim);
-		
-		final Button button = (Button) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.addClaimButton);
+		final ArrayList<Claim> claims = user.getClaimList().getClaims();
+		claims.add(claim);
 		
 		activity.runOnUiThread(new Runnable() {
-			public void run(){
-				button.performClick();
+			@Override
+			public void run() {
+				user.getClaimList().setClaimList(claims);
+				
 			}
 		});
+		getInstrumentation().waitForIdleSync();
 		
-				
 		
-	    // Stop the activity claim info should be saved
-		activity.finish();
 		
-	    // Create a new user with the same name and login as them in login screen, app should load the saved info
-		UserSingleton.getUserSingleton().setUser(user);
-		activity = getActivity();
+	    // Clear the logged in user, claim info should be saved
+		UserSingleton.getUserSingleton().setUser(new Claimant(""));
 		
-
-		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
-
+	    //get a new login activity and log in with the same name to test if the info is saved
+		Intent intent = new Intent(activity, LoginActivity.class);
+		ActivityMonitor activityMonitor = getInstrumentation().addMonitor(LoginActivity.class.getName(), null, false);
+		activity.startActivity(intent);
+		LoginActivity loginActivity = (LoginActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+		
+		final EditText namefield = (EditText) loginActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.userNameField);
+		final Button userLogin = (Button) loginActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.userButton);
+		
+		activityMonitor = getInstrumentation().addMonitor(ClaimantClaimsListActivity.class.getName(), null, false);
+		loginActivity.runOnUiThread(new Runnable() {
+		    @Override
+		    public void run() {
+		    	namefield.setText(uniqueName);
+		    	userLogin.performClick();
+		    	
+		    }
+ 		});
+		getInstrumentation().waitForIdleSync();
 		
 		ClaimantClaimsListActivity claimListActivity = (ClaimantClaimsListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+
 		
 		final ListView claimListView = (ListView) claimListActivity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
 		
@@ -270,22 +313,177 @@ public class ClaimTest extends ActivityInstrumentationTestCase2<ClaimantClaimsLi
 		
 		
 		assertNotNull("claim was not saved", claimInfo);
-		assertEquals(
-				"claim info was not saved as expected:\n" ,user.getName(),claim.getClaimantName());
+		assertEquals("claim info was not saved as expected", claimInfo.getText().toString(), claim.toString());
 		
 		activityMonitor = getInstrumentation().addMonitor(ClaimantExpenseListActivity.class.getName(), null, false);
 		claimListActivity.runOnUiThread(new Runnable() {
 			public void run(){
-				claimListView.performItemClick(claimListView.getChildAt(0),
-						0, claimListView.getAdapter().getItemId(0));
+				claimListView.performItemClick(claimListView, 0, 0);
 			}
 		});
+		getInstrumentation().waitForIdleSync();
+		
 		ClaimantExpenseListActivity expenseListActivity = (ClaimantExpenseListActivity)
 				getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
 		
-		assertNotNull(expenseListActivity);
-			
+		final ListView expenseListView = (ListView) expenseListActivity.findViewById(
+				ca.ualberta.cs.team1travelexpenseapp.R.id.claimantExpensesList);
+		
+		TextView expenseInfo = (TextView) expenseListView.getChildAt(0);
+		
+		assertNotNull("expense was not saved", expenseInfo);
+		assertEquals("claim info was not saved as expected:\n"+expenseInfo.getText().toString()+"\nv.s.\n"+expense.toString(),
+				expenseInfo.getText().toString(), expense.toString());	
+		activity.finish();
 	}
+	
+	
+	// US 09.01.01
+	//requires rooted device to be an effective test of offline editing, should test online syncing regardless however
+	public void testWorkOffline() {
+		final String uniqueName = UUID.randomUUID().toString();
+		//need to test saving so can't use MockClaimant, create a new user with unique name instead
+		final Claimant user = new Claimant(uniqueName);
+		UserSingleton.getUserSingleton().setUser(user);
+		
+		
+		activity = getActivity();
+		
+		//init managers so we can save
+		user.initManagers(activity.getApplicationContext());
+		
+		//disable network
+		try {
+			//from http://stackoverflow.com/a/28683889 april 6
+			Runtime.getRuntime().exec("svc data disabled");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			fail("Exception disabling network connection.");
+		}
+		
+
+		//add a claim and an expense
+		ProgressClaim claim = new ProgressClaim();
+		claim.setStartDate(new Date());
+		claim.setEndDate(new Date());
+		claim.setClaimantName(user.getName());
+		ArrayList<Expense> expenses = new ArrayList<Expense>();
+		Expense expense = new Expense("car trip", new Date(), "vehicle rental", new BigDecimal(10), "CAD");
+		expenses.add(expense);
+		ExpenseList expenseList = claim.getExpenseList();
+		expenseList.setExpenseList(expenses);
+		final ArrayList<Claim> claims = user.getClaimList().getClaims();
+		claims.add(claim);
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				user.getClaimList().setClaimList(claims);
+				
+			}
+		});
+		getInstrumentation().waitForIdleSync();
+		
+		final ListView claimListView = (ListView) activity.findViewById(ca.ualberta.cs.team1travelexpenseapp.R.id.claimsList);
+		
+		TextView claimInfo = (TextView) claimListView.getChildAt(0);
+		
+		
+		assertNotNull("claim did not appear in list", claimInfo);
+		assertEquals("claim info in list was not as expected", claimInfo.getText().toString(), claim.toString());
+		
+		//enable
+		try {
+			Runtime.getRuntime().exec("svc data enable");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			fail("Exception reenabling network connection.");
+		}
+		
+		//wait a second for claim to sync
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		ProgressClaim onlineClaim = (ProgressClaim) loadClaimByID(claim.getUniqueId());
+		assertNotNull("Claim was not synced to online", onlineClaim);
+		assertEquals("Online claim does not match local claim", onlineClaim.toString(), claim.toString());
+		
+		Expense onlineExpense = onlineClaim.getExpenseList().getExpenses().get(0);
+		assertNotNull("Expense was not synced to online", onlineExpense);
+		assertEquals("Online expense does not match local claim", onlineExpense.toString(), expense.toString());
+		
+	}
+
+	//http://stackoverflow.com/a/11555457
+	private void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+	    final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    final Class conmanClass = Class.forName(conman.getClass().getName());
+	    final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+	    connectivityManagerField.setAccessible(true);
+	    final Object connectivityManager = connectivityManagerField.get(conman);
+	    final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
+	    final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+	    setMobileDataEnabledMethod.setAccessible(true);
+
+	    setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+	}
+	
+	/**
+	 * From https://github.com/rayzhangcl/ESDemo March 28, 2015
+	 * get the http response and return json string
+	 */
+	protected String getEntityContent(HttpResponse response) throws IOException {
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader((response.getEntity().getContent())));
+		String output;
+		System.err.println("Output from Server -> ");
+		String json = "";
+		while ((output = br.readLine()) != null) {
+			System.err.println(output);
+			json += output;
+		}
+		System.err.println("JSON:"+json);
+		return json;
+	}
+	
+	//get claim at specified elastic search ID
+	private Claim loadClaimByID(final UUID claimID){
+		String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/cmput301w15t01/claim/";
+		Claim claim = null;
+    	HttpClient httpclient = new DefaultHttpClient();
+    	try{
+    		Gson gson = new Gson();
+			HttpGet getRequest = new HttpGet(RESOURCE_URL+claimID);
+
+			getRequest.addHeader("Accept","application/json");
+
+			HttpResponse response = httpclient.execute(getRequest);
+
+			String status = response.getStatusLine().toString();
+
+			String json = getEntityContent(response);
+
+			// We have to tell GSON what type we expect
+			Type elasticSearchResponseType = new TypeToken<ElasticSearchResponse<ProgressClaim>>(){}.getType();
+			// Now we expect to get a tag response
+			ElasticSearchResponse<Claim> esResponse = gson.fromJson(json, elasticSearchResponseType);
+			//get the tags
+			claim = esResponse.getSource();
+		} catch (ClientProtocolException e) {
+
+			Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+
+		} catch (IOException e) {
+
+			Log.d("onlineTest", e.getCause()+":"+e.getMessage());
+		}
+    	return claim;
+	}
+	
+	
 //	
 //	//US03.01.01:As a claimant, I want to give an expense claim one or more alphanumeric 
 //	//tags, so that claims can be organized by me into groups.
