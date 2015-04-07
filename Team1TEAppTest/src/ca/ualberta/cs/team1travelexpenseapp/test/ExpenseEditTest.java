@@ -228,14 +228,11 @@ public class ExpenseEditTest extends ActivityInstrumentationTestCase2<ClaimantCl
 	// even if all item fields have values, so that I am reminded that the item needs further editing.
 	
 	public void testFlagExpense() {
-		//Claim claim = ClaimListController.getClaim(0);
-		//Expense expense = claim.getExpense(0);
 		
 		activity = getAddExpenseActivity();	
-		
 		// Ensure clicking the box toggles whether or not the expense is flagged
 		final CheckBox checkBox = (CheckBox) activity.findViewById(R.id.incompleteCheck);
-		instrumentation.runOnMainSync(new Runnable(){
+		activity.runOnUiThread(new Runnable(){
 		    @Override
 		    public void run() {
 		    	checkBox.setChecked(true);

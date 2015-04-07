@@ -5,32 +5,43 @@ import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
 
 public class UserSingleton {
-	private static UserSingleton userSingleton=null;
+	private static UserSingleton userSingleton = null;
 	private User user;
 	private String userType;
-	
-	private UserSingleton(){
-		
+
+	private UserSingleton() {
+
 	}
-	
-	public static UserSingleton getUserSingleton(){
-		if(userSingleton==null){
-			userSingleton=new UserSingleton();
+
+	/**
+	 * Initializes singleton.
+	 *
+	 * UserSingleton is loaded on the first execution of
+	 * UserSingleton.getUserSingleton() or the first access to
+	 * UserSingleton.INSTANCE, not before.
+	 */
+	public static UserSingleton getUserSingleton() {
+		if (userSingleton == null) {
+			userSingleton = new UserSingleton();
 		}
 		return userSingleton;
 	}
-	
-	public User getUser(){
+
+	public User getUser() {
 		return this.user;
 	}
-	
-	public void setUser(User user){
-		this.user=user;
+
+	public void setUser(User user) {
+		this.user = user;
 		this.userType = "user";
-	    if (user.getClass() == Claimant.class) { this.userType = "Claimant"; }
-	    if (user.getClass() == Approver.class) { this.userType = "Approver"; }
+		if (user.getClass() == Claimant.class) {
+			this.userType = "Claimant";
+		}
+		if (user.getClass() == Approver.class) {
+			this.userType = "Approver";
+		}
 	}
-	
+
 	public String getUserType() {
 		return userType;
 	}

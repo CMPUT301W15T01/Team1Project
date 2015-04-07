@@ -14,7 +14,11 @@ import ca.ualberta.cs.team1travelexpenseapp.Tag;
 import ca.ualberta.cs.team1travelexpenseapp.singletons.UserSingleton;
 import ca.ualberta.cs.team1travelexpenseapp.users.Claimant;
 import ca.ualberta.cs.team1travelexpenseapp.users.User;
-
+/**
+ * A claim with the status of submitted.
+ *  See claim for method descriptions
+ *
+ */
 public class SubmittedClaim extends Claim {
 	
 	Claim claim = null;

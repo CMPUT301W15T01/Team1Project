@@ -56,7 +56,7 @@ public abstract class ClaimListManager {
 	private static final RuntimeTypeAdapterFactory<Claim> adapter = RuntimeTypeAdapterFactory
 			.of(Claim.class);
 
-	/*
+	/**
 	 * Registers the classes to be saved to the gson adapter
 	 */
 	public ClaimListManager() {
