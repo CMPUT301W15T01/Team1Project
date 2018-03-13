@@ -3,7 +3,7 @@
 When you're traveling everywhere and anywhere, keeping track of your expenses can be a hassle. But it doesn't need to be. Thanks to this expense claim tracking app, you can now stay on top of your finances as you go along.
 
 #License
-Copyright 2015 Jeffrey Oduro, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
+Copyright 2015 Jeffrey O, Cody Ingram, Boyan Peychoff, Kenny Young, Dennis Truong, Victor Olivares 
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
